@@ -9,7 +9,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
     imports: [
-        ConfigModule.forRoot({ isGlobal: true }),
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: [`.env.${process.env.NODE_ENV.trim()}`]
+        }),
         TypeOrmModule.forRootAsync({
             imports: [ConfigModule, ConfigurationModule],
             inject: [ConfigService, DatabaseConnectionService],
