@@ -14,7 +14,6 @@ export class DatabaseConnectionService {
         const config = dotenv.parse(fs.readFileSync(filePath.trim()));
         const inputTobeValidated = pick(config, ['DATABASE_HOST', 'DATABASE_PORT', 'DATABASE_USER', 'DATABASE_PASSWORD', 'DATABASE_DB']);
         this.envConfig = this.validateInput(inputTobeValidated);
-        console.log(process.env.DATABASE_DB);
     }
 
     private validateInput(envConfig: EnvConfig): EnvConfig {
