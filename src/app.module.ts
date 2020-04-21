@@ -1,17 +1,19 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ManifestsModule } from './manifests/manifests.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigurationModule } from './config/config.module';
 import { DatabaseConnectionService } from './config/database-connection.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ReportingRatesModule } from './reporting-rates/reporting-rates.module';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath: [`.env.${process.env.NODE_ENV.trim()}`]
+            envFilePath: [
+                `.env.${process.env.NODE_ENV.trim() || 'development'}`,
+            ],
         }),
         TypeOrmModule.forRootAsync({
             imports: [ConfigModule, ConfigurationModule],
@@ -35,8 +37,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
                 entities: [__dirname + '/**/*.entity{.ts,.js}'],
             }),
         }),
-        ManifestsModule,
         ConfigurationModule,
+        ReportingRatesModule,
     ],
     controllers: [AppController],
     providers: [AppService],

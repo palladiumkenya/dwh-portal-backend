@@ -1,7 +1,7 @@
-import { ManifestEntity } from './manifest.entity';
+import { Manifest } from './manifest.entity';
 
 describe('ManifestEntity', () => {
-  it('should be defined', () => {
-    expect(new ManifestEntity()).toBeDefined();
-  });
+    it('should be defined', () => {
+        expect(new Manifest()).toBeDefined();
+    });
 });
