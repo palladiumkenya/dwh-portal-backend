@@ -12,7 +12,7 @@ import { ReportingRatesModule } from './reporting-rates/reporting-rates.module';
         ConfigModule.forRoot({
             isGlobal: true,
             envFilePath: [
-                `.env.${process.env.NODE_ENV.trim() || 'development'}`,
+                `.env.${process.env.NODE_ENV ? process.env.NODE_ENV.trim() : 'development'}`,
             ],
         }),
         TypeOrmModule.forRootAsync({
