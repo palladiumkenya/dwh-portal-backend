@@ -1,0 +1,75 @@
+[
+  {
+    "facilityId": 10019,
+    "name": "Mangu (AIP) Dispensary",
+    "county": "Kiambu",
+    "subCounty": "Gatundu North",
+    "agency": "USAID",
+    "partner": "CRISSP",
+    "ownership": "Faith Based Organisation",
+    "isCt": 0,
+    "isHts": 0,
+    "isPkv": 0
+  },
+  {
+    "facilityId": 10029,
+    "name": "Anmer Dispensary",
+    "county": "Kiambu",
+    "subCounty": "Kiambu Town",
+    "agency": "CDC",
+    "partner": "CRISSP",
+    "ownership": "Ministry of Health",
+    "isCt": 0,
+    "isHts": 0,
+    "isPkv": 0
+  },
+  {
+    "facilityId": 10044,
+    "name": "Bamboo Health Centre",
+    "county": "Nyandarua",
+    "subCounty": "Kinangop",
+    "agency": "USAID",
+    "partner": "Afya Kamilisha",
+    "ownership": "Ministry of Health",
+    "isCt": 0,
+    "isHts": 0,
+    "isPkv": 0
+  },
+  {
+    "facilityId": 10049,
+    "name": "Baricho Health Centre",
+    "county": "Kirinyaga",
+    "subCounty": "Kirinyaga West",
+    "agency": "USAID",
+    "partner": "CRISSP",
+    "ownership": "Ministry of Health",
+    "isCt": 0,
+    "isHts": 0,
+    "isPkv": 0
+  },
+
+  {
+    "facilityId": 10234,
+    "name": "Gatunyu Dispensary",
+    "county": "Murang'a",
+    "subCounty": "Gatanga",
+    "agency": "CDC",
+    "partner": "CHS Tegemeza Plus",
+    "ownership": "Ministry of Health",
+    "isCt": 0,
+    "isHts": 0,
+    "isPkv": 0
+  },
+  {
+    "facilityId": 10236,
+    "name": "Gatura Healh Centre",
+    "county": "Murang'a",
+    "subCounty": "Gatanga",
+    "agency": "CDC",
+    "partner": "CHS Tegemeza Plus",
+    "ownership": "Ministry of Health",
+    "isCt": 0,
+    "isHts": 0,
+    "isPkv": 0
+  }
+]

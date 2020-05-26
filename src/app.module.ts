@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigurationModule } from './config/config.module';
 import { DatabaseConnectionService } from './config/database-connection.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ReportingRatesModule } from './reporting-rates/reporting-rates.module';
+import { CommonModule } from './application/common/common.module';
 
 @Module({
     imports: [
@@ -35,12 +35,18 @@ import { ReportingRatesModule } from './reporting-rates/reporting-rates.module';
                     dbConfig.database,
                 ),
                 entities: [__dirname + '/**/*.entity{.ts,.js}'],
+                migrationsTableName: 'custom_migration_table',
+                migrations: ['migration/*.js'],
+                cli: {
+                    'migrationsDir': 'migration',
+                },
             }),
         }),
         ConfigurationModule,
-        ReportingRatesModule,
+        CommonModule,
     ],
     controllers: [AppController],
     providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+}
