@@ -1,11 +1,11 @@
 import { Entity, PrimaryColumn, Column } from 'typeorm';
 
 @Entity()
-export class FacilityManifest {
+export class FactManifest {
     @PrimaryColumn({ type: 'uuid' })
-    manifestId: number;
-    @Column({ type: 'int' })
-    timeId: number;
+    manifestId: string;
+    @Column({ type: 'datetime' })
+    timeId: Date;
     @Column({ type: 'int' })
     facilityId: number;
     @Column({ type: 'text' })

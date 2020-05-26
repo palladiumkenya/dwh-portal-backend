@@ -8,7 +8,7 @@
     "partner": "CRISSP",
     "ownership": "Faith Based Organisation",
     "isCt": 0,
-    "isHts": 0,
+    "isHts": 1,
     "isPkv": 0
   },
   {
@@ -20,7 +20,7 @@
     "partner": "CRISSP",
     "ownership": "Ministry of Health",
     "isCt": 0,
-    "isHts": 0,
+    "isHts": 1,
     "isPkv": 0
   },
   {
@@ -31,9 +31,9 @@
     "agency": "USAID",
     "partner": "Afya Kamilisha",
     "ownership": "Ministry of Health",
-    "isCt": 0,
-    "isHts": 0,
-    "isPkv": 0
+    "isCt": 1,
+    "isHts": 1,
+    "isPkv": 1
   },
   {
     "facilityId": 10049,
@@ -43,11 +43,10 @@
     "agency": "USAID",
     "partner": "CRISSP",
     "ownership": "Ministry of Health",
-    "isCt": 0,
-    "isHts": 0,
-    "isPkv": 0
+    "isCt": 1,
+    "isHts": 1,
+    "isPkv": 1
   },
-
   {
     "facilityId": 10234,
     "name": "Gatunyu Dispensary",
@@ -56,7 +55,7 @@
     "agency": "CDC",
     "partner": "CHS Tegemeza Plus",
     "ownership": "Ministry of Health",
-    "isCt": 0,
+    "isCt": 1,
     "isHts": 0,
     "isPkv": 0
   },
@@ -68,7 +67,7 @@
     "agency": "CDC",
     "partner": "CHS Tegemeza Plus",
     "ownership": "Ministry of Health",
-    "isCt": 0,
+    "isCt": 1,
     "isHts": 0,
     "isPkv": 0
   }
