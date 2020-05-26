@@ -7,9 +7,9 @@ export class ManifestsController {
     constructor(private readonly queryBus: QueryBus) {
     }
 
-    @Get('expected/:docket')
-    async getCounties(@Param('docket') docket): Promise<any> {
-        return this.queryBus.execute(new GetTilesQuery(docket));
+    @Get('/:docket/:year/:month')
+    async getUploads(@Param('docket') docket, @Param('year') year, @Param('month') month): Promise<any> {
+        return this.queryBus.execute(new GetTilesQuery(docket, year, month));
     }
 
 }
