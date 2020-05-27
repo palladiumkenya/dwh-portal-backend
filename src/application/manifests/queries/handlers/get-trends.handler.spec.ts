@@ -1,14 +1,15 @@
-import {  QueryBus } from '@nestjs/cqrs';
+import { QueryBus } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Logger } from '@nestjs/common';
 import { ManifestsModule } from '../../manifests.module';
-import { GetTilesHandler } from './get-tiles.handler';
 import { GetTilesQuery } from '../get-tiles.query';
 import { FactManifest } from '../../../../entities/manifests/fact-manifest.entity';
-import { TileDto } from '../../../../entities/manifests/dtos/tile.dto';
+import { GetTrendsHandler } from './get-trends.handler';
+import { GetTrendsQuery } from '../get-trends.query';
+import { TrendDto } from '../../../../entities/manifests/dtos/trend.dto';
 
-describe('Get Tiles Test', () => {
+describe('Get Trends Test', () => {
     let module: TestingModule;
     let queryBus: QueryBus;
 
@@ -23,26 +24,27 @@ describe('Get Tiles Test', () => {
                         password: 'dwapi',
                         database: 'portalDev',
                         entities: [FactManifest],
-                        logging:true
+                        logging: true,
                     }),
                 }),
                 ManifestsModule,
             ],
         }).compile();
 
-        const handler = module.get<GetTilesHandler>(GetTilesHandler);
+        const handler = module.get<GetTrendsHandler>(GetTrendsHandler);
         queryBus = module.get<QueryBus>(QueryBus);
-        queryBus.bind(handler, GetTilesQuery.name);
+        queryBus.bind(handler, GetTrendsQuery.name);
     });
 
-    it('should get uploads', async () => {
-        const query = new GetTilesQuery('PKV',2020,1);
-        const result = await queryBus.execute<GetTilesQuery, TileDto>(query);
-        expect(result.docket).toBe('PKV');
-        expect(result.expected).toBeGreaterThan(0);
-        expect(result.recency).toBeGreaterThan(0);
-        expect(result.recencyPerc).toBeGreaterThan(0);
-        Logger.debug(result)
+    it('should get trends', async () => {
+        const query = new GetTrendsQuery('HTS', 2020, 1);
+        const result = await queryBus.execute<GetTrendsQuery, TrendDto[]>(query);
+        expect(result.length).toBeGreaterThan(0);
+        expect(result[0].docket).toBe('HTS');
+        expect(result[0].expected).toBeGreaterThan(0);
+        expect(result[0].trend).toBeGreaterThan(0);
+        expect(result[0].trendPerc).toBeGreaterThan(0);
+        Logger.debug(result);
     });
 
 });

@@ -6,6 +6,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { GetTilesHandler } from './queries/handlers/get-tiles.handler';
 import { ManifestsController } from './controllers/manifests.controller';
 import { FactManifest } from '../../entities/manifests/fact-manifest.entity';
+import { GetTrendsHandler } from './queries/handlers/get-trends.handler';
 
 @Module({
     imports: [
@@ -13,7 +14,8 @@ import { FactManifest } from '../../entities/manifests/fact-manifest.entity';
         ConfigurationModule,
         TypeOrmModule.forFeature([FactManifest])],
     providers: [
-        GetTilesHandler
+        GetTilesHandler,
+        GetTrendsHandler
     ],
     controllers: [ManifestsController],
 })
