@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetCountiesQuery } from '../queries/get-counties.query';
 import { GetFacilitiesQuery } from '../queries/get-facilities.query';
@@ -16,17 +16,31 @@ export class CommonController {
             new GetCountiesQuery(),
         );
     }
+
     @Get('agencies')
-    async getAgencies(): Promise<any> {
-        return this.queryBus.execute(
-            new GetAgenciesQuery(),
-        );
+    async getAgencies(
+        @Query('county') county,
+    ): Promise<any> {
+        const query = new GetAgenciesQuery();
+        if (county) {
+            query.county = county;
+        }
+        return this.queryBus.execute(query);
     }
+
     @Get('partners')
-    async getPartners(): Promise<any> {
-        return this.queryBus.execute(
-            new GetPartnersQuery(),
-        );
+    async getPartners(
+        @Query('county') county,
+        @Query('agency') agency,
+    ): Promise<any> {
+        const query = new GetPartnersQuery();
+        if (county) {
+            query.county = county;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        return this.queryBus.execute(query);
     }
 
     @Get('facilities')

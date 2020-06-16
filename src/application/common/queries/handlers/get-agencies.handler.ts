@@ -15,13 +15,20 @@ export class GetAgenciesHandler implements IQueryHandler<GetAgenciesQuery> {
     }
 
     async execute(query: GetAgenciesQuery): Promise<any> {
-        const agencies = await this.repository
-            .createQueryBuilder()
-            .select('agency')
-            .distinct(true)
-            .getRawMany()
+        const agencies = this.repository
+            .createQueryBuilder('f')
+            .select('f.agency', 'agency')
+            .where('f.facilityId > 0');
 
-        return agencies;
+        if (query.county) {
+            agencies
+                .andWhere('f.county IN (:...counties)', { counties: [query.county] });
+        }
+
+        return await agencies
+            .orderBy('f.agency')
+            .distinct(true)
+            .getRawMany();
     }
 
 }

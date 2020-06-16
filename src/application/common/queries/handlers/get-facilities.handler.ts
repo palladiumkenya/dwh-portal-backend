@@ -40,6 +40,7 @@ export class GetFacilitiesHandler implements IQueryHandler<GetFacilitiesQuery> {
         }
 
         return await facilities
+            .orderBy('f.name')
             .distinct(true)
             .getRawMany();
     }

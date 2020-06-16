@@ -55,4 +55,20 @@ describe('Get Partners Test', () => {
         result.forEach(c => Logger.debug(`${c.agency} | ${c.partner}`));
     });
 
+    it('should get partners by county', async () => {
+        const query = new GetPartnersQuery();
+        query.county='Kiambu';
+        const result = await queryBus.execute<GetPartnersQuery, any>(query);
+        expect(result.length).toBeGreaterThan(0);
+        result.forEach(c => Logger.debug(`${c.county} | ${c.partner}`));
+    });
+
+    it('should get partners by agency', async () => {
+        const query = new GetPartnersQuery();
+        query.agency='CDC';
+        const result = await queryBus.execute<GetPartnersQuery, any>(query);
+        expect(result.length).toBeGreaterThan(0);
+        result.forEach(c => Logger.debug(`${c.agency} | ${c.partner}`));
+    });
+
 });

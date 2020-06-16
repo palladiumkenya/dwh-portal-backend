@@ -19,14 +19,26 @@ export class GetPartnersHandler implements IQueryHandler<GetPartnersQuery> {
         const partners =  this.repository
             .createQueryBuilder('f')
             .select('f.partner','partner')
+            .where('f.facilityId > 0');
 
+        if (query.county) {
+            partners
+                .addSelect('f.county', 'county')
+                .andWhere("f.county IN (:...counties)", { counties: [query.county] })
+        }
+        if (query.agency) {
+            partners
+                .addSelect('f.agency', 'agency')
+                .andWhere("f.agency IN (:...agencies)", { agencies: [query.agency] })
+        }
         if (query.agencies && query.agencies.length>0) {
             partners
                 .addSelect('f.agency', 'agency')
-                .where("f.agency IN (:...agencies)", { agencies: query.agencies })
+                .andWhere("f.agency IN (:...agencies)", { agencies: query.agencies })
         }
 
         return await partners
+            .orderBy('f.partner')
             .distinct(true)
             .getRawMany();
     }

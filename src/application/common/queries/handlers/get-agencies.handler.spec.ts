@@ -46,5 +46,11 @@ describe('Get Agencies Test', () => {
         expect(result.length).toBeGreaterThan(0);
         result.forEach(c => Logger.debug(`${c.agency}`));
     });
+    it('should get agencies by county', async () => {
+        const query = new GetAgenciesQuery('Nyandarua');
+        const result = await queryBus.execute<GetAgenciesQuery, any>(query);
+        expect(result.length).toBeGreaterThan(0);
+        result.forEach(c => Logger.debug(`${c.agency}`));
+    });
 
 });

@@ -7,6 +7,8 @@ import { GetTilesHandler } from './queries/handlers/get-tiles.handler';
 import { ManifestsController } from './controllers/manifests.controller';
 import { FactManifest } from '../../entities/manifests/fact-manifest.entity';
 import { GetTrendsHandler } from './queries/handlers/get-trends.handler';
+import { GetExpectedUploadsHandler } from './queries/handlers/get-expected-uploads.handler';
+import { GetOverallUploadsHandler } from './queries/handlers/get-overall-uploads.handler';
 
 @Module({
     imports: [
@@ -14,6 +16,8 @@ import { GetTrendsHandler } from './queries/handlers/get-trends.handler';
         ConfigurationModule,
         TypeOrmModule.forFeature([FactManifest])],
     providers: [
+        GetExpectedUploadsHandler,
+        GetOverallUploadsHandler,
         GetTilesHandler,
         GetTrendsHandler
     ],

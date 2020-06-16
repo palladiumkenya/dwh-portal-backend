@@ -1,4 +1,8 @@
 export class GetTilesQuery {
+    county?: string;
+    agency?: string;
+    partner?: string;
+
     constructor(public readonly docket: string,
                 public readonly year: number,
                 public readonly month: number) {

@@ -16,9 +16,21 @@ export class GetTilesHandler implements IQueryHandler<GetTilesQuery> {
     }
 
     async execute(query: GetTilesQuery): Promise<TileDto> {
-
-        const expectedSql = 'select * from expected_uploads where docket=?';
-        const expectedCount = await this.repository.query(expectedSql, [query.docket]);
+        const params = [query.docket];
+        let expectedSql = 'select * from expected_uploads where docket=?';
+        if (query.county) {
+            expectedSql = `${expectedSql} and county=?`;
+            params.push(query.county)
+        }
+        if (query.agency) {
+            expectedSql = `${expectedSql} and agency=?`;
+            params.push(query.agency)
+        }
+        if (query.partner) {
+            expectedSql = `${expectedSql} and partner=?`;
+            params.push(query.partner)
+        }
+        const expectedCount = await this.repository.query(expectedSql, params);
 
         const recencySql = 'select * from recency_uploads where docketId=? and year=? and month =?';
         const recencyCount = await this.repository.query(recencySql, [query.docket, query.year, query.month]);

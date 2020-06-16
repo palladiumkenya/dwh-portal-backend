@@ -18,6 +18,7 @@ export class GetCountiesHandler implements IQueryHandler<GetCountiesQuery> {
         const counties = await this.repository
             .createQueryBuilder()
             .select('county')
+            .orderBy('county')
             .distinct(true)
             .getRawMany();
 
