@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { DimFacility } from '../../entities/common/dim-facility.entity';
 import { ConfigurationModule } from '../../config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
-import { GetTilesHandler } from './queries/handlers/get-tiles.handler';
 import { ManifestsController } from './controllers/manifests.controller';
 import { FactManifest } from '../../entities/manifests/fact-manifest.entity';
-import { GetTrendsHandler } from './queries/handlers/get-trends.handler';
 import { GetExpectedUploadsHandler } from './queries/handlers/get-expected-uploads.handler';
-import { GetOverallUploadsHandler } from './queries/handlers/get-overall-uploads.handler';
+import { GetRecencyUploadsHandler } from './queries/handlers/get-recency-uploads.handler';
+import { GetConsistencyUploadsHandler } from './queries/handlers/get-consistency-uploads.handler';
+import { GetTrendsRecencyHandler } from './queries/handlers/get-trends-recency.handler';
+import { GetTrendsConsistencyHandler } from './queries/handlers/get-trends-consistency.handler';
 
 @Module({
     imports: [
@@ -16,10 +16,11 @@ import { GetOverallUploadsHandler } from './queries/handlers/get-overall-uploads
         ConfigurationModule,
         TypeOrmModule.forFeature([FactManifest])],
     providers: [
+        GetConsistencyUploadsHandler,
         GetExpectedUploadsHandler,
-        GetOverallUploadsHandler,
-        GetTilesHandler,
-        GetTrendsHandler
+        GetRecencyUploadsHandler,
+        GetTrendsRecencyHandler,
+        GetTrendsConsistencyHandler
     ],
     controllers: [ManifestsController],
 })
