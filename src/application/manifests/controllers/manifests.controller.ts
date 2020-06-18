@@ -1,10 +1,10 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { GetTilesQuery } from '../queries/get-tiles.query';
-import { GetTrendsQuery } from '../queries/get-trends.query';
-import { GetPartnersQuery } from '../../common/queries/get-partners.query';
 import { GetExpectedUploadsQuery } from '../queries/get-expected-uploads.query';
-import { GetOverallUploadsQuery } from '../queries/get-overall-uploads.query';
+import { GetRecencyUploadsQuery } from '../queries/get-recency-uploads.query';
+import { GetConsistencyUploadsQuery } from '../queries/get-consistency-uploads.query';
+import { GetTrendsRecencyQuery } from '../queries/get-trends-recency.query';
+import { GetTrendsConsistencyQuery } from '../queries/get-trends-consistency.query';
 
 @Controller('manifests')
 export class ManifestsController {
@@ -31,15 +31,15 @@ export class ManifestsController {
         return this.queryBus.execute(query);
     }
 
-    @Get('overall/:docket')
-    async getOverall(
+    @Get('recency/:docket')
+    async getRecency(
         @Param('docket') docket,
         @Query('county') county,
         @Query('agency') agency,
         @Query('partner') partner,
         @Query('period') period,
     ): Promise<any> {
-        const query = new GetOverallUploadsQuery(docket);
+        const query = new GetRecencyUploadsQuery(docket);
         if (county) {
             query.county = county;
         }
@@ -55,9 +55,76 @@ export class ManifestsController {
         return this.queryBus.execute(query);
     }
 
-    @Get('trends/:docket/:year/:month')
-    async getTrendss(@Param('docket') docket, @Param('year') year, @Param('month') month): Promise<any> {
-        return this.queryBus.execute(new GetTrendsQuery(docket, year, month));
+    @Get('consistency/:docket')
+    async getConsistency(
+        @Param('docket') docket,
+        @Query('county') county,
+        @Query('agency') agency,
+        @Query('partner') partner,
+        @Query('period') period,
+    ): Promise<any> {
+        const query = new GetConsistencyUploadsQuery(docket);
+        if (county) {
+            query.county = county;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (partner) {
+            query.partner = partner;
+        }
+        if (period) {
+            query.period = period;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('recency/trends/:docket')
+    async getTrendsRecency(
+        @Param('docket') docket,
+        @Query('county') county,
+        @Query('agency') agency,
+        @Query('partner') partner,
+        @Query('period') period,
+    ): Promise<any> {
+        const query = new GetTrendsRecencyQuery(docket);
+        if (county) {
+            query.county = county;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (partner) {
+            query.partner = partner;
+        }
+        if (period) {
+            query.period = period;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('consistency/trends/:docket')
+    async getTrendsConsistency(
+        @Param('docket') docket,
+        @Query('county') county,
+        @Query('agency') agency,
+        @Query('partner') partner,
+        @Query('period') period,
+    ): Promise<any> {
+        const query = new GetTrendsConsistencyQuery(docket);
+        if (county) {
+            query.county = county;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (partner) {
+            query.partner = partner;
+        }
+        if (period) {
+            query.period = period;
+        }
+        return this.queryBus.execute(query);
     }
 
 }

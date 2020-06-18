@@ -4,11 +4,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Logger } from '@nestjs/common';
 import { ManifestsModule } from '../../manifests.module';
 import { FactManifest } from '../../../../entities/manifests/fact-manifest.entity';
-import { GetOverallUploadsHandler } from './get-overall-uploads.handler';
-import { GetOverallUploadsQuery } from '../get-overall-uploads.query';
-import { OverallUploadsTileDto } from '../../../../entities/manifests/dtos/overall-uploads-tile.dto';
+import { GetTrendsRecencyHandler } from './get-trends-recency.handler';
+import { GetTrendsRecencyQuery } from '../get-trends-recency.query';
 
-describe('Get Tile Overall uploads', () => {
+describe('Get Trends Recency Uploads', () => {
     let module: TestingModule;
     let queryBus: QueryBus;
 
@@ -30,40 +29,39 @@ describe('Get Tile Overall uploads', () => {
             ],
         }).compile();
 
-        const handler = module.get<GetOverallUploadsHandler>(GetOverallUploadsHandler);
+        const handler = module.get<GetTrendsRecencyHandler>(GetTrendsRecencyHandler);
         queryBus = module.get<QueryBus>(QueryBus);
-        queryBus.bind(handler, GetOverallUploadsQuery.name);
+        queryBus.bind(handler, GetTrendsRecencyQuery.name);
     });
 
-    it('should get overall uploads', async () => {
-        const query = new GetOverallUploadsQuery('PKV');
-        const result = await queryBus.execute<GetOverallUploadsQuery, any>(query);
+    it('should get recency uploads', async () => {
+        const query = new GetTrendsRecencyQuery('CT','2019,10');
+        const result = await queryBus.execute<GetTrendsRecencyQuery, any>(query);
         expect(result.length).toBeGreaterThan(0);
         Logger.debug(result)
     });
 
-    it('should get overall uploads By County', async () => {
-        const query = new GetOverallUploadsQuery('PKV');
+    it('should get recency uploads By County', async () => {
+        const query = new GetTrendsRecencyQuery('CT','2019,10');
         query.county='Kisumu'
-        const result = await queryBus.execute<GetOverallUploadsQuery, any>(query);
+        const result = await queryBus.execute<GetTrendsRecencyQuery, any>(query);
         expect(result.length).toBeGreaterThan(0);
         Logger.debug(result)
     });
 
-    it('should get overall uploads By Agency', async () => {
-        const query = new GetOverallUploadsQuery('PKV');
+    it('should get recency uploads By Agency', async () => {
+        const query = new GetTrendsRecencyQuery('CT','2019,10');
         query.agency='DOD'
-        const result = await queryBus.execute<GetOverallUploadsQuery, any>(query);
+        const result = await queryBus.execute<GetTrendsRecencyQuery, any>(query);
         expect(result.length).toBeGreaterThan(0);
         Logger.debug(result)
     });
 
-    it('should get overall uploads By Partner', async () => {
-        const query = new GetOverallUploadsQuery('PKV');
-        query.partner='WRP-South Rift';
-        const result = await queryBus.execute<GetOverallUploadsQuery, OverallUploadsTileDto>(query);
-        expect(result.docket).toBe(query.docket);
-        expect(result.overall).toBeGreaterThan(0);
+    it('should get recency uploads By Partner', async () => {
+        const query = new GetTrendsRecencyQuery('CT','2019,10');
+        query.partner='Afya Nyota ya Bonde';
+        const result = await queryBus.execute<GetTrendsRecencyQuery, any>(query);
+        expect(result.length).toBeGreaterThan(0);
         Logger.debug(result)
     });
 
