@@ -2,7 +2,8 @@ export class GetTrendsRecencyQuery {
     county?: string;
     agency?: string;
     partner?: string;
+    period?: string;
 
-    constructor(public docket: string, public period = `${new Date().getFullYear()},${new Date().getMonth()}`) {
+    constructor(public docket: string) {
     }
 }
