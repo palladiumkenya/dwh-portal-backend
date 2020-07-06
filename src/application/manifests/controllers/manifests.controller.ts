@@ -5,6 +5,8 @@ import { GetRecencyUploadsQuery } from '../queries/get-recency-uploads.query';
 import { GetConsistencyUploadsQuery } from '../queries/get-consistency-uploads.query';
 import { GetTrendsRecencyQuery } from '../queries/get-trends-recency.query';
 import { GetTrendsConsistencyQuery } from '../queries/get-trends-consistency.query';
+import { GetEmrDistributionQuery } from '../queries/get-emr-distribution.query';
+import { GetOverallReportingQuery } from '../queries/get-overall-reporting.query';
 
 @Controller('manifests')
 export class ManifestsController {
@@ -127,4 +129,44 @@ export class ManifestsController {
         return this.queryBus.execute(query);
     }
 
+    @Get('emrdistribution/:docket')
+    async getEmrDistribution(
+        @Param('docket') docket,
+        @Query('reportingType') reportingType
+    ): Promise<any> {
+        const query = new GetEmrDistributionQuery(docket);
+        if(reportingType) {
+            query.reportingType = reportingType;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('overallreporting/:docket')
+    async getOverAllReporting(
+        @Param('docket') docket,
+        @Query('county') county,
+        @Query('agency') agency,
+        @Query('partner') partner,
+        @Query('period') period,
+        @Query('reportingType') reportingType
+    ): Promise<any> {
+        const query = new GetOverallReportingQuery(docket);
+        if (county) {
+            query.county = county;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (partner) {
+            query.partner = partner;
+        }
+        if (period) {
+            query.period = period;
+        }
+        if(reportingType) {
+            query.reportingType = reportingType;
+        }
+        return this.queryBus.execute(query);
+    }
 }
