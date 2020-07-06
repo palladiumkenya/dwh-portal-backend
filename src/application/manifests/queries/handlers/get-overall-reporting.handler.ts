@@ -15,7 +15,6 @@ export class GetOverallReportingHandler implements IQueryHandler<GetOverallRepor
 
     async execute(query: GetOverallReportingQuery): Promise<OverallReportingDto> {
         const params = [query.docket];
-        console.log(query);
 
         let overAllReportingSql = `SELECT ${query.reportingType}, COUNT(df.facilityId) AS facilities_count FROM fact_manifest fm
             INNER JOIN dim_time dt ON dt.timeId = fm.timeId

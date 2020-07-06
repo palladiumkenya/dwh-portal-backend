@@ -132,9 +132,25 @@ export class ManifestsController {
     @Get('emrdistribution/:docket')
     async getEmrDistribution(
         @Param('docket') docket,
+        @Query('county') county,
+        @Query('agency') agency,
+        @Query('partner') partner,
+        @Query('period') period,
         @Query('reportingType') reportingType
     ): Promise<any> {
         const query = new GetEmrDistributionQuery(docket);
+        if (county) {
+            query.county = county;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (partner) {
+            query.partner = partner;
+        }
+        if (period) {
+            query.period = period;
+        }
         if(reportingType) {
             query.reportingType = reportingType;
         }

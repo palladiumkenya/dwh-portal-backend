@@ -14,17 +14,35 @@ export class GetEmrDistributionHandler implements IQueryHandler<GetEmrDistributi
 
     async execute(query: GetEmrDistributionQuery): Promise<EmrDistributionDto> {
         const params = [query.docket];
-        console.log(query);
         let emrDistributionSql = `SELECT ${query.reportingType}, COUNT(fc.facilityId) AS facilities_count 
-            FROM(SELECT DISTINCT fm.facilityId FROM fact_manifest fm WHERE fm.docketId = ?) fc 
+            FROM(SELECT DISTINCT fm.facilityId, fm.timeId FROM fact_manifest fm WHERE fm.docketId = ?) fc 
             INNER JOIN dim_facility  df ON df.facilityId = fc.facilityId
-            GROUP BY ${query.reportingType}
-            ORDER BY ${query.reportingType}`;
+            INNER JOIN dim_time dt ON dt.timeId = fc.timeId`;
 
-        if (query.county) {
+        if(query.county) {
             emrDistributionSql = `${emrDistributionSql} and county=?`;
             params.push(query.county);
         }
+
+        if(query.agency) {
+            emrDistributionSql = `${emrDistributionSql} and agency=?`;
+            params.push(query.agency);
+        }
+
+        if(query.partner) {
+            emrDistributionSql = `${emrDistributionSql} and partner=?`;
+            params.push(query.partner);
+        }
+
+        if(query.period) {
+            const year = query.period.split(',')[0];
+            const month = query.period.split(',')[1];
+            emrDistributionSql = `${emrDistributionSql} and year=? and month=?`;
+            params.push(year);
+            params.push(month);
+        }
+
+        emrDistributionSql = `${emrDistributionSql} GROUP BY ${query.reportingType} ORDER BY ${query.reportingType}`;
 
         const overallResult = await this.repository.query(emrDistributionSql, params);
         return overallResult;
