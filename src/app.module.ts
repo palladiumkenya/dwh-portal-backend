@@ -36,11 +36,11 @@ import { ManifestsModule } from './application/manifests/manifests.module';
                     dbConfig.database,
                 ),
                 entities: [__dirname + '/**/*.entity{.ts,.js}'],
-                migrationsTableName: 'custom_migration_table',
+                /*migrationsTableName: 'custom_migration_table',
                 migrations: ['migration/*.js'],
                 cli: {
                     'migrationsDir': 'migration',
-                },
+                },*/
             }),
         }),
         ConfigurationModule,
