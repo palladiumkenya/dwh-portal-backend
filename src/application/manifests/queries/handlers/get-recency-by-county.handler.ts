@@ -1,19 +1,19 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetConsistencyByCountyQuery } from '../get-consistency-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactManifest } from '../../../../entities/manifests/fact-manifest.entity';
 import { Repository } from 'typeorm';
-import { ConsistencyByCountyDto } from '../../../../entities/manifests/dtos/consistency-by-county.dto';
+import { RecencyByCountyDto } from '../../../../entities/manifests/dtos/recency-by-county.dto';
+import { GetRecencyByCountyQuery } from '../get-recency-by-county.query';
 
-@QueryHandler(GetConsistencyByCountyQuery)
-export class GetConsistencyByCountyHandler implements IQueryHandler<GetConsistencyByCountyQuery> {
+@QueryHandler(GetRecencyByCountyQuery)
+export class GetRecencyByCountyHandler implements IQueryHandler<GetRecencyByCountyQuery> {
     constructor(
         @InjectRepository(FactManifest)
         private readonly repository: Repository<FactManifest>
     ) {
     }
 
-    async execute(query: GetConsistencyByCountyQuery): Promise<ConsistencyByCountyDto> {
+    async execute(query: GetRecencyByCountyQuery): Promise<RecencyByCountyDto> {
         const params = [query.docket];
 
         let recencyOfReportingByCountySql = `SELECT a.county

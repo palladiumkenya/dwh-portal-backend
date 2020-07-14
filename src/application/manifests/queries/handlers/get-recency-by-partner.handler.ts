@@ -1,19 +1,19 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetConsistencyByPartnerQuery } from '../get-consistency-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactManifest } from '../../../../entities/manifests/fact-manifest.entity';
 import { Repository } from 'typeorm';
-import { ConsistencyByPartnerDto } from '../../../../entities/manifests/dtos/consistency-by-partner.dto';
+import { RecencyByPartnerDto } from '../../../../entities/manifests/dtos/recency-by-partner.dto';
+import { GetRecencyByPartnerQuery } from '../get-recency-by-partner.query';
 
-@QueryHandler(GetConsistencyByPartnerQuery)
-export class GetConsistencyByPartnerHandler implements IQueryHandler<GetConsistencyByPartnerQuery> {
+@QueryHandler(GetRecencyByPartnerQuery)
+export class GetRecencyByPartnerHandler implements IQueryHandler<GetRecencyByPartnerQuery> {
     constructor(
         @InjectRepository(FactManifest)
         private readonly repository: Repository<FactManifest>
     ) {
     }
 
-    async execute(query: GetConsistencyByPartnerQuery): Promise<ConsistencyByPartnerDto> {
+    async execute(query: GetRecencyByPartnerQuery): Promise<RecencyByPartnerDto> {
         const params = [query.docket];
 
         let recencyOfReportingByPartnerSql = `SELECT a.partner

@@ -1,4 +1,4 @@
-export class GetConsistencyByPartnerQuery {
+export class GetRecencyByPartnerQuery {
     county?: string;
     agency?: string;
     partner?: string;

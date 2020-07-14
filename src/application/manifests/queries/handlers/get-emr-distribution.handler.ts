@@ -14,10 +14,7 @@ export class GetEmrDistributionHandler implements IQueryHandler<GetEmrDistributi
 
     async execute(query: GetEmrDistributionQuery): Promise<EmrDistributionDto> {
         const params = [query.docket];
-        let emrDistributionSql = `SELECT ${query.reportingType}, COUNT(fc.facilityId) AS facilities_count 
-            FROM(SELECT DISTINCT fm.facilityId, fm.timeId FROM fact_manifest fm WHERE fm.docketId = ?) fc 
-            INNER JOIN dim_facility  df ON df.facilityId = fc.facilityId
-            INNER JOIN dim_time dt ON dt.timeId = fc.timeId`;
+        let emrDistributionSql = `SELECT SUM(expected) as facilities_count, ${query.reportingType} FROM \`expected_uploads\` WHERE docket = ?`;
 
         if(query.county) {
             emrDistributionSql = `${emrDistributionSql} and county=?`;
@@ -34,15 +31,7 @@ export class GetEmrDistributionHandler implements IQueryHandler<GetEmrDistributi
             params.push(query.partner);
         }
 
-        if(query.period) {
-            const year = query.period.split(',')[0];
-            const month = query.period.split(',')[1];
-            emrDistributionSql = `${emrDistributionSql} and year=? and month=?`;
-            params.push(year);
-            params.push(month);
-        }
-
-        emrDistributionSql = `${emrDistributionSql} GROUP BY ${query.reportingType} ORDER BY ${query.reportingType}`;
+        emrDistributionSql = `${emrDistributionSql} GROUP BY ${query.reportingType} ORDER BY facilities_count ASC`;
 
         const overallResult = await this.repository.query(emrDistributionSql, params);
         return overallResult;

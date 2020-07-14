@@ -1,4 +1,4 @@
-export class ConsistencyByCountyDto {
+export class RecencyByCountyDto {
     county: string;
     recency: number;
     expected: number;
