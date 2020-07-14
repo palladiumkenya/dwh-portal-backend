@@ -21,6 +21,21 @@ export class GetOverallReportingHandler implements IQueryHandler<GetOverallRepor
             INNER JOIN dim_facility df ON df.facilityId = fm.facilityId
             WHERE docketId = ?`;
 
+        if (query.agency) {
+            overAllReportingSql = `${overAllReportingSql} and agency=?`;
+            params.push(query.agency);
+        }
+
+        if (query.partner) {
+            overAllReportingSql = `${overAllReportingSql} and partner=?`;
+            params.push(query.partner);
+        }
+
+        if (query.county) {
+            overAllReportingSql = `${overAllReportingSql} and county=?`;
+            params.push(query.county);
+        }
+
         if (query.period) {
             const year = query.period.split(',')[0];
             const month = query.period.split(',')[1];

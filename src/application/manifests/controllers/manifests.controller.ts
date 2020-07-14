@@ -7,6 +7,9 @@ import { GetTrendsRecencyQuery } from '../queries/get-trends-recency.query';
 import { GetTrendsConsistencyQuery } from '../queries/get-trends-consistency.query';
 import { GetEmrDistributionQuery } from '../queries/get-emr-distribution.query';
 import { GetOverallReportingQuery } from '../queries/get-overall-reporting.query';
+import { GetRecencyByPartnerQuery } from '../queries/get-recency-by-partner.query';
+import { GetRecencyByCountyQuery } from '../queries/get-recency-by-county.query';
+import { GetConsistencyByCountyPartnerQuery } from '../queries/get-consistency-by-county-partner.query';
 
 @Controller('manifests')
 export class ManifestsController {
@@ -168,6 +171,82 @@ export class ManifestsController {
         @Query('reportingType') reportingType
     ): Promise<any> {
         const query = new GetOverallReportingQuery(docket);
+        if (county) {
+            query.county = county;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (partner) {
+            query.partner = partner;
+        }
+        if (period) {
+            query.period = period;
+        }
+        if(reportingType) {
+            query.reportingType = reportingType;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('recencyreportingbycounty/:docket')
+    async getRecencyOfReportingByCounty(
+        @Param('docket') docket,
+        @Query('county') county,
+        @Query('agency') agency,
+        @Query('partner') partner,
+        @Query('period') period
+    ): Promise<any> {
+        const query = new GetRecencyByCountyQuery(docket);
+        if (county) {
+            query.county = county;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (partner) {
+            query.partner = partner;
+        }
+        if (period) {
+            query.period = period;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('recencyreportingbypartner/:docket')
+    async getRecencyOfReportingByPartner(
+        @Param('docket') docket,
+        @Query('county') county,
+        @Query('agency') agency,
+        @Query('partner') partner,
+        @Query('period') period
+    ): Promise<any> {
+        const query = new GetRecencyByPartnerQuery(docket);
+        if (county) {
+            query.county = county;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (partner) {
+            query.partner = partner;
+        }
+        if (period) {
+            query.period = period;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('consistencyreportingbycountypartner/:docket')
+    async getConsistencyOfReportingByCountyPartner(
+        @Param('docket') docket,
+        @Query('county') county,
+        @Query('agency') agency,
+        @Query('partner') partner,
+        @Query('period') period,
+        @Query('reportingType') reportingType
+    ): Promise<any> {
+        const query = new GetConsistencyByCountyPartnerQuery(docket);
         if (county) {
             query.county = county;
         }
