@@ -24,23 +24,23 @@ import { ManifestsModule } from './application/manifests/manifests.module';
                 dbConfig: DatabaseConnectionService,
             ) => ({
                 type: 'mysql' as 'mysql',
-                host: configService.get('DATABASE_HOST', dbConfig.host),
+                host: configService.get<string>('DATABASE_HOST', dbConfig.host),
                 port: configService.get<number>(
                     'DATABASE_PORT',
                     Number(dbConfig.port),
                 ),
-                username: configService.get('DATABASE_USER', dbConfig.username),
-                password: configService.get('DATABASE_PASS', dbConfig.password),
-                database: configService.get(
+                username: configService.get<string>('DATABASE_USER', dbConfig.username),
+                password: configService.get<string>('DATABASE_PASS', dbConfig.password),
+                database: configService.get<string>(
                     'DATABASE_SCHEMA',
                     dbConfig.database,
                 ),
                 entities: [__dirname + '/**/*.entity{.ts,.js}'],
-                /*migrationsTableName: 'custom_migration_table',
+                migrationsTableName: 'custom_migration_table',
                 migrations: ['migration/*.js'],
                 cli: {
                     'migrationsDir': 'migration',
-                },*/
+                },
             }),
         }),
         ConfigurationModule,
