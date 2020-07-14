@@ -37,8 +37,8 @@ export class DatabaseConnectionService {
         return validatedEnvConfig;
     }
 
-    get port(): string {
-        return String(this.envConfig.DATABASE_PORT);
+    get port(): number {
+        return Number(this.envConfig.DATABASE_PORT);
     }
 
     get host(): string {
