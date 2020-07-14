@@ -35,6 +35,7 @@
     "csurf": "^1.11.0",
     "express-rate-limit": "^5.1.1",
     "fast-glob": "^3.2.2",
+    "fs": "^0.0.1-security",
     "helmet": "^3.22.0",
     "lodash": "^4.17.15",
     "mysql": "^2.18.1",
