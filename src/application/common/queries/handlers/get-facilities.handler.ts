@@ -33,6 +33,12 @@ export class GetFacilitiesHandler implements IQueryHandler<GetFacilitiesQuery> {
                 .andWhere('f.county IN (:...counties)', { counties: query.counties });
         }
 
+        if (query.subCounty) {
+            facilities
+                .addSelect('f.subCounty', 'subCounty')
+                .andWhere('f.subCounty IN (:...subCounty)', { subCounty: query.subCounty });
+        }
+
         if (query.partners && query.partners.length > 0) {
             facilities
                 .addSelect('f.partner', 'partner')

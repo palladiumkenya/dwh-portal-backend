@@ -7,6 +7,7 @@ import { DatabaseConnectionService } from './config/database-connection.service'
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CommonModule } from './application/common/common.module';
 import { ManifestsModule } from './application/manifests/manifests.module';
+import { HtsModule } from './application/hts/hts.module';
 
 @Module({
     imports: [
@@ -45,7 +46,8 @@ import { ManifestsModule } from './application/manifests/manifests.module';
         }),
         ConfigurationModule,
         CommonModule,
-        ManifestsModule
+        ManifestsModule,
+        HtsModule
     ],
     controllers: [AppController],
     providers: [AppService],

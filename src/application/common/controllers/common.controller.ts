@@ -4,6 +4,7 @@ import { GetCountiesQuery } from '../queries/get-counties.query';
 import { GetFacilitiesQuery } from '../queries/get-facilities.query';
 import { GetPartnersQuery } from '../queries/get-partners.query';
 import { GetAgenciesQuery } from '../queries/get-agencies.query';
+import { GetSubCountiesQuery } from '../queries/get-sub-counties.query';
 
 @Controller('common')
 export class CommonController {
@@ -15,6 +16,14 @@ export class CommonController {
         return this.queryBus.execute(
             new GetCountiesQuery(),
         );
+    }
+
+    @Get('subCounties')
+    async getSubCounties(
+        @Query('county') county
+    ): Promise<any> {
+        const query = new GetSubCountiesQuery(county);
+        return this.queryBus.execute(query);
     }
 
     @Get('agencies')
@@ -44,9 +53,20 @@ export class CommonController {
     }
 
     @Get('facilities')
-    async getFacilities(): Promise<any> {
-        return this.queryBus.execute(
-            new GetFacilitiesQuery(),
-        );
+    async getFacilities(
+        @Query('county') county,
+        @Query('subCounty') subCounty
+    ): Promise<any> {
+        const query = new GetFacilitiesQuery();
+
+        if(county) {
+            query.counties = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        return this.queryBus.execute(query);
     }
 }
