@@ -8,6 +8,7 @@ import { GetAgenciesHandler } from './queries/handlers/get-agencies.handler';
 import { GetPartnersHandler } from './queries/handlers/get-partners.handler';
 import { GetFacilitiesHandler } from './queries/handlers/get-facilities.handler';
 import { CommonController } from './controllers/common.controller';
+import { GetSubCountiesHandler } from './queries/handlers/get-sub-counties.handler';
 
 @Module({
     imports: [
@@ -18,7 +19,8 @@ import { CommonController } from './controllers/common.controller';
         GetCountiesHandler,
         GetAgenciesHandler,
         GetPartnersHandler,
-        GetFacilitiesHandler
+        GetFacilitiesHandler,
+        GetSubCountiesHandler
     ],
     controllers: [CommonController],
 })
