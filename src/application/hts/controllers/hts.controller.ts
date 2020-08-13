@@ -9,7 +9,10 @@ export class HtsController {
     @Get('numberTestedAndPositivity')
     async getNumberTestedAndPositivity(
         @Query('county') county,
-        @Query('year') year
+        @Query('year') year,
+        @Query('month') month,
+        @Query('partner') partner,
+        @Query('facility') facility
     ): Promise<any> {
         const query = new GetNumberTestedPositivityQuery();
 
@@ -19,6 +22,18 @@ export class HtsController {
 
         if(year) {
             query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(facility) {
+            query.facility = facility;
         }
 
         return this.queryBus.execute(query);

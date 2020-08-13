@@ -40,6 +40,11 @@ export class GetNumberTestedPositivityHandler implements IQueryHandler<GetNumber
             params.push(query.year);
         }
 
+        if(query.facility) {
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and FacilityName=?`;
+            params.push(query.facility);
+        }
+
         numberTestedPositivitySql = `${numberTestedPositivitySql} GROUP BY year,month`;
 
         return  await this.repository.query(numberTestedPositivitySql, params);
