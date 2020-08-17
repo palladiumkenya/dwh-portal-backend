@@ -13,6 +13,12 @@ import { FactHtsTeststrategy } from '../../entities/hts/fact-hts-teststrategy.en
 import { GetUptakeByTestingStrategyHandler } from './queries/handlers/get-uptake-by-testing-strategy.handler';
 import { FactHtsEntryPoint } from '../../entities/hts/fact-hts-entrypoint.entity';
 import { GetUptakeByEntrypointHandler } from './queries/handlers/get-uptake-by-entrypoint.handler';
+import { GetUptakeByCountyHandler } from './queries/handlers/get-uptake-by-county.handler';
+import { GetUptakeByPartnerHandler } from './queries/handlers/get-uptake-by-partner.handler';
+import { FactHtsClientTestedAs } from '../../entities/hts/fact-hts-clienttestedas.entity';
+import { GetUptakeByTestedasHandler } from './queries/handlers/get-uptake-by-testedas.handler';
+import { FactHtsClientSelfTested } from '../../entities/hts/fact-hts-clientselftested.entity';
+import { GetUptakeByClientSelfTestedHandler } from './queries/handlers/get-uptake-by-client-self-tested.handler';
 
 @Module({
   imports: [
@@ -23,7 +29,9 @@ import { GetUptakeByEntrypointHandler } from './queries/handlers/get-uptake-by-e
           FactHtsUptakeAgeGender,
           FactHtsPopulationType,
           FactHtsTeststrategy,
-          FactHtsEntryPoint
+          FactHtsEntryPoint,
+          FactHtsClientTestedAs,
+          FactHtsClientSelfTested
       ])
   ],
   providers: [
@@ -31,7 +39,11 @@ import { GetUptakeByEntrypointHandler } from './queries/handlers/get-uptake-by-e
       GetUptakeByAgeSexHandler,
       GetUptakeByPopulationTypeHandler,
       GetUptakeByTestingStrategyHandler,
-      GetUptakeByEntrypointHandler
+      GetUptakeByEntrypointHandler,
+      GetUptakeByCountyHandler,
+      GetUptakeByPartnerHandler,
+      GetUptakeByTestedasHandler,
+      GetUptakeByClientSelfTestedHandler
   ],
   controllers: [HtsController]
 })
