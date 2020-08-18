@@ -20,6 +20,12 @@ import { GetUptakeByTestedasHandler } from './queries/handlers/get-uptake-by-tes
 import { FactHtsClientSelfTested } from '../../entities/hts/fact-hts-clientselftested.entity';
 import { GetUptakeByClientSelfTestedHandler } from './queries/handlers/get-uptake-by-client-self-tested.handler';
 
+import { GetNumberPositiveLinkedHandler } from './queries/handlers/get-number-positive-linked.handler';
+import { GetUptakeByAgeSexLinkageHandler } from './queries/handlers/get-uptake-by-age-sex-linkage.handler';
+import { GetLinkageByPopulationTypeHandler } from './queries/handlers/get-linkage-by-population-type.handler';
+import { GetLinkageByCountyHandler } from './queries/handlers/get-linkage-by-county.handler';
+import { GetLinkageByPartnerHandler } from './queries/handlers/get-linkage-by-partner.handler';
+
 @Module({
   imports: [
       CqrsModule,
@@ -43,7 +49,12 @@ import { GetUptakeByClientSelfTestedHandler } from './queries/handlers/get-uptak
       GetUptakeByCountyHandler,
       GetUptakeByPartnerHandler,
       GetUptakeByTestedasHandler,
-      GetUptakeByClientSelfTestedHandler
+      GetUptakeByClientSelfTestedHandler,
+      GetNumberPositiveLinkedHandler,
+      GetUptakeByAgeSexLinkageHandler,
+      GetLinkageByPopulationTypeHandler,
+      GetLinkageByCountyHandler,
+      GetLinkageByPartnerHandler,
   ],
   controllers: [HtsController]
 })
