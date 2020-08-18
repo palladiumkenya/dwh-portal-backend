@@ -30,6 +30,8 @@ export class GetHtsFacilitiesHandler implements IQueryHandler<GetHtsFacilitiesQu
             params.push(query.subCounty);
         }
 
+        facilitiesSql = `${facilitiesSql} ORDER BY FacilityName ASC`;
+
         return  await this.repository.query(facilitiesSql, params);
     }
 }

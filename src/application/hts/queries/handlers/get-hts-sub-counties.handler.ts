@@ -20,7 +20,8 @@ export class GetHtsSubCountiesHandler implements IQueryHandler<GetHtsSubCounties
             params.push(query.county);
         }
 
-        const overallResult = await this.repository.query(subCountiesSql, params);
-        return overallResult;
+        subCountiesSql = `${subCountiesSql} ORDER BY SubCounty ASC`;
+
+        return  await this.repository.query(subCountiesSql, params);
     }
 }

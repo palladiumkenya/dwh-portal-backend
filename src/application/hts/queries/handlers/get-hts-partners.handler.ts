@@ -25,6 +25,8 @@ export class GetHtsPartnersHandler implements IQueryHandler<GetHtsPartnersQuery>
             params.push(query.subCounty);
         }
 
+        partnersSql = `${partnersSql} ORDER BY CTPartner ASC`;
+
         return  await this.repository.query(partnersSql, params);
     }
 }
