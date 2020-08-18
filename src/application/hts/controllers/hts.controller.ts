@@ -9,6 +9,11 @@ import { GetUptakeByCountyQuery } from '../queries/get-uptake-by-county.query';
 import { GetUptakeByPartnerQuery } from '../queries/get-uptake-by-partner.query';
 import { GetUptakeByTestedasQuery } from '../queries/get-uptake-by-testedas.query';
 import { GetUptakeByClientSelfTestedQuery } from '../queries/get-uptake-by-client-self-tested.query';
+import { GetUptakeCountiesQuery } from '../queries/get-uptake-counties.query';
+import { GetHtsSubCountiesQuery } from '../queries/get-hts-sub-counties.query';
+import { GetHtsFacilitiesQuery } from '../queries/get-hts-facilities.query';
+import { GetPartnersQuery } from '../../common/queries/get-partners.query';
+import { GetHtsPartnersQuery } from '../queries/get-hts-partners.query';
 
 @Controller('hts')
 export class HtsController {
@@ -308,6 +313,60 @@ export class HtsController {
             query.facility = facility;
         }
 
+        return this.queryBus.execute(query);
+    }
+
+
+    @Get('counties')
+    async getCounties(
+    ): Promise<any> {
+        const query = new GetUptakeCountiesQuery();
+        return this.queryBus.execute(query);
+    }
+
+    @Get('subCounties')
+    async getSubCounties(
+        @Query('county') county
+    ): Promise<any> {
+        const query = new GetHtsSubCountiesQuery(county);
+        return this.queryBus.execute(query);
+    }
+
+    @Get('facilities')
+    async getFacilities(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetHtsFacilitiesQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('partners')
+    async getPartners(
+        @Query('county') county,
+        @Query('subCounty') subCounty
+    ): Promise<any> {
+        const query = new GetHtsPartnersQuery();
+        if (county) {
+            query.county = county;
+        }
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
         return this.queryBus.execute(query);
     }
 }

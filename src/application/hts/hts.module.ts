@@ -19,6 +19,10 @@ import { FactHtsClientTestedAs } from '../../entities/hts/fact-hts-clienttesteda
 import { GetUptakeByTestedasHandler } from './queries/handlers/get-uptake-by-testedas.handler';
 import { FactHtsClientSelfTested } from '../../entities/hts/fact-hts-clientselftested.entity';
 import { GetUptakeByClientSelfTestedHandler } from './queries/handlers/get-uptake-by-client-self-tested.handler';
+import { GetUptakeCountiesHandler } from './queries/handlers/get-uptake-counties.handler';
+import { GetHtsSubCountiesHandler } from './queries/handlers/get-hts-sub-counties.handler';
+import { GetHtsFacilitiesHandler } from './queries/handlers/get-hts-facilities.handler';
+import { GetHtsPartnersHandler } from './queries/handlers/get-hts-partners.handler';
 
 @Module({
   imports: [
@@ -43,7 +47,11 @@ import { GetUptakeByClientSelfTestedHandler } from './queries/handlers/get-uptak
       GetUptakeByCountyHandler,
       GetUptakeByPartnerHandler,
       GetUptakeByTestedasHandler,
-      GetUptakeByClientSelfTestedHandler
+      GetUptakeByClientSelfTestedHandler,
+      GetUptakeCountiesHandler,
+      GetHtsSubCountiesHandler,
+      GetHtsFacilitiesHandler,
+      GetHtsPartnersHandler
   ],
   controllers: [HtsController]
 })
