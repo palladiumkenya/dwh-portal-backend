@@ -57,8 +57,7 @@ import { GetLinkageByPartnerHandler } from './queries/handlers/get-linkage-by-pa
       GetUptakeCountiesHandler,
       GetHtsSubCountiesHandler,
       GetHtsFacilitiesHandler,
-      GetHtsPartnersHandler
-      GetUptakeByClientSelfTestedHandler,
+      GetHtsPartnersHandler,
       GetNumberPositiveLinkedHandler,
       GetUptakeByAgeSexLinkageHandler,
       GetLinkageByPopulationTypeHandler,
