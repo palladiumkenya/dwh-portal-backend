@@ -13,7 +13,7 @@ export class GetUptakeByAgeSexHandler implements IQueryHandler<GetUptakeByAgeSex
 
     async execute(query: GetUptakeByAgeSexQuery): Promise<any> {
         const params = [];
-        let uptakeByAgeSexSql = 'SELECT DATIM_AgeGroup AS AgeGroup, ' +
+        let uptakeByAgeSexSql = 'SELECT DATIM_AgeGroup AS AgeGroup, Gender, ' +
             'SUM(Tested) Tested, ' +
             'SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive, ' +
             '((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity ' +
@@ -44,7 +44,7 @@ export class GetUptakeByAgeSexHandler implements IQueryHandler<GetUptakeByAgeSex
             params.push(query.facility);
         }
 
-        uptakeByAgeSexSql = `${uptakeByAgeSexSql} GROUP BY DATIM_AgeGroup`;
+        uptakeByAgeSexSql = `${uptakeByAgeSexSql} GROUP BY DATIM_AgeGroup, Gender`;
 
         return  await this.repository.query(uptakeByAgeSexSql, params);
     }
