@@ -13,9 +13,10 @@ export class GetUptakeByPopulationTypeHandler implements IQueryHandler<GetUptake
 
     async execute(query: GetUptakeByPopulationTypeQuery): Promise<any> {
         const params = [];
-        let uptakeByPopulationTypeSql = 'SELECT \n' +
-            '`PopulationType` AS PopulationType,\n' +
-            'SUM(`Tested`) Tested\n' +
+        let uptakeByPopulationTypeSql = 'SELECT PopulationType AS PopulationType,  \n' +
+            'SUM(`Tested`) Tested,\n' +
+            'SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END) positive, \n' +
+            '((SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END)/SUM(`Tested`))*100) AS positivity\n' +
             '\n' +
             'FROM `fact_hts_populationtype` \n' +
             'WHERE `PopulationType` IS NOT NULL ';
