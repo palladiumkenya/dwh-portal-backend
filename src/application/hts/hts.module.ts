@@ -24,6 +24,12 @@ import { GetHtsSubCountiesHandler } from './queries/handlers/get-hts-sub-countie
 import { GetHtsFacilitiesHandler } from './queries/handlers/get-hts-facilities.handler';
 import { GetHtsPartnersHandler } from './queries/handlers/get-hts-partners.handler';
 
+import { GetNumberPositiveLinkedHandler } from './queries/handlers/get-number-positive-linked.handler';
+import { GetUptakeByAgeSexLinkageHandler } from './queries/handlers/get-uptake-by-age-sex-linkage.handler';
+import { GetLinkageByPopulationTypeHandler } from './queries/handlers/get-linkage-by-population-type.handler';
+import { GetLinkageByCountyHandler } from './queries/handlers/get-linkage-by-county.handler';
+import { GetLinkageByPartnerHandler } from './queries/handlers/get-linkage-by-partner.handler';
+
 @Module({
   imports: [
       CqrsModule,
@@ -52,6 +58,12 @@ import { GetHtsPartnersHandler } from './queries/handlers/get-hts-partners.handl
       GetHtsSubCountiesHandler,
       GetHtsFacilitiesHandler,
       GetHtsPartnersHandler
+      GetUptakeByClientSelfTestedHandler,
+      GetNumberPositiveLinkedHandler,
+      GetUptakeByAgeSexLinkageHandler,
+      GetLinkageByPopulationTypeHandler,
+      GetLinkageByCountyHandler,
+      GetLinkageByPartnerHandler,
   ],
   controllers: [HtsController]
 })

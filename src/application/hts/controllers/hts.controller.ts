@@ -15,6 +15,12 @@ import { GetHtsFacilitiesQuery } from '../queries/get-hts-facilities.query';
 import { GetPartnersQuery } from '../../common/queries/get-partners.query';
 import { GetHtsPartnersQuery } from '../queries/get-hts-partners.query';
 
+import { GetNumberPositiveLinkedQuery } from '../queries/get-number-positive-linked.query';
+import { GetUptakeByAgeSexLinkageQuery } from '../queries/get-uptake-by-age-sex-linkage.query';
+import { GetLinkageByPopulationTypeQuery } from '../queries/get-linkage-by-population-type.query';
+import { GetLinkageByCountyQuery } from '../queries/get-linkage-by-county.query';
+import { GetLinkageByPartnerQuery } from '../queries/get-linkage-by-partner.query';
+
 @Controller('hts')
 export class HtsController {
     constructor(private readonly queryBus: QueryBus){}
@@ -367,6 +373,197 @@ export class HtsController {
         if (subCounty) {
             query.subCounty = subCounty;
         }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('numberPositiveLinked')
+    async getNumberPositiveLinked(
+        @Query('facility') facility,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetNumberPositiveLinkedQuery();
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('uptakeByAgeSexLinkage')
+    async getUptakeByAgeSexLinkage(
+       @Query('facility') facility,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetUptakeByAgeSexLinkageQuery();
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('linkageByPopulationType')
+    async getLinkageByPopulationType(
+        @Query('facility') facility,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetLinkageByPopulationTypeQuery();
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('linkageByCounty')
+    async getLinkageByCounty(
+        @Query('facility') facility,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetLinkageByCountyQuery();
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.county = subCounty;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('linkageByPartner')
+    async getLinkageByPartner(
+        @Query('facility') facility,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetLinkageByPartnerQuery();
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.county = subCounty;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
         return this.queryBus.execute(query);
     }
 }
