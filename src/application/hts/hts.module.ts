@@ -29,6 +29,8 @@ import { GetUptakeByAgeSexLinkageHandler } from './queries/handlers/get-uptake-b
 import { GetLinkageByPopulationTypeHandler } from './queries/handlers/get-linkage-by-population-type.handler';
 import { GetLinkageByCountyHandler } from './queries/handlers/get-linkage-by-county.handler';
 import { GetLinkageByPartnerHandler } from './queries/handlers/get-linkage-by-partner.handler';
+import { GetUptakeByMonthsSinceLastTestHandler } from './queries/handlers/get-uptake-by-months-since-last-test.handler';
+import { FactHtsMonthsLastTest } from '../../entities/hts/fact-hts-monthslasttest.entity';
 
 @Module({
   imports: [
@@ -41,7 +43,8 @@ import { GetLinkageByPartnerHandler } from './queries/handlers/get-linkage-by-pa
           FactHtsTeststrategy,
           FactHtsEntryPoint,
           FactHtsClientTestedAs,
-          FactHtsClientSelfTested
+          FactHtsClientSelfTested,
+          FactHtsMonthsLastTest
       ])
   ],
   providers: [
@@ -63,6 +66,7 @@ import { GetLinkageByPartnerHandler } from './queries/handlers/get-linkage-by-pa
       GetLinkageByPopulationTypeHandler,
       GetLinkageByCountyHandler,
       GetLinkageByPartnerHandler,
+      GetUptakeByMonthsSinceLastTestHandler
   ],
   controllers: [HtsController]
 })
