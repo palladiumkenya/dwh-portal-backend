@@ -20,6 +20,7 @@ import { GetUptakeByAgeSexLinkageQuery } from '../queries/get-uptake-by-age-sex-
 import { GetLinkageByPopulationTypeQuery } from '../queries/get-linkage-by-population-type.query';
 import { GetLinkageByCountyQuery } from '../queries/get-linkage-by-county.query';
 import { GetLinkageByPartnerQuery } from '../queries/get-linkage-by-partner.query';
+import { GetUptakeByMonthsSinceLastTestQuery } from '../queries/get-uptake-by-months-since-last-test.query';
 
 @Controller('hts')
 export class HtsController {
@@ -386,6 +387,44 @@ export class HtsController {
         @Query('month') month
     ): Promise<any> {
         const query = new GetNumberPositiveLinkedQuery();
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('monthsSinceLastTest')
+    async getMonthsSinceLastTest(
+        @Query('facility') facility,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetUptakeByMonthsSinceLastTestQuery();
 
         if(facility) {
             query.facility = facility;
