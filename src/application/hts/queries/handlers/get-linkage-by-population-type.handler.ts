@@ -15,7 +15,6 @@ export class GetLinkageByPopulationTypeHandler implements IQueryHandler<GetLinka
         const params = [];
         let linkageByPopulationTypeSql = 'SELECT ' +
             'PopulationType AS PopulationType, ' +
-            'SUM(CASE WHEN Tested IS NULL THEN 0 ELSE Tested END) tested, ' +
             'SUM(CASE WHEN Positive IS NULL THEN 0 ELSE Positive END) positive, ' +
             'SUM(CASE WHEN Linked IS NULL THEN 0 ELSE Linked END) linked, ' +
             '((SUM(CASE WHEN Linked IS NULL THEN 0 ELSE Linked END)/SUM(positive))*100) AS linkage ' +

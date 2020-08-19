@@ -1,4 +1,4 @@
-export class GetNumberPositiveLinkedQuery {
+export class GetLinkageNumberPositiveQuery {
     facility?: string;
     county?: string;
     subCounty?: string;

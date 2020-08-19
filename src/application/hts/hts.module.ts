@@ -24,8 +24,8 @@ import { GetHtsSubCountiesHandler } from './queries/handlers/get-hts-sub-countie
 import { GetHtsFacilitiesHandler } from './queries/handlers/get-hts-facilities.handler';
 import { GetHtsPartnersHandler } from './queries/handlers/get-hts-partners.handler';
 
-import { GetNumberPositiveLinkedHandler } from './queries/handlers/get-number-positive-linked.handler';
-import { GetUptakeByAgeSexLinkageHandler } from './queries/handlers/get-uptake-by-age-sex-linkage.handler';
+import { GetLinkageNumberPositiveHandler } from './queries/handlers/get-linkage-number-positive.handler';
+import { GetLinkageByAgeSexHandler } from './queries/handlers/get-linkage-by-age-sex.handler';
 import { GetLinkageByPopulationTypeHandler } from './queries/handlers/get-linkage-by-population-type.handler';
 import { GetLinkageByCountyHandler } from './queries/handlers/get-linkage-by-county.handler';
 import { GetLinkageByPartnerHandler } from './queries/handlers/get-linkage-by-partner.handler';
@@ -65,8 +65,8 @@ import { GetUptakeByTbScreenedHandler } from './queries/handlers/get-uptake-by-t
       GetHtsSubCountiesHandler,
       GetHtsFacilitiesHandler,
       GetHtsPartnersHandler,
-      GetNumberPositiveLinkedHandler,
-      GetUptakeByAgeSexLinkageHandler,
+      GetLinkageNumberPositiveHandler,
+      GetLinkageByAgeSexHandler,
       GetLinkageByPopulationTypeHandler,
       GetLinkageByCountyHandler,
       GetLinkageByPartnerHandler,

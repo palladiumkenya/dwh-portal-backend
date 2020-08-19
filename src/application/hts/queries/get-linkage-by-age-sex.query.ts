@@ -1,4 +1,4 @@
-export class GetUptakeByAgeSexLinkageQuery {
+export class GetLinkageByAgeSexQuery {
     facility?: string;
     county?: string;
     subCounty?: string;

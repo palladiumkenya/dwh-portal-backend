@@ -1,19 +1,19 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetUptakeByAgeSexLinkageQuery } from '../get-uptake-by-age-sex-linkage.query';
+import { GetLinkageByAgeSexQuery } from '../get-linkage-by-age-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FactHtsUptakeAgeGender } from '../../../../entities/hts/fact-htsuptake-agegender.entity';
 
-@QueryHandler(GetUptakeByAgeSexLinkageQuery)
-export class GetUptakeByAgeSexLinkageHandler implements IQueryHandler<GetUptakeByAgeSexLinkageQuery> {
+@QueryHandler(GetLinkageByAgeSexQuery)
+export class GetLinkageByAgeSexHandler implements IQueryHandler<GetLinkageByAgeSexQuery> {
     constructor(
         @InjectRepository(FactHtsUptakeAgeGender)
         private readonly repository: Repository<FactHtsUptakeAgeGender>
     ){}
 
-    async execute(query: GetUptakeByAgeSexLinkageQuery): Promise<any> {
+    async execute(query: GetLinkageByAgeSexQuery): Promise<any> {
         const params = [];
-        let uptakeByAgeSexLinkageSql = 'SELECT DATIM_AgeGroup AS AgeGroup, ' +
+        let linkageByAgeSexSql = 'SELECT DATIM_AgeGroup AS AgeGroup, ' +
             'Gender, ' +
             'SUM(Tested) tested, ' +
             'SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive, ' +
@@ -22,37 +22,37 @@ export class GetUptakeByAgeSexLinkageHandler implements IQueryHandler<GetUptakeB
             'FROM fact_hts_agegender WHERE positive > 0 ';
 
         if(query.facility) {
-            uptakeByAgeSexLinkageSql = `${uptakeByAgeSexLinkageSql} and FacilityName=?`;
+            linkageByAgeSexSql = `${linkageByAgeSexSql} and FacilityName=?`;
             params.push(query.facility);
         }
 
         if(query.county) {
-            uptakeByAgeSexLinkageSql = `${uptakeByAgeSexLinkageSql} and County=?`;
+            linkageByAgeSexSql = `${linkageByAgeSexSql} and County=?`;
             params.push(query.county);
         }
 
         if(query.subCounty) {
-            uptakeByAgeSexLinkageSql = `${uptakeByAgeSexLinkageSql} and SubCounty=?`;
+            linkageByAgeSexSql = `${linkageByAgeSexSql} and SubCounty=?`;
             params.push(query.subCounty);
         }
 
         if(query.partner) {
-            uptakeByAgeSexLinkageSql = `${uptakeByAgeSexLinkageSql} and CTPartner=?`;
+            linkageByAgeSexSql = `${linkageByAgeSexSql} and CTPartner=?`;
             params.push(query.partner);
         }
 
         if(query.year) {
-            uptakeByAgeSexLinkageSql = `${uptakeByAgeSexLinkageSql} and year=?`;
+            linkageByAgeSexSql = `${linkageByAgeSexSql} and year=?`;
             params.push(query.year);
         }
 
         if(query.month) {
-            uptakeByAgeSexLinkageSql = `${uptakeByAgeSexLinkageSql} and month=?`;
+            linkageByAgeSexSql = `${linkageByAgeSexSql} and month=?`;
             params.push(query.month);
         }
 
-        uptakeByAgeSexLinkageSql = `${uptakeByAgeSexLinkageSql} GROUP BY DATIM_AgeGroup, Gender`;
+        linkageByAgeSexSql = `${linkageByAgeSexSql} GROUP BY DATIM_AgeGroup, Gender`;
 
-        return  await this.repository.query(uptakeByAgeSexLinkageSql, params);
+        return  await this.repository.query(linkageByAgeSexSql, params);
     }
 }
