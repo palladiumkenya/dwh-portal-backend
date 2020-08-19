@@ -1,26 +1,24 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetUptakeByTestingStrategyQuery } from '../get-uptake-by-testing-strategy.query';
+import { GetUptakeByMonthsSinceLastTestQuery } from '../get-uptake-by-months-since-last-test.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsTeststrategy } from '../../../../entities/hts/fact-hts-teststrategy.entity';
 import { Repository } from 'typeorm';
+import { FactHtsMonthsLastTest } from '../../../../entities/hts/fact-hts-monthslasttest.entity';
 
-@QueryHandler(GetUptakeByTestingStrategyQuery)
-export class GetUptakeByTestingStrategyHandler implements IQueryHandler<GetUptakeByTestingStrategyQuery> {
+@QueryHandler(GetUptakeByMonthsSinceLastTestQuery)
+export class GetUptakeByMonthsSinceLastTestHandler implements IQueryHandler<GetUptakeByMonthsSinceLastTestQuery> {
     constructor(
-        @InjectRepository(FactHtsTeststrategy)
-        private readonly repository: Repository<FactHtsTeststrategy>
-    ){}
+        @InjectRepository(FactHtsMonthsLastTest)
+        private readonly repository: Repository<FactHtsMonthsLastTest>
+    ) {}
 
-    async execute(query: GetUptakeByTestingStrategyQuery): Promise<any> {
+    async execute(query: GetUptakeByMonthsSinceLastTestQuery): Promise<any> {
         const params = [];
-        let uptakeByPopulationTypeSql = 'SELECT \n' +
-            '`TestStrategy` AS TestStrategy,\n' +
+        let uptakeByPopulationTypeSql = 'SELECT `MonthLastTest` AS MonthLastTest,\n' +
             'SUM(`Tested`) Tested, \n' +
             'SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END) positive, \n' +
             '((SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END)/SUM(`Tested`))*100) AS positivity \n' +
-            '\n' +
-            'FROM `fact_hts_teststrategy` \n' +
-            'WHERE `TestStrategy` IS NOT NULL ';
+            'FROM `fact_hts_monthslasttest`\n' +
+            'WHERE `MonthLastTest` IS NOT NULL ';
 
         if(query.county) {
             uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and County=?`;
@@ -52,7 +50,7 @@ export class GetUptakeByTestingStrategyHandler implements IQueryHandler<GetUptak
             params.push(query.facility);
         }
 
-        uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} GROUP BY TestStrategy ORDER BY SUM(\`Tested\`) ASC`;
+        uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} GROUP BY MonthLastTest`;
 
         return  await this.repository.query(uptakeByPopulationTypeSql, params);
     }

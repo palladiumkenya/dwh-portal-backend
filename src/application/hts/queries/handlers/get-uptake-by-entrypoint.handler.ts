@@ -47,7 +47,7 @@ export class GetUptakeByEntrypointHandler implements IQueryHandler<GetUptakeByEn
             params.push(query.facility);
         }
 
-        uptakeByEntryPointSql = `${uptakeByEntryPointSql} GROUP BY EntryPoint`;
+        uptakeByEntryPointSql = `${uptakeByEntryPointSql} GROUP BY EntryPoint ORDER BY SUM(\`Tested\`) ASC`;
 
         return  await this.repository.query(uptakeByEntryPointSql, params);
     }

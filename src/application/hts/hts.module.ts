@@ -19,12 +19,21 @@ import { FactHtsClientTestedAs } from '../../entities/hts/fact-hts-clienttesteda
 import { GetUptakeByTestedasHandler } from './queries/handlers/get-uptake-by-testedas.handler';
 import { FactHtsClientSelfTested } from '../../entities/hts/fact-hts-clientselftested.entity';
 import { GetUptakeByClientSelfTestedHandler } from './queries/handlers/get-uptake-by-client-self-tested.handler';
+import { GetUptakeCountiesHandler } from './queries/handlers/get-uptake-counties.handler';
+import { GetHtsSubCountiesHandler } from './queries/handlers/get-hts-sub-counties.handler';
+import { GetHtsFacilitiesHandler } from './queries/handlers/get-hts-facilities.handler';
+import { GetHtsPartnersHandler } from './queries/handlers/get-hts-partners.handler';
 
 import { GetNumberPositiveLinkedHandler } from './queries/handlers/get-number-positive-linked.handler';
 import { GetUptakeByAgeSexLinkageHandler } from './queries/handlers/get-uptake-by-age-sex-linkage.handler';
 import { GetLinkageByPopulationTypeHandler } from './queries/handlers/get-linkage-by-population-type.handler';
 import { GetLinkageByCountyHandler } from './queries/handlers/get-linkage-by-county.handler';
 import { GetLinkageByPartnerHandler } from './queries/handlers/get-linkage-by-partner.handler';
+import { GetUptakeByMonthsSinceLastTestHandler } from './queries/handlers/get-uptake-by-months-since-last-test.handler';
+import { FactHtsMonthsLastTest } from '../../entities/hts/fact-hts-monthslasttest.entity';
+import { FactHtsTBScreening } from '../../entities/hts/fact-hts-tbscreening.entity';
+import { GetUptakeByTBScreeningHandler } from './queries/handlers/get-uptake-by-tb-screening.handler';
+import { GetUptakeByTbScreenedHandler } from './queries/handlers/get-uptake-by-tb-screened.handler';
 
 @Module({
   imports: [
@@ -37,7 +46,9 @@ import { GetLinkageByPartnerHandler } from './queries/handlers/get-linkage-by-pa
           FactHtsTeststrategy,
           FactHtsEntryPoint,
           FactHtsClientTestedAs,
-          FactHtsClientSelfTested
+          FactHtsClientSelfTested,
+          FactHtsMonthsLastTest,
+          FactHtsTBScreening
       ])
   ],
   providers: [
@@ -50,11 +61,18 @@ import { GetLinkageByPartnerHandler } from './queries/handlers/get-linkage-by-pa
       GetUptakeByPartnerHandler,
       GetUptakeByTestedasHandler,
       GetUptakeByClientSelfTestedHandler,
+      GetUptakeCountiesHandler,
+      GetHtsSubCountiesHandler,
+      GetHtsFacilitiesHandler,
+      GetHtsPartnersHandler,
       GetNumberPositiveLinkedHandler,
       GetUptakeByAgeSexLinkageHandler,
       GetLinkageByPopulationTypeHandler,
       GetLinkageByCountyHandler,
       GetLinkageByPartnerHandler,
+      GetUptakeByMonthsSinceLastTestHandler,
+      GetUptakeByTBScreeningHandler,
+      GetUptakeByTbScreenedHandler
   ],
   controllers: [HtsController]
 })
