@@ -52,7 +52,7 @@ export class GetUptakeByTestingStrategyHandler implements IQueryHandler<GetUptak
             params.push(query.facility);
         }
 
-        uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} GROUP BY TestStrategy`;
+        uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} GROUP BY TestStrategy ORDER BY SUM(\`Tested\`) ASC`;
 
         return  await this.repository.query(uptakeByPopulationTypeSql, params);
     }

@@ -47,7 +47,7 @@ export class GetUptakeByPartnerHandler implements IQueryHandler<GetUptakeByPartn
             params.push(query.facility);
         }
 
-        uptakeByPartnerSql = `${uptakeByPartnerSql} GROUP BY CTPartner`;
+        uptakeByPartnerSql = `${uptakeByPartnerSql} GROUP BY CTPartner ORDER BY SUM(\`Tested\`) ASC`;
 
         return  await this.repository.query(uptakeByPartnerSql, params);
     }
