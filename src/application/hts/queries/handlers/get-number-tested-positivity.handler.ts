@@ -15,7 +15,7 @@ export class GetNumberTestedPositivityHandler implements IQueryHandler<GetNumber
 
     async execute(query: GetNumberTestedPositivityQuery): Promise<any> {
         const params = [];
-        let numberTestedPositivitySql = 'SELECT year,month, SUM(Tested) Tested, ' +
+        let numberTestedPositivitySql = 'SELECT year,month, SUM(Tested) Tested, TestedBefore, ' +
             'SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive, ' +
             '((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity ' +
             'FROM fact_htsuptake WHERE Tested IS NOT NULL ';
@@ -45,7 +45,7 @@ export class GetNumberTestedPositivityHandler implements IQueryHandler<GetNumber
             params.push(query.facility);
         }
 
-        numberTestedPositivitySql = `${numberTestedPositivitySql} GROUP BY year,month`;
+        numberTestedPositivitySql = `${numberTestedPositivitySql} GROUP BY TestedBefore, year,month`;
 
         return  await this.repository.query(numberTestedPositivitySql, params);
     }

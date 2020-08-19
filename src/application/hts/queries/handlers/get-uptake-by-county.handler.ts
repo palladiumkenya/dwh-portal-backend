@@ -47,7 +47,7 @@ export class GetUptakeByCountyHandler implements IQueryHandler<GetUptakeByCounty
             params.push(query.facility);
         }
 
-        uptakeByCountySql = `${uptakeByCountySql} GROUP BY County`;
+        uptakeByCountySql = `${uptakeByCountySql} GROUP BY County ORDER BY SUM(\`Tested\`) ASC`;
 
         return  await this.repository.query(uptakeByCountySql, params);
     }
