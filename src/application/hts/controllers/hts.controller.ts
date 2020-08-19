@@ -21,6 +21,8 @@ import { GetLinkageByPopulationTypeQuery } from '../queries/get-linkage-by-popul
 import { GetLinkageByCountyQuery } from '../queries/get-linkage-by-county.query';
 import { GetLinkageByPartnerQuery } from '../queries/get-linkage-by-partner.query';
 import { GetUptakeByMonthsSinceLastTestQuery } from '../queries/get-uptake-by-months-since-last-test.query';
+import { GetUptakeByTbScreeningQuery } from '../queries/get-uptake-by-tb-screening.query';
+import { GetUptakeByTbScreenedQuery } from '../queries/get-uptake-by-tb-screened.query';
 
 @Controller('hts')
 export class HtsController {
@@ -425,6 +427,82 @@ export class HtsController {
         @Query('month') month
     ): Promise<any> {
         const query = new GetUptakeByMonthsSinceLastTestQuery();
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('tbScreeningOutcomes')
+    async getTbScreeningOutcomes(
+        @Query('facility') facility,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetUptakeByTbScreeningQuery();
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('tbScreened')
+    async gettbScreened(
+        @Query('facility') facility,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetUptakeByTbScreenedQuery();
 
         if(facility) {
             query.facility = facility;
