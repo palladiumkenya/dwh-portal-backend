@@ -31,6 +31,9 @@ import { GetLinkageByCountyHandler } from './queries/handlers/get-linkage-by-cou
 import { GetLinkageByPartnerHandler } from './queries/handlers/get-linkage-by-partner.handler';
 import { GetUptakeByMonthsSinceLastTestHandler } from './queries/handlers/get-uptake-by-months-since-last-test.handler';
 import { FactHtsMonthsLastTest } from '../../entities/hts/fact-hts-monthslasttest.entity';
+import { FactHtsTBScreening } from '../../entities/hts/fact-hts-tbscreening.entity';
+import { GetUptakeByTBScreeningHandler } from './queries/handlers/get-uptake-by-tb-screening.handler';
+import { GetUptakeByTbScreenedHandler } from './queries/handlers/get-uptake-by-tb-screened.handler';
 
 @Module({
   imports: [
@@ -44,7 +47,8 @@ import { FactHtsMonthsLastTest } from '../../entities/hts/fact-hts-monthslasttes
           FactHtsEntryPoint,
           FactHtsClientTestedAs,
           FactHtsClientSelfTested,
-          FactHtsMonthsLastTest
+          FactHtsMonthsLastTest,
+          FactHtsTBScreening
       ])
   ],
   providers: [
@@ -66,7 +70,9 @@ import { FactHtsMonthsLastTest } from '../../entities/hts/fact-hts-monthslasttes
       GetLinkageByPopulationTypeHandler,
       GetLinkageByCountyHandler,
       GetLinkageByPartnerHandler,
-      GetUptakeByMonthsSinceLastTestHandler
+      GetUptakeByMonthsSinceLastTestHandler,
+      GetUptakeByTBScreeningHandler,
+      GetUptakeByTbScreenedHandler
   ],
   controllers: [HtsController]
 })
