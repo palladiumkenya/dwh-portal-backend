@@ -23,6 +23,8 @@ import { GetLinkageByPartnerQuery } from '../queries/get-linkage-by-partner.quer
 import { GetUptakeByMonthsSinceLastTestQuery } from '../queries/get-uptake-by-months-since-last-test.query';
 import { GetUptakeByTbScreeningQuery } from '../queries/get-uptake-by-tb-screening.query';
 import { GetUptakeByTbScreenedQuery } from '../queries/get-uptake-by-tb-screened.query';
+import { GetUptakeByAgeSexPositivityQuery } from '../queries/get-uptake-by-age-sex-positivity.query';
+import { GetUptakeByPositivityQuery } from '../queries/get-uptake-by-positivity.query';
 
 @Controller('hts')
 export class HtsController {
@@ -61,6 +63,39 @@ export class HtsController {
         return this.queryBus.execute(query);
     }
 
+    @Get('uptakeByPositivity')
+    async getUptakeByPositivity(
+        @Query('county') county,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('partner') partner,
+        @Query('facility') facility
+    ): Promise<any> {
+        const query = new GetUptakeByPositivityQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
     @Get('uptakeByAgeSex')
     async getUptakeByAgeSex(
         @Query('county') county,
@@ -70,6 +105,39 @@ export class HtsController {
         @Query('facility') facility
     ): Promise<any> {
         const query = new GetUptakeByAgeSexQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('uptakeByAgeSexPositivity')
+    async getUptakeByAgeSexPositivity(
+        @Query('county') county,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('partner') partner,
+        @Query('facility') facility
+    ): Promise<any> {
+        const query = new GetUptakeByAgeSexPositivityQuery();
 
         if(county) {
             query.county = county;

@@ -43,6 +43,7 @@ export class GetNumberPositiveLinkedHandler implements IQueryHandler<GetNumberPo
 
         if(query.year) {
             numberPositiveLinkedSql = `${numberPositiveLinkedSql} and year=?`;
+
             params.push(query.year);
         }
 

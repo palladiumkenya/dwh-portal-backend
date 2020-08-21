@@ -34,6 +34,8 @@ import { FactHtsMonthsLastTest } from '../../entities/hts/fact-hts-monthslasttes
 import { FactHtsTBScreening } from '../../entities/hts/fact-hts-tbscreening.entity';
 import { GetUptakeByTBScreeningHandler } from './queries/handlers/get-uptake-by-tb-screening.handler';
 import { GetUptakeByTbScreenedHandler } from './queries/handlers/get-uptake-by-tb-screened.handler';
+import { GetUptakeByAgeSexPositivityHandler } from './queries/handlers/get-uptake-by-age-sex-positivity.handler';
+import { GetUptakeByPositivityHandler } from './queries/handlers/get-uptake-by-positivity.handler';
 
 @Module({
   imports: [
@@ -72,7 +74,9 @@ import { GetUptakeByTbScreenedHandler } from './queries/handlers/get-uptake-by-t
       GetLinkageByPartnerHandler,
       GetUptakeByMonthsSinceLastTestHandler,
       GetUptakeByTBScreeningHandler,
-      GetUptakeByTbScreenedHandler
+      GetUptakeByTbScreenedHandler,
+      GetUptakeByAgeSexPositivityHandler,
+      GetUptakeByPositivityHandler
   ],
   controllers: [HtsController]
 })
