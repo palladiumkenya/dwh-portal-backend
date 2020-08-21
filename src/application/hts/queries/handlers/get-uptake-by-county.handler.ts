@@ -13,14 +13,25 @@ export class GetUptakeByCountyHandler implements IQueryHandler<GetUptakeByCounty
 
     async execute(query: GetUptakeByCountyQuery): Promise<any> {
         const params = [];
-        let uptakeByCountySql = 'SELECT \n' +
-            '`County`AS County,\n' +
-            'SUM(`Tested`) Tested, \n' +
-            'SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END) positive, \n' +
-            '((SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END)/SUM(`Tested`))*100) AS positivity \n' +
-            '\n' +
-            'FROM `fact_htsuptake`\n' +
-            'WHERE `County` IS NOT NULL ';
+        let uptakeByCountySql = null;
+
+        if(query.county) {
+            uptakeByCountySql = ' SELECT `SubCounty` AS County,\n' +
+                'SUM(`Tested`) Tested, \n' +
+                'SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END) positive, \n' +
+                '((SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END)/SUM(`Tested`))*100) AS positivity \n' +
+                'FROM `fact_htsuptake`\n' +
+                'WHERE `SubCounty` IS NOT NULL ';
+        } else {
+            uptakeByCountySql = 'SELECT \n' +
+                '`County`AS County,\n' +
+                'SUM(`Tested`) Tested, \n' +
+                'SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END) positive, \n' +
+                '((SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END)/SUM(`Tested`))*100) AS positivity \n' +
+                '\n' +
+                'FROM `fact_htsuptake`\n' +
+                'WHERE `County` IS NOT NULL ';
+        }
 
         if(query.county) {
             uptakeByCountySql = `${uptakeByCountySql} and County=?`;
@@ -47,7 +58,11 @@ export class GetUptakeByCountyHandler implements IQueryHandler<GetUptakeByCounty
             params.push(query.facility);
         }
 
-        uptakeByCountySql = `${uptakeByCountySql} GROUP BY County ORDER BY SUM(\`Tested\`) ASC`;
+        if(query.county) {
+            uptakeByCountySql = `${uptakeByCountySql} GROUP BY SubCounty ORDER BY SUM(\`Tested\`) ASC`;
+        } else {
+            uptakeByCountySql = `${uptakeByCountySql} GROUP BY County ORDER BY SUM(\`Tested\`) ASC`;
+        }
 
         return  await this.repository.query(uptakeByCountySql, params);
     }
