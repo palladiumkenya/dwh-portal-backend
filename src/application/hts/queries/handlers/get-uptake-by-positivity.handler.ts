@@ -1,23 +1,22 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetNumberTestedPositivityQuery } from '../get-number-tested-positivity.query';
+import { GetUptakeByPositivityQuery } from '../get-uptake-by-positivity.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsUptake } from '../../../../entities/hts/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
 
-
-@QueryHandler(GetNumberTestedPositivityQuery)
-export class GetNumberTestedPositivityHandler implements IQueryHandler<GetNumberTestedPositivityQuery> {
+@QueryHandler(GetUptakeByPositivityQuery)
+export class GetUptakeByPositivityHandler implements IQueryHandler<GetUptakeByPositivityQuery>  {
     constructor(
         @InjectRepository(FactHtsUptake)
         private readonly repository: Repository<FactHtsUptake>
-    ) {
-    }
+    ) {}
 
-    async execute(query: GetNumberTestedPositivityQuery): Promise<any> {
+    async execute(query: GetUptakeByPositivityQuery): Promise<any> {
         const params = [];
-        let numberTestedPositivitySql = 'SELECT year,month, SUM(Tested) Tested, TestedBefore, ' +
-            'SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive, ' +
-            '((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity ' +
+        let numberTestedPositivitySql = 'SELECT \n' +
+            'YEAR,\n' +
+            'MONTH, \n' +
+            '((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity \n' +
             'FROM fact_htsuptake WHERE Tested IS NOT NULL ';
 
         if(query.county) {
@@ -53,7 +52,7 @@ export class GetNumberTestedPositivityHandler implements IQueryHandler<GetNumber
             params.push(query.facility);
         }
 
-        numberTestedPositivitySql = `${numberTestedPositivitySql} GROUP BY TestedBefore, year,month`;
+        numberTestedPositivitySql = `${numberTestedPositivitySql} GROUP BY year,month`;
 
         return await this.repository.query(numberTestedPositivitySql, params);
     }
