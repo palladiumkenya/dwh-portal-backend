@@ -15,7 +15,6 @@ export class GetLinkageByCountyHandler implements IQueryHandler<GetLinkageByCoun
         const params = [];
         let linkageByCountySql = 'SELECT ' +
             'County AS County, ' +
-            'SUM(CASE WHEN Tested IS NULL THEN 0 ELSE Tested END) tested, ' +
             'SUM(CASE WHEN Positive IS NULL THEN 0 ELSE Positive END) positive, ' +
             'SUM(CASE WHEN Linked IS NULL THEN 0 ELSE Linked END) linked, ' +
             '((SUM(CASE WHEN Linked IS NULL THEN 0 ELSE Linked END)/SUM(positive))*100) AS linkage ' +

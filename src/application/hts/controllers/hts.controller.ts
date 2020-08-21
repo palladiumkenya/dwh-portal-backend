@@ -14,9 +14,8 @@ import { GetHtsSubCountiesQuery } from '../queries/get-hts-sub-counties.query';
 import { GetHtsFacilitiesQuery } from '../queries/get-hts-facilities.query';
 import { GetPartnersQuery } from '../../common/queries/get-partners.query';
 import { GetHtsPartnersQuery } from '../queries/get-hts-partners.query';
-
-import { GetNumberPositiveLinkedQuery } from '../queries/get-number-positive-linked.query';
-import { GetUptakeByAgeSexLinkageQuery } from '../queries/get-uptake-by-age-sex-linkage.query';
+import { GetLinkageNumberPositiveQuery } from '../queries/get-linkage-number-positive.query';
+import { GetLinkageByAgeSexQuery } from '../queries/get-linkage-by-age-sex.query';
 import { GetLinkageByPopulationTypeQuery } from '../queries/get-linkage-by-population-type.query';
 import { GetLinkageByCountyQuery } from '../queries/get-linkage-by-county.query';
 import { GetLinkageByPartnerQuery } from '../queries/get-linkage-by-partner.query';
@@ -447,8 +446,8 @@ export class HtsController {
         return this.queryBus.execute(query);
     }
 
-    @Get('numberPositiveLinked')
-    async getNumberPositiveLinked(
+    @Get('linkageNumberPositive')
+    async getLinkageNumberPositive(
         @Query('facility') facility,
         @Query('county') county,
         @Query('subCounty') subCounty,
@@ -456,7 +455,7 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month
     ): Promise<any> {
-        const query = new GetNumberPositiveLinkedQuery();
+        const query = new GetLinkageNumberPositiveQuery();
 
         if(facility) {
             query.facility = facility;
@@ -599,8 +598,8 @@ export class HtsController {
         return this.queryBus.execute(query);
     }
 
-    @Get('uptakeByAgeSexLinkage')
-    async getUptakeByAgeSexLinkage(
+    @Get('linkageByAgeSex')
+    async getLinkageByAgeSex(
        @Query('facility') facility,
         @Query('county') county,
         @Query('subCounty') subCounty,
@@ -608,7 +607,7 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month
     ): Promise<any> {
-        const query = new GetUptakeByAgeSexLinkageQuery();
+        const query = new GetLinkageByAgeSexQuery();
 
         if(facility) {
             query.facility = facility;

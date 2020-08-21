@@ -15,7 +15,6 @@ export class GetLinkageByPartnerHandler implements IQueryHandler<GetLinkageByPar
         const params = [];
         let linkageByPartnerSql = 'SELECT ' +
             'CTPartner AS Partner,' +
-            'SUM(CASE WHEN Tested IS NULL THEN 0 ELSE Tested END) tested, ' +
             'SUM(CASE WHEN Positive IS NULL THEN 0 ELSE Positive END) positive, ' +
             'SUM(CASE WHEN Linked IS NULL THEN 0 ELSE Linked END) linked, ' +
             '((SUM(CASE WHEN Linked IS NULL THEN 0 ELSE Linked END)/SUM(positive))*100) AS linkage ' +
