@@ -42,7 +42,11 @@ export class GetLinkageNumberPositiveHandler implements IQueryHandler<GetLinkage
         }
 
         if(query.year) {
-            linkageNumberPositiveSql = `${linkageNumberPositiveSql} and year=?`;
+            if(query.year == (new Date()).getFullYear()) {
+                linkageNumberPositiveSql = `${linkageNumberPositiveSql} and  (YEAR >= YEAR(DATE_SUB(NOW(), INTERVAL 11 MONTH)))`;
+            } else {
+                linkageNumberPositiveSql = `${linkageNumberPositiveSql} and year=?`;
+            }
             params.push(query.year);
         }
 
