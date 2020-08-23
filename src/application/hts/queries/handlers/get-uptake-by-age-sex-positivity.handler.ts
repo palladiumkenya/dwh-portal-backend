@@ -1,21 +1,23 @@
+import { GetUptakeByAgeSexPositivityQuery } from '../get-uptake-by-age-sex-positivity.query';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetUptakeByAgeSexQuery } from '../get-uptake-by-age-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { FactHtsUptakeAgeGender } from '../../../../entities/hts/fact-htsuptake-agegender.entity';
+import { Repository } from 'typeorm';
 
-@QueryHandler(GetUptakeByAgeSexQuery)
-export class GetUptakeByAgeSexHandler implements IQueryHandler<GetUptakeByAgeSexQuery> {
+@QueryHandler(GetUptakeByAgeSexPositivityQuery)
+export class GetUptakeByAgeSexPositivityHandler implements IQueryHandler<GetUptakeByAgeSexPositivityQuery> {
     constructor(
         @InjectRepository(FactHtsUptakeAgeGender)
         private readonly repository: Repository<FactHtsUptakeAgeGender>
-    ){}
+    ) {}
 
-    async execute(query: GetUptakeByAgeSexQuery): Promise<any> {
+    async execute(query: GetUptakeByAgeSexPositivityQuery): Promise<any> {
         const params = [];
-        let uptakeByAgeSexSql = 'SELECT DATIM_AgeGroup AS AgeGroup, Gender, ' +
-            'SUM(Tested) Tested ' +
-            'FROM fact_hts_agegender WHERE Tested IS NOT NULL ';
+        let uptakeByAgeSexSql = 'SELECT \n' +
+            'DATIM_AgeGroup AS AgeGroup,\n' +
+            '((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity \n' +
+            'FROM fact_hts_agegender \n' +
+            'WHERE Tested IS NOT NULL ';
 
         if(query.county) {
             uptakeByAgeSexSql = `${uptakeByAgeSexSql} and County=?`;
@@ -42,7 +44,7 @@ export class GetUptakeByAgeSexHandler implements IQueryHandler<GetUptakeByAgeSex
             params.push(query.facility);
         }
 
-        uptakeByAgeSexSql = `${uptakeByAgeSexSql} GROUP BY DATIM_AgeGroup, Gender`;
+        uptakeByAgeSexSql = `${uptakeByAgeSexSql} GROUP BY DATIM_AgeGroup`;
         return  await this.repository.query(uptakeByAgeSexSql, params);
     }
 }
