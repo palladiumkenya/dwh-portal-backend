@@ -52,6 +52,17 @@ export class GetUptakeByMonthsSinceLastTestHandler implements IQueryHandler<GetU
 
         uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} GROUP BY MonthLastTest`;
 
-        return  await this.repository.query(uptakeByPopulationTypeSql, params);
+        const resultSet = await this.repository.query(uptakeByPopulationTypeSql, params);
+        const returnedVal = [];
+        const groupings = ['<3 Months', '3-6 Months', '6-9 Months', '9-12 Months', '12-18 Months', '18-24 Months', '24-36 Months', '36-48 Months', '>48Months'];
+        for(let i = 0; i < groupings.length; i++) {
+            for(let j = 0; j < resultSet.length; j ++){
+                if(resultSet[j].MonthLastTest == groupings[i]) {
+                    returnedVal.push(resultSet[j]);
+                }
+            }
+        }
+
+        return returnedVal;
     }
 }
