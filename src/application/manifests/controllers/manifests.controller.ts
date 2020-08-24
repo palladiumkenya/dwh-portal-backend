@@ -117,7 +117,7 @@ export class ManifestsController {
         @Query('startDate') startDate,
         @Query('endDate') endDate,
     ): Promise<any> {
-        const query = new GetTrendsConsistencyQuery(docket);
+        const query = new GetTrendsConsistencyQuery(docket, startDate, endDate);
         if (county) {
             query.county = county;
         }

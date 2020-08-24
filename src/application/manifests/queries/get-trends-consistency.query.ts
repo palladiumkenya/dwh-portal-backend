@@ -1,3 +1,5 @@
+import moment = require('moment');
+
 export class GetTrendsConsistencyQuery {
     county?: string;
     agency?: string;
@@ -5,8 +7,8 @@ export class GetTrendsConsistencyQuery {
 
     constructor (
         public docket: string,
-        public startDate = `${new Date(new Date().getFullYear()-1, new Date().getMonth(), new Date().getDate())}`,
-        public endDate = `${new Date()}`
+        public startDate = moment().subtract(1, 'year').startOf('month').format('YYYY-MM-DD'),
+        public endDate = moment().format('YYYY-MM-DD')
     ) {
 
     }
