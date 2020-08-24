@@ -3,12 +3,11 @@ export class GetTrendsConsistencyQuery {
     agency?: string;
     partner?: string;
 
-    constructor(public docket: string, public period = `${new Date().getFullYear()},${new Date().getMonth()}`) {
-    }
+    constructor (
+        public docket: string,
+        public startDate = `${new Date(new Date().getFullYear()-1, new Date().getMonth(), new Date().getDate())}`,
+        public endDate = `${new Date()}`
+    ) {
 
-    getDatePeriod(): string {
-        const year = this.period.split(',')[0];
-        const month = this.period.split(',')[1];
-        return new Date(+year, +month, 1).toISOString().slice(0, 10);
     }
 }

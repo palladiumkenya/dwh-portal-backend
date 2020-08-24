@@ -114,7 +114,8 @@ export class ManifestsController {
         @Query('county') county,
         @Query('agency') agency,
         @Query('partner') partner,
-        @Query('period') period,
+        @Query('startDate') startDate,
+        @Query('endDate') endDate,
     ): Promise<any> {
         const query = new GetTrendsConsistencyQuery(docket);
         if (county) {
@@ -126,8 +127,11 @@ export class ManifestsController {
         if (partner) {
             query.partner = partner;
         }
-        if (period) {
-            query.period = period;
+        if (startDate) {
+            query.startDate = startDate;
+        }
+        if (endDate) {
+            query.endDate = endDate;
         }
         return this.queryBus.execute(query);
     }
