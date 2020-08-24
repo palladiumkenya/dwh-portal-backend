@@ -1,14 +1,15 @@
+import moment = require('moment');
+
 export class GetTrendsConsistencyQuery {
     county?: string;
     agency?: string;
     partner?: string;
 
-    constructor(public docket: string, public period = `${new Date().getFullYear()},${new Date().getMonth()}`) {
-    }
+    constructor (
+        public docket: string,
+        public startDate = moment().subtract(1, 'year').startOf('month').format('YYYY-MM-DD'),
+        public endDate = moment().format('YYYY-MM-DD')
+    ) {
 
-    getDatePeriod(): string {
-        const year = this.period.split(',')[0];
-        const month = this.period.split(',')[1];
-        return new Date(+year, +month, 1).toISOString().slice(0, 10);
     }
 }
