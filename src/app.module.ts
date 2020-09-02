@@ -44,6 +44,25 @@ import { HtsModule } from './application/hts/hts.module';
                 },
             }),
         }),
+        TypeOrmModule.forRootAsync({
+            imports: [ConfigModule, ConfigurationModule],
+            inject: [ConfigService, DatabaseConnectionService],
+            useFactory: async (
+                configService: ConfigService,
+                dbConfig: DatabaseConnectionService,
+            ) => ({
+                name: 'mssql',
+                type: 'mssql' as 'mssql',
+                host: configService.get<string>('DATABASE_HOST_MSSQL', dbConfig.hostMssql),
+                username: configService.get<string>('DATABASE_USER_MSSQL', dbConfig.usernameMssql),
+                password: configService.get<string>('DATABASE_PASSWORD_MSSQL', dbConfig.passwordMssql),
+                database: configService.get<string>(
+                    'DATABASE_DB_MSSQL',
+                    dbConfig.databaseMssql,
+                ),
+                entities: [__dirname + '/**/*.model{.ts,.js}']
+            }),
+        }),
         ConfigurationModule,
         CommonModule,
         ManifestsModule,
