@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity()
-export class FactTransHmisStatsTxcurrModel {
+@Entity('Fact_Trans_HMIS_STATS_TXCURR')
+export class FactTransHmisStatsTxcurr {
     @PrimaryColumn('text')
     MFLCode: string;
 
