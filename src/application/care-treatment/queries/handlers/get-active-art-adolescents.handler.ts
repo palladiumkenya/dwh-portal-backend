@@ -2,10 +2,10 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../../../entities/care_treatment/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
-import { GetActiveArtChildrenQuery } from '../get-active-art-children.query';
+import { GetActiveArtAdolescentsQuery } from '../get-active-art-adolescents.query';
 
-@QueryHandler(GetActiveArtChildrenQuery)
-export class GetActiveChildrenHandler implements IQueryHandler<GetActiveArtChildrenQuery> {
+@QueryHandler(GetActiveArtAdolescentsQuery)
+export class GetActiveArtAdolescentsHandler implements IQueryHandler<GetActiveArtAdolescentsQuery> {
     constructor(
         @InjectRepository(FactTransHmisStatsTxcurr, 'mssql')
         private readonly repository: Repository<FactTransHmisStatsTxcurr>
@@ -14,8 +14,8 @@ export class GetActiveChildrenHandler implements IQueryHandler<GetActiveArtChild
 
     async execute(): Promise<any> {
         const activeArt = this.repository.createQueryBuilder('f')
-            .select('SUM(f.[TXCURR_Total])', 'ActiveARTChildren')
-            .where("f.[ageGroup] IN ('10-14', '<1', '1-4', '5-9')");
+            .select('SUM(f.[TXCURR_Total])', 'ActiveARTAdolescents')
+            .where("f.[ageGroup] IN ('10-14', '15-19')");
 
         return await activeArt.getRawMany();
     }

@@ -1,11 +1,11 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { GetCtCountyQuery } from '../get-ct-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../../../entities/care_treatment/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
-import { GetActiveArtChildrenQuery } from '../get-active-art-children.query';
 
-@QueryHandler(GetActiveArtChildrenQuery)
-export class GetActiveChildrenHandler implements IQueryHandler<GetActiveArtChildrenQuery> {
+@QueryHandler(GetCtCountyQuery)
+export class GetCtCountyHandler implements IQueryHandler<GetCtCountyQuery> {
     constructor(
         @InjectRepository(FactTransHmisStatsTxcurr, 'mssql')
         private readonly repository: Repository<FactTransHmisStatsTxcurr>
@@ -14,8 +14,8 @@ export class GetActiveChildrenHandler implements IQueryHandler<GetActiveArtChild
 
     async execute(): Promise<any> {
         const activeArt = this.repository.createQueryBuilder('f')
-            .select('SUM(f.[TXCURR_Total])', 'ActiveARTChildren')
-            .where("f.[ageGroup] IN ('10-14', '<1', '1-4', '5-9')");
+            .select(['distinct [County] county'])
+            .orderBy('f.[County]');
 
         return await activeArt.getRawMany();
     }

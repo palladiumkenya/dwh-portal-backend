@@ -1,11 +1,11 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetActiveAdultsQuery } from '../get-active-adults.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../../../entities/care_treatment/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
+import { GetActiveArtAdultsQuery } from '../get-active-art-adults.query';
 
-@QueryHandler(GetActiveAdultsQuery)
-export class GetActiveAdultsHandler implements IQueryHandler<GetActiveAdultsQuery> {
+@QueryHandler(GetActiveArtAdultsQuery)
+export class GetActiveAdultsHandler implements IQueryHandler<GetActiveArtAdultsQuery> {
     constructor(
         @InjectRepository(FactTransHmisStatsTxcurr, 'mssql')
         private readonly repository: Repository<FactTransHmisStatsTxcurr>

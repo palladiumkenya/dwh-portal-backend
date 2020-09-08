@@ -1,4 +1,4 @@
-export class GetActiveAdultsQuery {
+export class GetActiveArtChildrenQuery {
     county?: string;
     subCounty?: string;
     partner?: string;
