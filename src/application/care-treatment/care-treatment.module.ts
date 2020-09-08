@@ -13,13 +13,18 @@ import { GetCtCountyHandler } from './queries/handlers/get-ct-county.handler';
 import { GetCtSubCountyHandler } from './queries/handlers/get-ct-sub-county.handler';
 import { GetCtFacilitiesHandler } from './queries/handlers/get-ct-facilities.handler';
 import { GetCtPartnersHandler } from './queries/handlers/get-ct-partners.handler';
+import { GetCtTxNewHandler } from './queries/handlers/get-ct-tx-new.handler';
+import { FactTransNewlyStarted } from '../../entities/care_treatment/fact-trans-newly-started.model';
 
 @Module({
     imports: [
         CqrsModule,
         ConfigurationModule,
         TypeOrmModule.forFeature(
-            [FactTransHmisStatsTxcurr],
+            [
+                FactTransHmisStatsTxcurr,
+                FactTransNewlyStarted
+            ],
             'mssql'
         )
     ],
@@ -32,7 +37,8 @@ import { GetCtPartnersHandler } from './queries/handlers/get-ct-partners.handler
         GetCtCountyHandler,
         GetCtSubCountyHandler,
         GetCtFacilitiesHandler,
-        GetCtPartnersHandler
+        GetCtPartnersHandler,
+        GetCtTxNewHandler
     ],
     controllers: [CareTreatmentController]
 })
