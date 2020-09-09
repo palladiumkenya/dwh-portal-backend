@@ -18,6 +18,7 @@ import { FactTransNewlyStarted } from '../../entities/care_treatment/fact-trans-
 import { GetCtStabilityStatusAmongActivePatientsHandler } from './queries/handlers/get-ct-stability-status-among-active-patients.handler';
 import { FactTransDsdCascade } from '../../entities/care_treatment/fact-trans-dsd-cascade.model';
 import { GetCtViralLoadCascadeActiveArtClientsHandler } from './queries/handlers/get-ct-viral-load-cascade-active-art-clients.handler';
+import { GetCtViralLoadSuppressionPercentageHandler } from './queries/handlers/get-ct-viral-load-suppression-percentage.handler';
 
 @Module({
     imports: [
@@ -44,7 +45,8 @@ import { GetCtViralLoadCascadeActiveArtClientsHandler } from './queries/handlers
         GetCtPartnersHandler,
         GetCtTxNewHandler,
         GetCtStabilityStatusAmongActivePatientsHandler,
-        GetCtViralLoadCascadeActiveArtClientsHandler
+        GetCtViralLoadCascadeActiveArtClientsHandler,
+        GetCtViralLoadSuppressionPercentageHandler
     ],
     controllers: [CareTreatmentController]
 })
