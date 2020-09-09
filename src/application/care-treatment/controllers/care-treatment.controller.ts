@@ -11,6 +11,7 @@ import { GetCtFacilitiesQuery } from '../queries/get-ct-facilities.query';
 import { GetCtPartnersQuery } from '../queries/get-ct-partners.query';
 import { GetCtTxNewQuery } from '../queries/get-ct-tx-new.query';
 import { GetCtStabilityStatusAmongActivePatientsQuery } from '../queries/get-ct-stability-status-among-active-patients.query';
+import { GetCtViralLoadCascadeActiveArtClientsQuery } from '../queries/get-ct-viral-load-cascade-active-art-clients.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -151,6 +152,38 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetCtStabilityStatusAmongActivePatientsQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('viralLoadCascade')
+    async getViralLoadCascade(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetCtViralLoadCascadeActiveArtClientsQuery();
         if(county) {
             query.county = county;
         }

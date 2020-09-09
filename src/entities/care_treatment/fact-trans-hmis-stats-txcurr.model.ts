@@ -25,4 +25,13 @@ export class FactTransHmisStatsTxcurr {
 
     @Column('int')
     TXCURR_Total: number;
+
+    @Column('int')
+    Eligible4VL: number;
+
+    @Column('int')
+    Last12MonthVL: number;
+
+    @Column('int')
+    Last12MVLSup: number;
 }
