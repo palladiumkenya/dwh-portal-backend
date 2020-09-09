@@ -15,6 +15,8 @@ import { GetCtFacilitiesHandler } from './queries/handlers/get-ct-facilities.han
 import { GetCtPartnersHandler } from './queries/handlers/get-ct-partners.handler';
 import { GetCtTxNewHandler } from './queries/handlers/get-ct-tx-new.handler';
 import { FactTransNewlyStarted } from '../../entities/care_treatment/fact-trans-newly-started.model';
+import { GetCtStabilityStatusAmongActivePatientsHandler } from './queries/handlers/get-ct-stability-status-among-active-patients.handler';
+import { FactTransDsdCascade } from '../../entities/care_treatment/fact-trans-dsd-cascade.model';
 
 @Module({
     imports: [
@@ -23,7 +25,8 @@ import { FactTransNewlyStarted } from '../../entities/care_treatment/fact-trans-
         TypeOrmModule.forFeature(
             [
                 FactTransHmisStatsTxcurr,
-                FactTransNewlyStarted
+                FactTransNewlyStarted,
+                FactTransDsdCascade
             ],
             'mssql'
         )
@@ -38,7 +41,8 @@ import { FactTransNewlyStarted } from '../../entities/care_treatment/fact-trans-
         GetCtSubCountyHandler,
         GetCtFacilitiesHandler,
         GetCtPartnersHandler,
-        GetCtTxNewHandler
+        GetCtTxNewHandler,
+        GetCtStabilityStatusAmongActivePatientsHandler
     ],
     controllers: [CareTreatmentController]
 })
