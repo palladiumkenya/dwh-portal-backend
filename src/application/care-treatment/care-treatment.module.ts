@@ -20,6 +20,8 @@ import { FactTransDsdCascade } from '../../entities/care_treatment/fact-trans-ds
 import { GetCtViralLoadCascadeActiveArtClientsHandler } from './queries/handlers/get-ct-viral-load-cascade-active-art-clients.handler';
 import { GetCtViralLoadSuppressionPercentageHandler } from './queries/handlers/get-ct-viral-load-suppression-percentage.handler';
 import { GetCtTxCurrByAgeAndSexHandler } from './queries/handlers/get-ct-tx-curr-by-age-and-sex.handler';
+import { GetCtTxCurrDistributionByCountyHandler } from './queries/handlers/get-ct-tx-curr-distribution-by-county.handler';
+import { GetCtTxCurrDistributionByPartnerHandler } from './queries/handlers/get-ct-tx-curr-distribution-by-partner.handler';
 
 @Module({
     imports: [
@@ -48,7 +50,9 @@ import { GetCtTxCurrByAgeAndSexHandler } from './queries/handlers/get-ct-tx-curr
         GetCtStabilityStatusAmongActivePatientsHandler,
         GetCtViralLoadCascadeActiveArtClientsHandler,
         GetCtViralLoadSuppressionPercentageHandler,
-        GetCtTxCurrByAgeAndSexHandler
+        GetCtTxCurrByAgeAndSexHandler,
+        GetCtTxCurrDistributionByCountyHandler,
+        GetCtTxCurrDistributionByPartnerHandler
     ],
     controllers: [CareTreatmentController]
 })

@@ -14,6 +14,8 @@ import { GetCtStabilityStatusAmongActivePatientsQuery } from '../queries/get-ct-
 import { GetCtViralLoadCascadeActiveArtClientsQuery } from '../queries/get-ct-viral-load-cascade-active-art-clients.query';
 import { GetCtViralLoadSuppressionPercentageQuery } from '../queries/get-ct-viral-load-suppression-percentage.query';
 import { GetCtTxCurrByAgeAndSexQuery } from '../queries/get-ct-tx-curr-by-age-and-sex.query';
+import { GetCtTxCurrDistributionByCountyQuery } from '../queries/get-ct-tx-curr-distribution-by-county.query';
+import { GetCtTxCurrDistributionByPartnerQuery } from '../queries/get-ct-tx-curr-distribution-by-partner.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -250,6 +252,54 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetCtTxCurrByAgeAndSexQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('txCurrDistributionByCounty')
+    async getTxCurrDistributionByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetCtTxCurrDistributionByCountyQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('txCurrDistributionByPartner')
+    async getTxCurrDistributionByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetCtTxCurrDistributionByPartnerQuery();
         if(county) {
             query.county = county;
         }
