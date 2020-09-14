@@ -20,6 +20,8 @@ import { FactTransDsdCascade } from '../../entities/care_treatment/fact-trans-ds
 import { GetCtViralLoadCascadeActiveArtClientsHandler } from './queries/handlers/get-ct-viral-load-cascade-active-art-clients.handler';
 import { GetCtViralLoadSuppressionPercentageHandler } from './queries/handlers/get-ct-viral-load-suppression-percentage.handler';
 import { GetCtTxCurrByAgeAndSexHandler } from './queries/handlers/get-ct-tx-curr-by-age-and-sex.handler';
+import { GetTxNewTrendsHandler } from './queries/handlers/get-tx-new-trends.handler';
+import { GetTxNewByAgeSexHandler } from './queries/handlers/get-tx-new-by-age-sex.handler';
 
 @Module({
     imports: [
@@ -47,6 +49,9 @@ import { GetCtTxCurrByAgeAndSexHandler } from './queries/handlers/get-ct-tx-curr
         GetCtTxNewHandler,
         GetCtStabilityStatusAmongActivePatientsHandler,
         GetCtViralLoadCascadeActiveArtClientsHandler,
+        GetCtViralLoadSuppressionPercentageHandler,
+        GetTxNewTrendsHandler,
+        GetTxNewByAgeSexHandler,
         GetCtViralLoadSuppressionPercentageHandler,
         GetCtTxCurrByAgeAndSexHandler
     ],
