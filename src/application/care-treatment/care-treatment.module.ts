@@ -22,6 +22,8 @@ import { GetCtViralLoadSuppressionPercentageHandler } from './queries/handlers/g
 import { GetCtTxCurrByAgeAndSexHandler } from './queries/handlers/get-ct-tx-curr-by-age-and-sex.handler';
 import { GetTxNewTrendsHandler } from './queries/handlers/get-tx-new-trends.handler';
 import { GetTxNewByAgeSexHandler } from './queries/handlers/get-tx-new-by-age-sex.handler';
+import { GetTimeToArtHandler } from './queries/handlers/get-time-to-art.handler';
+import { FactCTTimeToArt } from 'src/entities/care_treatment/fact-ct-time-to-art-grp.model';
 
 @Module({
     imports: [
@@ -31,6 +33,7 @@ import { GetTxNewByAgeSexHandler } from './queries/handlers/get-tx-new-by-age-se
             [
                 FactTransHmisStatsTxcurr,
                 FactTransNewlyStarted,
+                FactCTTimeToArt,
                 FactTransDsdCascade
             ],
             'mssql'
@@ -52,6 +55,7 @@ import { GetTxNewByAgeSexHandler } from './queries/handlers/get-tx-new-by-age-se
         GetCtViralLoadSuppressionPercentageHandler,
         GetTxNewTrendsHandler,
         GetTxNewByAgeSexHandler,
+        GetTimeToArtHandler,
         GetCtViralLoadSuppressionPercentageHandler,
         GetCtTxCurrByAgeAndSexHandler
     ],

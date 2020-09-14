@@ -16,6 +16,7 @@ import { GetCtViralLoadSuppressionPercentageQuery } from '../queries/get-ct-vira
 import { GetCtTxCurrByAgeAndSexQuery } from '../queries/get-ct-tx-curr-by-age-and-sex.query';
 import { GetTxNewTrendsQuery } from '../queries/get-tx-new-trends.query';
 import { GetTxNewByAgeSexQuery } from '../queries/get-tx-new-by-age-sex.query';
+import { GetTimeToArtQuery } from '../queries/get-time-to-art.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -314,6 +315,43 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetTxNewByAgeSexQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('timeToArt')
+    async getTimeToArt(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetTimeToArtQuery();
         if(county) {
             query.county = county;
         }
