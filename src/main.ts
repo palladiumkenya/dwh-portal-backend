@@ -7,9 +7,20 @@ import * as cookieParser from 'cookie-parser';
 import * as fs from 'fs';
 
 async function bootstrap() {
-    const options = process.env.NODE_ENV.trim() === 'production' ? {
+    /*const options = process.env.NODE_ENV.trim() === 'production' ? {
         key: fs.readFileSync('./secrets/kenyahmis.org.key'),
         cert: fs.readFileSync('./secrets/kenyahmis.org.crt'),
+    } : null;
+
+    const app = await NestFactory.create(AppModule, {
+        httpsOptions: options
+    });*/
+
+    const keyFile = fs.readFileSync('./secrets/kenyahmis.org.key');
+    const certFile = fs.readFileSync('./secrets/kenyahmis.org.crt');
+    const options = process.env.NODE_ENV.trim() === 'production' ? {
+        key: keyFile,
+        cert: certFile,
     } : null;
 
     const app = await NestFactory.create(AppModule, {

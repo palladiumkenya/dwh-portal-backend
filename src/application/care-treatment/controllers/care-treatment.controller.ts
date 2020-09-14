@@ -13,6 +13,7 @@ import { GetCtTxNewQuery } from '../queries/get-ct-tx-new.query';
 import { GetCtStabilityStatusAmongActivePatientsQuery } from '../queries/get-ct-stability-status-among-active-patients.query';
 import { GetCtViralLoadCascadeActiveArtClientsQuery } from '../queries/get-ct-viral-load-cascade-active-art-clients.query';
 import { GetCtViralLoadSuppressionPercentageQuery } from '../queries/get-ct-viral-load-suppression-percentage.query';
+import { GetCtTxCurrByAgeAndSexQuery } from '../queries/get-ct-tx-curr-by-age-and-sex.query';
 import { GetTxNewTrendsQuery } from '../queries/get-tx-new-trends.query';
 import { GetTxNewByAgeSexQuery } from '../queries/get-tx-new-by-age-sex.query';
 
@@ -237,6 +238,30 @@ export class CareTreatmentController {
 
         if(month) {
             query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('txCurrByAgeAndSex')
+    async getTxCurrByAgeAndSex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetCtTxCurrByAgeAndSexQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
         }
 
         return this.queryBus.execute(query);
