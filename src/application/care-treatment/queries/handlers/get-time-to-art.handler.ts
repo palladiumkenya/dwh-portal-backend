@@ -15,9 +15,9 @@ export class GetTimeToArtHandler implements IQueryHandler<GetTimeToArtQuery> {
 
     async execute(query: GetTimeToArtQuery): Promise<any> {
         const timeToArt = this.repository.createQueryBuilder('f')
-            .select(['[StartART_Year] year, [TimeToARTStart_Grp] period, SUM([NumPatients]) txNew'])
+            .select(['[StartART_Year] year, [TimeToARTDiagnosis_Grp] period, SUM([NumPatients]) txNew'])
             .where('f.[NumPatients] > 0')
-            .andWhere('f.[TimeToARTStart_Grp] IS NOT NULL');
+            .andWhere('f.[TimeToARTDiagnosis_Grp] IS NOT NULL');
 
         if (query.county) {
             timeToArt.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -35,22 +35,11 @@ export class GetTimeToArtHandler implements IQueryHandler<GetTimeToArtQuery> {
             timeToArt.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        if(query.month) {
-            timeToArt.andWhere('f.StartART_Month = :month', { month: query.month });
-        }
-
-        if(query.year) {
-            const yearVal = new Date().getFullYear();
-            if(query.year == yearVal && !query.month) {
-                timeToArt.andWhere('f.StartART_Year >= :startYear', { startYear: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).getFullYear() });
-            } else {
-                timeToArt.andWhere('f.StartART_Year = :startYear', { startYear: query.year });
-            }
-        }
+        timeToArt.andWhere('f.StartART_Year >= :startYear', { startYear: 2011 });
 
         return await timeToArt
-            .groupBy('f.[StartART_Year], f.[TimeToARTStart_Grp]')
-            .orderBy('f.[StartART_Year], f.[TimeToARTStart_Grp]')
+            .groupBy('f.[StartART_Year], f.[TimeToARTDiagnosis_Grp]')
+            .orderBy('f.[StartART_Year], f.[TimeToARTDiagnosis_Grp]')
             .getRawMany();
     }
 }
