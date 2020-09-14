@@ -57,7 +57,7 @@ import { FactCTTimeToArt } from 'src/entities/care_treatment/fact-ct-time-to-art
         GetCtViralLoadSuppressionPercentageHandler,
         GetCtTxCurrByAgeAndSexHandler,
         GetCtTxCurrDistributionByCountyHandler,
-        GetCtTxCurrDistributionByPartnerHandler
+        GetCtTxCurrDistributionByPartnerHandler,
         GetTxNewTrendsHandler,
         GetTxNewByAgeSexHandler,
         GetTimeToArtHandler,
