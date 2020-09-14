@@ -32,9 +32,21 @@ export class GetCtTxCurrByAgeAndSexHandler implements IQueryHandler<GetCtTxCurrB
                 .andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
-        return await txCurrByAgeAndSex
+        const result = await txCurrByAgeAndSex
             .groupBy('[ageGroup], [Gender]')
             .orderBy('[ageGroup]')
             .getRawMany();
+
+        const returnedVal = [];
+        const groupings = ['<1', '1-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50+'];
+        for(let i = 0; i < groupings.length; i++) {
+            for(let j = 0; j < result.length; j ++){
+                if(result[j].ageGroup == groupings[i]) {
+                    returnedVal.push(result[j]);
+                }
+            }
+        }
+
+        return  returnedVal;
     }
 }

@@ -20,6 +20,8 @@ import { FactTransDsdCascade } from '../../entities/care_treatment/fact-trans-ds
 import { GetCtViralLoadCascadeActiveArtClientsHandler } from './queries/handlers/get-ct-viral-load-cascade-active-art-clients.handler';
 import { GetCtViralLoadSuppressionPercentageHandler } from './queries/handlers/get-ct-viral-load-suppression-percentage.handler';
 import { GetCtTxCurrByAgeAndSexHandler } from './queries/handlers/get-ct-tx-curr-by-age-and-sex.handler';
+import { GetCtTxCurrDistributionByCountyHandler } from './queries/handlers/get-ct-tx-curr-distribution-by-county.handler';
+import { GetCtTxCurrDistributionByPartnerHandler } from './queries/handlers/get-ct-tx-curr-distribution-by-partner.handler';
 import { GetTxNewTrendsHandler } from './queries/handlers/get-tx-new-trends.handler';
 import { GetTxNewByAgeSexHandler } from './queries/handlers/get-tx-new-by-age-sex.handler';
 import { GetTimeToArtHandler } from './queries/handlers/get-time-to-art.handler';
@@ -53,6 +55,9 @@ import { FactCTTimeToArt } from 'src/entities/care_treatment/fact-ct-time-to-art
         GetCtStabilityStatusAmongActivePatientsHandler,
         GetCtViralLoadCascadeActiveArtClientsHandler,
         GetCtViralLoadSuppressionPercentageHandler,
+        GetCtTxCurrByAgeAndSexHandler,
+        GetCtTxCurrDistributionByCountyHandler,
+        GetCtTxCurrDistributionByPartnerHandler
         GetTxNewTrendsHandler,
         GetTxNewByAgeSexHandler,
         GetTimeToArtHandler,
