@@ -25,6 +25,7 @@ import { GetCtTxCurrDistributionByPartnerHandler } from './queries/handlers/get-
 import { GetTxNewTrendsHandler } from './queries/handlers/get-tx-new-trends.handler';
 import { GetTxNewByAgeSexHandler } from './queries/handlers/get-tx-new-by-age-sex.handler';
 import { GetTimeToArtHandler } from './queries/handlers/get-time-to-art.handler';
+import { GetTimeToArtFacilitiesHandler } from './queries/handlers/get-time-to-art-facilities.handler';
 import { FactCTTimeToArt } from 'src/entities/care_treatment/fact-ct-time-to-art-grp.model';
 
 @Module({
@@ -61,6 +62,7 @@ import { FactCTTimeToArt } from 'src/entities/care_treatment/fact-ct-time-to-art
         GetTxNewTrendsHandler,
         GetTxNewByAgeSexHandler,
         GetTimeToArtHandler,
+        GetTimeToArtFacilitiesHandler,
         GetCtViralLoadSuppressionPercentageHandler,
         GetCtTxCurrByAgeAndSexHandler
     ],

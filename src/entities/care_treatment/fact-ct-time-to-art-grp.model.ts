@@ -24,7 +24,7 @@ export class FactCTTimeToArt {
     StartART_Month: number;
 
     @Column('text')
-    TimeToARTStart_Grp: string;
+    TimeToARTDiagnosis_Grp: string;
 
     @Column('int')
     NumPatients: string;
