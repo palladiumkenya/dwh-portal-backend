@@ -18,6 +18,10 @@ export class GetTxNewTrendsHandler implements IQueryHandler<GetTxNewTrendsQuery>
             .select(['[Start_Year] year, [StartART_Month] month, SUM([StartedART]) txNew'])
             .where('f.[StartedART] > 0');
 
+        if (query.partner) {
+            txNew.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+        
         if (query.county) {
             txNew.andWhere('f.County IN (:...counties)', { counties: query.county });
         }

@@ -20,6 +20,10 @@ export class GetTxNewByAgeSexHandler implements IQueryHandler<GetTxNewByAgeSexQu
             .andWhere('f.[AgeGroup] IS NOT NULL')
             .andWhere('f.[Gender] IS NOT NULL');
 
+        if (query.partner) {
+            txNewByAgeSex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+        
         if (query.county) {
             txNewByAgeSex.andWhere('f.County IN (:...counties)', { counties: query.county });
         }

@@ -26,6 +26,9 @@ import { GetTxNewTrendsHandler } from './queries/handlers/get-tx-new-trends.hand
 import { GetTxNewByAgeSexHandler } from './queries/handlers/get-tx-new-by-age-sex.handler';
 import { GetTimeToArtHandler } from './queries/handlers/get-time-to-art.handler';
 import { GetTimeToArtFacilitiesHandler } from './queries/handlers/get-time-to-art-facilities.handler';
+import { GetMedianTimeToArtByYearHandler } from './queries/handlers/get-median-time-to-art-by-year.handler';
+import { GetMedianTimeToArtByCountyHandler } from './queries/handlers/get-median-time-to-art-by-county.handler';
+import { GetMedianTimeToArtByPartnerHandler } from './queries/handlers/get-median-time-to-art-by-partner.handler';
 import { FactCTTimeToArt } from 'src/entities/care_treatment/fact-ct-time-to-art-grp.model';
 
 @Module({
@@ -63,6 +66,9 @@ import { FactCTTimeToArt } from 'src/entities/care_treatment/fact-ct-time-to-art
         GetTxNewByAgeSexHandler,
         GetTimeToArtHandler,
         GetTimeToArtFacilitiesHandler,
+        GetMedianTimeToArtByYearHandler,
+        GetMedianTimeToArtByCountyHandler,
+        GetMedianTimeToArtByPartnerHandler,
         GetCtViralLoadSuppressionPercentageHandler,
         GetCtTxCurrByAgeAndSexHandler
     ],
