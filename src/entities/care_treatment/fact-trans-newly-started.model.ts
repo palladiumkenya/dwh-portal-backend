@@ -14,6 +14,9 @@ export class FactTransNewlyStarted {
     @Column('text')
     Subcounty: string;
 
+    @Column('text')
+    CTPartner: string;
+
     @Column('int')
     Start_Year: number;
 
