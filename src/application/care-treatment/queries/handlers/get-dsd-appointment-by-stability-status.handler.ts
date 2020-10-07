@@ -1,8 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransDsdAppointmentByStabilityStatus } from '../../../../entities/care_treatment/fact-trans-dsd-appointment-by-stability-status';
 import { Repository } from 'typeorm';
 import { GetDsdAppointmentByStabilityStatusQuery } from '../get-dsd-appointment-by-stability-status.query';
+import { FactTransDsdAppointmentByStabilityStatus } from '../../../../entities/care_treatment/fact-trans-dsd-appointment-by-stability-status.model';
 
 @QueryHandler(GetDsdAppointmentByStabilityStatusQuery)
 export class GetDsdAppointmentByStabilityStatusHandler implements IQueryHandler<GetDsdAppointmentByStabilityStatusQuery> {
