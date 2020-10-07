@@ -37,6 +37,7 @@ import { GetDsdCascadeHandler } from './queries/handlers/get-dsd-cascade.handler
 import { GetDsdUnstableHandler } from './queries/handlers/get-dsd-unstable.handler';
 import { GetDsdMmdStableHandler } from './queries/handlers/get-dsd-mmd-stable.handler';
 import { GetDsdStabilityStatusHandler } from './queries/handlers/get-dsd-stability-status.handler';
+import { GetDsdStabilityStatusByAgeSexHandler } from './queries/handlers/get-dsd-stability-status-by-age-sex.handler';
 import { GetDsdStabilityStatusByCountyHandler } from './queries/handlers/get-dsd-stability-status-by-county.handler';
 import { GetDsdStabilityStatusByPartnerHandler } from './queries/handlers/get-dsd-stability-status-by-partner.handler';
 import { GetDsdAppointmentByStabilityStatusHandler } from './queries/handlers/get-dsd-appointment-by-stability-status.handler';
@@ -91,6 +92,7 @@ import { GetDsdAppointmentDurationCategorizationByStabilityStatusHandler } from 
         GetDsdUnstableHandler,
         GetDsdMmdStableHandler,
         GetDsdStabilityStatusHandler,
+        GetDsdStabilityStatusByAgeSexHandler,
         GetDsdStabilityStatusByCountyHandler,
         GetDsdStabilityStatusByPartnerHandler,
         GetDsdAppointmentByStabilityStatusHandler,
