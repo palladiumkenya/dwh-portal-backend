@@ -8,11 +8,11 @@ export class FactTransDsdStabilityStatus {
     @Column('text')
     FacilityName: string;
 
-    // @Column('text')
-    // Gender: string;
+    @Column('text')
+    Gender: string;
 
-    // @Column('text')
-    // DATIM_AgeGroup: string;
+    @Column('text')
+    DATIM_AgeGroup: string;
 
     @Column('text')
     County: string;
