@@ -27,6 +27,7 @@ import { GetDsdCascadeQuery } from '../queries/get-dsd-cascade.query';
 import { GetDsdUnstableQuery } from '../queries/get-dsd-unstable.query';
 import { GetDsdMmdStableQuery } from '../queries/get-dsd-mmd-stable.query';
 import { GetDsdStabilityStatusQuery } from '../queries/get-dsd-stability-status.query';
+import { GetDsdStabilityStatusByAgeSexQuery } from '../queries/get-dsd-stability-status-by-age-sex.query';
 import { GetDsdStabilityStatusByCountyQuery } from '../queries/get-dsd-stability-status-by-county.query';
 import { GetDsdStabilityStatusByPartnerQuery } from '../queries/get-dsd-stability-status-by-partner.query';
 import { GetDsdAppointmentByStabilityStatusQuery } from '../queries/get-dsd-appointment-by-stability-status.query';
@@ -710,6 +711,43 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetDsdStabilityStatusQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('dsdStabilityStatusByAgeSex')
+    async getDsdStabilityStatusByAgeSex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetDsdStabilityStatusByAgeSexQuery();
         if(county) {
             query.county = county;
         }

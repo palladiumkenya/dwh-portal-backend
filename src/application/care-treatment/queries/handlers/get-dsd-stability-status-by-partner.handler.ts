@@ -14,27 +14,27 @@ export class GetDsdStabilityStatusByPartnerHandler implements IQueryHandler<GetD
     }
 
     async execute(query: GetDsdStabilityStatusByPartnerQuery): Promise<any> {
-        const dsdStabilityStatus = this.repository.createQueryBuilder('f')
+        const dsdStabilityStatusByPartner = this.repository.createQueryBuilder('f')
             .select(['f.CTPartner partner, SUM([Stability]) stable'])
             .where('f.[MFLCode] > 1');
 
         if (query.county) {
-            dsdStabilityStatus.andWhere('f.County IN (:...counties)', { counties: query.county });
+            dsdStabilityStatusByPartner.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            dsdStabilityStatus.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            dsdStabilityStatusByPartner.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
-            dsdStabilityStatus.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+            dsdStabilityStatusByPartner.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
-            dsdStabilityStatus.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdStabilityStatusByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        return await dsdStabilityStatus
+        return await dsdStabilityStatusByPartner
             .groupBy('[CTPartner]')
             .orderBy('SUM([Stability])', 'ASC')
             .getRawMany();
