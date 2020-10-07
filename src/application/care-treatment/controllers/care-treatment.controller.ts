@@ -23,6 +23,11 @@ import { GetMedianTimeToArtByCountyQuery } from '../queries/get-median-time-to-a
 import { GetMedianTimeToArtByPartnerQuery } from '../queries/get-median-time-to-art-by-partner.query';
 import { GetTimeToArtQuery } from '../queries/get-time-to-art.query';
 import { GetTimeToArtFacilitiesQuery } from '../queries/get-time-to-art-facilities.query';
+import { GetDsdCascadeQuery } from '../queries/get-dsd-cascade.query';
+import { GetDsdUnstableQuery } from '../queries/get-dsd-unstable.query';
+import { GetDsdMmdStableQuery } from '../queries/get-dsd-mmd-stable.query';
+import { GetDsdStabilityStatusQuery } from '../queries/get-dsd-stability-status.query';
+import { GetDsdAppointmentByStabilityStatusQuery } from '../queries/get-dsd-appointment-by-stability-status.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -576,6 +581,191 @@ export class CareTreatmentController {
 
         if(facility) {
             query.facility = facility;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('dsdCascade')
+    async getDsdCascade(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetDsdCascadeQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('dsdUnstable')
+    async getDsdUnstable(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetDsdUnstableQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('dsdMmdStable')
+    async getDsdMmdStable(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetDsdMmdStableQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('dsdStabilityStatus')
+    async getDsdStabilityStatus(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetDsdStabilityStatusQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('dsdAppointmentByStabilityStatus')
+    async getDsdAppointmentByStabilityStatus(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetDsdAppointmentByStabilityStatusQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
         }
 
         return this.queryBus.execute(query);

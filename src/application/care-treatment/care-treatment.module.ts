@@ -30,6 +30,15 @@ import { GetMedianTimeToArtByYearHandler } from './queries/handlers/get-median-t
 import { GetMedianTimeToArtByCountyHandler } from './queries/handlers/get-median-time-to-art-by-county.handler';
 import { GetMedianTimeToArtByPartnerHandler } from './queries/handlers/get-median-time-to-art-by-partner.handler';
 import { FactCTTimeToArt } from 'src/entities/care_treatment/fact-ct-time-to-art-grp.model';
+import { FactTransDsdUnstable } from 'src/entities/care_treatment/fact-trans-dsd-unstable.model';
+import { FactTransDsdMmdStable } from 'src/entities/care_treatment/fact-trans-dsd-mmd-stable.model';
+import { FactTransDsdStabilityStatus } from 'src/entities/care_treatment/fact-trans-dsd-stability-status.model';
+import { FactTransDsdAppointmentByStabilityStatus } from 'src/entities/care_treatment/fact-trans-dsd-appointment-by-stability-status';
+import { GetDsdCascadeHandler } from './queries/handlers/get-dsd-cascade.handler';
+import { GetDsdUnstableHandler } from './queries/handlers/get-dsd-unstable.handler';
+import { GetDsdMmdStableHandler } from './queries/handlers/get-dsd-mmd-stable.handler';
+import { GetDsdStabilityStatusHandler } from './queries/handlers/get-dsd-stability-status.handler';
+import { GetDsdAppointmentByStabilityStatusHandler } from './queries/handlers/get-dsd-appointment-by-stability-status.handler';
 
 @Module({
     imports: [
@@ -40,7 +49,11 @@ import { FactCTTimeToArt } from 'src/entities/care_treatment/fact-ct-time-to-art
                 FactTransHmisStatsTxcurr,
                 FactTransNewlyStarted,
                 FactCTTimeToArt,
-                FactTransDsdCascade
+                FactTransDsdCascade,
+                FactTransDsdUnstable,
+                FactTransDsdMmdStable,
+                FactTransDsdStabilityStatus,
+                FactTransDsdAppointmentByStabilityStatus,
             ],
             'mssql'
         )
@@ -70,7 +83,12 @@ import { FactCTTimeToArt } from 'src/entities/care_treatment/fact-ct-time-to-art
         GetMedianTimeToArtByCountyHandler,
         GetMedianTimeToArtByPartnerHandler,
         GetCtViralLoadSuppressionPercentageHandler,
-        GetCtTxCurrByAgeAndSexHandler
+        GetCtTxCurrByAgeAndSexHandler,
+        GetDsdCascadeHandler,
+        GetDsdUnstableHandler,
+        GetDsdMmdStableHandler,
+        GetDsdStabilityStatusHandler,
+        GetDsdAppointmentByStabilityStatusHandler,
     ],
     controllers: [CareTreatmentController]
 })
