@@ -37,6 +37,8 @@ import { GetDsdCascadeHandler } from './queries/handlers/get-dsd-cascade.handler
 import { GetDsdUnstableHandler } from './queries/handlers/get-dsd-unstable.handler';
 import { GetDsdMmdStableHandler } from './queries/handlers/get-dsd-mmd-stable.handler';
 import { GetDsdStabilityStatusHandler } from './queries/handlers/get-dsd-stability-status.handler';
+import { GetDsdStabilityStatusByCountyHandler } from './queries/handlers/get-dsd-stability-status-by-county.handler';
+import { GetDsdStabilityStatusByPartnerHandler } from './queries/handlers/get-dsd-stability-status-by-partner.handler';
 import { GetDsdAppointmentByStabilityStatusHandler } from './queries/handlers/get-dsd-appointment-by-stability-status.handler';
 import { FactTransDsdAppointmentByStabilityStatus } from '../../entities/care_treatment/fact-trans-dsd-appointment-by-stability-status.model';
 import { GetDsdAppointmentDurationCategorizationByStabilityStatusHandler } from './queries/handlers/get-dsd-appointment-duration-categorization-by-stability-status.handler';
@@ -89,6 +91,8 @@ import { GetDsdAppointmentDurationCategorizationByStabilityStatusHandler } from 
         GetDsdUnstableHandler,
         GetDsdMmdStableHandler,
         GetDsdStabilityStatusHandler,
+        GetDsdStabilityStatusByCountyHandler,
+        GetDsdStabilityStatusByPartnerHandler,
         GetDsdAppointmentByStabilityStatusHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler
     ],
