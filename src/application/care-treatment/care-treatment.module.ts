@@ -40,7 +40,10 @@ import { GetDsdStabilityStatusHandler } from './queries/handlers/get-dsd-stabili
 import { GetDsdStabilityStatusByAgeSexHandler } from './queries/handlers/get-dsd-stability-status-by-age-sex.handler';
 import { GetDsdStabilityStatusByCountyHandler } from './queries/handlers/get-dsd-stability-status-by-county.handler';
 import { GetDsdStabilityStatusByPartnerHandler } from './queries/handlers/get-dsd-stability-status-by-partner.handler';
-import { GetDsdAppointmentByStabilityStatusHandler } from './queries/handlers/get-dsd-appointment-by-stability-status.handler';
+import { GetDsdAppointmentDurationBySexHandler } from './queries/handlers/get-dsd-appointment-duration-by-sex.handler';
+import { GetDsdAppointmentDurationByAgeHandler } from './queries/handlers/get-dsd-appointment-duration-by-age.handler';
+import { GetDsdAppointmentDurationByCountyHandler } from './queries/handlers/get-dsd-appointment-duration-by-county.handler';
+import { GetDsdAppointmentDurationByPartnerHandler } from './queries/handlers/get-dsd-appointment-duration-by-partner.handler';
 import { FactTransDsdAppointmentByStabilityStatus } from '../../entities/care_treatment/fact-trans-dsd-appointment-by-stability-status.model';
 import { GetDsdAppointmentDurationCategorizationByStabilityStatusHandler } from './queries/handlers/get-dsd-appointment-duration-categorization-by-stability-status.handler';
 
@@ -95,7 +98,10 @@ import { GetDsdAppointmentDurationCategorizationByStabilityStatusHandler } from 
         GetDsdStabilityStatusByAgeSexHandler,
         GetDsdStabilityStatusByCountyHandler,
         GetDsdStabilityStatusByPartnerHandler,
-        GetDsdAppointmentByStabilityStatusHandler,
+        GetDsdAppointmentDurationBySexHandler,
+        GetDsdAppointmentDurationByAgeHandler,
+        GetDsdAppointmentDurationByCountyHandler,
+        GetDsdAppointmentDurationByPartnerHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler
     ],
     controllers: [CareTreatmentController]

@@ -30,7 +30,10 @@ import { GetDsdStabilityStatusQuery } from '../queries/get-dsd-stability-status.
 import { GetDsdStabilityStatusByAgeSexQuery } from '../queries/get-dsd-stability-status-by-age-sex.query';
 import { GetDsdStabilityStatusByCountyQuery } from '../queries/get-dsd-stability-status-by-county.query';
 import { GetDsdStabilityStatusByPartnerQuery } from '../queries/get-dsd-stability-status-by-partner.query';
-import { GetDsdAppointmentByStabilityStatusQuery } from '../queries/get-dsd-appointment-by-stability-status.query';
+import { GetDsdAppointmentDurationBySexQuery } from '../queries/get-dsd-appointment-duration-by-sex.query';
+import { GetDsdAppointmentDurationByAgeQuery } from '../queries/get-dsd-appointment-duration-by-age.query';
+import { GetDsdAppointmentDurationByCountyQuery } from '../queries/get-dsd-appointment-duration-by-county.query';
+import { GetDsdAppointmentDurationByPartnerQuery } from '../queries/get-dsd-appointment-duration-by-partner.query';
 import { GetDsdAppointmentDurationCategorizationByStabilityStatusQuery } from '../queries/get-dsd-appointment-duration-categorization-by-stability-status.query';
 
 @Controller('care-treatment')
@@ -849,8 +852,8 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-    @Get('dsdAppointmentByStabilityStatus')
-    async getDsdAppointmentByStabilityStatus(
+    @Get('dsdAppointmentDurationBySex')
+    async getDsdAppointmentDurationBySex(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -858,7 +861,118 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
     ): Promise<any> {
-        const query = new GetDsdAppointmentByStabilityStatusQuery();
+        const query = new GetDsdAppointmentDurationBySexQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('dsdAppointmentDurationByAge')
+    async getDsdAppointmentDurationByAge(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetDsdAppointmentDurationByAgeQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('dsdAppointmentDurationByCounty')
+    async getDsdAppointmentDurationByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetDsdAppointmentDurationByCountyQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('dsdAppointmentDurationByPartner')
+    async getDsdAppointmentDurationByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetDsdAppointmentDurationByPartnerQuery();
         if(county) {
             query.county = county;
         }
