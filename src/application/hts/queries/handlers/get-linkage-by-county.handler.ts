@@ -51,7 +51,7 @@ export class GetLinkageByCountyHandler implements IQueryHandler<GetLinkageByCoun
             params.push(query.month);
         }
 
-        linkageByCountySql = `${linkageByCountySql} GROUP BY County`;
+        linkageByCountySql = `${linkageByCountySql} GROUP BY County ORDER BY SUM(Positive)`;
 
         return  await this.repository.query(linkageByCountySql, params);
     }
