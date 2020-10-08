@@ -15,8 +15,9 @@ export class GetDsdMmdStableHandler implements IQueryHandler<GetDsdMmdStableQuer
 
     async execute(query: GetDsdMmdStableQuery): Promise<any> {
         const dsdMmdStable = this.repository.createQueryBuilder('f')
-            .select(['SUM([Differentiatedcare]) differentiatedCare, SUM([MMDModels]) mmdModels'])
-            .where('f.[MFLCode] > 1');
+            .select(['f.[DifferentiatedCare] differentiatedCare, SUM([MMDModels]) mmdModels'])
+            .where('f.[MFLCode] > 1')
+            .andWhere('f.[DifferentiatedCare] IS NOT NULL');
 
         if (query.county) {
             dsdMmdStable.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -34,6 +35,8 @@ export class GetDsdMmdStableHandler implements IQueryHandler<GetDsdMmdStableQuer
             dsdMmdStable.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        return await dsdMmdStable.getRawOne();
+        return await dsdMmdStable
+            .groupBy('f.[DifferentiatedCare]')
+            .getRawMany();
     }
 }
