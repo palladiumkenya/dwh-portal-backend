@@ -37,10 +37,24 @@ import { GetDsdCascadeHandler } from './queries/handlers/get-dsd-cascade.handler
 import { GetDsdUnstableHandler } from './queries/handlers/get-dsd-unstable.handler';
 import { GetDsdMmdStableHandler } from './queries/handlers/get-dsd-mmd-stable.handler';
 import { GetDsdStabilityStatusHandler } from './queries/handlers/get-dsd-stability-status.handler';
-import { GetDsdAppointmentByStabilityStatusHandler } from './queries/handlers/get-dsd-appointment-by-stability-status.handler';
+import { GetDsdStabilityStatusByAgeSexHandler } from './queries/handlers/get-dsd-stability-status-by-age-sex.handler';
+import { GetDsdStabilityStatusByCountyHandler } from './queries/handlers/get-dsd-stability-status-by-county.handler';
+import { GetDsdStabilityStatusByPartnerHandler } from './queries/handlers/get-dsd-stability-status-by-partner.handler';
+import { GetDsdAppointmentDurationBySexHandler } from './queries/handlers/get-dsd-appointment-duration-by-sex.handler';
+import { GetDsdAppointmentDurationByAgeHandler } from './queries/handlers/get-dsd-appointment-duration-by-age.handler';
+import { GetDsdAppointmentDurationByCountyHandler } from './queries/handlers/get-dsd-appointment-duration-by-county.handler';
+import { GetDsdAppointmentDurationByPartnerHandler } from './queries/handlers/get-dsd-appointment-duration-by-partner.handler';
 import { FactTransDsdAppointmentByStabilityStatus } from '../../entities/care_treatment/fact-trans-dsd-appointment-by-stability-status.model';
 import { GetDsdAppointmentDurationCategorizationByStabilityStatusHandler } from './queries/handlers/get-dsd-appointment-duration-categorization-by-stability-status.handler';
 import { GetCtTxCurrAgeGroupDistributionByCountyHandler } from './queries/handlers/get-ct-tx-curr-age-group-distribution-by-county.handler';
+import { FactTransNewCohort } from '../../entities/care_treatment/fact-trans-new-cohort.model';
+import { FactTransTreatmentOutcomes } from '../../entities/care_treatment/fact-trans-treatment-outcomes.model';
+import { GetTreatmentOutcomesOverallHandler } from './queries/handlers/get-treatment-outcomes-overall.handler';
+import { GetTreatmentOutcomesBySexHandler } from './queries/handlers/get-treatment-outcomes-by-sex.handler';
+import { GetTreatmentOutcomesByAgeHandler } from './queries/handlers/get-treatment-outcomes-by-age.handler';
+import { GetTreatmentOutcomesByYearHandler } from './queries/handlers/get-treatment-outcomes-by-year.handler';
+import { GetTreatmentOutcomesByCountyHandler } from './queries/handlers/get-treatment-outcomes-by-county.handler';
+import { GetTreatmentOutcomesByPartnerHandler } from './queries/handlers/get-treatment-outcomes-by-partner.handler';
 
 @Module({
     imports: [
@@ -56,6 +70,8 @@ import { GetCtTxCurrAgeGroupDistributionByCountyHandler } from './queries/handle
                 FactTransDsdMmdStable,
                 FactTransDsdStabilityStatus,
                 FactTransDsdAppointmentByStabilityStatus,
+                FactTransNewCohort,
+                FactTransTreatmentOutcomes,
             ],
             'mssql'
         )
@@ -90,6 +106,20 @@ import { GetCtTxCurrAgeGroupDistributionByCountyHandler } from './queries/handle
         GetDsdUnstableHandler,
         GetDsdMmdStableHandler,
         GetDsdStabilityStatusHandler,
+        GetDsdStabilityStatusByAgeSexHandler,
+        GetDsdStabilityStatusByCountyHandler,
+        GetDsdStabilityStatusByPartnerHandler,
+        GetDsdAppointmentDurationBySexHandler,
+        GetDsdAppointmentDurationByAgeHandler,
+        GetDsdAppointmentDurationByCountyHandler,
+        GetDsdAppointmentDurationByPartnerHandler,
+        GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
+        GetTreatmentOutcomesOverallHandler,
+        GetTreatmentOutcomesBySexHandler,
+        GetTreatmentOutcomesByAgeHandler,
+        GetTreatmentOutcomesByYearHandler,
+        GetTreatmentOutcomesByCountyHandler,
+        GetTreatmentOutcomesByPartnerHandler,
         GetDsdAppointmentByStabilityStatusHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
         GetCtTxCurrAgeGroupDistributionByCountyHandler

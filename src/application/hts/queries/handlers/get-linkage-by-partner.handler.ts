@@ -51,7 +51,7 @@ export class GetLinkageByPartnerHandler implements IQueryHandler<GetLinkageByPar
             params.push(query.month);
         }
 
-        linkageByPartnerSql = `${linkageByPartnerSql} GROUP BY CTPartner`;
+        linkageByPartnerSql = `${linkageByPartnerSql} GROUP BY CTPartner ORDER BY SUM(Positive)`;
 
         return  await this.repository.query(linkageByPartnerSql, params);
     }

@@ -14,26 +14,29 @@ export class GetDsdMmdStableHandler implements IQueryHandler<GetDsdMmdStableQuer
     }
 
     async execute(query: GetDsdMmdStableQuery): Promise<any> {
-        const dsdUnstable = this.repository.createQueryBuilder('f')
-            .select(['SUM([onARTlessthan12mnths]) onArtLessThan12Months, SUM([Agelessthan20Yrs]) ageLessThan20Years, SUM([Adherence]) poorAdherence, SUM([HighVL]) highVl, SUM([BMI]) bmiLessThan18'])
-            .where('f.[MFLCode] > 1');
+        const dsdMmdStable = this.repository.createQueryBuilder('f')
+            .select(['f.[DifferentiatedCare] differentiatedCare, SUM([MMDModels]) mmdModels'])
+            .where('f.[MFLCode] > 1')
+            .andWhere('f.[DifferentiatedCare] IS NOT NULL');
 
         if (query.county) {
-            dsdUnstable.andWhere('f.County IN (:...counties)', { counties: query.county });
+            dsdMmdStable.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            dsdUnstable.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            dsdMmdStable.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
-            dsdUnstable.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+            dsdMmdStable.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
-            dsdUnstable.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdMmdStable.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        return await dsdUnstable.getRawOne();
+        return await dsdMmdStable
+            .groupBy('f.[DifferentiatedCare]')
+            .getRawMany();
     }
 }

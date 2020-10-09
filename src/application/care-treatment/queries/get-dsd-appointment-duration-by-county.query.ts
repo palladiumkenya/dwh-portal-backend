@@ -1,4 +1,4 @@
-export class GetDsdAppointmentByStabilityStatusQuery {
+export class GetDsdAppointmentDurationByCountyQuery {
     county?: string[];
     subCounty?: string[];
     facility?: string[];
