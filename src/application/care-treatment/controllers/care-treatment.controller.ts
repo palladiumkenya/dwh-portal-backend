@@ -42,6 +42,7 @@ import { GetTreatmentOutcomesByAgeQuery } from '../queries/get-treatment-outcome
 import { GetTreatmentOutcomesByYearQuery } from '../queries/get-treatment-outcomes-by-year.query';
 import { GetTreatmentOutcomesByCountyQuery } from '../queries/get-treatment-outcomes-by-county.query';
 import { GetTreatmentOutcomesByPartnerQuery } from '../queries/get-treatment-outcomes-by-partner.query';
+import { GetCtTxCurrAgeGroupDistributionByPartnerQuery } from '../queries/get-ct-tx-curr-age-group-distribution-by-partner.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -1264,6 +1265,33 @@ export class CareTreatmentController {
         @Query('partner') partner
     ): Promise<any> {
         const query = new GetCtTxCurrAgeGroupDistributionByCountyQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getTxCurrAgeGroupDistributionByPartner')
+    async getTxCurrAgeGroupDistributionByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetCtTxCurrAgeGroupDistributionByPartnerQuery();
         if(county) {
             query.county = county;
         }

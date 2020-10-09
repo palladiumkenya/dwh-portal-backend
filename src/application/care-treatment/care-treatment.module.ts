@@ -55,6 +55,7 @@ import { GetTreatmentOutcomesByAgeHandler } from './queries/handlers/get-treatme
 import { GetTreatmentOutcomesByYearHandler } from './queries/handlers/get-treatment-outcomes-by-year.handler';
 import { GetTreatmentOutcomesByCountyHandler } from './queries/handlers/get-treatment-outcomes-by-county.handler';
 import { GetTreatmentOutcomesByPartnerHandler } from './queries/handlers/get-treatment-outcomes-by-partner.handler';
+import { GetCtTxCurrAgeGroupDistributionByPartnerHandler } from './queries/handlers/get-ct-tx-curr-age-group-distribution-by-partner.handler';
 
 @Module({
     imports: [
@@ -121,7 +122,8 @@ import { GetTreatmentOutcomesByPartnerHandler } from './queries/handlers/get-tre
         GetTreatmentOutcomesByCountyHandler,
         GetTreatmentOutcomesByPartnerHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
-        GetCtTxCurrAgeGroupDistributionByCountyHandler
+        GetCtTxCurrAgeGroupDistributionByCountyHandler,
+        GetCtTxCurrAgeGroupDistributionByPartnerHandler
     ],
     controllers: [CareTreatmentController]
 })
