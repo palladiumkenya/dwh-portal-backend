@@ -120,7 +120,6 @@ import { GetTreatmentOutcomesByPartnerHandler } from './queries/handlers/get-tre
         GetTreatmentOutcomesByYearHandler,
         GetTreatmentOutcomesByCountyHandler,
         GetTreatmentOutcomesByPartnerHandler,
-        GetDsdAppointmentByStabilityStatusHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
         GetCtTxCurrAgeGroupDistributionByCountyHandler
     ],
