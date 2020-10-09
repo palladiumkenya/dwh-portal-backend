@@ -40,6 +40,7 @@ import { GetDsdStabilityStatusHandler } from './queries/handlers/get-dsd-stabili
 import { GetDsdAppointmentByStabilityStatusHandler } from './queries/handlers/get-dsd-appointment-by-stability-status.handler';
 import { FactTransDsdAppointmentByStabilityStatus } from '../../entities/care_treatment/fact-trans-dsd-appointment-by-stability-status.model';
 import { GetDsdAppointmentDurationCategorizationByStabilityStatusHandler } from './queries/handlers/get-dsd-appointment-duration-categorization-by-stability-status.handler';
+import { GetCtTxCurrAgeGroupDistributionByCountyHandler } from './queries/handlers/get-ct-tx-curr-age-group-distribution-by-county.handler';
 
 @Module({
     imports: [
@@ -90,7 +91,8 @@ import { GetDsdAppointmentDurationCategorizationByStabilityStatusHandler } from 
         GetDsdMmdStableHandler,
         GetDsdStabilityStatusHandler,
         GetDsdAppointmentByStabilityStatusHandler,
-        GetDsdAppointmentDurationCategorizationByStabilityStatusHandler
+        GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
+        GetCtTxCurrAgeGroupDistributionByCountyHandler
     ],
     controllers: [CareTreatmentController]
 })

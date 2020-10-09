@@ -29,6 +29,7 @@ import { GetDsdMmdStableQuery } from '../queries/get-dsd-mmd-stable.query';
 import { GetDsdStabilityStatusQuery } from '../queries/get-dsd-stability-status.query';
 import { GetDsdAppointmentByStabilityStatusQuery } from '../queries/get-dsd-appointment-by-stability-status.query';
 import { GetDsdAppointmentDurationCategorizationByStabilityStatusQuery } from '../queries/get-dsd-appointment-duration-categorization-by-stability-status.query';
+import { GetCtTxCurrAgeGroupDistributionByCountyQuery } from '../queries/get-ct-tx-curr-age-group-distribution-by-county.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -780,6 +781,33 @@ export class CareTreatmentController {
         @Query('partner') partner
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationCategorizationByStabilityStatusQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getTxCurrAgeGroupDistributionByCounty')
+    async getTxCurrAgeGroupDistributionByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetCtTxCurrAgeGroupDistributionByCountyQuery();
         if(county) {
             query.county = county;
         }
