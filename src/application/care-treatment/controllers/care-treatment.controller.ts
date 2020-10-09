@@ -35,6 +35,7 @@ import { GetDsdAppointmentDurationByAgeQuery } from '../queries/get-dsd-appointm
 import { GetDsdAppointmentDurationByCountyQuery } from '../queries/get-dsd-appointment-duration-by-county.query';
 import { GetDsdAppointmentDurationByPartnerQuery } from '../queries/get-dsd-appointment-duration-by-partner.query';
 import { GetDsdAppointmentDurationCategorizationByStabilityStatusQuery } from '../queries/get-dsd-appointment-duration-categorization-by-stability-status.query';
+import { GetCtTxCurrAgeGroupDistributionByCountyQuery } from '../queries/get-ct-tx-curr-age-group-distribution-by-county.query';
 import { GetTreatmentOutcomesOverallQuery } from '../queries/get-treatment-outcomes-overall.query';
 import { GetTreatmentOutcomesBySexQuery } from '../queries/get-treatment-outcomes-by-sex.query';
 import { GetTreatmentOutcomesByAgeQuery } from '../queries/get-treatment-outcomes-by-age.query';
@@ -1250,6 +1251,33 @@ export class CareTreatmentController {
 
         if(month) {
             query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getTxCurrAgeGroupDistributionByCounty')
+    async getTxCurrAgeGroupDistributionByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetCtTxCurrAgeGroupDistributionByCountyQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
         }
 
         return this.queryBus.execute(query);
