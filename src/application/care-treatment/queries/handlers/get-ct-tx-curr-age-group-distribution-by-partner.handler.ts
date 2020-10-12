@@ -14,7 +14,7 @@ export class GetCtTxCurrAgeGroupDistributionByPartnerHandler implements IQueryHa
 
     async execute(query: GetCtTxCurrAgeGroupDistributionByPartnerQuery): Promise<any> {
         const txCurrAgeGroupDistributionByPartner = this.repository.createQueryBuilder('f')
-            .select(['[CTPartner], [ageGroup], SUM([TXCURR_Total]) txCurr'])
+            .select(['[CTPartner], [ageGroup], Gender, SUM([TXCURR_Total]) txCurr'])
             .where('f.[CTPartner] IS NOT NULL');
 
         if (query.county) {
@@ -33,7 +33,7 @@ export class GetCtTxCurrAgeGroupDistributionByPartnerHandler implements IQueryHa
         }
 
         return await txCurrAgeGroupDistributionByPartner
-            .groupBy('[CTPartner], [ageGroup]')
+            .groupBy('[CTPartner], [ageGroup], Gender')
             .orderBy('[CTPartner]', 'ASC')
             .getRawMany();
     }
