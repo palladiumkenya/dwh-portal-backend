@@ -42,6 +42,10 @@ import { GetTreatmentOutcomesByAgeQuery } from '../queries/get-treatment-outcome
 import { GetTreatmentOutcomesByYearQuery } from '../queries/get-treatment-outcomes-by-year.query';
 import { GetTreatmentOutcomesByCountyQuery } from '../queries/get-treatment-outcomes-by-county.query';
 import { GetTreatmentOutcomesByPartnerQuery } from '../queries/get-treatment-outcomes-by-partner.query';
+import { GetTreatmentOutcomesRetention3mQuery } from '../queries/get-treatment-outcomes-retention-3m.query';
+import { GetTreatmentOutcomesRetention6mQuery } from '../queries/get-treatment-outcomes-retention-6m.query';
+import { GetTreatmentOutcomesRetention12mQuery } from '../queries/get-treatment-outcomes-retention-12m.query';
+import { GetTreatmentOutcomesRetention24mQuery } from '../queries/get-treatment-outcomes-retention-24m.query';
 import { GetCtTxCurrAgeGroupDistributionByPartnerQuery } from '../queries/get-ct-tx-curr-age-group-distribution-by-partner.query';
 
 @Controller('care-treatment')
@@ -1230,6 +1234,154 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesByPartnerQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('treatmentOutcomesRetention3m')
+    async getTreatmentOutcomesRetention3m(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetTreatmentOutcomesRetention3mQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('treatmentOutcomesRetention6m')
+    async getTreatmentOutcomesRetention6m(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetTreatmentOutcomesRetention6mQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('treatmentOutcomesRetention12m')
+    async getTreatmentOutcomesRetention12m(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetTreatmentOutcomesRetention12mQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('treatmentOutcomesRetention24m')
+    async getTreatmentOutcomesRetention24m(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetTreatmentOutcomesRetention24mQuery();
         if(county) {
             query.county = county;
         }

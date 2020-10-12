@@ -55,6 +55,11 @@ import { GetTreatmentOutcomesByAgeHandler } from './queries/handlers/get-treatme
 import { GetTreatmentOutcomesByYearHandler } from './queries/handlers/get-treatment-outcomes-by-year.handler';
 import { GetTreatmentOutcomesByCountyHandler } from './queries/handlers/get-treatment-outcomes-by-county.handler';
 import { GetTreatmentOutcomesByPartnerHandler } from './queries/handlers/get-treatment-outcomes-by-partner.handler';
+import { FactTransRetention } from '../../entities/care_treatment/fact-trans-retention.model';
+import { GetTreatmentOutcomesRetention3mHandler } from './queries/handlers/get-treatment-outcomes-retention-3m.handler';
+import { GetTreatmentOutcomesRetention6mHandler } from './queries/handlers/get-treatment-outcomes-retention-6m.handler';
+import { GetTreatmentOutcomesRetention12mHandler } from './queries/handlers/get-treatment-outcomes-retention-12m.handler';
+import { GetTreatmentOutcomesRetention24mHandler } from './queries/handlers/get-treatment-outcomes-retention-24m.handler';
 import { GetCtTxCurrAgeGroupDistributionByPartnerHandler } from './queries/handlers/get-ct-tx-curr-age-group-distribution-by-partner.handler';
 
 @Module({
@@ -73,6 +78,7 @@ import { GetCtTxCurrAgeGroupDistributionByPartnerHandler } from './queries/handl
                 FactTransDsdAppointmentByStabilityStatus,
                 FactTransNewCohort,
                 FactTransTreatmentOutcomes,
+                FactTransRetention,
             ],
             'mssql'
         )
@@ -121,6 +127,10 @@ import { GetCtTxCurrAgeGroupDistributionByPartnerHandler } from './queries/handl
         GetTreatmentOutcomesByYearHandler,
         GetTreatmentOutcomesByCountyHandler,
         GetTreatmentOutcomesByPartnerHandler,
+        GetTreatmentOutcomesRetention3mHandler,
+        GetTreatmentOutcomesRetention6mHandler,
+        GetTreatmentOutcomesRetention12mHandler,
+        GetTreatmentOutcomesRetention24mHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
         GetCtTxCurrAgeGroupDistributionByCountyHandler,
         GetCtTxCurrAgeGroupDistributionByPartnerHandler
