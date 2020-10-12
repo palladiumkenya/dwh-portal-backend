@@ -15,7 +15,7 @@ export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHan
     async execute(query: GetCtTxCurrAgeGroupDistributionByCountyQuery): Promise<any> {
         let txCurrAgeGroupDistributionByCounty = this.repository.createQueryBuilder('f')
             .select(['[County], [ageGroup], Gender, SUM([TXCURR_Total]) txCurr'])
-            .where('f.[TXCURR_Total] IS NOT NULL');
+            .where('f.[TXCURR_Total] IS NOT NULL AND ageGroup IS NOT NULL');
 
         if (query.county) {
             txCurrAgeGroupDistributionByCounty = this.repository.createQueryBuilder('f')
