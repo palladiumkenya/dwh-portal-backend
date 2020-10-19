@@ -61,6 +61,13 @@ import { GetTreatmentOutcomesRetention6mHandler } from './queries/handlers/get-t
 import { GetTreatmentOutcomesRetention12mHandler } from './queries/handlers/get-treatment-outcomes-retention-12m.handler';
 import { GetTreatmentOutcomesRetention24mHandler } from './queries/handlers/get-treatment-outcomes-retention-24m.handler';
 import { GetCtTxCurrAgeGroupDistributionByPartnerHandler } from './queries/handlers/get-ct-tx-curr-age-group-distribution-by-partner.handler';
+import { FactTransVLOutcome } from '../../entities/care_treatment/fact-trans-vl-outcome.model';
+import { FactTransVLOverallUptake } from '../../entities/care_treatment/fact-trans-vl-overall-uptake.model';
+import { GetVlOverallUptakeAndSuppressionHandler } from './queries/handlers/get-vl-overall-uptake-and-suppression.handler';
+import { GetVlUptakeBySexHandler } from './queries/handlers/get-vl-uptake-by-sex.handler';
+import { GetVlUptakeByAgeHandler } from './queries/handlers/get-vl-uptake-by-age.handler';
+import { GetVlUptakeByCountyHandler } from './queries/handlers/get-vl-uptake-by-county.handler';
+import { GetVlUptakeByPartnerHandler } from './queries/handlers/get-vl-uptake-by-partner.handler';
 
 @Module({
     imports: [
@@ -79,6 +86,8 @@ import { GetCtTxCurrAgeGroupDistributionByPartnerHandler } from './queries/handl
                 FactTransNewCohort,
                 FactTransTreatmentOutcomes,
                 FactTransRetention,
+                FactTransVLOutcome,
+                FactTransVLOverallUptake,
             ],
             'mssql'
         )
@@ -133,7 +142,12 @@ import { GetCtTxCurrAgeGroupDistributionByPartnerHandler } from './queries/handl
         GetTreatmentOutcomesRetention24mHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
         GetCtTxCurrAgeGroupDistributionByCountyHandler,
-        GetCtTxCurrAgeGroupDistributionByPartnerHandler
+        GetCtTxCurrAgeGroupDistributionByPartnerHandler,
+        GetVlOverallUptakeAndSuppressionHandler,
+        GetVlUptakeBySexHandler,
+        GetVlUptakeByAgeHandler,
+        GetVlUptakeByCountyHandler,
+        GetVlUptakeByPartnerHandler,
     ],
     controllers: [CareTreatmentController]
 })
