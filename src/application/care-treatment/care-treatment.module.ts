@@ -68,6 +68,8 @@ import { GetVlUptakeBySexHandler } from './queries/handlers/get-vl-uptake-by-sex
 import { GetVlUptakeByAgeHandler } from './queries/handlers/get-vl-uptake-by-age.handler';
 import { GetVlUptakeByCountyHandler } from './queries/handlers/get-vl-uptake-by-county.handler';
 import { GetVlUptakeByPartnerHandler } from './queries/handlers/get-vl-uptake-by-partner.handler';
+import { GetVlOutcomesOverallHandler } from './queries/handlers/get-vl-outcomes-overall.handler';
+import { GetVlOutcomesBySexHandler } from './queries/handlers/get-vl-outcomes-by-sex.handler';
 
 @Module({
     imports: [
@@ -148,6 +150,8 @@ import { GetVlUptakeByPartnerHandler } from './queries/handlers/get-vl-uptake-by
         GetVlUptakeByAgeHandler,
         GetVlUptakeByCountyHandler,
         GetVlUptakeByPartnerHandler,
+        GetVlOutcomesOverallHandler,
+        GetVlOutcomesBySexHandler,
     ],
     controllers: [CareTreatmentController]
 })

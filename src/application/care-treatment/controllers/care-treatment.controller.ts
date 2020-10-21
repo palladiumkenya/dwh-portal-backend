@@ -52,6 +52,8 @@ import { GetVlUptakeBySexQuery } from '../queries/get-vl-uptake-by-sex.query';
 import { GetVlUptakeByAgeQuery } from '../queries/get-vl-uptake-by-age.query';
 import { GetVlUptakeByCountyQuery } from '../queries/get-vl-uptake-by-county.query';
 import { GetVlUptakeByPartnerQuery } from '../queries/get-vl-uptake-by-partner.query';
+import { GetVlOutcomesOverallQuery } from '../queries/get-vl-outcomes-overall.query';
+import { GetVlOutcomesBySexQuery } from '../queries/get-vl-outcomes-by-sex.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -1626,6 +1628,80 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetVlUptakeByPartnerQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlOutcomesOverall')
+    async getVlOutcomesOverall(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlOutcomesOverallQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlOutcomesBySex')
+    async getVlOutcomesBySex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlOutcomesBySexQuery();
         if(county) {
             query.county = county;
         }
