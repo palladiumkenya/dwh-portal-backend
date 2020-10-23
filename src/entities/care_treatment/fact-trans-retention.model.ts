@@ -12,13 +12,16 @@ export class FactTransRetention {
     County: string;
 
     @Column('text')
-    Subcounty: string;
+    SubCounty: string;
 
     @Column('text')
     CTPartner: string;
 
     @Column('int')
-    Start_Year: number;
+    StartART_Year: number;
+
+    @Column('text')
+    Last12MVLResult: string;
 
     @Column('int')
     "3Mstatus": number;
