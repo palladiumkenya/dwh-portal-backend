@@ -15,7 +15,7 @@ export class GetTreatmentOutcomesRetention3mHandler implements IQueryHandler<Get
 
     async execute(query: GetTreatmentOutcomesRetention3mQuery): Promise<any> {
         const retention = this.repository.createQueryBuilder('f')
-            .select(['f.Start_Year year, SUM([3Mstatus]) retention'])
+            .select(['f.StartART_Year year, SUM([3Mstatus]) retention'])
             .where('f.MFLCode IS NOT NULL');
 
         if (query.county) {
@@ -23,7 +23,7 @@ export class GetTreatmentOutcomesRetention3mHandler implements IQueryHandler<Get
         }
 
         if (query.subCounty) {
-            retention.andWhere('f.Subcounty IN (:...subCounties)', { subCounties: query.subCounty });
+            retention.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
@@ -35,8 +35,8 @@ export class GetTreatmentOutcomesRetention3mHandler implements IQueryHandler<Get
         }
 
         return await retention
-            .groupBy('f.Start_Year')
-            .orderBy('f.Start_Year')
+            .groupBy('f.StartART_Year')
+            .orderBy('f.StartART_Year')
             .getRawMany();
     }
 }
