@@ -70,6 +70,12 @@ import { GetVlUptakeByCountyHandler } from './queries/handlers/get-vl-uptake-by-
 import { GetVlUptakeByPartnerHandler } from './queries/handlers/get-vl-uptake-by-partner.handler';
 import { GetVlOutcomesOverallHandler } from './queries/handlers/get-vl-outcomes-overall.handler';
 import { GetVlOutcomesBySexHandler } from './queries/handlers/get-vl-outcomes-by-sex.handler';
+import { GetVlSuppressionByAgeHandler } from './queries/handlers/get-vl-suppression-by-age.handler';
+import { GetVlSuppressionByRegimenHandler } from './queries/handlers/get-vl-suppression-by-regimen.handler';
+import { GetVlSuppressionByYearHandler } from './queries/handlers/get-vl-suppression-by-year.handler';
+import { GetVlSuppressionByCountyHandler } from './queries/handlers/get-vl-suppression-by-county.handler';
+import { GetVlSuppressionByPartnerHandler } from './queries/handlers/get-vl-suppression-by-partner.handler';
+import { GetVlOverallUptakeAndSuppressionByFacilityHandler } from './queries/handlers/get-vl-overall-uptake-and-suppression-by-facility.handler';
 
 @Module({
     imports: [
@@ -152,6 +158,12 @@ import { GetVlOutcomesBySexHandler } from './queries/handlers/get-vl-outcomes-by
         GetVlUptakeByPartnerHandler,
         GetVlOutcomesOverallHandler,
         GetVlOutcomesBySexHandler,
+        GetVlSuppressionByAgeHandler,
+        GetVlSuppressionByRegimenHandler,
+        GetVlSuppressionByYearHandler,
+        GetVlSuppressionByCountyHandler,
+        GetVlSuppressionByPartnerHandler,
+        GetVlOverallUptakeAndSuppressionByFacilityHandler,
     ],
     controllers: [CareTreatmentController]
 })

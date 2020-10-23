@@ -54,6 +54,12 @@ import { GetVlUptakeByCountyQuery } from '../queries/get-vl-uptake-by-county.que
 import { GetVlUptakeByPartnerQuery } from '../queries/get-vl-uptake-by-partner.query';
 import { GetVlOutcomesOverallQuery } from '../queries/get-vl-outcomes-overall.query';
 import { GetVlOutcomesBySexQuery } from '../queries/get-vl-outcomes-by-sex.query';
+import { GetVlSuppressionByAgeQuery } from '../queries/get-vl-suppression-by-age.query';
+import { GetVlSuppressionByRegimenQuery } from '../queries/get-vl-suppression-by-regimen.query';
+import { GetVlSuppressionByYearQuery } from '../queries/get-vl-suppression-by-year.query';
+import { GetVlSuppressionByCountyQuery } from '../queries/get-vl-suppression-by-county.query';
+import { GetVlSuppressionByPartnerQuery } from '../queries/get-vl-suppression-by-partner.query';
+import { GetVlOverallUptakeAndSuppressionByFacilityQuery } from '../queries/get-vl-overall-uptake-and-suppression-by-facility.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -1702,6 +1708,228 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetVlOutcomesBySexQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlSuppressionByAge')
+    async getVlSuppressionByAge(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlSuppressionByAgeQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlSuppressionByRegimen')
+    async getVlSuppressionByRegimen(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlSuppressionByRegimenQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlSuppressionByYear')
+    async getVlSuppressionByYear(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlSuppressionByYearQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlSuppressionByCounty')
+    async getVlSuppressionByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlSuppressionByCountyQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlSuppressionByPartner')
+    async getVlSuppressionByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlSuppressionByPartnerQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlOverallUptakeAndSuppressionByFacility')
+    async getVlOverallUptakeAndSuppressionByFacility(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlOverallUptakeAndSuppressionByFacilityQuery();
         if(county) {
             query.county = county;
         }
