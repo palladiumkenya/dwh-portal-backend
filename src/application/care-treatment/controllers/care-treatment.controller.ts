@@ -60,6 +60,9 @@ import { GetVlSuppressionByYearQuery } from '../queries/get-vl-suppression-by-ye
 import { GetVlSuppressionByCountyQuery } from '../queries/get-vl-suppression-by-county.query';
 import { GetVlSuppressionByPartnerQuery } from '../queries/get-vl-suppression-by-partner.query';
 import { GetVlOverallUptakeAndSuppressionByFacilityQuery } from '../queries/get-vl-overall-uptake-and-suppression-by-facility.query';
+import { GetVlMedianTimeToFirstVlByYearQuery } from '../queries/get-vl-median-time-to-first-vl-by-year.query';
+import { GetVlMedianTimeToFirstVlByCountyQuery } from '../queries/get-vl-median-time-to-first-vl-by-county.query';
+import { GetVlMedianTimeToFirstVlByPartnerQuery } from '../queries/get-vl-median-time-to-first-vl-by-partner.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -1930,6 +1933,117 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetVlOverallUptakeAndSuppressionByFacilityQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlMedianTimeToFirstVlByYear')
+    async getVlMedianTimeToFirstVlByYear(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlMedianTimeToFirstVlByYearQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlMedianTimeToFirstVlByCounty')
+    async getVlMedianTimeToFirstVlByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlMedianTimeToFirstVlByCountyQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlMedianTimeToFirstVlByPartner')
+    async getVlMedianTimeToFirstVlByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlMedianTimeToFirstVlByPartnerQuery();
         if(county) {
             query.county = county;
         }

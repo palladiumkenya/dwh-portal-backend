@@ -76,6 +76,10 @@ import { GetVlSuppressionByYearHandler } from './queries/handlers/get-vl-suppres
 import { GetVlSuppressionByCountyHandler } from './queries/handlers/get-vl-suppression-by-county.handler';
 import { GetVlSuppressionByPartnerHandler } from './queries/handlers/get-vl-suppression-by-partner.handler';
 import { GetVlOverallUptakeAndSuppressionByFacilityHandler } from './queries/handlers/get-vl-overall-uptake-and-suppression-by-facility.handler';
+import { FactCTTimeToFirstVL } from '../../entities/care_treatment/fact-ct-time-to-first-vl-grp.model';
+import { GetVlMedianTimeToFirstVlByYearHandler } from './queries/handlers/get-vl-median-time-to-first-vl-by-year.handler';
+import { GetVlMedianTimeToFirstVlByCountyHandler } from './queries/handlers/get-vl-median-time-to-first-vl-by-county.handler';
+import { GetVlMedianTimeToFirstVlByPartnerHandler } from './queries/handlers/get-vl-median-time-to-first-vl-by-partner.handler';
 
 @Module({
     imports: [
@@ -96,6 +100,7 @@ import { GetVlOverallUptakeAndSuppressionByFacilityHandler } from './queries/han
                 FactTransRetention,
                 FactTransVLOutcome,
                 FactTransVLOverallUptake,
+                FactCTTimeToFirstVL,
             ],
             'mssql'
         )
@@ -164,6 +169,9 @@ import { GetVlOverallUptakeAndSuppressionByFacilityHandler } from './queries/han
         GetVlSuppressionByCountyHandler,
         GetVlSuppressionByPartnerHandler,
         GetVlOverallUptakeAndSuppressionByFacilityHandler,
+        GetVlMedianTimeToFirstVlByYearHandler,
+        GetVlMedianTimeToFirstVlByCountyHandler,
+        GetVlMedianTimeToFirstVlByPartnerHandler,
     ],
     controllers: [CareTreatmentController]
 })
