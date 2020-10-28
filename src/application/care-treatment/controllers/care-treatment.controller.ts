@@ -64,6 +64,7 @@ import { GetVlMedianTimeToFirstVlByYearQuery } from '../queries/get-vl-median-ti
 import { GetVlMedianTimeToFirstVlByCountyQuery } from '../queries/get-vl-median-time-to-first-vl-by-county.query';
 import { GetVlMedianTimeToFirstVlByPartnerQuery } from '../queries/get-vl-median-time-to-first-vl-by-partner.query';
 import { GetChildrenAdverseEventsQuery } from '../queries/adverse-events-queries/get-children-adverse-events.query';
+import { GetAdultsAdverseEventsQuery } from '../queries/adverse-events-queries/get-adults-adverse-events.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -2180,6 +2181,33 @@ export class CareTreatmentController {
         @Query('partner') partner
     ): Promise<any> {
         const query = new GetChildrenAdverseEventsQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getAdultsAdverseEvents')
+    async getAdultsAdverseEvents(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetAdultsAdverseEventsQuery();
         if(county) {
             query.county = county;
         }

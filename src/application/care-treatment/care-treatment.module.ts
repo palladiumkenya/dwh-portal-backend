@@ -82,6 +82,7 @@ import { GetVlMedianTimeToFirstVlByCountyHandler } from './queries/handlers/get-
 import { GetVlMedianTimeToFirstVlByPartnerHandler } from './queries/handlers/get-vl-median-time-to-first-vl-by-partner.handler';
 import { FactTransAdverseEvents } from '../../entities/care_treatment/fact-trans-adverse-events.model';
 import { GetChildrenAdverseEventsHandler } from './queries/handlers/adverse-events-handlers/get-children-adverse-events.handler';
+import { GetAdultsAdverseEventsHandler } from './queries/handlers/adverse-events-handlers/get-adults-adverse-events.handler';
 
 @Module({
     imports: [
@@ -175,7 +176,8 @@ import { GetChildrenAdverseEventsHandler } from './queries/handlers/adverse-even
         GetVlMedianTimeToFirstVlByYearHandler,
         GetVlMedianTimeToFirstVlByCountyHandler,
         GetVlMedianTimeToFirstVlByPartnerHandler,
-        GetChildrenAdverseEventsHandler
+        GetChildrenAdverseEventsHandler,
+        GetAdultsAdverseEventsHandler
     ],
     controllers: [CareTreatmentController]
 })
