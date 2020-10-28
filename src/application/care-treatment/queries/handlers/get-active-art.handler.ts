@@ -17,6 +17,26 @@ export class GetActiveArtHandler implements IQueryHandler<GetActiveArtQuery> {
             .select('SUM(f.[TXCURR_Total])', 'ActiveART')
             .where('f.[TXCURR_Total] > 0');
 
+        if (query.county) {
+            activeArt
+                .andWhere('f.County IN (:...counties)', { counties: query.county });
+        }
+
+        if (query.subCounty) {
+            activeArt
+                .andWhere('f.Subcounty IN (:...subCounties)', { subCounties: query.subCounty });
+        }
+
+        if (query.facility) {
+            activeArt
+                .andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+        }
+
+        if (query.partner) {
+            activeArt
+                .andWhere('f.CTPartner IN (:...partners)', { facilities: query.partner });
+        }
+
         return await activeArt.getRawMany();
     }
 }

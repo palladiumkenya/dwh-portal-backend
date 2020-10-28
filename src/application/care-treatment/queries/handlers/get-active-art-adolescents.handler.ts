@@ -12,10 +12,30 @@ export class GetActiveArtAdolescentsHandler implements IQueryHandler<GetActiveAr
     ) {
     }
 
-    async execute(): Promise<any> {
+    async execute(query: GetActiveArtAdolescentsQuery): Promise<any> {
         const activeArt = this.repository.createQueryBuilder('f')
             .select('SUM(f.[TXCURR_Total])', 'ActiveARTAdolescents')
             .where("f.[ageGroup] IN ('10-14', '15-19')");
+
+        if (query.county) {
+            activeArt
+                .andWhere('f.County IN (:...counties)', { counties: query.county });
+        }
+
+        if (query.subCounty) {
+            activeArt
+                .andWhere('f.Subcounty IN (:...subCounties)', { subCounties: query.subCounty });
+        }
+
+        if (query.facility) {
+            activeArt
+                .andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+        }
+
+        if (query.partner) {
+            activeArt
+                .andWhere('f.CTPartner IN (:...partners)', { facilities: query.partner });
+        }
 
         return await activeArt.getRawMany();
     }
