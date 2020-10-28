@@ -71,36 +71,136 @@ export class CareTreatmentController {
     }
 
     @Get('activeArt')
-    async getActiveClientsOnArt(): Promise<any> {
+    async getActiveClientsOnArt(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
         const query = new GetActiveArtQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
 
         return this.queryBus.execute(query);
     }
 
     @Get('activeArtChildren')
-    async getActiveClientsOnArtChildren(): Promise<any> {
+    async getActiveClientsOnArtChildren(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
         const query = new GetActiveArtChildrenQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
 
         return this.queryBus.execute(query);
     }
 
     @Get('activeArtAdults')
-    async getActiveClientsOnArtAdults(): Promise<any> {
+    async getActiveClientsOnArtAdults(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
         const query = new GetActiveArtAdultsQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
 
         return this.queryBus.execute(query);
     }
 
     @Get('activeArtAdolescents')
-    async getActiveClientsOnArtAdolescents(): Promise<any> {
+    async getActiveClientsOnArtAdolescents(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
         const query = new GetActiveArtAdolescentsQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
 
         return this.queryBus.execute(query);
     }
 
     @Get('activeArtByGender')
-    async getActiveClientsByGender(): Promise<any> {
+    async getActiveClientsByGender(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
         const query = new GetActiveArtByGenderQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
 
         return this.queryBus.execute(query);
     }
