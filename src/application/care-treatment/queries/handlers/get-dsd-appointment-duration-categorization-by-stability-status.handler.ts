@@ -14,7 +14,7 @@ export class GetDsdAppointmentDurationCategorizationByStabilityStatusHandler imp
 
     async execute(query: GetDsdAppointmentDurationCategorizationByStabilityStatusQuery): Promise<any> {
         const dsdAppointmentCategorization = this.repository.createQueryBuilder('f')
-            .select(['SUM([NumPatients]) patients, AppointmentsCategory, Stability'])
+            .select(['SUM(NUMPatients) AS patients, AppointmentsCategory, Stability, CAST((cast(SUM(NUMPatients) as decimal (9,2))/ (SUM(SUM(NUMPatients)) OVER (PARTITION BY Stability ORDER BY Stability))*100) as decimal(8,2))  AS proportionByStability'])
             .where('f.[AppointmentsCategory] IS NOT NULL');
 
         if (query.county) {
