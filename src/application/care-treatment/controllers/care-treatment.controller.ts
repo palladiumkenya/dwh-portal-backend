@@ -63,6 +63,7 @@ import { GetVlOverallUptakeAndSuppressionByFacilityQuery } from '../queries/get-
 import { GetVlMedianTimeToFirstVlByYearQuery } from '../queries/get-vl-median-time-to-first-vl-by-year.query';
 import { GetVlMedianTimeToFirstVlByCountyQuery } from '../queries/get-vl-median-time-to-first-vl-by-county.query';
 import { GetVlMedianTimeToFirstVlByPartnerQuery } from '../queries/get-vl-median-time-to-first-vl-by-partner.query';
+import { GetChildrenAdverseEventsQuery } from '../queries/adverse-events-queries/get-children-adverse-events.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -2066,6 +2067,33 @@ export class CareTreatmentController {
 
         if(month) {
             query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getChildrenAdverseEvents')
+    async getChildrenAdverseEvents(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetChildrenAdverseEventsQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
         }
 
         return this.queryBus.execute(query);

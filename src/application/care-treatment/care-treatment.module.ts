@@ -80,6 +80,8 @@ import { FactCTTimeToFirstVL } from '../../entities/care_treatment/fact-ct-time-
 import { GetVlMedianTimeToFirstVlByYearHandler } from './queries/handlers/get-vl-median-time-to-first-vl-by-year.handler';
 import { GetVlMedianTimeToFirstVlByCountyHandler } from './queries/handlers/get-vl-median-time-to-first-vl-by-county.handler';
 import { GetVlMedianTimeToFirstVlByPartnerHandler } from './queries/handlers/get-vl-median-time-to-first-vl-by-partner.handler';
+import { FactTransAdverseEvents } from '../../entities/care_treatment/fact-trans-adverse-events.model';
+import { GetChildrenAdverseEventsHandler } from './queries/handlers/adverse-events-handlers/get-children-adverse-events.handler';
 
 @Module({
     imports: [
@@ -101,6 +103,7 @@ import { GetVlMedianTimeToFirstVlByPartnerHandler } from './queries/handlers/get
                 FactTransVLOutcome,
                 FactTransVLOverallUptake,
                 FactCTTimeToFirstVL,
+                FactTransAdverseEvents
             ],
             'mssql'
         )
@@ -172,6 +175,7 @@ import { GetVlMedianTimeToFirstVlByPartnerHandler } from './queries/handlers/get
         GetVlMedianTimeToFirstVlByYearHandler,
         GetVlMedianTimeToFirstVlByCountyHandler,
         GetVlMedianTimeToFirstVlByPartnerHandler,
+        GetChildrenAdverseEventsHandler
     ],
     controllers: [CareTreatmentController]
 })
