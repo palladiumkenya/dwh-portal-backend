@@ -34,7 +34,7 @@ export class GetActiveArtAdolescentsHandler implements IQueryHandler<GetActiveAr
 
         if (query.partner) {
             activeArt
-                .andWhere('f.CTPartner IN (:...partners)', { facilities: query.partner });
+                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
         return await activeArt.getRawMany();
