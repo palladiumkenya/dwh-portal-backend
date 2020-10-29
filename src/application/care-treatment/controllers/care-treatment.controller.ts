@@ -269,6 +269,7 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
+        @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
     ): Promise<any> {
@@ -283,6 +284,10 @@ export class CareTreatmentController {
 
         if(facility) {
             query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
         }
 
         if(year) {
@@ -301,6 +306,7 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
+        @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
     ): Promise<any> {
@@ -315,6 +321,10 @@ export class CareTreatmentController {
 
         if(facility) {
             query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
         }
 
         if(year) {
@@ -365,6 +375,7 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
+        @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
     ): Promise<any> {
@@ -379,6 +390,10 @@ export class CareTreatmentController {
 
         if(facility) {
             query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
         }
 
         if(year) {

@@ -32,13 +32,10 @@ export class GetCtViralLoadCascadeActiveArtClientsHandler implements IQueryHandl
                 .andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
-        /*if(query.month) {
-            viralLoadCascade.andWhere('f.StartART_Month = :month', { month: query.month });
+        if (query.partner) {
+            viralLoadCascade
+                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
-
-        if(query.year) {
-            viralLoadCascade.andWhere('f.Start_Year = :startYear', { startYear: query.year });
-        }*/
 
         return await viralLoadCascade
             .getRawOne();
