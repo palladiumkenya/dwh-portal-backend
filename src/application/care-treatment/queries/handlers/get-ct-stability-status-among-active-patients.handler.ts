@@ -32,6 +32,11 @@ export class GetCtStabilityStatusAmongActivePatientsHandler implements IQueryHan
                 .andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
+        if (query.partner) {
+            stabilityStatus
+                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+
         /*if(query.month) {
             stabilityStatus.andWhere('f.StartART_Month = :month', { month: query.month });
         }
