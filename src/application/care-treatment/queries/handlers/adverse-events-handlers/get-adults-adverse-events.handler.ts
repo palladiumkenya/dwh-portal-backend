@@ -34,7 +34,7 @@ export class GetAdultsAdverseEventsHandler implements IQueryHandler<GetAdultsAdv
 
         if (query.partner) {
             adultsAEs
-                .andWhere('f.CTPartner IN (:...partners)', { facilities: query.partner });
+                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
         return await adultsAEs
