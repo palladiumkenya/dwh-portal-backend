@@ -14,7 +14,7 @@ export class GetChildrenAdverseEventsHandler implements IQueryHandler<GetChildre
 
     async execute(query: GetChildrenAdverseEventsQuery): Promise<any> {
         const childrenAEs = this.repository.createQueryBuilder('f')
-            .select('SUM([AdverseEvent_Total]) total, AgeGroup, Gender')
+            .select('SUM([AdverseEvent_Total]) total, AgeGroup, Gender, CAST((cast(SUM([AdverseEvent_Total]) as decimal (9,2))/ (SUM(SUM([AdverseEvent_Total])) OVER (PARTITION BY AgeGroup ORDER BY AgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup')
             .where('[AgeGroup] IN (\'Under 1\', \'1 to 4\', \'5 to 9\', \'10 to 14\')');
 
         if (query.county) {
