@@ -1,6 +1,6 @@
 export class GetActiveArtByGenderQuery {
-    county?: string;
-    subCounty?: string;
-    facility?: string;
-    partner?: string;
+    county?: string[];
+    subCounty?: string[];
+    facility?: string[];
+    partner?: string[];
 }

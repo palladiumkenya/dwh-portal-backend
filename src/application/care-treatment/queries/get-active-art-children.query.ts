@@ -1,6 +1,6 @@
 export class GetActiveArtChildrenQuery {
-    county?: string;
-    subCounty?: string;
-    partner?: string;
-    facility?: string;
+    county?: string[];
+    subCounty?: string[];
+    partner?: string[];
+    facility?: string[];
 }
