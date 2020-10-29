@@ -83,6 +83,8 @@ import { GetVlMedianTimeToFirstVlByPartnerHandler } from './queries/handlers/get
 import { FactTransAdverseEvents } from '../../entities/care_treatment/fact-trans-adverse-events.model';
 import { GetChildrenAdverseEventsHandler } from './queries/handlers/adverse-events-handlers/get-children-adverse-events.handler';
 import { GetAdultsAdverseEventsHandler } from './queries/handlers/adverse-events-handlers/get-adults-adverse-events.handler';
+import { FactTransAeSeverity } from '../../entities/care_treatment/fact-trans-ae-severity.model';
+import { GetAeSeverityGradingHandler } from './queries/handlers/adverse-events-handlers/get-ae-severity-grading.handler';
 
 @Module({
     imports: [
@@ -104,7 +106,8 @@ import { GetAdultsAdverseEventsHandler } from './queries/handlers/adverse-events
                 FactTransVLOutcome,
                 FactTransVLOverallUptake,
                 FactCTTimeToFirstVL,
-                FactTransAdverseEvents
+                FactTransAdverseEvents,
+                FactTransAeSeverity
             ],
             'mssql'
         )
@@ -177,7 +180,8 @@ import { GetAdultsAdverseEventsHandler } from './queries/handlers/adverse-events
         GetVlMedianTimeToFirstVlByCountyHandler,
         GetVlMedianTimeToFirstVlByPartnerHandler,
         GetChildrenAdverseEventsHandler,
-        GetAdultsAdverseEventsHandler
+        GetAdultsAdverseEventsHandler,
+        GetAeSeverityGradingHandler
     ],
     controllers: [CareTreatmentController]
 })

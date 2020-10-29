@@ -61,6 +61,7 @@ import { CareTreatmentModule } from './application/care-treatment/care-treatment
                     'DATABASE_DB_MSSQL',
                     dbConfig.databaseMssql,
                 ),
+                requestTimeout: 300000000,
                 entities: [__dirname + '/**/*.model{.ts,.js}']
             }),
         }),
