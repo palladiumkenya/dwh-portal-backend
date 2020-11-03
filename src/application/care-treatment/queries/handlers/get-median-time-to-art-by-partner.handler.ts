@@ -26,7 +26,7 @@ export class GetMedianTimeToArtByPartnerHandler implements IQueryHandler<GetMedi
                         EnrollmentDate,
                         CTPartner
                     FROM Fact_Trans_New_Cohort
-                    WHERE MFLCode > 1 AND CTPartner is not null AND CTPartner <> '' AND Year(EnrollmentDate) >= 2011
+                    WHERE MFLCode > 1 AND CTPartner is not null AND CTPartner <> '' AND Year(EnrollmentDate) >= 2011 AND EnrollmentDate <= GETDATE()
                 ) TimeToART
             ) a
             ORDER BY a.time ASC
