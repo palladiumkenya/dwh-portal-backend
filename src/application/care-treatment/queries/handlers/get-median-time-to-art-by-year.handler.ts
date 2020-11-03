@@ -24,7 +24,7 @@ export class GetMedianTimeToArtByYearHandler implements IQueryHandler<GetMedianT
                     CASE WHEN EnrollmentDate <= StartARTDate THEN DATEDIFF(dd,EnrollmentDate,StartARTDate) ELSE 0 END as TimeToART,
                     EnrollmentDate
                 FROM Fact_Trans_New_Cohort
-                WHERE MFLCode > 1 AND Year(EnrollmentDate) >= 2011
+                WHERE MFLCode > 1 AND Year(EnrollmentDate) >= 2011 AND EnrollmentDate <= GETDATE()
             ) TimeToART
             ORDER BY Year(EnrollmentDate)
         `;

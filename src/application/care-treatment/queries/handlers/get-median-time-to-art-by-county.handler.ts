@@ -26,7 +26,7 @@ export class GetMedianTimeToArtByCountyHandler implements IQueryHandler<GetMedia
                         EnrollmentDate,
                         County
                     FROM Fact_Trans_New_Cohort
-                    WHERE MFLCode > 1 AND county is not null AND Year(EnrollmentDate) >= 2011
+                    WHERE MFLCode > 1 AND county is not null AND Year(EnrollmentDate) >= 2011 AND EnrollmentDate <= GETDATE()
                 ) TimeToART
             ) a
             ORDER BY a.time ASC
