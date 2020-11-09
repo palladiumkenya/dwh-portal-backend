@@ -17,6 +17,8 @@ import { GetHtsPartnersQuery } from '../queries/get-hts-partners.query';
 import { GetLinkageNumberPositiveQuery } from '../queries/get-linkage-number-positive.query';
 import { GetLinkageByAgeSexQuery } from '../queries/get-linkage-by-age-sex.query';
 import { GetLinkageByPopulationTypeQuery } from '../queries/get-linkage-by-population-type.query';
+import { GetLinkageByEntryPointQuery } from '../queries/get-linkage-by-entry-point.query';
+import { GetLinkageByStrategyQuery } from '../queries/get-linkage-by-strategy.query';
 import { GetLinkageByCountyQuery } from '../queries/get-linkage-by-county.query';
 import { GetLinkageByPartnerQuery } from '../queries/get-linkage-by-partner.query';
 import { GetUptakeByMonthsSinceLastTestQuery } from '../queries/get-uptake-by-months-since-last-test.query';
@@ -32,6 +34,7 @@ export class HtsController {
     @Get('numberTestedAndPositivity')
     async getNumberTestedAndPositivity(
         @Query('county') county,
+        @Query('subCounty') subCounty,
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
@@ -41,6 +44,10 @@ export class HtsController {
 
         if(county) {
             query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
         }
 
         if(year) {
@@ -65,6 +72,7 @@ export class HtsController {
     @Get('uptakeByPositivity')
     async getUptakeByPositivity(
         @Query('county') county,
+        @Query('subCounty') subCounty,
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
@@ -74,6 +82,10 @@ export class HtsController {
 
         if(county) {
             query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
         }
 
         if(year) {
@@ -98,6 +110,7 @@ export class HtsController {
     @Get('uptakeByAgeSex')
     async getUptakeByAgeSex(
         @Query('county') county,
+        @Query('subCounty') subCounty,
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
@@ -107,6 +120,10 @@ export class HtsController {
 
         if(county) {
             query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
         }
 
         if(year) {
@@ -131,6 +148,7 @@ export class HtsController {
     @Get('uptakeByAgeSexPositivity')
     async getUptakeByAgeSexPositivity(
         @Query('county') county,
+        @Query('subCounty') subCounty,
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
@@ -140,6 +158,10 @@ export class HtsController {
 
         if(county) {
             query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
         }
 
         if(year) {
@@ -164,6 +186,7 @@ export class HtsController {
     @Get('uptakeByPopulationType')
     async getUptakeByPopulationType(
         @Query('county') county,
+        @Query('subCounty') subCounty,
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
@@ -173,6 +196,10 @@ export class HtsController {
 
         if(county) {
             query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
         }
 
         if(year) {
@@ -197,6 +224,7 @@ export class HtsController {
     @Get('uptakeByTestStrategy')
     async getUptakeByTestStrategy(
         @Query('county') county,
+        @Query('subCounty') subCounty,
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
@@ -206,6 +234,10 @@ export class HtsController {
 
         if(county) {
             query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
         }
 
         if(year) {
@@ -230,6 +262,7 @@ export class HtsController {
     @Get('uptakeByEntryPoint')
     async getUptakeByEntryPoint(
         @Query('county') county,
+        @Query('subCounty') subCounty,
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
@@ -239,6 +272,10 @@ export class HtsController {
 
         if(county) {
             query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
         }
 
         if(year) {
@@ -263,6 +300,7 @@ export class HtsController {
     @Get('uptakeByCounty')
     async getUptakeByCounty(
         @Query('county') county,
+        @Query('subCounty') subCounty,
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
@@ -272,6 +310,10 @@ export class HtsController {
 
         if(county) {
             query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
         }
 
         if(year) {
@@ -296,6 +338,7 @@ export class HtsController {
     @Get('uptakeByPartner')
     async getUptakeByPartner(
         @Query('county') county,
+        @Query('subCounty') subCounty,
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
@@ -305,6 +348,10 @@ export class HtsController {
 
         if(county) {
             query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
         }
 
         if(year) {
@@ -329,6 +376,7 @@ export class HtsController {
     @Get('uptakeByClientTestedAs')
     async getUptakeByClientTestedAs(
         @Query('county') county,
+        @Query('subCounty') subCounty,
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
@@ -362,6 +410,7 @@ export class HtsController {
     @Get('uptakeByClientSelfTested')
     async getUptakeByClientSelfTested(
         @Query('county') county,
+        @Query('subCounty') subCounty,
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
@@ -371,6 +420,10 @@ export class HtsController {
 
         if(county) {
             query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
         }
 
         if(year) {
@@ -746,6 +799,82 @@ export class HtsController {
 
         if(month) {
             query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('linkageByEntryPoint')
+    async getLinkageByEntryPoint(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('partner') partner,
+        @Query('facility') facility
+    ): Promise<any> {
+        const query = new GetLinkageByEntryPointQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('linkageByStrategy')
+    async getLinkageByStrategy(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('partner') partner,
+        @Query('facility') facility
+    ): Promise<any> {
+        const query = new GetLinkageByStrategyQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(facility) {
+            query.facility = facility;
         }
 
         return this.queryBus.execute(query);
