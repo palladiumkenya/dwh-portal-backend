@@ -22,6 +22,11 @@ export class GetUptakeByAgeSexHandler implements IQueryHandler<GetUptakeByAgeSex
             params.push(query.county);
         }
 
+        if(query.subCounty) {
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and SubCounty=?`;
+            params.push(query.subCounty);
+        }
+
         if(query.month) {
             uptakeByAgeSexSql = `${uptakeByAgeSexSql} and month=?`;
             params.push(query.month);

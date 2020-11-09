@@ -24,6 +24,11 @@ export class GetUptakeByPositivityHandler implements IQueryHandler<GetUptakeByPo
             params.push(query.county);
         }
 
+        if(query.subCounty) {
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and SubCounty=?`;
+            params.push(query.subCounty);
+        }
+
         if(query.month) {
             numberTestedPositivitySql = `${numberTestedPositivitySql} and month=?`;
             params.push(query.month);

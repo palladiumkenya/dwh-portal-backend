@@ -18,7 +18,6 @@ export class GetUptakeByTestingStrategyHandler implements IQueryHandler<GetUptak
             'SUM(`Tested`) Tested, \n' +
             'SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END) positive, \n' +
             '((SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END)/SUM(`Tested`))*100) AS positivity \n' +
-            '\n' +
             'FROM `fact_hts_teststrategy` \n' +
             'WHERE `TestStrategy` IS NOT NULL ';
 
