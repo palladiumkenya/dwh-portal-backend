@@ -18,6 +18,7 @@ import { GetCtTxCurrDistributionByCountyQuery } from '../queries/get-ct-tx-curr-
 import { GetCtTxCurrDistributionByPartnerQuery } from '../queries/get-ct-tx-curr-distribution-by-partner.query';
 import { GetTxNewTrendsQuery } from '../queries/get-tx-new-trends.query';
 import { GetTxNewByAgeSexQuery } from '../queries/get-tx-new-by-age-sex.query';
+import { GetTxNewBySexQuery } from '../queries/get-tx-new-by-sex.query';
 import { GetMedianTimeToArtByYearQuery } from '../queries/get-median-time-to-art-by-year.query';
 import { GetMedianTimeToArtByCountyQuery } from '../queries/get-median-time-to-art-by-county.query';
 import { GetMedianTimeToArtByPartnerQuery } from '../queries/get-median-time-to-art-by-partner.query';
@@ -479,6 +480,43 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetTxNewByAgeSexQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('txNewBySex')
+    async getTxNewBySex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetTxNewBySexQuery();
         if(county) {
             query.county = county;
         }
