@@ -14,7 +14,7 @@ export class GetVlUptakeBySexHandler implements IQueryHandler<GetVlUptakeBySexQu
 
     async execute(query: GetVlUptakeBySexQuery): Promise<any> {
         const vlUptakeBySex = this.repository.createQueryBuilder('f')
-            .select(['Gender gender, SUM(VLDone) vlDone'])
+            .select(['Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed'])
             .where('f.MFLCode > 0')
             .andWhere('f.Gender IS NOT NULL');
 
