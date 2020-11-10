@@ -36,7 +36,8 @@ import { GetUptakeByTBScreeningHandler } from './queries/handlers/get-uptake-by-
 import { GetUptakeByTbScreenedHandler } from './queries/handlers/get-uptake-by-tb-screened.handler';
 import { GetUptakeByAgeSexPositivityHandler } from './queries/handlers/get-uptake-by-age-sex-positivity.handler';
 import { GetUptakeByPositivityHandler } from './queries/handlers/get-uptake-by-positivity.handler';
-
+import { GetLinkageByEntryPointHandler } from './queries/handlers/get-linkage-by-entry-point.handler';
+import { GetLinkageByStrategyHandler } from './queries/handlers/get-linkage-by-strategy.handler';
 @Module({
   imports: [
       CqrsModule,
@@ -76,7 +77,9 @@ import { GetUptakeByPositivityHandler } from './queries/handlers/get-uptake-by-p
       GetUptakeByTBScreeningHandler,
       GetUptakeByTbScreenedHandler,
       GetUptakeByAgeSexPositivityHandler,
-      GetUptakeByPositivityHandler
+      GetUptakeByPositivityHandler,
+      GetLinkageByEntryPointHandler,
+      GetLinkageByStrategyHandler,
   ],
   controllers: [HtsController]
 })

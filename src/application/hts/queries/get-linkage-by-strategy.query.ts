@@ -1,4 +1,4 @@
-export class GetUptakeByPositivityQuery {
+export class GetLinkageByStrategyQuery {
     county?: string;
     subCounty?: string;
     partner?: string;

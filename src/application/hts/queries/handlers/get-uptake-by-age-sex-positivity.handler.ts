@@ -14,7 +14,7 @@ export class GetUptakeByAgeSexPositivityHandler implements IQueryHandler<GetUpta
     async execute(query: GetUptakeByAgeSexPositivityQuery): Promise<any> {
         const params = [];
         let uptakeByAgeSexSql = 'SELECT \n' +
-            'DATIM_AgeGroup AS AgeGroup,\n' +
+            'DATIM_AgeGroup AS AgeGroup, \n' +
             '((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity \n' +
             'FROM fact_hts_agegender \n' +
             'WHERE Tested IS NOT NULL ';
@@ -22,6 +22,11 @@ export class GetUptakeByAgeSexPositivityHandler implements IQueryHandler<GetUpta
         if(query.county) {
             uptakeByAgeSexSql = `${uptakeByAgeSexSql} and County=?`;
             params.push(query.county);
+        }
+
+        if(query.subCounty) {
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and SubCounty=?`;
+            params.push(query.subCounty);
         }
 
         if(query.month) {
