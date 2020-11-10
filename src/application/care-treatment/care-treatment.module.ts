@@ -24,6 +24,7 @@ import { GetCtTxCurrDistributionByCountyHandler } from './queries/handlers/get-c
 import { GetCtTxCurrDistributionByPartnerHandler } from './queries/handlers/get-ct-tx-curr-distribution-by-partner.handler';
 import { GetTxNewTrendsHandler } from './queries/handlers/get-tx-new-trends.handler';
 import { GetTxNewByAgeSexHandler } from './queries/handlers/get-tx-new-by-age-sex.handler';
+import { GetTxNewBySexHandler } from './queries/handlers/get-tx-new-by-sex.handler';
 import { GetTimeToArtHandler } from './queries/handlers/get-time-to-art.handler';
 import { GetTimeToArtFacilitiesHandler } from './queries/handlers/get-time-to-art-facilities.handler';
 import { GetMedianTimeToArtByYearHandler } from './queries/handlers/get-median-time-to-art-by-year.handler';
@@ -131,6 +132,7 @@ import { GetAeSeverityGradingHandler } from './queries/handlers/adverse-events-h
         GetCtTxCurrDistributionByPartnerHandler,
         GetTxNewTrendsHandler,
         GetTxNewByAgeSexHandler,
+        GetTxNewBySexHandler,
         GetTimeToArtHandler,
         GetTimeToArtFacilitiesHandler,
         GetMedianTimeToArtByYearHandler,
