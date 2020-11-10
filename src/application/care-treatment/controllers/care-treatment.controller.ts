@@ -14,6 +14,7 @@ import { GetCtStabilityStatusAmongActivePatientsQuery } from '../queries/get-ct-
 import { GetCtViralLoadCascadeActiveArtClientsQuery } from '../queries/get-ct-viral-load-cascade-active-art-clients.query';
 import { GetCtViralLoadSuppressionPercentageQuery } from '../queries/get-ct-viral-load-suppression-percentage.query';
 import { GetCtTxCurrByAgeAndSexQuery } from '../queries/get-ct-tx-curr-by-age-and-sex.query';
+import { GetCtTxCurrBySexQuery } from '../queries/get-ct-tx-curr-by-sex.query';
 import { GetCtTxCurrDistributionByCountyQuery } from '../queries/get-ct-tx-curr-distribution-by-county.query';
 import { GetCtTxCurrDistributionByPartnerQuery } from '../queries/get-ct-tx-curr-distribution-by-partner.query';
 import { GetTxNewTrendsQuery } from '../queries/get-tx-new-trends.query';
@@ -418,6 +419,30 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetCtTxCurrByAgeAndSexQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('txCurrBySex')
+    async getTxCurrBySex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetCtTxCurrBySexQuery();
         if(county) {
             query.county = county;
         }
