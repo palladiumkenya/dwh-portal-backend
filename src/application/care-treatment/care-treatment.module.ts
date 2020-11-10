@@ -20,6 +20,7 @@ import { FactTransDsdCascade } from '../../entities/care_treatment/fact-trans-ds
 import { GetCtViralLoadCascadeActiveArtClientsHandler } from './queries/handlers/get-ct-viral-load-cascade-active-art-clients.handler';
 import { GetCtViralLoadSuppressionPercentageHandler } from './queries/handlers/get-ct-viral-load-suppression-percentage.handler';
 import { GetCtTxCurrByAgeAndSexHandler } from './queries/handlers/get-ct-tx-curr-by-age-and-sex.handler';
+import { GetCtTxCurrBySexHandler } from './queries/handlers/get-ct-tx-curr-by-sex.handler';
 import { GetCtTxCurrDistributionByCountyHandler } from './queries/handlers/get-ct-tx-curr-distribution-by-county.handler';
 import { GetCtTxCurrDistributionByPartnerHandler } from './queries/handlers/get-ct-tx-curr-distribution-by-partner.handler';
 import { GetTxNewTrendsHandler } from './queries/handlers/get-tx-new-trends.handler';
@@ -128,6 +129,7 @@ import { GetAeSeverityGradingHandler } from './queries/handlers/adverse-events-h
         GetCtViralLoadCascadeActiveArtClientsHandler,
         GetCtViralLoadSuppressionPercentageHandler,
         GetCtTxCurrByAgeAndSexHandler,
+        GetCtTxCurrBySexHandler,
         GetCtTxCurrDistributionByCountyHandler,
         GetCtTxCurrDistributionByPartnerHandler,
         GetTxNewTrendsHandler,
