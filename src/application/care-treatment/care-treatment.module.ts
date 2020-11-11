@@ -87,6 +87,7 @@ import { GetChildrenAdverseEventsHandler } from './queries/handlers/adverse-even
 import { GetAdultsAdverseEventsHandler } from './queries/handlers/adverse-events-handlers/get-adults-adverse-events.handler';
 import { FactTransAeSeverity } from '../../entities/care_treatment/fact-trans-ae-severity.model';
 import { GetAeSeverityGradingHandler } from './queries/handlers/adverse-events-handlers/get-ae-severity-grading.handler';
+import { GetAeActionsBySeverityHandler } from './queries/handlers/adverse-events-handlers/get-ae-actions-by-severity.handler';
 
 @Module({
     imports: [
@@ -185,7 +186,8 @@ import { GetAeSeverityGradingHandler } from './queries/handlers/adverse-events-h
         GetVlMedianTimeToFirstVlByPartnerHandler,
         GetChildrenAdverseEventsHandler,
         GetAdultsAdverseEventsHandler,
-        GetAeSeverityGradingHandler
+        GetAeSeverityGradingHandler,
+        GetAeActionsBySeverityHandler
     ],
     controllers: [CareTreatmentController]
 })
