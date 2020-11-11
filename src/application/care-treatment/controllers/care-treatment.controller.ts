@@ -69,6 +69,7 @@ import { GetChildrenAdverseEventsQuery } from '../queries/adverse-events-queries
 import { GetAdultsAdverseEventsQuery } from '../queries/adverse-events-queries/get-adults-adverse-events.query';
 import { GetAeSeverityGradingQuery } from '../queries/adverse-events-queries/get-ae-severity-grading.query';
 import { GetAeActionsBySeverityQuery } from '../queries/adverse-events-queries/get-ae-actions-by-severity.query';
+import { GetReportedCausesOfAeQuery } from '../queries/adverse-events-queries/get-reported-causes-of-ae.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -2343,6 +2344,33 @@ export class CareTreatmentController {
         @Query('partner') partner
     ): Promise<any> {
         const query = new GetAeActionsBySeverityQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getReportedCausesOfAes')
+    async getReportedCausesOfAes(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetReportedCausesOfAeQuery();
         if(county) {
             query.county = county;
         }
