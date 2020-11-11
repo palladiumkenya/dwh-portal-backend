@@ -88,6 +88,8 @@ import { GetAdultsAdverseEventsHandler } from './queries/handlers/adverse-events
 import { FactTransAeSeverity } from '../../entities/care_treatment/fact-trans-ae-severity.model';
 import { GetAeSeverityGradingHandler } from './queries/handlers/adverse-events-handlers/get-ae-severity-grading.handler';
 import { GetAeActionsBySeverityHandler } from './queries/handlers/adverse-events-handlers/get-ae-actions-by-severity.handler';
+import { FactTransAeCauses } from '../../entities/care_treatment/fact-trans-ae-causes.model';
+import { GetReportedCausesOfAeHandler } from './queries/handlers/adverse-events-handlers/get-reported-causes-of-ae.handler';
 
 @Module({
     imports: [
@@ -110,7 +112,8 @@ import { GetAeActionsBySeverityHandler } from './queries/handlers/adverse-events
                 FactTransVLOverallUptake,
                 FactCTTimeToFirstVL,
                 FactTransAdverseEvents,
-                FactTransAeSeverity
+                FactTransAeSeverity,
+                FactTransAeCauses
             ],
             'mssql'
         )
@@ -187,7 +190,8 @@ import { GetAeActionsBySeverityHandler } from './queries/handlers/adverse-events
         GetChildrenAdverseEventsHandler,
         GetAdultsAdverseEventsHandler,
         GetAeSeverityGradingHandler,
-        GetAeActionsBySeverityHandler
+        GetAeActionsBySeverityHandler,
+        GetReportedCausesOfAeHandler
     ],
     controllers: [CareTreatmentController]
 })
