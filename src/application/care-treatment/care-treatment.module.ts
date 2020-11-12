@@ -90,6 +90,9 @@ import { GetAeSeverityGradingHandler } from './queries/handlers/adverse-events-h
 import { GetAeActionsBySeverityHandler } from './queries/handlers/adverse-events-handlers/get-ae-actions-by-severity.handler';
 import { FactTransAeCauses } from '../../entities/care_treatment/fact-trans-ae-causes.model';
 import { GetReportedCausesOfAeHandler } from './queries/handlers/adverse-events-handlers/get-reported-causes-of-ae.handler';
+import { FactTransAeCategories } from '../../entities/care_treatment/fact-trans-ae-categories.model';
+import { GetReportedAesWithSeverityLevelsHandler } from './queries/handlers/adverse-events-handlers/get-reported-aes-with-severity-levels.handler';
+import { GetAeActionsByDrugsHandler } from './queries/handlers/adverse-events-handlers/get-ae-actions-by-drugs.handler';
 
 @Module({
     imports: [
@@ -113,7 +116,8 @@ import { GetReportedCausesOfAeHandler } from './queries/handlers/adverse-events-
                 FactCTTimeToFirstVL,
                 FactTransAdverseEvents,
                 FactTransAeSeverity,
-                FactTransAeCauses
+                FactTransAeCauses,
+                FactTransAeCategories
             ],
             'mssql'
         )
@@ -191,7 +195,9 @@ import { GetReportedCausesOfAeHandler } from './queries/handlers/adverse-events-
         GetAdultsAdverseEventsHandler,
         GetAeSeverityGradingHandler,
         GetAeActionsBySeverityHandler,
-        GetReportedCausesOfAeHandler
+        GetReportedCausesOfAeHandler,
+        GetReportedAesWithSeverityLevelsHandler,
+        GetAeActionsByDrugsHandler
     ],
     controllers: [CareTreatmentController]
 })
