@@ -29,7 +29,7 @@ export class GetMedianTimeToArtByPartnerHandler implements IQueryHandler<GetMedi
                     WHERE MFLCode > 1 AND CTPartner is not null AND CTPartner <> '' AND Year(EnrollmentDate) >= 2011 AND EnrollmentDate <= GETDATE()
                 ) TimeToART
             ) a
-            ORDER BY a.time ASC
+            ORDER BY a.time DESC
         `;
         return await this.repository.query(medianTimeToArtSql);
     }

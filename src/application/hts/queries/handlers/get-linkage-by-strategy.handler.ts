@@ -51,7 +51,7 @@ export class GetLinkageByStrategyHandler implements IQueryHandler<GetLinkageBySt
             params.push(query.facility);
         }
 
-        linkageByStrategySql = `${linkageByStrategySql} GROUP BY TestStrategy ORDER BY SUM(\`positive\`) ASC`;
+        linkageByStrategySql = `${linkageByStrategySql} GROUP BY TestStrategy ORDER BY SUM(\`positive\`) DESC`;
 
         return  await this.repository.query(linkageByStrategySql, params);
     }

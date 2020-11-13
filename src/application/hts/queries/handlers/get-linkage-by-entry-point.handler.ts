@@ -51,7 +51,7 @@ export class GetLinkageByEntryPointHandler implements IQueryHandler<GetLinkageBy
             params.push(query.month);
         }
 
-        linkageByEntryPointSql = `${linkageByEntryPointSql} GROUP BY EntryPoint ORDER BY SUM(\`positive\`) ASC`;
+        linkageByEntryPointSql = `${linkageByEntryPointSql} GROUP BY EntryPoint ORDER BY SUM(\`positive\`) DESC`;
 
         return  await this.repository.query(linkageByEntryPointSql, params);
     }

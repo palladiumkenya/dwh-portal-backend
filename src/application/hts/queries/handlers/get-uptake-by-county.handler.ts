@@ -59,9 +59,9 @@ export class GetUptakeByCountyHandler implements IQueryHandler<GetUptakeByCounty
         }
 
         if(query.county) {
-            uptakeByCountySql = `${uptakeByCountySql} GROUP BY SubCounty ORDER BY SUM(\`Tested\`) ASC`;
+            uptakeByCountySql = `${uptakeByCountySql} GROUP BY SubCounty ORDER BY SUM(\`Tested\`) DESC`;
         } else {
-            uptakeByCountySql = `${uptakeByCountySql} GROUP BY County ORDER BY SUM(\`Tested\`) ASC`;
+            uptakeByCountySql = `${uptakeByCountySql} GROUP BY County ORDER BY SUM(\`Tested\`) DESC`;
         }
 
         return  await this.repository.query(uptakeByCountySql, params);
