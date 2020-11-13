@@ -1,44 +1,44 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetReportedCausesOfAeQuery } from '../../adverse-events-queries/get-reported-causes-of-ae.query';
+import { GetAeActionsByDrugsQuery } from '../../adverse-events-queries/get-ae-actions-by-drugs.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransAeCauses } from '../../../../../entities/care_treatment/fact-trans-ae-causes.model';
 import { Repository } from 'typeorm';
 
-@QueryHandler(GetReportedCausesOfAeQuery)
-export class GetReportedCausesOfAeHandler implements IQueryHandler<GetReportedCausesOfAeQuery> {
+@QueryHandler(GetAeActionsByDrugsQuery)
+export class GetAeActionsByDrugsHandler implements IQueryHandler<GetAeActionsByDrugsQuery> {
     constructor(
         @InjectRepository(FactTransAeCauses, 'mssql')
         private readonly repository: Repository<FactTransAeCauses>
     ) {
     }
 
-    async execute(query: GetReportedCausesOfAeQuery): Promise<any> {
-        const reportedCausesOfAes = this.repository.createQueryBuilder('f')
-            .select('[AdverseEventCause], SUM([Total_AdverseEventCause]) total')
+    async execute(query: GetAeActionsByDrugsQuery): Promise<any> {
+        const aeActionsByDrugs = this.repository.createQueryBuilder('f')
+            .select('[Severity], [AdverseEventCause], SUM([Total_AdverseEventCause]) total')
             .where('[AdverseEventCause] IS NOT NULL');
 
         if (query.county) {
-            reportedCausesOfAes
+            aeActionsByDrugs
                 .andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            reportedCausesOfAes
+            aeActionsByDrugs
                 .andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
-            reportedCausesOfAes
+            aeActionsByDrugs
                 .andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
-            reportedCausesOfAes
+            aeActionsByDrugs
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        return await reportedCausesOfAes
-            .groupBy('AdverseEventCause')
+        return await aeActionsByDrugs
+            .groupBy('[Severity], [AdverseEventCause]')
             .getRawMany();
     }
 }

@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('FACT_Trans_AECauses')
-export class FactTransAeCauses {
+@Entity('FACT_Trans_AECategories')
+export class FactTransAeCategories {
     @PrimaryColumn('text')
     MFLCode: string;
 
@@ -18,11 +18,11 @@ export class FactTransAeCauses {
     CTPartner: string;
 
     @Column('text')
-    AdverseEventCause: string;
+    AdverseEvent: string;
 
     @Column('text')
-    AdverseEventActionTaken: string;
+    Severity: string;
 
     @Column('int')
-    Total_AdverseEventCause: number;
+    Severity_total: number;
 }
