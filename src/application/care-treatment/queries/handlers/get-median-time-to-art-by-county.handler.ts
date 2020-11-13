@@ -29,7 +29,7 @@ export class GetMedianTimeToArtByCountyHandler implements IQueryHandler<GetMedia
                     WHERE MFLCode > 1 AND county is not null AND Year(EnrollmentDate) >= 2011 AND EnrollmentDate <= GETDATE()
                 ) TimeToART
             ) a
-            ORDER BY a.time ASC
+            ORDER BY a.time DESC
         `;
         return await this.repository.query(medianTimeToArtSql);
     }
