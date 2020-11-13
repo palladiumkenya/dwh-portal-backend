@@ -78,6 +78,8 @@ export class GetRecencyByPartnerHandler implements IQueryHandler<GetRecencyByPar
         recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} GROUP BY partner
                                     \t) b ON b.partner = a.partner`;
 
+        recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} ORDER BY ROUND(recency * 100 / b.expected) DESC`;
+
         return await this.repository.query(recencyOfReportingByPartnerSql, params);
     }
 }
