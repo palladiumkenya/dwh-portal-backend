@@ -31,7 +31,7 @@ export class GetEmrDistributionHandler implements IQueryHandler<GetEmrDistributi
             params.push(query.partner);
         }
 
-        emrDistributionSql = `${emrDistributionSql} GROUP BY ${query.reportingType} ORDER BY facilities_count ASC`;
+        emrDistributionSql = `${emrDistributionSql} GROUP BY ${query.reportingType} ORDER BY facilities_count DESC`;
 
         const overallResult = await this.repository.query(emrDistributionSql, params);
         return overallResult;

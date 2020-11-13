@@ -78,6 +78,9 @@ export class GetRecencyByCountyHandler implements IQueryHandler<GetRecencyByCoun
         recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} GROUP BY county
                                     \t) b ON b.county = a.county`;
 
+
+        recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} ORDER BY ROUND(recency * 100 / b.expected) DESC`;
+
         return await this.repository.query(recencyOfReportingByCountySql, params);
     }
 }
