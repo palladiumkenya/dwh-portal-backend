@@ -1,8 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetNumberAeReportedInChildrenOver15Query } from '../../adverse-events-queries/get-number-ae-reported-in-children-over-15.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAdverseEvents } from '../../../../../entities/care_treatment/fact-trans-adverse-events.model';
 import { Repository } from 'typeorm';
+import { FactTransAdverseEvents } from '../../entities/fact-trans-adverse-events.model';
+import { GetNumberAeReportedInChildrenOver15Query } from '../impl/get-number-ae-reported-in-children-over-15.query';
 
 @QueryHandler(GetNumberAeReportedInChildrenOver15Query)
 export class GetNumberAeReportedInChildrenOver15Handler implements IQueryHandler<GetNumberAeReportedInChildrenOver15Query> {
