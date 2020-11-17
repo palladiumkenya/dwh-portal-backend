@@ -80,6 +80,10 @@ import { GetAeActionsBySeverityQuery } from './adverse-events/queries/impl/get-a
 import { GetReportedCausesOfAeQuery } from './adverse-events/queries/impl/get-reported-causes-of-ae.query';
 import { GetReportedAesWithSeverityLevelsQuery } from './adverse-events/queries/impl/get-reported-aes-with-severity-levels.query';
 import { GetAeActionsByDrugsQuery } from './adverse-events/queries/impl/get-ae-actions-by-drugs.query';
+import { GetNumberOfClientWithAeQuery } from './adverse-events/queries/impl/get-number-of-client-with-ae.query';
+import { GetNumberOfClientChildrenWithAeQuery } from './adverse-events/queries/impl/get-number-of-client-children-with-ae.query';
+import { GetNumberAeReportedInAdultsOver15Query } from './adverse-events/queries/impl/get-number-ae-reported-in-adults-over-15.query';
+import { GetNumberAeReportedInChildrenOver15Query } from './adverse-events/queries/impl/get-number-ae-reported-in-children-over-15.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -2435,6 +2439,114 @@ export class CareTreatmentController {
         @Query('partner') partner
     ): Promise<any> {
         const query = new GetAeActionsByDrugsQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getNoOfReportedAeInAdults')
+    async getNoOfReportedAeInAdults(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetNumberAeReportedInAdultsOver15Query();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getNoOfReportedAeInChildren')
+    async getNoOfReportedAeInChildren(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetNumberAeReportedInChildrenOver15Query();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getNumberOfAdultsWithAe')
+    async getNumberOfAdultsWithAe(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetNumberOfClientWithAeQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getNumberOfChildrenWithAe')
+    async getNumberOfChildrenWithAe(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetNumberOfClientChildrenWithAeQuery();
         if(county) {
             query.county = county;
         }
