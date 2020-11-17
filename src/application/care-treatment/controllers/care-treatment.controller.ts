@@ -72,6 +72,8 @@ import { GetAeActionsBySeverityQuery } from '../queries/adverse-events-queries/g
 import { GetReportedCausesOfAeQuery } from '../queries/adverse-events-queries/get-reported-causes-of-ae.query';
 import { GetReportedAesWithSeverityLevelsQuery } from '../queries/adverse-events-queries/get-reported-aes-with-severity-levels.query';
 import { GetAeActionsByDrugsQuery } from '../queries/adverse-events-queries/get-ae-actions-by-drugs.query';
+import { GetNumberAeReportedInAdultsOver15Query } from '../queries/adverse-events-queries/get-number-ae-reported-in-adults-over-15.query';
+import { GetNumberAeReportedInChildrenOver15Query } from '../queries/adverse-events-queries/get-number-ae-reported-in-children-over-15.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -2427,6 +2429,60 @@ export class CareTreatmentController {
         @Query('partner') partner
     ): Promise<any> {
         const query = new GetAeActionsByDrugsQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getNoOfReportedAeInAdults')
+    async getNoOfReportedAeInAdults(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetNumberAeReportedInAdultsOver15Query();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getNoOfReportedAeInChildren')
+    async getNoOfReportedAeInChildren(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetNumberAeReportedInChildrenOver15Query();
         if(county) {
             query.county = county;
         }

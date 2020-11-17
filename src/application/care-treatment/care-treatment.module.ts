@@ -93,6 +93,8 @@ import { GetReportedCausesOfAeHandler } from './queries/handlers/adverse-events-
 import { FactTransAeCategories } from '../../entities/care_treatment/fact-trans-ae-categories.model';
 import { GetReportedAesWithSeverityLevelsHandler } from './queries/handlers/adverse-events-handlers/get-reported-aes-with-severity-levels.handler';
 import { GetAeActionsByDrugsHandler } from './queries/handlers/adverse-events-handlers/get-ae-actions-by-drugs.handler';
+import { GetNumberAeReportedInAdultsOver15Handler } from './queries/handlers/adverse-events-handlers/get-number-ae-reported-in-adults-over-15.handler';
+import { GetNumberAeReportedInChildrenOver15Handler } from './queries/handlers/adverse-events-handlers/get-number-ae-reported-in-children-over-15.handler';
 
 @Module({
     imports: [
@@ -197,7 +199,9 @@ import { GetAeActionsByDrugsHandler } from './queries/handlers/adverse-events-ha
         GetAeActionsBySeverityHandler,
         GetReportedCausesOfAeHandler,
         GetReportedAesWithSeverityLevelsHandler,
-        GetAeActionsByDrugsHandler
+        GetAeActionsByDrugsHandler,
+        GetNumberAeReportedInAdultsOver15Handler,
+        GetNumberAeReportedInChildrenOver15Handler
     ],
     controllers: [CareTreatmentController]
 })
