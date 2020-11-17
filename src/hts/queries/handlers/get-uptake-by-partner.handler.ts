@@ -23,8 +23,23 @@ export class GetUptakeByPartnerHandler implements IQueryHandler<GetUptakeByPartn
             'WHERE `CTPartner` IS NOT NULL ';
 
         if(query.county) {
-            uptakeByPartnerSql = `${uptakeByPartnerSql} and County=?`;
+            uptakeByPartnerSql = `${uptakeByPartnerSql} and County IN (?)`;
             params.push(query.county);
+        }
+
+        if(query.subCounty) {
+            uptakeByPartnerSql = `${uptakeByPartnerSql} and SubCounty IN (?)`;
+            params.push(query.subCounty);
+        }
+
+        if(query.facility) {
+            uptakeByPartnerSql = `${uptakeByPartnerSql} and FacilityName IN (?)`;
+            params.push(query.facility);
+        }
+
+        if(query.partner) {
+            uptakeByPartnerSql = `${uptakeByPartnerSql} and CTPartner IN (?)`;
+            params.push(query.partner);
         }
 
         if(query.month) {
@@ -32,19 +47,9 @@ export class GetUptakeByPartnerHandler implements IQueryHandler<GetUptakeByPartn
             params.push(query.month);
         }
 
-        if(query.partner) {
-            uptakeByPartnerSql = `${uptakeByPartnerSql} and CTPartner=?`;
-            params.push(query.partner);
-        }
-
         if(query.year) {
             uptakeByPartnerSql = `${uptakeByPartnerSql} and year=?`;
             params.push(query.year);
-        }
-
-        if(query.facility) {
-            uptakeByPartnerSql = `${uptakeByPartnerSql} and FacilityName=?`;
-            params.push(query.facility);
         }
 
         uptakeByPartnerSql = `${uptakeByPartnerSql} GROUP BY CTPartner ORDER BY SUM(\`Tested\`) DESC`;

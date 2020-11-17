@@ -20,24 +20,24 @@ export class GetLinkageByPopulationTypeHandler implements IQueryHandler<GetLinka
             '((SUM(CASE WHEN Linked IS NULL THEN 0 ELSE Linked END)/SUM(positive))*100) AS linkage ' +
             'FROM fact_hts_populationtype ' +
             'WHERE PopulationType IS NOT NULL AND positive > 0 ';
-        
-        if(query.facility) {
-            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and FacilityName=?`;
-            params.push(query.facility);
-        }
 
         if(query.county) {
-            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and County=?`;
+            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and County IN (?)`;
             params.push(query.county);
         }
 
         if(query.subCounty) {
-            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and SubCounty=?`;
+            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and SubCounty IN (?)`;
             params.push(query.subCounty);
+        }
+        
+        if(query.facility) {
+            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and FacilityName IN (?)`;
+            params.push(query.facility);
         }
 
         if(query.partner) {
-            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and CTPartner=?`;
+            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and CTPartner IN (?)`;
             params.push(query.partner);
         }
 

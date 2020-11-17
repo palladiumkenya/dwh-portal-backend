@@ -1,3 +1,5 @@
 export class GetHtsSubCountiesQuery {
-    constructor(public county: string) {}
+    constructor(public county: string) {
+        
+    }
 }

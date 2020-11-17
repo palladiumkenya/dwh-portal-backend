@@ -21,23 +21,28 @@ export class GetNumberTestedPositivityHandler implements IQueryHandler<GetNumber
             'FROM fact_htsuptake WHERE Tested IS NOT NULL ';
 
         if(query.county) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and County=?`;
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and County IN (?)`;
             params.push(query.county);
         }
 
         if(query.subCounty) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and SubCounty=?`;
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and SubCounty IN (?)`;
             params.push(query.county);
+        }
+
+        if(query.facility) {
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and FacilityName IN (?)`;
+            params.push(query.facility);
+        }
+
+        if(query.partner) {
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and CTPartner IN (?)`;
+            params.push(query.partner);
         }
 
         if(query.month) {
             numberTestedPositivitySql = `${numberTestedPositivitySql} and month=?`;
             params.push(query.month);
-        }
-
-        if(query.partner) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and CTPartner=?`;
-            params.push(query.partner);
         }
 
         if(query.year) {
@@ -51,11 +56,6 @@ export class GetNumberTestedPositivityHandler implements IQueryHandler<GetNumber
             }
 
             params.push(query.year);
-        }
-
-        if(query.facility) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and FacilityName=?`;
-            params.push(query.facility);
         }
 
         numberTestedPositivitySql = `${numberTestedPositivitySql} GROUP BY TestedBefore, year,month`;

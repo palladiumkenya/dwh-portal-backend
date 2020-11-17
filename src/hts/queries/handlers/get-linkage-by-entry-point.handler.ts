@@ -22,23 +22,23 @@ export class GetLinkageByEntryPointHandler implements IQueryHandler<GetLinkageBy
             'WHERE EntryPoint IS NOT NULL AND EntryPoint <> "NULL" AND positive IS NOT NULL AND positive > 0';
 
         if(query.county) {
-            linkageByEntryPointSql = `${linkageByEntryPointSql} and County=?`;
+            linkageByEntryPointSql = `${linkageByEntryPointSql} and County IN (?)`;
             params.push(query.county);
         }
 
         if(query.subCounty) {
-            linkageByEntryPointSql = `${linkageByEntryPointSql} and SubCounty=?`;
+            linkageByEntryPointSql = `${linkageByEntryPointSql} and SubCounty IN (?)`;
             params.push(query.subCounty);
         }
 
-        if(query.partner) {
-            linkageByEntryPointSql = `${linkageByEntryPointSql} and CTPartner=?`;
-            params.push(query.partner);
+        if(query.facility) {
+            linkageByEntryPointSql = `${linkageByEntryPointSql} and FacilityName IN (?)`;
+            params.push(query.facility);
         }
 
-        if(query.facility) {
-            linkageByEntryPointSql = `${linkageByEntryPointSql} and FacilityName=?`;
-            params.push(query.facility);
+        if(query.partner) {
+            linkageByEntryPointSql = `${linkageByEntryPointSql} and CTPartner IN (?)`;
+            params.push(query.partner);
         }
 
         if(query.year) {

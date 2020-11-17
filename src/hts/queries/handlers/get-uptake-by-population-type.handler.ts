@@ -22,13 +22,23 @@ export class GetUptakeByPopulationTypeHandler implements IQueryHandler<GetUptake
             'WHERE `PopulationType` IS NOT NULL OR `PopulationType` IS NULL ';
 
         if(query.county) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and County=?`;
+            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and County IN (?)`;
             params.push(query.county);
         }
 
         if(query.subCounty) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and SubCounty=?`;
+            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and SubCounty IN (?)`;
             params.push(query.subCounty);
+        }
+
+        if(query.facility) {
+            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and FacilityName IN (?)`;
+            params.push(query.facility);
+        }
+
+        if(query.partner) {
+            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and CTPartner IN (?)`;
+            params.push(query.partner);
         }
 
         if(query.month) {
@@ -36,19 +46,9 @@ export class GetUptakeByPopulationTypeHandler implements IQueryHandler<GetUptake
             params.push(query.month);
         }
 
-        if(query.partner) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and CTPartner=?`;
-            params.push(query.partner);
-        }
-
         if(query.year) {
             uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and year=?`;
             params.push(query.year);
-        }
-
-        if(query.facility) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and FacilityName=?`;
-            params.push(query.facility);
         }
 
         uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} GROUP BY PopulationType`;

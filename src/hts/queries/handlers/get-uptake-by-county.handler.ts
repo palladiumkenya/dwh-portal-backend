@@ -34,8 +34,23 @@ export class GetUptakeByCountyHandler implements IQueryHandler<GetUptakeByCounty
         }
 
         if(query.county) {
-            uptakeByCountySql = `${uptakeByCountySql} and County=?`;
+            uptakeByCountySql = `${uptakeByCountySql} and County IN (?)`;
             params.push(query.county);
+        }
+
+        if(query.subCounty) {
+            uptakeByCountySql = `${uptakeByCountySql} and SubCounty IN (?)`;
+            params.push(query.subCounty);
+        }
+
+        if(query.facility) {
+            uptakeByCountySql = `${uptakeByCountySql} and FacilityName IN (?)`;
+            params.push(query.facility);
+        }
+
+        if(query.partner) {
+            uptakeByCountySql = `${uptakeByCountySql} and CTPartner IN (?)`;
+            params.push(query.partner);
         }
 
         if(query.month) {
@@ -43,19 +58,9 @@ export class GetUptakeByCountyHandler implements IQueryHandler<GetUptakeByCounty
             params.push(query.month);
         }
 
-        if(query.partner) {
-            uptakeByCountySql = `${uptakeByCountySql} and CTPartner=?`;
-            params.push(query.partner);
-        }
-
         if(query.year) {
             uptakeByCountySql = `${uptakeByCountySql} and year=?`;
             params.push(query.year);
-        }
-
-        if(query.facility) {
-            uptakeByCountySql = `${uptakeByCountySql} and FacilityName=?`;
-            params.push(query.facility);
         }
 
         if(query.county) {

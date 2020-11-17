@@ -21,23 +21,23 @@ export class GetLinkageByAgeSexHandler implements IQueryHandler<GetLinkageByAgeS
             '((SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END)/SUM(positive))*100) AS linkage ' +
             'FROM fact_hts_agegender WHERE positive > 0 ';
 
-        if(query.facility) {
-            linkageByAgeSexSql = `${linkageByAgeSexSql} and FacilityName=?`;
-            params.push(query.facility);
-        }
-
         if(query.county) {
-            linkageByAgeSexSql = `${linkageByAgeSexSql} and County=?`;
+            linkageByAgeSexSql = `${linkageByAgeSexSql} and County IN (?)`;
             params.push(query.county);
         }
 
         if(query.subCounty) {
-            linkageByAgeSexSql = `${linkageByAgeSexSql} and SubCounty=?`;
+            linkageByAgeSexSql = `${linkageByAgeSexSql} and SubCounty IN (?)`;
             params.push(query.subCounty);
         }
 
+        if(query.facility) {
+            linkageByAgeSexSql = `${linkageByAgeSexSql} and FacilityName IN (?)`;
+            params.push(query.facility);
+        }
+
         if(query.partner) {
-            linkageByAgeSexSql = `${linkageByAgeSexSql} and CTPartner=?`;
+            linkageByAgeSexSql = `${linkageByAgeSexSql} and CTPartner IN (?)`;
             params.push(query.partner);
         }
 

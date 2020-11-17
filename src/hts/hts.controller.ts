@@ -387,6 +387,10 @@ export class HtsController {
             query.county = county;
         }
 
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
         if(year) {
             query.year = year;
         }

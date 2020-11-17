@@ -23,8 +23,23 @@ export class GetUptakeByEntrypointHandler implements IQueryHandler<GetUptakeByEn
             'WHERE `EntryPoint` IS NOT NULL ';
 
         if(query.county) {
-            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and County=?`;
+            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and County IN (?)`;
             params.push(query.county);
+        }
+
+        if(query.subCounty) {
+            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and SubCounty IN (?)`;
+            params.push(query.subCounty);
+        }
+
+        if(query.facility) {
+            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and FacilityName IN (?)`;
+            params.push(query.facility);
+        }
+
+        if(query.partner) {
+            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and CTPartner IN (?)`;
+            params.push(query.partner);
         }
 
         if(query.month) {
@@ -32,19 +47,9 @@ export class GetUptakeByEntrypointHandler implements IQueryHandler<GetUptakeByEn
             params.push(query.month);
         }
 
-        if(query.partner) {
-            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and CTPartner=?`;
-            params.push(query.partner);
-        }
-
         if(query.year) {
             uptakeByEntryPointSql = `${uptakeByEntryPointSql} and year=?`;
             params.push(query.year);
-        }
-
-        if(query.facility) {
-            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and FacilityName=?`;
-            params.push(query.facility);
         }
 
         uptakeByEntryPointSql = `${uptakeByEntryPointSql} GROUP BY EntryPoint ORDER BY SUM(\`Tested\`) DESC`;
