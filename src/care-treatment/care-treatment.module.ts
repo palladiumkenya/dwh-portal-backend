@@ -113,6 +113,7 @@ import { FactTransAeClients } from './adverse-events/entities/fact-trans-ae-clie
 import { GetNumberOfClientWithAeHandler } from './adverse-events/queries/handlers/get-number-of-client-with-ae.handler';
 import { GetNumberAeReportedInAdultsOver15Handler } from './adverse-events/queries/handlers/get-number-ae-reported-in-adults-over-15.handler';
 import { GetNumberAeReportedInChildrenOver15Handler } from './adverse-events/queries/handlers/get-number-ae-reported-in-children-over-15.handler';
+import { GetAeTypeBySeverityHandler } from './adverse-events/queries/handlers/get-ae-type-by-severity.handler';
 
 @Module({
     imports: [
@@ -222,7 +223,8 @@ import { GetNumberAeReportedInChildrenOver15Handler } from './adverse-events/que
         GetNumberOfClientChildrenWithAeHandler,
         GetNumberOfClientWithAeHandler,
         GetNumberAeReportedInAdultsOver15Handler,
-        GetNumberAeReportedInChildrenOver15Handler
+        GetNumberAeReportedInChildrenOver15Handler,
+        GetAeTypeBySeverityHandler
     ],
     controllers: [CareTreatmentController]
 })
