@@ -108,6 +108,11 @@ import { GetReportedCausesOfAeHandler } from './adverse-events/queries/handlers/
 import { FactTransAeCategories } from './adverse-events/entities/fact-trans-ae-categories.model';
 import { GetReportedAesWithSeverityLevelsHandler } from './adverse-events/queries/handlers/get-reported-aes-with-severity-levels.handler';
 import { GetAeActionsByDrugsHandler } from './adverse-events/queries/handlers/get-ae-actions-by-drugs.handler';
+import { GetNumberOfClientChildrenWithAeHandler } from './adverse-events/queries/handlers/get-number-of-client-children-with-ae.handler';
+import { FactTransAeClients } from './adverse-events/entities/fact-trans-ae-clients.model';
+import { GetNumberOfClientWithAeHandler } from './adverse-events/queries/handlers/get-number-of-client-with-ae.handler';
+import { GetNumberAeReportedInAdultsOver15Handler } from './adverse-events/queries/handlers/get-number-ae-reported-in-adults-over-15.handler';
+import { GetNumberAeReportedInChildrenOver15Handler } from './adverse-events/queries/handlers/get-number-ae-reported-in-children-over-15.handler';
 
 @Module({
     imports: [
@@ -132,7 +137,8 @@ import { GetAeActionsByDrugsHandler } from './adverse-events/queries/handlers/ge
                 FactTransAdverseEvents,
                 FactTransAeSeverity,
                 FactTransAeCauses,
-                FactTransAeCategories
+                FactTransAeCategories,
+                FactTransAeClients
             ],
             'mssql'
         )
@@ -212,7 +218,11 @@ import { GetAeActionsByDrugsHandler } from './adverse-events/queries/handlers/ge
         GetAeActionsBySeverityHandler,
         GetReportedCausesOfAeHandler,
         GetReportedAesWithSeverityLevelsHandler,
-        GetAeActionsByDrugsHandler
+        GetAeActionsByDrugsHandler,
+        GetNumberOfClientChildrenWithAeHandler,
+        GetNumberOfClientWithAeHandler,
+        GetNumberAeReportedInAdultsOver15Handler,
+        GetNumberAeReportedInChildrenOver15Handler
     ],
     controllers: [CareTreatmentController]
 })
