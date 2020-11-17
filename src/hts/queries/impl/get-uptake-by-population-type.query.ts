@@ -1,8 +1,8 @@
 export class GetUptakeByPopulationTypeQuery {
-    county?: string;
-    subCounty?: string;
-    partner?: string;
+    county?: string[];
+    subCounty?: string[];
+    facility?: string[];
+    partner?: string[];
     year?: number;
     month?: number;
-    facility?: string;
 }

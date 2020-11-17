@@ -25,8 +25,23 @@ export class GetUptakeByTbScreenedHandler implements IQueryHandler<GetUptakeByTb
             '  FROM `fact_hts_tbscreening` t WHERE `tbScreening` IS NULL OR `tbScreening` IS NOT NULL ';
 
         if(query.county) {
-            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and County=?`;
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and County IN (?)`;
             params.push(query.county);
+        }
+
+        if(query.subCounty) {
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and subcounty IN (?)`;
+            params.push(query.subCounty);
+        }
+
+        if(query.facility) {
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and FacilityName IN (?)`;
+            params.push(query.facility);
+        }
+
+        if(query.partner) {
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and CTPartner IN (?)`;
+            params.push(query.partner);
         }
 
         if(query.month) {
@@ -34,19 +49,9 @@ export class GetUptakeByTbScreenedHandler implements IQueryHandler<GetUptakeByTb
             params.push(query.month);
         }
 
-        if(query.partner) {
-            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and CTPartner=?`;
-            params.push(query.partner);
-        }
-
         if(query.year) {
             uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and year=?`;
             params.push(query.year);
-        }
-
-        if(query.facility) {
-            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and FacilityName=?`;
-            params.push(query.facility);
         }
 
         return  await this.repository.query(uptakeByTBScreenedSql, params);

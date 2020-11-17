@@ -23,8 +23,23 @@ export class GetUptakeByTestedasHandler implements IQueryHandler<GetUptakeByTest
             'WHERE `ClientTestedAs` IS NOT NULL ';
 
         if(query.county) {
-            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and County=?`;
+            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and County IN (?)`;
             params.push(query.county);
+        }
+
+        if(query.subCounty) {
+            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and SubCounty IN (?)`;
+            params.push(query.subCounty);
+        }
+
+        if(query.facility) {
+            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and FacilityName IN (?)`;
+            params.push(query.facility);
+        }
+
+        if(query.partner) {
+            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and CTPartner IN (?)`;
+            params.push(query.partner);
         }
 
         if(query.month) {
@@ -32,19 +47,9 @@ export class GetUptakeByTestedasHandler implements IQueryHandler<GetUptakeByTest
             params.push(query.month);
         }
 
-        if(query.partner) {
-            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and CTPartner=?`;
-            params.push(query.partner);
-        }
-
         if(query.year) {
             uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and year=?`;
             params.push(query.year);
-        }
-
-        if(query.facility) {
-            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and FacilityName=?`;
-            params.push(query.facility);
         }
 
         uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} GROUP BY ClientTestedAs`;

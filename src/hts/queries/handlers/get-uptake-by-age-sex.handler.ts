@@ -18,13 +18,23 @@ export class GetUptakeByAgeSexHandler implements IQueryHandler<GetUptakeByAgeSex
             'FROM fact_hts_agegender WHERE Tested IS NOT NULL ';
 
         if(query.county) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and County=?`;
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and County IN (?)`;
             params.push(query.county);
         }
 
         if(query.subCounty) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and SubCounty=?`;
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and SubCounty IN (?)`;
             params.push(query.subCounty);
+        }
+
+        if(query.facility) {
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and FacilityName IN (?)`;
+            params.push(query.facility);
+        }
+
+        if(query.partner) {
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and CTPartner IN (?)`;
+            params.push(query.partner);
         }
 
         if(query.month) {
@@ -32,19 +42,9 @@ export class GetUptakeByAgeSexHandler implements IQueryHandler<GetUptakeByAgeSex
             params.push(query.month);
         }
 
-        if(query.partner) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and CTPartner=?`;
-            params.push(query.partner);
-        }
-
         if(query.year) {
             uptakeByAgeSexSql = `${uptakeByAgeSexSql} and year=?`;
             params.push(query.year);
-        }
-
-        if(query.facility) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and FacilityName=?`;
-            params.push(query.facility);
         }
 
         uptakeByAgeSexSql = `${uptakeByAgeSexSql} GROUP BY DATIM_AgeGroup, Gender`;

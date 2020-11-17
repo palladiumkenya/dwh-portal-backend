@@ -21,23 +21,23 @@ export class GetLinkageByPartnerHandler implements IQueryHandler<GetLinkageByPar
             'FROM fact_htsuptake ' +
             'WHERE CTPartner IS NOT NULL AND positive > 0 ';
 
-        if(query.facility) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and FacilityName=?`;
-            params.push(query.facility);
-        }
-
         if(query.county) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and County=?`;
+            linkageByPartnerSql = `${linkageByPartnerSql} and County IN (?)`;
             params.push(query.county);
         }
 
         if(query.subCounty) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and SubCounty=?`;
+            linkageByPartnerSql = `${linkageByPartnerSql} and SubCounty IN (?)`;
             params.push(query.subCounty);
         }
 
+        if(query.facility) {
+            linkageByPartnerSql = `${linkageByPartnerSql} and FacilityName IN (?)`;
+            params.push(query.facility);
+        }
+
         if(query.partner) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and CTPartner=?`;
+            linkageByPartnerSql = `${linkageByPartnerSql} and CTPartner IN (?)`;
             params.push(query.partner);
         }
 

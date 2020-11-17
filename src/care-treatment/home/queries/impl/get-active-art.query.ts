@@ -1,6 +1,8 @@
 export class GetActiveArtQuery {
     county?: string[];
     subCounty?: string[];
-    partner?: string[];
     facility?: string[];
+    partner?: string[];
+    year?: number;
+    month?: number;
 }

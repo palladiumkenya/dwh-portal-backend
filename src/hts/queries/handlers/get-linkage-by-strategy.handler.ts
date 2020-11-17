@@ -22,13 +22,23 @@ export class GetLinkageByStrategyHandler implements IQueryHandler<GetLinkageBySt
             'WHERE `TestStrategy` IS NOT NULL AND TestStrategy <> "NULL" AND positive IS NOT NULL AND positive > 0 ';
 
         if(query.county) {
-            linkageByStrategySql = `${linkageByStrategySql} and County=?`;
+            linkageByStrategySql = `${linkageByStrategySql} and County IN (?)`;
             params.push(query.county);
         }
 
         if(query.subCounty) {
-            linkageByStrategySql = `${linkageByStrategySql} and SubCounty=?`;
+            linkageByStrategySql = `${linkageByStrategySql} and SubCounty IN (?)`;
             params.push(query.subCounty);
+        }
+
+        if(query.facility) {
+            linkageByStrategySql = `${linkageByStrategySql} and FacilityName IN (?)`;
+            params.push(query.facility);
+        }
+
+        if(query.partner) {
+            linkageByStrategySql = `${linkageByStrategySql} and CTPartner IN (?)`;
+            params.push(query.partner);
         }
 
         if(query.month) {
@@ -36,19 +46,9 @@ export class GetLinkageByStrategyHandler implements IQueryHandler<GetLinkageBySt
             params.push(query.month);
         }
 
-        if(query.partner) {
-            linkageByStrategySql = `${linkageByStrategySql} and CTPartner=?`;
-            params.push(query.partner);
-        }
-
         if(query.year) {
             linkageByStrategySql = `${linkageByStrategySql} and year=?`;
             params.push(query.year);
-        }
-
-        if(query.facility) {
-            linkageByStrategySql = `${linkageByStrategySql} and FacilityName=?`;
-            params.push(query.facility);
         }
 
         linkageByStrategySql = `${linkageByStrategySql} GROUP BY TestStrategy ORDER BY SUM(\`positive\`) DESC`;

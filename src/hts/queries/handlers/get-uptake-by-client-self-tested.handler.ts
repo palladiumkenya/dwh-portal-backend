@@ -23,8 +23,23 @@ export class GetUptakeByClientSelfTestedHandler implements IQueryHandler<GetUpta
             'WHERE `ClientSelfTested` IS NOT NULL ';
 
         if(query.county) {
-            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and County=?`;
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and County IN (?)`;
             params.push(query.county);
+        }
+
+        if(query.subCounty) {
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and SubCounty IN (?)`;
+            params.push(query.subCounty);
+        }
+
+        if(query.facility) {
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and FacilityName IN (?)`;
+            params.push(query.facility);
+        }
+
+        if(query.partner) {
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and CTPartner IN (?)`;
+            params.push(query.partner);
         }
 
         if(query.month) {
@@ -32,19 +47,9 @@ export class GetUptakeByClientSelfTestedHandler implements IQueryHandler<GetUpta
             params.push(query.month);
         }
 
-        if(query.partner) {
-            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and CTPartner=?`;
-            params.push(query.partner);
-        }
-
         if(query.year) {
             uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and year=?`;
             params.push(query.year);
-        }
-
-        if(query.facility) {
-            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and FacilityName=?`;
-            params.push(query.facility);
         }
 
         uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} GROUP BY ClientSelfTested`;

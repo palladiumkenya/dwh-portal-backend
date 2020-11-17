@@ -3,4 +3,6 @@ export class GetCtTxCurrAgeGroupDistributionByCountyQuery {
     subCounty?: string[];
     facility?: string[];
     partner?: string[];
+    year?: number;
+    month?: number;
 }

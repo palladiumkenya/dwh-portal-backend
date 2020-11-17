@@ -21,23 +21,23 @@ export class GetLinkageNumberPositiveHandler implements IQueryHandler<GetLinkage
             '((SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END)/SUM(positive))*100) AS linkage ' +
             'FROM fact_htsuptake WHERE positive > 0 ';
 
-        if(query.facility) {
-            linkageNumberPositiveSql = `${linkageNumberPositiveSql} and FacilityName=?`;
-            params.push(query.facility);
-        }
-
         if(query.county) {
-            linkageNumberPositiveSql = `${linkageNumberPositiveSql} and County=?`;
+            linkageNumberPositiveSql = `${linkageNumberPositiveSql} and County IN (?)`;
             params.push(query.county);
         }
 
         if(query.subCounty) {
-            linkageNumberPositiveSql = `${linkageNumberPositiveSql} and SubCounty=?`;
+            linkageNumberPositiveSql = `${linkageNumberPositiveSql} and SubCounty IN (?)`;
             params.push(query.subCounty);
+        }
+        
+        if(query.facility) {
+            linkageNumberPositiveSql = `${linkageNumberPositiveSql} and FacilityName IN (?)`;
+            params.push(query.facility);
         }
 
         if(query.partner) {
-            linkageNumberPositiveSql = `${linkageNumberPositiveSql} and CTPartner=?`;
+            linkageNumberPositiveSql = `${linkageNumberPositiveSql} and CTPartner IN (?)`;
             params.push(query.partner);
         }
 
