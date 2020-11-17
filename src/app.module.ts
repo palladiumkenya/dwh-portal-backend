@@ -5,10 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigurationModule } from './config/config.module';
 import { DatabaseConnectionService } from './config/database-connection.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { CommonModule } from './application/common/common.module';
-import { ManifestsModule } from './application/manifests/manifests.module';
-import { HtsModule } from './application/hts/hts.module';
-import { CareTreatmentModule } from './application/care-treatment/care-treatment.module';
+import { CommonModule } from './common/common.module';
+import { ManifestsModule } from './manifests/manifests.module';
+import { HtsModule } from './hts/hts.module';
+import { CareTreatmentModule } from './care-treatment/care-treatment.module';
 
 @Module({
     imports: [
