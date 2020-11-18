@@ -11,29 +11,40 @@ export class GetOverallReportingHandler implements IQueryHandler<GetOverallRepor
         @InjectRepository(FactManifest)
         private readonly repository: Repository<FactManifest>
     ) {
+
     }
 
     async execute(query: GetOverallReportingQuery): Promise<OverallReportingDto> {
-        const params = [query.docket];
-
+        const params = [];
+        params.push(query.docket);
         let overAllReportingSql = `SELECT ${query.reportingType}, COUNT(df.facilityId) AS facilities_count FROM fact_manifest fm
             INNER JOIN dim_time dt ON dt.timeId = fm.timeId
             INNER JOIN dim_facility df ON df.facilityId = fm.facilityId
             WHERE docketId = ?`;
 
-        if (query.agency) {
-            overAllReportingSql = `${overAllReportingSql} and agency=?`;
-            params.push(query.agency);
+        if (query.county) {
+            overAllReportingSql = `${overAllReportingSql} and county IN (?)`;
+            params.push(query.county);
+        }
+
+        if (query.subCounty) {
+            overAllReportingSql = `${overAllReportingSql} and subCounty IN (?)`;
+            params.push(query.subCounty);
+        }
+
+        if (query.facility) {
+            overAllReportingSql = `${overAllReportingSql} and name IN (?)`;
+            params.push(query.facility);
         }
 
         if (query.partner) {
-            overAllReportingSql = `${overAllReportingSql} and partner=?`;
+            overAllReportingSql = `${overAllReportingSql} and partner IN (?)`;
             params.push(query.partner);
         }
 
-        if (query.county) {
-            overAllReportingSql = `${overAllReportingSql} and county=?`;
-            params.push(query.county);
+        if (query.agency) {
+            overAllReportingSql = `${overAllReportingSql} and agency IN (?)`;
+            params.push(query.agency);
         }
 
         if (query.period) {

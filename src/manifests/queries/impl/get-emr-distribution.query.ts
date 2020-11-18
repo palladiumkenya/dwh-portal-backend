@@ -1,10 +1,15 @@
 export class GetEmrDistributionQuery {
-    agency?: string;
-    county?: string;
-    partner?: string;
+    county?: string[];
+    subCounty?: string[];
+    facility?: string[];
+    partner?: string[];
+    agency?: string[];
+    year?: number;
+    month?: number;
     reportingType?: string;
     period?: string;
 
     constructor(public docket: string) {
+        
     }
 }

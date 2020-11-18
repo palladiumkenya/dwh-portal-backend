@@ -14,8 +14,8 @@ export class GetRecencyByPartnerHandler implements IQueryHandler<GetRecencyByPar
     }
 
     async execute(query: GetRecencyByPartnerQuery): Promise<RecencyByPartnerDto> {
-        const params = [query.docket];
-
+        const params = [];
+        params.push(query.docket);
         let recencyOfReportingByPartnerSql = `SELECT a.partner
                                     \t,recency
                                     \t,b.expected
@@ -26,19 +26,29 @@ export class GetRecencyByPartnerHandler implements IQueryHandler<GetRecencyByPar
                                     \tFROM recency_uploads
                                     \tWHERE docket = ?`;
 
-        if (query.agency) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and agency=?`;
-            params.push(query.agency);
-        }
-
         if(query.county) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and county=?`;
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and county IN (?)`;
             params.push(query.county);
         }
 
+        // if(query.subCounty) {
+        //     recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and subCounty IN (?)`;
+        //     params.push(query.subCounty);
+        // }
+
+        // if(query.facility) {
+        //     recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and facility IN (?)`;
+        //     params.push(query.facility);
+        // }
+
         if(query.partner) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and partner=?`;
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and partner IN (?)`;
             params.push(query.partner);
+        }
+        
+        if (query.agency) {
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and agency IN (?)`;
+            params.push(query.agency);
         }
 
         if(query.period) {
@@ -60,19 +70,29 @@ export class GetRecencyByPartnerHandler implements IQueryHandler<GetRecencyByPar
             params.push(query.docket);
         }
 
-        if (query.agency) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and agency=?`;
-            params.push(query.agency);
-        }
-
         if(query.county) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and county=?`;
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and county IN (?)`;
             params.push(query.county);
         }
 
+        // if(query.subCounty) {
+        //     recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and subCounty IN (?)`;
+        //     params.push(query.subCounty);
+        // }
+
+        // if(query.facility) {
+        //     recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and facility IN (?)`;
+        //     params.push(query.facility);
+        // }
+
         if(query.partner) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and partner=?`;
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and partner IN (?)`;
             params.push(query.partner);
+        }
+
+        if (query.agency) {
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and agency IN (?)`;
+            params.push(query.agency);
         }
 
         recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} GROUP BY partner

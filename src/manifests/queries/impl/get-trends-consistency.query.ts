@@ -1,9 +1,13 @@
 import moment = require('moment');
 
 export class GetTrendsConsistencyQuery {
-    county?: string;
-    agency?: string;
-    partner?: string;
+    county?: string[];
+    subCounty?: string[];
+    facility?: string[];
+    partner?: string[];
+    agency?: string[];
+    year?: number;
+    month?: number;
 
     constructor (
         public docket: string,

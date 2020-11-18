@@ -13,25 +13,40 @@ import { GetConsistencyByCountyPartnerQuery } from './queries/impl/get-consisten
 
 @Controller('manifests')
 export class ManifestsController {
-    constructor(private readonly queryBus: QueryBus) {
-    }
+    constructor(private readonly queryBus: QueryBus) {}
 
     @Get('expected/:docket')
     async getUploads(
         @Param('docket') docket,
         @Query('county') county,
-        @Query('agency') agency,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
         @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetExpectedUploadsQuery(docket);
         if (county) {
             query.county = county;
         }
-        if (agency) {
-            query.agency = agency;
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
         }
         if (partner) {
             query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
         }
         return this.queryBus.execute(query);
     }
@@ -40,19 +55,35 @@ export class ManifestsController {
     async getRecency(
         @Param('docket') docket,
         @Query('county') county,
-        @Query('agency') agency,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
         @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
         @Query('period') period,
     ): Promise<any> {
         const query = new GetRecencyUploadsQuery(docket);
         if (county) {
             query.county = county;
         }
-        if (agency) {
-            query.agency = agency;
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
         }
         if (partner) {
             query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
         }
         if (period) {
             query.period = period;
@@ -64,19 +95,35 @@ export class ManifestsController {
     async getConsistency(
         @Param('docket') docket,
         @Query('county') county,
-        @Query('agency') agency,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
         @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
         @Query('period') period,
     ): Promise<any> {
         const query = new GetConsistencyUploadsQuery(docket);
         if (county) {
             query.county = county;
         }
-        if (agency) {
-            query.agency = agency;
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
         }
         if (partner) {
             query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
         }
         if (period) {
             query.period = period;
@@ -88,19 +135,35 @@ export class ManifestsController {
     async getTrendsRecency(
         @Param('docket') docket,
         @Query('county') county,
-        @Query('agency') agency,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
         @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
         @Query('period') period,
     ): Promise<any> {
         const query = new GetTrendsRecencyQuery(docket);
         if (county) {
             query.county = county;
         }
-        if (agency) {
-            query.agency = agency;
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
         }
         if (partner) {
             query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
         }
         if (period) {
             query.period = period;
@@ -112,8 +175,12 @@ export class ManifestsController {
     async getTrendsConsistency(
         @Param('docket') docket,
         @Query('county') county,
-        @Query('agency') agency,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
         @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
         @Query('startDate') startDate,
         @Query('endDate') endDate,
     ): Promise<any> {
@@ -121,11 +188,23 @@ export class ManifestsController {
         if (county) {
             query.county = county;
         }
-        if (agency) {
-            query.agency = agency;
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
         }
         if (partner) {
             query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
         }
         if (startDate) {
             query.startDate = startDate;
@@ -140,8 +219,12 @@ export class ManifestsController {
     async getEmrDistribution(
         @Param('docket') docket,
         @Query('county') county,
-        @Query('agency') agency,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
         @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
         @Query('period') period,
         @Query('reportingType') reportingType
     ): Promise<any> {
@@ -149,11 +232,23 @@ export class ManifestsController {
         if (county) {
             query.county = county;
         }
-        if (agency) {
-            query.agency = agency;
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
         }
         if (partner) {
             query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
         }
         if (period) {
             query.period = period;
@@ -169,8 +264,12 @@ export class ManifestsController {
     async getOverAllReporting(
         @Param('docket') docket,
         @Query('county') county,
-        @Query('agency') agency,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
         @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
         @Query('period') period,
         @Query('reportingType') reportingType
     ): Promise<any> {
@@ -178,11 +277,23 @@ export class ManifestsController {
         if (county) {
             query.county = county;
         }
-        if (agency) {
-            query.agency = agency;
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
         }
         if (partner) {
             query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
         }
         if (period) {
             query.period = period;
@@ -197,19 +308,35 @@ export class ManifestsController {
     async getRecencyOfReportingByCounty(
         @Param('docket') docket,
         @Query('county') county,
-        @Query('agency') agency,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
         @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
         @Query('period') period
     ): Promise<any> {
         const query = new GetRecencyByCountyQuery(docket);
         if (county) {
             query.county = county;
         }
-        if (agency) {
-            query.agency = agency;
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
         }
         if (partner) {
             query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
         }
         if (period) {
             query.period = period;
@@ -221,19 +348,35 @@ export class ManifestsController {
     async getRecencyOfReportingByPartner(
         @Param('docket') docket,
         @Query('county') county,
-        @Query('agency') agency,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
         @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
         @Query('period') period
     ): Promise<any> {
         const query = new GetRecencyByPartnerQuery(docket);
         if (county) {
             query.county = county;
         }
-        if (agency) {
-            query.agency = agency;
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
         }
         if (partner) {
             query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
         }
         if (period) {
             query.period = period;
@@ -245,8 +388,12 @@ export class ManifestsController {
     async getConsistencyOfReportingByCountyPartner(
         @Param('docket') docket,
         @Query('county') county,
-        @Query('agency') agency,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
         @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
         @Query('period') period,
         @Query('reportingType') reportingType
     ): Promise<any> {
@@ -254,11 +401,23 @@ export class ManifestsController {
         if (county) {
             query.county = county;
         }
-        if (agency) {
-            query.agency = agency;
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
         }
         if (partner) {
             query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
         }
         if (period) {
             query.period = period;
