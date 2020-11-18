@@ -8,26 +8,31 @@ import { ExpectedUploadsTileDto } from '../../entities/dtos/expected-uploads-til
 
 @QueryHandler(GetExpectedUploadsQuery)
 export class GetExpectedUploadsHandler implements IQueryHandler<GetExpectedUploadsQuery> {
-
     constructor(
         @InjectRepository(FactManifest)
         private readonly repository: Repository<FactManifest>,
     ) {
+
     }
 
     async execute(query: GetExpectedUploadsQuery): Promise<ExpectedUploadsTileDto> {
-        const params = [query.docket];
+        const params = [];
+        params.push(query.docket);
         let expectedSql = 'select sum(expected) as totalexpected from expected_uploads where docket=?';
         if (query.county) {
-            expectedSql = `${expectedSql} and county=?`;
+            expectedSql = `${expectedSql} and county IN (?)`;
             params.push(query.county);
         }
+        // if (query.subCounty) {
+        //     expectedSql = `${expectedSql} and subCounty IN (?)`;
+        //     params.push(query.subCounty);
+        // }
         if (query.agency) {
-            expectedSql = `${expectedSql} and agency=?`;
+            expectedSql = `${expectedSql} and agency IN (?)`;
             params.push(query.agency);
         }
         if (query.partner) {
-            expectedSql = `${expectedSql} and partner=?`;
+            expectedSql = `${expectedSql} and partner IN (?)`;
             params.push(query.partner);
         }
         const expectedResult = await this.repository.query(expectedSql, params);

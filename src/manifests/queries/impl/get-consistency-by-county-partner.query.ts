@@ -1,10 +1,15 @@
 export class GetConsistencyByCountyPartnerQuery {
-    county?: string;
-    agency?: string;
-    partner?: string;
+    county?: string[];
+    subCounty?: string[];
+    facility?: string[];
+    partner?: string[];
+    agency?: string[];
+    year?: number;
+    month?: number;
     reportingType?: string;
 
     constructor(public docket: string, public period = `${new Date().getFullYear()},${new Date().getMonth()}`) {
+        
     }
 
     getDatePeriod(): string {

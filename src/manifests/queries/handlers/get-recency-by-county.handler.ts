@@ -11,34 +11,45 @@ export class GetRecencyByCountyHandler implements IQueryHandler<GetRecencyByCoun
         @InjectRepository(FactManifest)
         private readonly repository: Repository<FactManifest>
     ) {
+
     }
 
     async execute(query: GetRecencyByCountyQuery): Promise<RecencyByCountyDto> {
-        const params = [query.docket];
-
+        const params = [];
+        params.push(query.docket);
         let recencyOfReportingByCountySql = `SELECT a.county
-                                    \t,recency
-                                    \t,b.expected
-                                    \t,ROUND(recency * 100 / b.expected) AS Percentage
-                                    FROM (
-                                    \tSELECT SUM(recency) AS recency
-                                    \t\t,county
-                                    \tFROM recency_uploads
-                                    \tWHERE docket = ?`;
-
-        if (query.agency) {
-            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and agency=?`;
-            params.push(query.agency);
-        }
+            \t,recency
+            \t,b.expected
+            \t,ROUND(recency * 100 / b.expected) AS Percentage
+            FROM (
+            \tSELECT SUM(recency) AS recency
+            \t\t,county
+            \tFROM recency_uploads
+            \tWHERE docket = ?`;
 
         if(query.county) {
-            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and county=?`;
+            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and county IN (?)`;
             params.push(query.county);
         }
 
+        // if(query.subCounty) {
+        //     recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and subCounty IN (?)`;
+        //     params.push(query.subCounty);
+        // }
+
+        // if(query.facility) {
+        //     recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and facility IN (?)`;
+        //     params.push(query.facility);
+        // }
+
         if(query.partner) {
-            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and partner=?`;
+            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and partner IN (?)`;
             params.push(query.partner);
+        }
+
+        if (query.agency) {
+            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and agency IN (?)`;
+            params.push(query.agency);
         }
 
         if(query.period) {
@@ -60,19 +71,29 @@ export class GetRecencyByCountyHandler implements IQueryHandler<GetRecencyByCoun
             params.push(query.docket);
         }
 
-        if (query.agency) {
-            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and agency=?`;
-            params.push(query.agency);
-        }
-
         if(query.county) {
-            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and county=?`;
+            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and county IN (?)`;
             params.push(query.county);
         }
 
+        // if(query.subCounty) {
+        //     recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and subCounty IN (?)`;
+        //     params.push(query.subCounty);
+        // }
+
+        // if(query.facility) {
+        //     recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and facility IN (?)`;
+        //     params.push(query.facility);
+        // }
+
         if(query.partner) {
-            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and partner=?`;
+            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and partner IN (?)`;
             params.push(query.partner);
+        }
+
+        if (query.agency) {
+            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and agency IN (?)`;
+            params.push(query.agency);
         }
 
         recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} GROUP BY county
