@@ -14,6 +14,9 @@ import { FactHtsMonthsLastTest } from './uptake/entities/fact-hts-monthslasttest
 import { FactHtsTBScreening } from './uptake/entities/fact-hts-tbscreening.entity';
 import { FactHtsClientSelfTested } from './uptake/entities/fact-hts-clientselftested.entity';
 
+import { FactPNSSexualPartner } from './pns/entities/fact-pns-sexual-partner.entity';
+import { FactPNSChildren } from './pns/entities/fact-pns-children.entity';
+
 import { GetHtsSubCountiesHandler } from './uptake/queries/handlers/get-hts-sub-counties.handler';
 import { GetHtsFacilitiesHandler } from './uptake/queries/handlers/get-hts-facilities.handler';
 import { GetHtsPartnersHandler } from './uptake/queries/handlers/get-hts-partners.handler';
@@ -40,6 +43,15 @@ import { GetLinkageByPartnerHandler } from './linkage/queries/handlers/get-linka
 import { GetUptakeByAgeSexPositivityHandler } from './uptake/queries/handlers/get-uptake-by-age-sex-positivity.handler';
 import { GetLinkageByEntryPointHandler } from './linkage/queries/handlers/get-linkage-by-entry-point.handler';
 import { GetLinkageByStrategyHandler } from './linkage/queries/handlers/get-linkage-by-strategy.handler';
+
+import { GetPnsSexualContactsCascadeHandler } from './pns/queries/handlers/get-pns-sexual-contacts-cascade.handler';
+import { GetPnsSexualContactsByAgeSexHandler } from './pns/queries/handlers/get-pns-sexual-contacts-by-age-sex.handler';
+import { GetPnsSexualContactsByCountyHandler } from './pns/queries/handlers/get-pns-sexual-contacts-by-county.handler';
+import { GetPnsSexualContactsByPartnerHandler } from './pns/queries/handlers/get-pns-sexual-contacts-by-partner.handler';
+import { GetPnsSexualContactsByYearHandler } from './pns/queries/handlers/get-pns-sexual-contacts-by-year.handler';
+import { GetPnsChildrenCascadeHandler } from './pns/queries/handlers/get-pns-children-cascade.handler';
+import { GetPnsChildrenByYearHandler } from './pns/queries/handlers/get-pns-children-by-year.handler';
+
 @Module({
   imports: [
       CqrsModule,
@@ -53,7 +65,9 @@ import { GetLinkageByStrategyHandler } from './linkage/queries/handlers/get-link
           FactHtsClientTestedAs,
           FactHtsClientSelfTested,
           FactHtsMonthsLastTest,
-          FactHtsTBScreening
+          FactHtsTBScreening,
+          FactPNSSexualPartner,
+          FactPNSChildren,
       ])
   ],
   providers: [
@@ -82,6 +96,13 @@ import { GetLinkageByStrategyHandler } from './linkage/queries/handlers/get-link
       GetUptakeByPositivityHandler,
       GetLinkageByEntryPointHandler,
       GetLinkageByStrategyHandler,
+      GetPnsSexualContactsCascadeHandler,
+      GetPnsSexualContactsByAgeSexHandler,
+      GetPnsSexualContactsByCountyHandler,
+      GetPnsSexualContactsByPartnerHandler,
+      GetPnsSexualContactsByYearHandler,
+      GetPnsChildrenCascadeHandler,
+      GetPnsChildrenByYearHandler,
   ],
   controllers: [HtsController]
 })

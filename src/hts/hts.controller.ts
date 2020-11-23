@@ -28,6 +28,14 @@ import { GetLinkageByStrategyQuery } from './linkage/queries/impl/get-linkage-by
 import { GetLinkageByCountyQuery } from './linkage/queries/impl/get-linkage-by-county.query';
 import { GetLinkageByPartnerQuery } from './linkage/queries/impl/get-linkage-by-partner.query';
 
+import { GetPnsSexualContactsCascadeQuery } from './pns/queries/impl/get-pns-sexual-contacts-cascade.query';
+import { GetPnsSexualContactsByAgeSexQuery } from './pns/queries/impl/get-pns-sexual-contacts-by-age-sex.query';
+import { GetPnsSexualContactsByYearQuery } from './pns/queries/impl/get-pns-sexual-contacts-by-year.query';
+import { GetPnsSexualContactsByPartnerQuery } from './pns/queries/impl/get-pns-sexual-contacts-by-partner.query';
+import { GetPnsSexualContactsByCountyQuery } from './pns/queries/impl/get-pns-sexual-contacts-by-county.query';
+import { GetPnsChildrenCascadeQuery } from './pns/queries/impl/get-pns-children-cascade.query';
+import { GetPnsChildrenByYearQuery } from './pns/queries/impl/get-pns-children-by-year.query';
+
 @Controller('hts')
 export class HtsController {
     constructor(private readonly queryBus: QueryBus){}
@@ -880,6 +888,272 @@ export class HtsController {
 
         if(facility) {
             query.facility = facility;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('pnsSexualContactsCascade')
+    async GetPnsSexualContactsCascade(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetPnsSexualContactsCascadeQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+    
+    @Get('pnsChildrenCascade')
+    async GetPnsChildrenCascade(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetPnsChildrenCascadeQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('pnsSexualContactsByAgeSex')
+    async GetPnsSexualContactsByAgeSex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetPnsSexualContactsByAgeSexQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('pnsSexualContactsByCounty')
+    async GetPnsSexualContactsByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetPnsSexualContactsByCountyQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('pnsSexualContactsByPartner')
+    async GetPnsSexualContactsByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetPnsSexualContactsByPartnerQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('pnsSexualContactsByYear')
+    async GetPnsSexualContactsByYear(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetPnsSexualContactsByYearQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('pnsChildrenByYear')
+    async GetPnsChildrenByYear(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetPnsChildrenByYearQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
         }
 
         return this.queryBus.execute(query);
