@@ -1,30 +1,32 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { GetNumberTestedPositivityQuery } from './queries/impl/get-number-tested-positivity.query';
-import { GetUptakeByAgeSexQuery } from './queries/impl/get-uptake-by-age-sex.query';
-import { GetUptakeByPopulationTypeQuery } from './queries/impl/get-uptake-by-population-type.query';
-import { GetUptakeByTestingStrategyQuery } from './queries/impl/get-uptake-by-testing-strategy.query';
-import { GetUptakeByEntryPointQuery } from './queries/impl/get-uptake-by-entrypoint.query';
-import { GetUptakeByCountyQuery } from './queries/impl/get-uptake-by-county.query';
-import { GetUptakeByPartnerQuery } from './queries/impl/get-uptake-by-partner.query';
-import { GetUptakeByTestedasQuery } from './queries/impl/get-uptake-by-testedas.query';
-import { GetUptakeByClientSelfTestedQuery } from './queries/impl/get-uptake-by-client-self-tested.query';
-import { GetUptakeCountiesQuery } from './queries/impl/get-uptake-counties.query';
-import { GetHtsSubCountiesQuery } from './queries/impl/get-hts-sub-counties.query';
-import { GetHtsFacilitiesQuery } from './queries/impl/get-hts-facilities.query';
-import { GetHtsPartnersQuery } from './queries/impl/get-hts-partners.query';
-import { GetLinkageNumberPositiveQuery } from './queries/impl/get-linkage-number-positive.query';
-import { GetLinkageByAgeSexQuery } from './queries/impl/get-linkage-by-age-sex.query';
-import { GetLinkageByPopulationTypeQuery } from './queries/impl/get-linkage-by-population-type.query';
-import { GetLinkageByEntryPointQuery } from './queries/impl/get-linkage-by-entry-point.query';
-import { GetLinkageByStrategyQuery } from './queries/impl/get-linkage-by-strategy.query';
-import { GetLinkageByCountyQuery } from './queries/impl/get-linkage-by-county.query';
-import { GetLinkageByPartnerQuery } from './queries/impl/get-linkage-by-partner.query';
-import { GetUptakeByMonthsSinceLastTestQuery } from './queries/impl/get-uptake-by-months-since-last-test.query';
-import { GetUptakeByTbScreeningQuery } from './queries/impl/get-uptake-by-tb-screening.query';
-import { GetUptakeByTbScreenedQuery } from './queries/impl/get-uptake-by-tb-screened.query';
-import { GetUptakeByAgeSexPositivityQuery } from './queries/impl/get-uptake-by-age-sex-positivity.query';
-import { GetUptakeByPositivityQuery } from './queries/impl/get-uptake-by-positivity.query';
+
+import { GetHtsSubCountiesQuery } from './uptake/queries/impl/get-hts-sub-counties.query';
+import { GetHtsFacilitiesQuery } from './uptake/queries/impl/get-hts-facilities.query';
+import { GetHtsPartnersQuery } from './uptake/queries/impl/get-hts-partners.query';
+import { GetUptakeByAgeSexQuery } from './uptake/queries/impl/get-uptake-by-age-sex.query';
+import { GetUptakeByPopulationTypeQuery } from './uptake/queries/impl/get-uptake-by-population-type.query';
+import { GetUptakeByTestingStrategyQuery } from './uptake/queries/impl/get-uptake-by-testing-strategy.query';
+import { GetUptakeByEntryPointQuery } from './uptake/queries/impl/get-uptake-by-entrypoint.query';
+import { GetUptakeByCountyQuery } from './uptake/queries/impl/get-uptake-by-county.query';
+import { GetUptakeByPartnerQuery } from './uptake/queries/impl/get-uptake-by-partner.query';
+import { GetUptakeByTestedasQuery } from './uptake/queries/impl/get-uptake-by-testedas.query';
+import { GetUptakeByClientSelfTestedQuery } from './uptake/queries/impl/get-uptake-by-client-self-tested.query';
+import { GetUptakeCountiesQuery } from './uptake/queries/impl/get-uptake-counties.query';
+import { GetUptakeByMonthsSinceLastTestQuery } from './uptake/queries/impl/get-uptake-by-months-since-last-test.query';
+import { GetUptakeByTbScreeningQuery } from './uptake/queries/impl/get-uptake-by-tb-screening.query';
+import { GetUptakeByTbScreenedQuery } from './uptake/queries/impl/get-uptake-by-tb-screened.query';
+import { GetUptakeByAgeSexPositivityQuery } from './uptake/queries/impl/get-uptake-by-age-sex-positivity.query';
+import { GetUptakeByPositivityQuery } from './uptake/queries/impl/get-uptake-by-positivity.query';
+
+import { GetNumberTestedPositivityQuery } from './linkage/queries/impl/get-number-tested-positivity.query';
+import { GetLinkageNumberPositiveQuery } from './linkage/queries/impl/get-linkage-number-positive.query';
+import { GetLinkageByAgeSexQuery } from './linkage/queries/impl/get-linkage-by-age-sex.query';
+import { GetLinkageByPopulationTypeQuery } from './linkage/queries/impl/get-linkage-by-population-type.query';
+import { GetLinkageByEntryPointQuery } from './linkage/queries/impl/get-linkage-by-entry-point.query';
+import { GetLinkageByStrategyQuery } from './linkage/queries/impl/get-linkage-by-strategy.query';
+import { GetLinkageByCountyQuery } from './linkage/queries/impl/get-linkage-by-county.query';
+import { GetLinkageByPartnerQuery } from './linkage/queries/impl/get-linkage-by-partner.query';
 
 @Controller('hts')
 export class HtsController {
