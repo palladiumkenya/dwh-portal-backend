@@ -3,41 +3,55 @@ import { HtsController } from './hts.controller';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigurationModule } from '../config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FactHtsUptake } from './entities/fact-htsuptake.entity';
-import { GetNumberTestedPositivityHandler } from './queries/handlers/get-number-tested-positivity.handler';
-import { GetUptakeByAgeSexHandler } from './queries/handlers/get-uptake-by-age-sex.handler';
-import { FactHtsUptakeAgeGender } from './entities/fact-htsuptake-agegender.entity';
-import { FactHtsPopulationType } from './entities/fact-hts-populationtype.entity';
-import { GetUptakeByPopulationTypeHandler } from './queries/handlers/get-uptake-by-population-type.handler';
-import { FactHtsTeststrategy } from './entities/fact-hts-teststrategy.entity';
-import { GetUptakeByTestingStrategyHandler } from './queries/handlers/get-uptake-by-testing-strategy.handler';
-import { FactHtsEntryPoint } from './entities/fact-hts-entrypoint.entity';
-import { GetUptakeByEntrypointHandler } from './queries/handlers/get-uptake-by-entrypoint.handler';
-import { GetUptakeByCountyHandler } from './queries/handlers/get-uptake-by-county.handler';
-import { GetUptakeByPartnerHandler } from './queries/handlers/get-uptake-by-partner.handler';
-import { FactHtsClientTestedAs } from './entities/fact-hts-clienttestedas.entity';
-import { GetUptakeByTestedasHandler } from './queries/handlers/get-uptake-by-testedas.handler';
-import { FactHtsClientSelfTested } from './entities/fact-hts-clientselftested.entity';
-import { GetUptakeByClientSelfTestedHandler } from './queries/handlers/get-uptake-by-client-self-tested.handler';
-import { GetUptakeCountiesHandler } from './queries/handlers/get-uptake-counties.handler';
-import { GetHtsSubCountiesHandler } from './queries/handlers/get-hts-sub-counties.handler';
-import { GetHtsFacilitiesHandler } from './queries/handlers/get-hts-facilities.handler';
-import { GetHtsPartnersHandler } from './queries/handlers/get-hts-partners.handler';
 
-import { GetLinkageNumberPositiveHandler } from './queries/handlers/get-linkage-number-positive.handler';
-import { GetLinkageByAgeSexHandler } from './queries/handlers/get-linkage-by-age-sex.handler';
-import { GetLinkageByPopulationTypeHandler } from './queries/handlers/get-linkage-by-population-type.handler';
-import { GetLinkageByCountyHandler } from './queries/handlers/get-linkage-by-county.handler';
-import { GetLinkageByPartnerHandler } from './queries/handlers/get-linkage-by-partner.handler';
-import { GetUptakeByMonthsSinceLastTestHandler } from './queries/handlers/get-uptake-by-months-since-last-test.handler';
-import { FactHtsMonthsLastTest } from './entities/fact-hts-monthslasttest.entity';
-import { FactHtsTBScreening } from './entities/fact-hts-tbscreening.entity';
-import { GetUptakeByTBScreeningHandler } from './queries/handlers/get-uptake-by-tb-screening.handler';
-import { GetUptakeByTbScreenedHandler } from './queries/handlers/get-uptake-by-tb-screened.handler';
-import { GetUptakeByAgeSexPositivityHandler } from './queries/handlers/get-uptake-by-age-sex-positivity.handler';
-import { GetUptakeByPositivityHandler } from './queries/handlers/get-uptake-by-positivity.handler';
-import { GetLinkageByEntryPointHandler } from './queries/handlers/get-linkage-by-entry-point.handler';
-import { GetLinkageByStrategyHandler } from './queries/handlers/get-linkage-by-strategy.handler';
+import { FactHtsUptake } from './uptake/entities/fact-htsuptake.entity';
+import { FactHtsUptakeAgeGender } from './uptake/entities/fact-htsuptake-agegender.entity';
+import { FactHtsPopulationType } from './uptake/entities/fact-hts-populationtype.entity';
+import { FactHtsTeststrategy } from './uptake/entities/fact-hts-teststrategy.entity';
+import { FactHtsEntryPoint } from './uptake/entities/fact-hts-entrypoint.entity';
+import { FactHtsClientTestedAs } from './uptake/entities/fact-hts-clienttestedas.entity';
+import { FactHtsMonthsLastTest } from './uptake/entities/fact-hts-monthslasttest.entity';
+import { FactHtsTBScreening } from './uptake/entities/fact-hts-tbscreening.entity';
+import { FactHtsClientSelfTested } from './uptake/entities/fact-hts-clientselftested.entity';
+
+import { FactPNSSexualPartner } from './pns/entities/fact-pns-sexual-partner.entity';
+import { FactPNSChildren } from './pns/entities/fact-pns-children.entity';
+
+import { GetHtsSubCountiesHandler } from './uptake/queries/handlers/get-hts-sub-counties.handler';
+import { GetHtsFacilitiesHandler } from './uptake/queries/handlers/get-hts-facilities.handler';
+import { GetHtsPartnersHandler } from './uptake/queries/handlers/get-hts-partners.handler';
+import { GetUptakeByAgeSexHandler } from './uptake/queries/handlers/get-uptake-by-age-sex.handler';
+import { GetUptakeByPopulationTypeHandler } from './uptake/queries/handlers/get-uptake-by-population-type.handler';
+import { GetUptakeByTestingStrategyHandler } from './uptake/queries/handlers/get-uptake-by-testing-strategy.handler';
+import { GetUptakeByEntrypointHandler } from './uptake/queries/handlers/get-uptake-by-entrypoint.handler';
+import { GetUptakeByCountyHandler } from './uptake/queries/handlers/get-uptake-by-county.handler';
+import { GetUptakeByPartnerHandler } from './uptake/queries/handlers/get-uptake-by-partner.handler';
+import { GetUptakeByTestedasHandler } from './uptake/queries/handlers/get-uptake-by-testedas.handler';
+import { GetUptakeByClientSelfTestedHandler } from './uptake/queries/handlers/get-uptake-by-client-self-tested.handler';
+import { GetUptakeCountiesHandler } from './uptake/queries/handlers/get-uptake-counties.handler';
+import { GetUptakeByMonthsSinceLastTestHandler } from './uptake/queries/handlers/get-uptake-by-months-since-last-test.handler';
+import { GetUptakeByPositivityHandler } from './uptake/queries/handlers/get-uptake-by-positivity.handler';
+import { GetUptakeByTBScreeningHandler } from './uptake/queries/handlers/get-uptake-by-tb-screening.handler';
+import { GetUptakeByTbScreenedHandler } from './uptake/queries/handlers/get-uptake-by-tb-screened.handler';
+
+import { GetNumberTestedPositivityHandler } from './linkage/queries/handlers/get-number-tested-positivity.handler';
+import { GetLinkageNumberPositiveHandler } from './linkage/queries/handlers/get-linkage-number-positive.handler';
+import { GetLinkageByAgeSexHandler } from './linkage/queries/handlers/get-linkage-by-age-sex.handler';
+import { GetLinkageByPopulationTypeHandler } from './linkage/queries/handlers/get-linkage-by-population-type.handler';
+import { GetLinkageByCountyHandler } from './linkage/queries/handlers/get-linkage-by-county.handler';
+import { GetLinkageByPartnerHandler } from './linkage/queries/handlers/get-linkage-by-partner.handler';
+import { GetUptakeByAgeSexPositivityHandler } from './uptake/queries/handlers/get-uptake-by-age-sex-positivity.handler';
+import { GetLinkageByEntryPointHandler } from './linkage/queries/handlers/get-linkage-by-entry-point.handler';
+import { GetLinkageByStrategyHandler } from './linkage/queries/handlers/get-linkage-by-strategy.handler';
+
+import { GetPnsSexualContactsCascadeHandler } from './pns/queries/handlers/get-pns-sexual-contacts-cascade.handler';
+import { GetPnsSexualContactsByAgeSexHandler } from './pns/queries/handlers/get-pns-sexual-contacts-by-age-sex.handler';
+import { GetPnsSexualContactsByCountyHandler } from './pns/queries/handlers/get-pns-sexual-contacts-by-county.handler';
+import { GetPnsSexualContactsByPartnerHandler } from './pns/queries/handlers/get-pns-sexual-contacts-by-partner.handler';
+import { GetPnsSexualContactsByYearHandler } from './pns/queries/handlers/get-pns-sexual-contacts-by-year.handler';
+import { GetPnsChildrenCascadeHandler } from './pns/queries/handlers/get-pns-children-cascade.handler';
+import { GetPnsChildrenByYearHandler } from './pns/queries/handlers/get-pns-children-by-year.handler';
+
 @Module({
   imports: [
       CqrsModule,
@@ -51,7 +65,9 @@ import { GetLinkageByStrategyHandler } from './queries/handlers/get-linkage-by-s
           FactHtsClientTestedAs,
           FactHtsClientSelfTested,
           FactHtsMonthsLastTest,
-          FactHtsTBScreening
+          FactHtsTBScreening,
+          FactPNSSexualPartner,
+          FactPNSChildren,
       ])
   ],
   providers: [
@@ -80,6 +96,13 @@ import { GetLinkageByStrategyHandler } from './queries/handlers/get-linkage-by-s
       GetUptakeByPositivityHandler,
       GetLinkageByEntryPointHandler,
       GetLinkageByStrategyHandler,
+      GetPnsSexualContactsCascadeHandler,
+      GetPnsSexualContactsByAgeSexHandler,
+      GetPnsSexualContactsByCountyHandler,
+      GetPnsSexualContactsByPartnerHandler,
+      GetPnsSexualContactsByYearHandler,
+      GetPnsChildrenCascadeHandler,
+      GetPnsChildrenByYearHandler,
   ],
   controllers: [HtsController]
 })
