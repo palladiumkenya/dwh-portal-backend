@@ -15,7 +15,7 @@ export class GetLinkageNumberPositiveHandler implements IQueryHandler<GetLinkage
 
     async execute(query: GetLinkageNumberPositiveQuery): Promise<any> {
         const params = [];
-        let linkageNumberPositiveSql = 'SELECT year, month,' +
+        let linkageNumberPositiveSql = 'SELECT year, month, TestedBefore,' +
             'SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive, ' +
             'SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END) linked, ' +
             '((SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END)/SUM(positive))*100) AS linkage ' +
@@ -55,7 +55,7 @@ export class GetLinkageNumberPositiveHandler implements IQueryHandler<GetLinkage
             params.push(query.month);
         }
 
-        linkageNumberPositiveSql = `${linkageNumberPositiveSql} GROUP BY year,month`;
+        linkageNumberPositiveSql = `${linkageNumberPositiveSql} GROUP BY TestedBefore, year, month ORDER BY year, month, TestedBefore`;
 
         return  await this.repository.query(linkageNumberPositiveSql, params);
     }
