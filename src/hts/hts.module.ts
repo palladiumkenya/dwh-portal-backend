@@ -51,6 +51,8 @@ import { GetPnsSexualContactsByPartnerHandler } from './pns/queries/handlers/get
 import { GetPnsSexualContactsByYearHandler } from './pns/queries/handlers/get-pns-sexual-contacts-by-year.handler';
 import { GetPnsChildrenCascadeHandler } from './pns/queries/handlers/get-pns-children-cascade.handler';
 import { GetPnsChildrenByYearHandler } from './pns/queries/handlers/get-pns-children-by-year.handler';
+import { GetPnsIndexHandler } from './pns/queries/handlers/get-pns-index.handler';
+import { FactHtsuptake } from './pns/entities/fact-htsuptake.entity';
 
 @Module({
   imports: [
@@ -68,6 +70,7 @@ import { GetPnsChildrenByYearHandler } from './pns/queries/handlers/get-pns-chil
           FactHtsTBScreening,
           FactPNSSexualPartner,
           FactPNSChildren,
+          FactHtsuptake,
       ])
   ],
   providers: [
@@ -103,6 +106,7 @@ import { GetPnsChildrenByYearHandler } from './pns/queries/handlers/get-pns-chil
       GetPnsSexualContactsByYearHandler,
       GetPnsChildrenCascadeHandler,
       GetPnsChildrenByYearHandler,
+      GetPnsIndexHandler,
   ],
   controllers: [HtsController]
 })
