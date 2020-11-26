@@ -35,6 +35,7 @@ import { GetPnsSexualContactsByPartnerQuery } from './pns/queries/impl/get-pns-s
 import { GetPnsSexualContactsByCountyQuery } from './pns/queries/impl/get-pns-sexual-contacts-by-county.query';
 import { GetPnsChildrenCascadeQuery } from './pns/queries/impl/get-pns-children-cascade.query';
 import { GetPnsChildrenByYearQuery } from './pns/queries/impl/get-pns-children-by-year.query';
+import { GetPnsIndexQuery } from './pns/queries/impl/get-pns-index.query';
 
 @Controller('hts')
 export class HtsController {
@@ -1131,6 +1132,44 @@ export class HtsController {
         @Query('month') month
     ): Promise<any> {
         const query = new GetPnsChildrenByYearQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('pnsIndex')
+    async GetPnsIndex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetPnsIndexQuery();
 
         if(county) {
             query.county = county;
