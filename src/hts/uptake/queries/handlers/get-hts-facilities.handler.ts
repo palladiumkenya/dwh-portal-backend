@@ -13,7 +13,7 @@ export class GetHtsFacilitiesHandler implements IQueryHandler<GetHtsFacilitiesQu
 
     async execute(query: GetHtsFacilitiesQuery): Promise<any> {
         const params = [];
-        let facilitiesSql = `SELECT DISTINCT \`FacilityName\` AS \`name\` FROM \`fact_htsuptake\` WHERE \`FacilityName\` IS NOT NULL `;
+        let facilitiesSql = `SELECT DISTINCT \`FacilityName\` AS \`facility\` FROM \`fact_htsuptake\` WHERE \`FacilityName\` IS NOT NULL `;
 
         if (query.county) {
             facilitiesSql = `${facilitiesSql} and County=?`;

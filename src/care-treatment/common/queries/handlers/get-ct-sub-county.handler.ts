@@ -14,7 +14,7 @@ export class GetCtSubCountyHandler implements IQueryHandler<GetCtSubCountyQuery>
 
     async execute(query: GetCtSubCountyQuery): Promise<any> {
         const subCounties = this.repository.createQueryBuilder('f')
-            .select(['distinct [Subcounty] subcounty'])
+            .select(['distinct [Subcounty] subCounty'])
             .where('f.[Subcounty] IS NOT NULL');
 
         if (query.county) {
