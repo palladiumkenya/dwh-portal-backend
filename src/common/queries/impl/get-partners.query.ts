@@ -1,5 +1,8 @@
 export class GetPartnersQuery {
-    county?: string;
-    agency?: string;
-    agencies?: string[];
+    county?: string[];
+    subCounty?: string[];
+    facility?: string[];
+    partner?: string[];
+    agency?: string[];
+    project?: string[];
 }

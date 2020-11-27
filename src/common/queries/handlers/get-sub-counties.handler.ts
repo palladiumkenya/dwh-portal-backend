@@ -10,18 +10,38 @@ export class GetSubCountiesHandler implements IQueryHandler<GetSubCountiesQuery>
         @InjectRepository(DimFacility)
         private readonly repository: Repository<DimFacility>
     ) {
+
     }
 
     async execute(query: GetSubCountiesQuery): Promise<any> {
-        const params = [];
-        let subCountiesSql = `SELECT DISTINCT subCounty FROM dim_facility `;
+        const subCounties = this.repository.createQueryBuilder('q')
+            .select('q.subCounty', 'subCounty')
+            .where('q.facilityId > 0');
 
         if (query.county) {
-            subCountiesSql = `${subCountiesSql} WHERE county=?`;
-            params.push(query.county);
+            subCounties.andWhere('q.county IN (:...county)', { county: [query.county] });
         }
 
-        const overallResult = await this.repository.query(subCountiesSql, params);
-        return overallResult;
+        if (query.subCounty) {
+            subCounties.andWhere('q.subCounty IN (:...subCounty)', { subCounty: [query.subCounty] });
+        }
+
+        if (query.facility) {
+            subCounties.andWhere('q.name IN (:...facility)', { facility: [query.facility] });
+        }
+
+        if (query.partner) {
+            subCounties.andWhere('q.partner IN (:...partner)', { partner: [query.partner] });
+        }
+
+        if (query.agency) {
+            subCounties.andWhere('q.agency IN (:...agency)', { agency: [query.agency] });
+        }
+
+        // if (query.project) {
+        //     subCounties.andWhere('q.project IN (:...project)', { project: [query.project] });
+        // }
+
+        return await subCounties.orderBy('q.subCounty').distinct(true).getRawMany();
     }
 }

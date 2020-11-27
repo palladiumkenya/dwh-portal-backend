@@ -1,6 +1,8 @@
 export class GetFacilitiesQuery {
-    agencies?: string[];
-    partners?: string[];
-    counties?: string[];
-    subCounty?: string;
+    county?: string[];
+    subCounty?: string[];
+    facility?: string[];
+    partner?: string[];
+    agency?: string[];
+    project?: string[];
 }

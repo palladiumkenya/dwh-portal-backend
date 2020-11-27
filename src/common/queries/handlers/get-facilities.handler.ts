@@ -4,51 +4,44 @@ import { Repository } from 'typeorm';
 import { DimFacility } from '../../entities/dim-facility.entity';
 import { GetFacilitiesQuery } from '../impl/get-facilities.query';
 
-
 @QueryHandler(GetFacilitiesQuery)
 export class GetFacilitiesHandler implements IQueryHandler<GetFacilitiesQuery> {
-
     constructor(
         @InjectRepository(DimFacility)
         private readonly repository: Repository<DimFacility>,
     ) {
+
     }
 
     async execute(query: GetFacilitiesQuery): Promise<any> {
+        const facilities = this.repository.createQueryBuilder('q')
+            .select('q.name', 'facility')
+            .where('q.facilityId > 0');
 
-        const facilities = this.repository
-            .createQueryBuilder('f')
-            .select('f.name', 'name')
-            .where('f.facilityId > 0');
-
-        if (query.agencies && query.agencies.length > 0) {
-            facilities
-                .addSelect('f.agency', 'agency')
-                .andWhere('f.agency IN (:...agencies)', { agencies: query.agencies });
-        }
-
-        if (query.counties && query.counties.length > 0) {
-            facilities
-                .addSelect('f.county', 'county')
-                .andWhere('f.county IN (:...counties)', { counties: query.counties });
+        if (query.county) {
+            facilities.andWhere('q.county IN (:...county)', { county: [query.county] });
         }
 
         if (query.subCounty) {
-            facilities
-                .addSelect('f.subCounty', 'subCounty')
-                .andWhere('f.subCounty IN (:...subCounty)', { subCounty: query.subCounty });
+            facilities.andWhere('q.subCounty IN (:...subCounty)', { subCounty: [query.subCounty] });
         }
 
-        if (query.partners && query.partners.length > 0) {
-            facilities
-                .addSelect('f.partner', 'partner')
-                .andWhere('f.partner IN (:...partners)', { partners: query.partners });
+        if (query.facility) {
+            facilities.andWhere('q.name IN (:...facility)', { facility: [query.facility] });
         }
 
-        return await facilities
-            .orderBy('f.name')
-            .distinct(true)
-            .getRawMany();
+        if (query.partner) {
+            facilities.andWhere('q.partner IN (:...partner)', { partner: [query.partner] });
+        }
+
+        if (query.agency) {
+            facilities.andWhere('q.agency IN (:...agency)', { agency: [query.agency] });
+        }
+
+        // if (query.project) {
+        //     facilities.andWhere('q.project IN (:...project)', { project: [query.project] });
+        // }
+
+        return await facilities.orderBy('q.name').distinct(true).getRawMany();
     }
-
 }

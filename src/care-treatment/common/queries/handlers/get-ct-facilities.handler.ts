@@ -14,7 +14,7 @@ export class GetCtFacilitiesHandler implements IQueryHandler<GetCtFacilitiesQuer
 
     async execute(query: GetCtFacilitiesQuery): Promise<any> {
         const facilities = this.repository.createQueryBuilder('f')
-            .select(['distinct [FacilityName] facilityName'])
+            .select(['distinct [FacilityName] facility'])
             .where('f.[FacilityName] IS NOT NULL');
 
         if (query.county) {
