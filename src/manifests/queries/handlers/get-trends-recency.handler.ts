@@ -22,10 +22,10 @@ export class GetTrendsRecencyHandler implements IQueryHandler<GetTrendsRecencyQu
             recencySql = `${recencySql} and county IN (?)`;
             params.push(query.county);
         }
-        // if (query.subCounty) {
-        //     recencySql = `${recencySql} and subCounty IN (?)`;
-        //     params.push(query.subCounty);
-        // }
+        if (query.subCounty) {
+            recencySql = `${recencySql} and subCounty IN (?)`;
+            params.push(query.subCounty);
+        }
         // if (query.facility) {
         //     recencySql = `${recencySql} and facility IN (?)`;
         //     params.push(query.facility);

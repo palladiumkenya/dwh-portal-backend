@@ -23,10 +23,10 @@ export class GetExpectedUploadsHandler implements IQueryHandler<GetExpectedUploa
             expectedSql = `${expectedSql} and county IN (?)`;
             params.push(query.county);
         }
-        // if (query.subCounty) {
-        //     expectedSql = `${expectedSql} and subCounty IN (?)`;
-        //     params.push(query.subCounty);
-        // }
+        if (query.subCounty) {
+            expectedSql = `${expectedSql} and subCounty IN (?)`;
+            params.push(query.subCounty);
+        }
         if (query.agency) {
             expectedSql = `${expectedSql} and agency IN (?)`;
             params.push(query.agency);

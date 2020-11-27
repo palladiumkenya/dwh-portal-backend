@@ -33,9 +33,9 @@ export class GetConsistencyUploadsHandler implements IQueryHandler<GetConsistenc
             if (query.county) {
                 consistencyResult = consistencyResult.filter(x => query.county.indexOf(x.county) !== -1);
             }
-            // if (query.subCounty) {
-            //     consistencyResult = consistencyResult.filter(x => query.subCounty.indexOf(x.subCounty) !== -1);
-            // }
+            if (query.subCounty) {
+                consistencyResult = consistencyResult.filter(x => query.subCounty.indexOf(x.subCounty) !== -1);
+            }
             // if (query.facility) {
             //     consistencyResult = consistencyResult.filter(x => query.facility.indexOf(x.facility) !== -1);
             // }

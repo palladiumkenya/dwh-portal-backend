@@ -75,10 +75,10 @@ export class GetRecencyByPartnerHandler implements IQueryHandler<GetRecencyByPar
             params.push(query.county);
         }
 
-        // if(query.subCounty) {
-        //     recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and subCounty IN (?)`;
-        //     params.push(query.subCounty);
-        // }
+        if(query.subCounty) {
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and subCounty IN (?)`;
+            params.push(query.subCounty);
+        }
 
         // if(query.facility) {
         //     recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and facility IN (?)`;
