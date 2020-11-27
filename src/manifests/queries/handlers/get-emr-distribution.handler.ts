@@ -20,10 +20,10 @@ export class GetEmrDistributionHandler implements IQueryHandler<GetEmrDistributi
             emrDistributionSql = `${emrDistributionSql} and county IN (?)`;
             params.push(query.county);
         }
-        // if(query.subCounty) {
-        //     emrDistributionSql = `${emrDistributionSql} and subCounty IN (?)`;
-        //     params.push(query.subCounty);
-        // }
+        if(query.subCounty) {
+            emrDistributionSql = `${emrDistributionSql} and subCounty IN (?)`;
+            params.push(query.subCounty);
+        }
         // if(query.facility) {
         //     emrDistributionSql = `${emrDistributionSql} and facility IN (?)`;
         //     params.push(query.facility);
