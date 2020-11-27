@@ -18,9 +18,10 @@ import { GetUptakeByTbScreeningQuery } from './uptake/queries/impl/get-uptake-by
 import { GetUptakeByTbScreenedQuery } from './uptake/queries/impl/get-uptake-by-tb-screened.query';
 import { GetUptakeByAgeSexPositivityQuery } from './uptake/queries/impl/get-uptake-by-age-sex-positivity.query';
 import { GetUptakeByPositivityQuery } from './uptake/queries/impl/get-uptake-by-positivity.query';
+import { GetNumberTestedPositivityQuery } from './uptake/queries/impl/get-number-tested-positivity.query';
 
-import { GetNumberTestedPositivityQuery } from './linkage/queries/impl/get-number-tested-positivity.query';
 import { GetLinkageNumberPositiveQuery } from './linkage/queries/impl/get-linkage-number-positive.query';
+import { GetLinkageNumberPositiveByTypeQuery } from './linkage/queries/impl/get-linkage-number-positive-by-type.query';
 import { GetLinkageByAgeSexQuery } from './linkage/queries/impl/get-linkage-by-age-sex.query';
 import { GetLinkageByPopulationTypeQuery } from './linkage/queries/impl/get-linkage-by-population-type.query';
 import { GetLinkageByEntryPointQuery } from './linkage/queries/impl/get-linkage-by-entry-point.query';
@@ -523,6 +524,44 @@ export class HtsController {
         @Query('month') month
     ): Promise<any> {
         const query = new GetLinkageNumberPositiveQuery();
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('linkageNumberPositiveByType')
+    async getLinkageNumberPositiveByType(
+        @Query('facility') facility,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetLinkageNumberPositiveByTypeQuery();
 
         if(facility) {
             query.facility = facility;

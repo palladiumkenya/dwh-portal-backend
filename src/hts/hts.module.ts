@@ -33,9 +33,10 @@ import { GetUptakeByMonthsSinceLastTestHandler } from './uptake/queries/handlers
 import { GetUptakeByPositivityHandler } from './uptake/queries/handlers/get-uptake-by-positivity.handler';
 import { GetUptakeByTBScreeningHandler } from './uptake/queries/handlers/get-uptake-by-tb-screening.handler';
 import { GetUptakeByTbScreenedHandler } from './uptake/queries/handlers/get-uptake-by-tb-screened.handler';
+import { GetNumberTestedPositivityHandler } from './uptake/queries/handlers/get-number-tested-positivity.handler';
 
-import { GetNumberTestedPositivityHandler } from './linkage/queries/handlers/get-number-tested-positivity.handler';
 import { GetLinkageNumberPositiveHandler } from './linkage/queries/handlers/get-linkage-number-positive.handler';
+import { GetLinkageNumberPositiveByTypeHandler } from './linkage/queries/handlers/get-linkage-number-positive-by-type.handler';
 import { GetLinkageByAgeSexHandler } from './linkage/queries/handlers/get-linkage-by-age-sex.handler';
 import { GetLinkageByPopulationTypeHandler } from './linkage/queries/handlers/get-linkage-by-population-type.handler';
 import { GetLinkageByCountyHandler } from './linkage/queries/handlers/get-linkage-by-county.handler';
@@ -88,6 +89,7 @@ import { FactHtsuptake } from './pns/entities/fact-htsuptake.entity';
       GetHtsFacilitiesHandler,
       GetHtsPartnersHandler,
       GetLinkageNumberPositiveHandler,
+      GetLinkageNumberPositiveByTypeHandler,
       GetLinkageByAgeSexHandler,
       GetLinkageByPopulationTypeHandler,
       GetLinkageByCountyHandler,
