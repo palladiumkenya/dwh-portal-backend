@@ -1,9 +1,14 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
-import { GetHtsSubCountiesQuery } from './uptake/queries/impl/get-hts-sub-counties.query';
-import { GetHtsFacilitiesQuery } from './uptake/queries/impl/get-hts-facilities.query';
-import { GetHtsPartnersQuery } from './uptake/queries/impl/get-hts-partners.query';
+import { GetHtsCountiesQuery } from './common/queries/impl/get-hts-counties.query';
+import { GetHtsSubCountiesQuery } from './common/queries/impl/get-hts-sub-counties.query';
+import { GetHtsFacilitiesQuery } from './common/queries/impl/get-hts-facilities.query';
+import { GetHtsPartnersQuery } from './common/queries/impl/get-hts-partners.query';
+import { GetHtsAgenciesQuery } from './common/queries/impl/get-hts-agencies.query';
+import { GetHtsProjectsQuery } from './common/queries/impl/get-hts-projects.query';
+
+import { GetNumberTestedPositivityQuery } from './uptake/queries/impl/get-number-tested-positivity.query';
 import { GetUptakeByAgeSexQuery } from './uptake/queries/impl/get-uptake-by-age-sex.query';
 import { GetUptakeByPopulationTypeQuery } from './uptake/queries/impl/get-uptake-by-population-type.query';
 import { GetUptakeByTestingStrategyQuery } from './uptake/queries/impl/get-uptake-by-testing-strategy.query';
@@ -12,13 +17,11 @@ import { GetUptakeByCountyQuery } from './uptake/queries/impl/get-uptake-by-coun
 import { GetUptakeByPartnerQuery } from './uptake/queries/impl/get-uptake-by-partner.query';
 import { GetUptakeByTestedasQuery } from './uptake/queries/impl/get-uptake-by-testedas.query';
 import { GetUptakeByClientSelfTestedQuery } from './uptake/queries/impl/get-uptake-by-client-self-tested.query';
-import { GetUptakeCountiesQuery } from './uptake/queries/impl/get-uptake-counties.query';
 import { GetUptakeByMonthsSinceLastTestQuery } from './uptake/queries/impl/get-uptake-by-months-since-last-test.query';
 import { GetUptakeByTbScreeningQuery } from './uptake/queries/impl/get-uptake-by-tb-screening.query';
 import { GetUptakeByTbScreenedQuery } from './uptake/queries/impl/get-uptake-by-tb-screened.query';
 import { GetUptakeByAgeSexPositivityQuery } from './uptake/queries/impl/get-uptake-by-age-sex-positivity.query';
 import { GetUptakeByPositivityQuery } from './uptake/queries/impl/get-uptake-by-positivity.query';
-import { GetNumberTestedPositivityQuery } from './uptake/queries/impl/get-number-tested-positivity.query';
 
 import { GetLinkageNumberPositiveQuery } from './linkage/queries/impl/get-linkage-number-positive.query';
 import { GetLinkageNumberPositiveByTypeQuery } from './linkage/queries/impl/get-linkage-number-positive-by-type.query';
@@ -40,7 +43,195 @@ import { GetPnsIndexQuery } from './pns/queries/impl/get-pns-index.query';
 
 @Controller('hts')
 export class HtsController {
-    constructor(private readonly queryBus: QueryBus){}
+    constructor(private readonly queryBus: QueryBus) {
+
+    }
+
+    @Get('counties')
+    async getCounties(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project
+    ): Promise<any> {
+        const query = new GetHtsCountiesQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        if(project) {
+            query.project = project;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('subCounties')
+    async getSubCounties(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project
+    ): Promise<any> {
+        const query = new GetHtsSubCountiesQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        if(project) {
+            query.project = project;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('facilities')
+    async getFacilities(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project
+    ): Promise<any> {
+        const query = new GetHtsFacilitiesQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        if(project) {
+            query.project = project;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('partners')
+    async getPartners(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project
+    ): Promise<any> {
+        const query = new GetHtsPartnersQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        if(project) {
+            query.project = project;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('agencies')
+    async getAgencies(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project
+    ): Promise<any> {
+        const query = new GetHtsAgenciesQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        if(project) {
+            query.project = project;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('projects')
+    async getProjects(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project
+    ): Promise<any> {
+        const query = new GetHtsProjectsQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        if(project) {
+            query.project = project;
+        }
+        return this.queryBus.execute(query);
+    }
 
     @Get('numberTestedAndPositivity')
     async getNumberTestedAndPositivity(
@@ -457,60 +648,6 @@ export class HtsController {
             query.facility = facility;
         }
 
-        return this.queryBus.execute(query);
-    }
-
-
-    @Get('counties')
-    async getCounties(
-    ): Promise<any> {
-        const query = new GetUptakeCountiesQuery();
-        return this.queryBus.execute(query);
-    }
-
-    @Get('subCounties')
-    async getSubCounties(
-        @Query('county') county
-    ): Promise<any> {
-        const query = new GetHtsSubCountiesQuery(county);
-        return this.queryBus.execute(query);
-    }
-
-    @Get('facilities')
-    async getFacilities(
-        @Query('county') county,
-        @Query('subCounty') subCounty,
-        @Query('partner') partner
-    ): Promise<any> {
-        const query = new GetHtsFacilitiesQuery();
-
-        if(county) {
-            query.county = county;
-        }
-
-        if(subCounty) {
-            query.subCounty = subCounty;
-        }
-
-        if(partner) {
-            query.partner = partner;
-        }
-
-        return this.queryBus.execute(query);
-    }
-
-    @Get('partners')
-    async getPartners(
-        @Query('county') county,
-        @Query('subCounty') subCounty
-    ): Promise<any> {
-        const query = new GetHtsPartnersQuery();
-        if (county) {
-            query.county = county;
-        }
-        if (subCounty) {
-            query.subCounty = subCounty;
-        }
         return this.queryBus.execute(query);
     }
 
