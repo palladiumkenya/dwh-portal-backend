@@ -26,13 +26,13 @@ export class GetCtFacilitiesHandler implements IQueryHandler<GetCtFacilitiesQuer
             facilities.andWhere('q.Subcounty IN (:...subCounty)', { subCounty: query.subCounty });
         }
 
-        if (query.facility) {
-            facilities.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
-        }
+        // if (query.facility) {
+        //     facilities.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
+        // }
 
-        if (query.partner) {
-            facilities.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
-        }
+        // if (query.partner) {
+        //     facilities.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
+        // }
 
         // if (query.agency) {
         //     facilities.andWhere('q.agency IN (:...agency)', { agency: query.agency });

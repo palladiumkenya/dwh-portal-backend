@@ -27,15 +27,15 @@ export class GetHtsPartnersHandler implements IQueryHandler<GetHtsPartnersQuery>
             params.push(query.subCounty);
         }
 
-        if(query.facility) {
-            partnersSql = `${partnersSql} and FacilityName IN (?)`;
-            params.push(query.facility);
-        }
+        // if(query.facility) {
+        //     partnersSql = `${partnersSql} and FacilityName IN (?)`;
+        //     params.push(query.facility);
+        // }
 
-        if(query.partner) {
-            partnersSql = `${partnersSql} and CTPartner IN (?)`;
-            params.push(query.partner);
-        }
+        // if(query.partner) {
+        //     partnersSql = `${partnersSql} and CTPartner IN (?)`;
+        //     params.push(query.partner);
+        // }
 
         // if(query.agency) {
         //     partnersSql = `${partnersSql} and Agency IN (?)`;

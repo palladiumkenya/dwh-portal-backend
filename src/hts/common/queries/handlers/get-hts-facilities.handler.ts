@@ -27,15 +27,15 @@ export class GetHtsFacilitiesHandler implements IQueryHandler<GetHtsFacilitiesQu
             params.push(query.subCounty);
         }
 
-        if(query.facility) {
-            facilitiesSql = `${facilitiesSql} and FacilityName IN (?)`;
-            params.push(query.facility);
-        }
+        // if(query.facility) {
+        //     facilitiesSql = `${facilitiesSql} and FacilityName IN (?)`;
+        //     params.push(query.facility);
+        // }
 
-        if(query.partner) {
-            facilitiesSql = `${facilitiesSql} and CTPartner IN (?)`;
-            params.push(query.partner);
-        }
+        // if(query.partner) {
+        //     facilitiesSql = `${facilitiesSql} and CTPartner IN (?)`;
+        //     params.push(query.partner);
+        // }
 
         // if(query.agency) {
         //     facilitiesSql = `${facilitiesSql} and Agency IN (?)`;

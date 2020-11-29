@@ -15,30 +15,40 @@ export class GetHtsAgenciesHandler implements IQueryHandler<GetHtsAgenciesQuery>
 
     async execute(query: GetHtsAgenciesQuery): Promise<any> {
         const params = [];
-        let countiesSql = `SELECT DISTINCT agency AS agency FROM dim_facility WHERE agency IS NOT NULL `;
+        let agenciesSql = `SELECT DISTINCT agency AS agency FROM dim_facility WHERE agency IS NOT NULL `;
   
         if(query.county) {
-            countiesSql = `${countiesSql} and county IN (?)`;
+            agenciesSql = `${agenciesSql} and county IN (?)`;
             params.push(query.county);
         }
 
         if(query.subCounty) {
-            countiesSql = `${countiesSql} and subCounty IN (?)`;
+            agenciesSql = `${agenciesSql} and subCounty IN (?)`;
             params.push(query.subCounty);
         }
 
-        if(query.facility) {
-            countiesSql = `${countiesSql} and name IN (?)`;
-            params.push(query.facility);
-        }
+        // if(query.facility) {
+        //     agenciesSql = `${agenciesSql} and name IN (?)`;
+        //     params.push(query.facility);
+        // }
 
-        if(query.partner) {
-            countiesSql = `${countiesSql} and partner IN (?)`;
-            params.push(query.partner);
-        }
+        // if(query.partner) {
+        //     agenciesSql = `${agenciesSql} and partner IN (?)`;
+        //     params.push(query.partner);
+        // }
 
-        countiesSql = `${countiesSql} ORDER BY agency ASC`;
+        // if(query.agency) {
+        //     agenciesSql = `${agenciesSql} and agency IN (?)`;
+        //     params.push(query.agency);
+        // }
 
-        return  await this.repository.query(countiesSql, params);
+        // if(query.project) {
+        //     agenciesSql = `${agenciesSql} and project IN (?)`;
+        //     params.push(query.project);
+        // }
+
+        agenciesSql = `${agenciesSql} ORDER BY agency ASC`;
+
+        return  await this.repository.query(agenciesSql, params);
     }
 }

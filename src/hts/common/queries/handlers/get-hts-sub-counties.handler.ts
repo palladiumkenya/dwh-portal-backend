@@ -22,20 +22,20 @@ export class GetHtsSubCountiesHandler implements IQueryHandler<GetHtsSubCounties
             params.push(query.county);
         }
 
-        if(query.subCounty) {
-            subCountiesSql = `${subCountiesSql} and SubCounty IN (?)`;
-            params.push(query.subCounty);
-        }
+        // if(query.subCounty) {
+        //     subCountiesSql = `${subCountiesSql} and SubCounty IN (?)`;
+        //     params.push(query.subCounty);
+        // }
 
-        if(query.facility) {
-            subCountiesSql = `${subCountiesSql} and FacilityName IN (?)`;
-            params.push(query.facility);
-        }
+        // if(query.facility) {
+        //     subCountiesSql = `${subCountiesSql} and FacilityName IN (?)`;
+        //     params.push(query.facility);
+        // }
 
-        if(query.partner) {
-            subCountiesSql = `${subCountiesSql} and CTPartner IN (?)`;
-            params.push(query.partner);
-        }
+        // if(query.partner) {
+        //     subCountiesSql = `${subCountiesSql} and CTPartner IN (?)`;
+        //     params.push(query.partner);
+        // }
 
         // if(query.agency) {
         //     subCountiesSql = `${subCountiesSql} and Agency IN (?)`;

@@ -18,21 +18,21 @@ export class GetCtCountyHandler implements IQueryHandler<GetCtCountyQuery> {
             .select(['distinct q.County county'])
             .where('q.County IS NOT NULL');
         
-        if (query.county) {
-            counties.andWhere('q.County IN (:...county)', { county: query.county });
-        }
+        // if (query.county) {
+        //     counties.andWhere('q.County IN (:...county)', { county: query.county });
+        // }
 
-        if (query.subCounty) {
-            counties.andWhere('q.Subcounty IN (:...subCounty)', { subCounty: query.subCounty });
-        }
+        // if (query.subCounty) {
+        //     counties.andWhere('q.Subcounty IN (:...subCounty)', { subCounty: query.subCounty });
+        // }
 
-        if (query.facility) {
-            counties.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
-        }
+        // if (query.facility) {
+        //     counties.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
+        // }
 
-        if (query.partner) {
-            counties.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
-        }
+        // if (query.partner) {
+        //     counties.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
+        // }
 
         // if (query.agency) {
         //     counties.andWhere('q.agency IN (:...agency)', { agency: query.agency });

@@ -26,17 +26,17 @@ export class GetFacilitiesHandler implements IQueryHandler<GetFacilitiesQuery> {
             facilities.andWhere('q.subCounty IN (:...subCounty)', { subCounty: [query.subCounty] });
         }
 
-        if (query.facility) {
-            facilities.andWhere('q.name IN (:...facility)', { facility: [query.facility] });
-        }
+        // if (query.facility) {
+        //     facilities.andWhere('q.name IN (:...facility)', { facility: [query.facility] });
+        // }
 
-        if (query.partner) {
-            facilities.andWhere('q.partner IN (:...partner)', { partner: [query.partner] });
-        }
+        // if (query.partner) {
+        //     facilities.andWhere('q.partner IN (:...partner)', { partner: [query.partner] });
+        // }
 
-        if (query.agency) {
-            facilities.andWhere('q.agency IN (:...agency)', { agency: [query.agency] });
-        }
+        // if (query.agency) {
+        //     facilities.andWhere('q.agency IN (:...agency)', { agency: [query.agency] });
+        // }
 
         // if (query.project) {
         //     facilities.andWhere('q.project IN (:...project)', { project: [query.project] });

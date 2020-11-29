@@ -27,25 +27,25 @@ export class GetHtsProjectsHandler implements IQueryHandler<GetHtsProjectsQuery>
             params.push(query.subCounty);
         }
 
-        if(query.facility) {
-            projectsSql = `${projectsSql} and FacilityName IN (?)`;
-            params.push(query.facility);
-        }
+        // if(query.facility) {
+        //     projectsSql = `${projectsSql} and FacilityName IN (?)`;
+        //     params.push(query.facility);
+        // }
 
-        if(query.partner) {
-            projectsSql = `${projectsSql} and CTPartner IN (?)`;
-            params.push(query.partner);
-        }
+        // if(query.partner) {
+        //     projectsSql = `${projectsSql} and CTPartner IN (?)`;
+        //     params.push(query.partner);
+        // }
 
         // if(query.agency) {
         //     projectsSql = `${projectsSql} and Agency IN (?)`;
         //     params.push(query.agency);
         // }
 
-        if(query.project) {
-            projectsSql = `${projectsSql} and Project IN (?)`;
-            params.push(query.project);
-        }
+        // if(query.project) {
+        //     projectsSql = `${projectsSql} and Project IN (?)`;
+        //     params.push(query.project);
+        // }
 
         projectsSql = `${projectsSql} ORDER BY Project ASC`;
 
