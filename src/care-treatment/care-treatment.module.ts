@@ -9,6 +9,8 @@ import { GetCtCountyHandler } from './common/queries/handlers/get-ct-county.hand
 import { GetCtSubCountyHandler } from './common/queries/handlers/get-ct-sub-county.handler';
 import { GetCtFacilitiesHandler } from './common/queries/handlers/get-ct-facilities.handler';
 import { GetCtPartnersHandler } from './common/queries/handlers/get-ct-partners.handler';
+import { GetCtAgenciesHandler } from './common/queries/handlers/get-ct-agencies.handler';
+import { GetCtProjectsHandler } from './common/queries/handlers/get-ct-projects.handler';
 
 import { FactTransHmisStatsTxcurr } from './home/entities/fact-trans-hmis-stats-txcurr.model';
 import { FactTransDsdCascade } from './home/entities/fact-trans-dsd-cascade.model';
@@ -145,15 +147,17 @@ import { GetAeTypeBySeverityHandler } from './adverse-events/queries/handlers/ge
         )
     ],
     providers: [
+        GetCtCountyHandler,
+        GetCtSubCountyHandler,
+        GetCtFacilitiesHandler,
+        GetCtPartnersHandler,
+        GetCtAgenciesHandler,
+        GetCtProjectsHandler,
         GetActiveArtHandler,
         GetActiveChildrenHandler,
         GetActiveAdultsHandler,
         GetActiveArtAdolescentsHandler,
         GetActiveArtByGenderHandler,
-        GetCtCountyHandler,
-        GetCtSubCountyHandler,
-        GetCtFacilitiesHandler,
-        GetCtPartnersHandler,
         GetCtTxNewHandler,
         GetCtStabilityStatusAmongActivePatientsHandler,
         GetCtViralLoadCascadeActiveArtClientsHandler,
