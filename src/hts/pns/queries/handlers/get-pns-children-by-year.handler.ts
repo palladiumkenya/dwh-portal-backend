@@ -21,19 +21,19 @@ export class GetPnsChildrenByYearHandler implements IQueryHandler<GetPnsChildren
             .andWhere('q.month IS NOT NULL');
 
         if(query.county) {
-            pnsChildrenByYear.andWhere('q.County IN (:...counties)', { counties: query.county });
+            pnsChildrenByYear.andWhere('q.County IN (:...county)', { county: query.county });
         }
 
         if(query.subCounty) {
-            pnsChildrenByYear.andWhere('q.SubCounty IN (:...subCounties)', { subCounties: query.county });
+            pnsChildrenByYear.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: query.subCounty });
         }
 
         if(query.facility) {
-            pnsChildrenByYear.andWhere('q.FacilityName IN (:...facilities)', { facilities: query.facility });
+            pnsChildrenByYear.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
         }
 
         if(query.partner) {
-            pnsChildrenByYear.andWhere('q.CTPartner IN (:...partners)', { partners: query.partner });
+            pnsChildrenByYear.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
         if(query.month) {
