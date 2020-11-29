@@ -1,4 +1,4 @@
-export class GetCtCountyQuery {
+export class GetHtsCountiesQuery {
     county?: string[];
     subCounty?: string[];
     facility?: string[];

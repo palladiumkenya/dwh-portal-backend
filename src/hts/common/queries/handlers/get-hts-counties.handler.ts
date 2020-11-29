@@ -1,11 +1,11 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetUptakeCountiesQuery } from '../impl/get-uptake-counties.query';
+import { GetHtsCountiesQuery } from '../impl/get-hts-counties.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
 
-@QueryHandler(GetUptakeCountiesQuery)
-export class GetUptakeCountiesHandler implements IQueryHandler<GetUptakeCountiesQuery> {
+@QueryHandler(GetHtsCountiesQuery)
+export class GetHtsCountiesHandler implements IQueryHandler<GetHtsCountiesQuery> {
     constructor(
         @InjectRepository(FactHtsUptake)
         private readonly repository: Repository<FactHtsUptake>
@@ -13,7 +13,7 @@ export class GetUptakeCountiesHandler implements IQueryHandler<GetUptakeCounties
         
     }
 
-    async execute(query: GetUptakeCountiesQuery): Promise<any> {
+    async execute(query: GetHtsCountiesQuery): Promise<any> {
         const params = [];
         let countiesSql = `SELECT DISTINCT County AS county FROM \`fact_htsuptake\` WHERE County IS NOT NULL `;
 
@@ -37,15 +37,15 @@ export class GetUptakeCountiesHandler implements IQueryHandler<GetUptakeCounties
             params.push(query.partner);
         }
 
-        if(query.month) {
-            countiesSql = `${countiesSql} and month=?`;
-            params.push(query.month);
-        }
+        // if(query.agency) {
+        //     countiesSql = `${countiesSql} and Agency IN (?)`;
+        //     params.push(query.agency);
+        // }
 
-        if(query.year) {
-            countiesSql = `${countiesSql} and year=?`;
-            params.push(query.year);
-        }
+        // if(query.project) {
+        //     countiesSql = `${countiesSql} and Project IN (?)`;
+        //     params.push(query.project);
+        // }
 
         countiesSql = `${countiesSql} ORDER BY County ASC`;
 
