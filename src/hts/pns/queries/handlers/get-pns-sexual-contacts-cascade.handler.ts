@@ -19,19 +19,19 @@ export class GetPnsSexualContactsCascadeHandler implements IQueryHandler<GetPnsS
             .where('q.Mflcode IS NOT NULL');
 
         if(query.county) {
-            pnsSexualContactsCascade.andWhere('q.County IN (:...counties)', { counties: query.county });
+            pnsSexualContactsCascade.andWhere('q.County IN (:...county)', { county: query.county });
         }
 
         if(query.subCounty) {
-            pnsSexualContactsCascade.andWhere('q.SubCounty IN (:...subCounties)', { subCounties: query.county });
+            pnsSexualContactsCascade.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: query.subCounty });
         }
 
         if(query.facility) {
-            pnsSexualContactsCascade.andWhere('q.FacilityName IN (:...facilities)', { facilities: query.facility });
+            pnsSexualContactsCascade.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
         }
 
         if(query.partner) {
-            pnsSexualContactsCascade.andWhere('q.CTPartner IN (:...partners)', { partners: query.partner });
+            pnsSexualContactsCascade.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
         if(query.month) {

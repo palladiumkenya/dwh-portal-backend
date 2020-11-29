@@ -21,19 +21,19 @@ export class GetPnsSexualContactsByYearHandler implements IQueryHandler<GetPnsSe
             .andWhere('q.month IS NOT NULL');
 
         if(query.county) {
-            pnsSexualContactsByYear.andWhere('q.County IN (:...counties)', { counties: query.county });
+            pnsSexualContactsByYear.andWhere('q.County IN (:...county)', { county: query.county });
         }
 
         if(query.subCounty) {
-            pnsSexualContactsByYear.andWhere('q.SubCounty IN (:...subCounties)', { subCounties: query.county });
+            pnsSexualContactsByYear.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: query.subCounty });
         }
 
         if(query.facility) {
-            pnsSexualContactsByYear.andWhere('q.FacilityName IN (:...facilities)', { facilities: query.facility });
+            pnsSexualContactsByYear.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
         }
 
         if(query.partner) {
-            pnsSexualContactsByYear.andWhere('q.CTPartner IN (:...partners)', { partners: query.partner });
+            pnsSexualContactsByYear.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
         if(query.month) {

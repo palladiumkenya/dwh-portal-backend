@@ -19,19 +19,19 @@ export class GetPnsChildrenCascadeHandler implements IQueryHandler<GetPnsChildre
             .where('q.Mflcode IS NOT NULL');
 
         if(query.county) {
-            pnsChildrenCascade.andWhere('q.County IN (:...counties)', { counties: query.county });
+            pnsChildrenCascade.andWhere('q.County IN (:...county)', { county: query.county });
         }
 
         if(query.subCounty) {
-            pnsChildrenCascade.andWhere('q.SubCounty IN (:...subCounties)', { subCounties: query.county });
+            pnsChildrenCascade.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: query.subCounty });
         }
 
         if(query.facility) {
-            pnsChildrenCascade.andWhere('q.FacilityName IN (:...facilities)', { facilities: query.facility });
+            pnsChildrenCascade.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
         }
 
         if(query.partner) {
-            pnsChildrenCascade.andWhere('q.CTPartner IN (:...partners)', { partners: query.partner });
+            pnsChildrenCascade.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
         if(query.month) {
