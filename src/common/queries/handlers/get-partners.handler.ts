@@ -27,17 +27,17 @@ export class GetPartnersHandler implements IQueryHandler<GetPartnersQuery> {
             partners.andWhere('q.subCounty IN (:...subCounty)', { subCounty: [query.subCounty] });
         }
 
-        if (query.facility) {
-            partners.andWhere('q.name IN (:...facility)', { facility: [query.facility] });
-        }
+        // if (query.facility) {
+        //     partners.andWhere('q.name IN (:...facility)', { facility: [query.facility] });
+        // }
 
-        if (query.partner) {
-            partners.andWhere('q.partner IN (:...partner)', { partner: [query.partner] });
-        }
+        // if (query.partner) {
+        //     partners.andWhere('q.partner IN (:...partner)', { partner: [query.partner] });
+        // }
 
-        if (query.agency) {
-            partners.andWhere('q.agency IN (:...agency)', { agency: [query.agency] });
-        }
+        // if (query.agency) {
+        //     partners.andWhere('q.agency IN (:...agency)', { agency: [query.agency] });
+        // }
 
         // if (query.project) {
         //     partners.andWhere('q.project IN (:...project)', { project: [query.project] });

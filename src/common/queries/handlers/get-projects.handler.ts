@@ -26,21 +26,21 @@ export class GetProjectsHandler implements IQueryHandler<GetProjectsQuery> {
             projects.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: [query.subCounty] });
         }
 
-        if (query.facility) {
-            projects.andWhere('q.FacilityName IN (:...facility)', { facility: [query.facility] });
-        }
+        // if (query.facility) {
+        //     projects.andWhere('q.FacilityName IN (:...facility)', { facility: [query.facility] });
+        // }
 
-        if (query.partner) {
-            projects.andWhere('q.CTPartner IN (:...partner)', { partner: [query.partner] });
-        }
+        // if (query.partner) {
+        //     projects.andWhere('q.CTPartner IN (:...partner)', { partner: [query.partner] });
+        // }
 
         // if (query.agency) {
         //     projects.andWhere('q.agency IN (:...agency)', { agency: [query.agency] });
         // }
 
-        if (query.project) {
-            projects.andWhere('q.Project IN (:...project)', { project: [query.project] });
-        }
+        // if (query.project) {
+        //     projects.andWhere('q.Project IN (:...project)', { project: [query.project] });
+        // }
 
         return await projects.orderBy('q.Project').distinct(true).getRawMany();
     }

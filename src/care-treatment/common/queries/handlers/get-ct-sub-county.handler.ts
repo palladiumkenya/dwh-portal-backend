@@ -19,27 +19,27 @@ export class GetCtSubCountyHandler implements IQueryHandler<GetCtSubCountyQuery>
             .where('f.Subcounty IS NOT NULL');
 
         if (query.county) {
-            subCounties.andWhere('q.County IN (:...county)', { county: query.county });
+            subCounties.andWhere('f.County IN (:...county)', { county: query.county });
         }
 
-        if (query.subCounty) {
-            subCounties.andWhere('q.Subcounty IN (:...subCounty)', { subCounty: query.subCounty });
-        }
+        // if (query.subCounty) {
+        //     subCounties.andWhere('f.Subcounty IN (:...subCounty)', { subCounty: query.subCounty });
+        // }
 
-        if (query.facility) {
-            subCounties.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
-        }
+        // if (query.facility) {
+        //     subCounties.andWhere('f.FacilityName IN (:...facility)', { facility: query.facility });
+        // }
 
-        if (query.partner) {
-            subCounties.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
-        }
+        // if (query.partner) {
+        //     subCounties.andWhere('f.CTPartner IN (:...partner)', { partner: query.partner });
+        // }
 
         // if (query.agency) {
-        //     subCounties.andWhere('q.agency IN (:...agency)', { agency: query.agency });
+        //     subCounties.andWhere('f.agency IN (:...agency)', { agency: query.agency });
         // }
 
         // if (query.project) {
-        //     subCounties.andWhere('q.project IN (:...project)', { project: query.project });
+        //     subCounties.andWhere('f.project IN (:...project)', { project: query.project });
         // }
 
         return await subCounties.orderBy('f.Subcounty').getRawMany();

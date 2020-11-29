@@ -22,21 +22,21 @@ export class GetSubCountiesHandler implements IQueryHandler<GetSubCountiesQuery>
             subCounties.andWhere('q.county IN (:...county)', { county: [query.county] });
         }
 
-        if (query.subCounty) {
-            subCounties.andWhere('q.subCounty IN (:...subCounty)', { subCounty: [query.subCounty] });
-        }
+        // if (query.subCounty) {
+        //     subCounties.andWhere('q.subCounty IN (:...subCounty)', { subCounty: [query.subCounty] });
+        // }
 
-        if (query.facility) {
-            subCounties.andWhere('q.name IN (:...facility)', { facility: [query.facility] });
-        }
+        // if (query.facility) {
+        //     subCounties.andWhere('q.name IN (:...facility)', { facility: [query.facility] });
+        // }
 
-        if (query.partner) {
-            subCounties.andWhere('q.partner IN (:...partner)', { partner: [query.partner] });
-        }
+        // if (query.partner) {
+        //     subCounties.andWhere('q.partner IN (:...partner)', { partner: [query.partner] });
+        // }
 
-        if (query.agency) {
-            subCounties.andWhere('q.agency IN (:...agency)', { agency: [query.agency] });
-        }
+        // if (query.agency) {
+        //     subCounties.andWhere('q.agency IN (:...agency)', { agency: [query.agency] });
+        // }
 
         // if (query.project) {
         //     subCounties.andWhere('q.project IN (:...project)', { project: [query.project] });
