@@ -1,8 +1,8 @@
-export class GetUptakeCountiesQuery {
+export class GetCtAgenciesQuery {
     county?: string[];
     subCounty?: string[];
     facility?: string[];
     partner?: string[];
-    year?: number;
-    month?: number;
+    agency?: string[];
+    project?: string[];
 }

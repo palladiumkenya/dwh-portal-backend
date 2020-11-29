@@ -1,6 +1,13 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
+import { GetCtCountyQuery } from './common/queries/impl/get-ct-county.query';
+import { GetCtSubCountyQuery } from './common/queries/impl/get-ct-sub-county.query';
+import { GetCtFacilitiesQuery } from './common/queries/impl/get-ct-facilities.query';
+import { GetCtPartnersQuery } from './common/queries/impl/get-ct-partners.query';
+import { GetCtAgenciesQuery } from './common/queries/impl/get-ct-agencies.query';
+import { GetCtProjectsQuery } from './common/queries/impl/get-ct-projects.query';
+
 import { GetActiveArtQuery } from './home/queries/impl/get-active-art.query';
 import { GetActiveArtAdultsQuery } from './home/queries/impl/get-active-art-adults.query';
 import { GetActiveArtChildrenQuery } from './home/queries/impl/get-active-art-children.query';
@@ -10,11 +17,6 @@ import { GetCtTxNewQuery } from './home/queries/impl/get-ct-tx-new.query';
 import { GetCtStabilityStatusAmongActivePatientsQuery } from './home/queries/impl/get-ct-stability-status-among-active-patients.query';
 import { GetCtViralLoadCascadeActiveArtClientsQuery } from './home/queries/impl/get-ct-viral-load-cascade-active-art-clients.query';
 import { GetCtViralLoadSuppressionPercentageQuery } from './home/queries/impl/get-ct-viral-load-suppression-percentage.query';
-
-import { GetCtCountyQuery } from './common/queries/impl/get-ct-county.query';
-import { GetCtSubCountyQuery } from './common/queries/impl/get-ct-sub-county.query';
-import { GetCtFacilitiesQuery } from './common/queries/impl/get-ct-facilities.query';
-import { GetCtPartnersQuery } from './common/queries/impl/get-ct-partners.query';
 
 import { GetCtTxCurrByAgeAndSexQuery } from './current-on-art/queries/impl/get-ct-tx-curr-by-age-and-sex.query';
 import { GetCtTxCurrBySexQuery } from './current-on-art/queries/impl/get-ct-tx-curr-by-sex.query';
@@ -89,6 +91,193 @@ import { GetAeTypeBySeverityQuery } from './adverse-events/queries/impl/get-ae-t
 @Controller('care-treatment')
 export class CareTreatmentController {
     constructor(private readonly queryBus: QueryBus) {
+
+    }
+
+    @Get('counties')
+    async getCounties(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project
+    ): Promise<any> {
+        const query = new GetCtCountyQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        if(project) {
+            query.project = project;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('subCounties')
+    async getSubCounties(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project
+    ): Promise<any> {
+        const query = new GetCtSubCountyQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        if(project) {
+            query.project = project;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('facilities')
+    async getFacilities(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project
+    ): Promise<any> {
+        const query = new GetCtFacilitiesQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        if(project) {
+            query.project = project;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('partners')
+    async getPartners(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project
+    ): Promise<any> {
+        const query = new GetCtPartnersQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        if(project) {
+            query.project = project;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('agencies')
+    async getAgencies(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project
+    ): Promise<any> {
+        const query = new GetCtAgenciesQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        if(project) {
+            query.project = project;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('projects')
+    async getProjects(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project
+    ): Promise<any> {
+        const query = new GetCtProjectsQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        if(project) {
+            query.project = project;
+        }
+        return this.queryBus.execute(query);
     }
 
     @Get('activeArt')
@@ -221,64 +410,6 @@ export class CareTreatmentController {
 
         if(partner) {
             query.partner = partner;
-        }
-
-        return this.queryBus.execute(query);
-    }
-
-    @Get('counties')
-    async getCounties(): Promise<any> {
-        const query = new GetCtCountyQuery();
-
-        return this.queryBus.execute(query);
-    }
-
-    @Get('subCounties')
-    async getSubCounties(
-        @Query('county') county
-    ): Promise<any> {
-        const query = new GetCtSubCountyQuery();
-        if(county) {
-            query.county = county;
-        }
-
-        return this.queryBus.execute(query);
-    }
-
-    @Get('facilities')
-    async getFacilities(
-        @Query('county') county,
-        @Query('subCounty') subCounty
-    ): Promise<any> {
-        const query = new GetCtFacilitiesQuery();
-        if(county) {
-            query.county = county;
-        }
-
-        if(subCounty) {
-            query.subCounty = subCounty;
-        }
-
-        return this.queryBus.execute(query);
-    }
-
-    @Get('partners')
-    async getPartners(
-        @Query('county') county,
-        @Query('subCounty') subCounty,
-        @Query('facility') facility
-    ): Promise<any> {
-        const query = new GetCtPartnersQuery();
-        if(county) {
-            query.county = county;
-        }
-
-        if(subCounty) {
-            query.subCounty = subCounty;
-        }
-
-        if(facility) {
-            query.facility = facility;
         }
 
         return this.queryBus.execute(query);

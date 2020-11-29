@@ -10,13 +10,38 @@ export class GetCtCountyHandler implements IQueryHandler<GetCtCountyQuery> {
         @InjectRepository(FactTransHmisStatsTxcurr, 'mssql')
         private readonly repository: Repository<FactTransHmisStatsTxcurr>
     ) {
+
     }
 
-    async execute(): Promise<any> {
-        const activeArt = this.repository.createQueryBuilder('f')
-            .select(['distinct [County] county'])
-            .orderBy('f.[County]');
+    async execute(query: GetCtCountyQuery): Promise<any> {
+        const counties = this.repository.createQueryBuilder('q')
+            .select(['distinct q.County county'])
+            .where('q.County IS NOT NULL');
+        
+        if (query.county) {
+            counties.andWhere('q.County IN (:...county)', { county: query.county });
+        }
 
-        return await activeArt.getRawMany();
+        if (query.subCounty) {
+            counties.andWhere('q.Subcounty IN (:...subCounty)', { subCounty: query.subCounty });
+        }
+
+        if (query.facility) {
+            counties.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
+        }
+
+        if (query.partner) {
+            counties.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
+        }
+
+        // if (query.agency) {
+        //     counties.andWhere('q.agency IN (:...agency)', { agency: query.agency });
+        // }
+
+        // if (query.project) {
+        //     counties.andWhere('q.project IN (:...project)', { project: query.project });
+        // }
+
+        return await counties.orderBy('q.County').getRawMany();
     }
 }
