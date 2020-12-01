@@ -26,6 +26,7 @@ import { GetHtsProjectsHandler } from './common/queries/handlers/get-hts-project
 
 import { GetNumberTestedPositivityHandler } from './uptake/queries/handlers/get-number-tested-positivity.handler';
 import { GetUptakeByAgeSexHandler } from './uptake/queries/handlers/get-uptake-by-age-sex.handler';
+import { GetUptakeBySexHandler } from './uptake/queries/handlers/get-uptake-by-sex.handler';
 import { GetUptakeByPopulationTypeHandler } from './uptake/queries/handlers/get-uptake-by-population-type.handler';
 import { GetUptakeByTestingStrategyHandler } from './uptake/queries/handlers/get-uptake-by-testing-strategy.handler';
 import { GetUptakeByEntrypointHandler } from './uptake/queries/handlers/get-uptake-by-entrypoint.handler';
@@ -42,6 +43,7 @@ import { GetUptakeByAgeSexPositivityHandler } from './uptake/queries/handlers/ge
 import { GetLinkageNumberPositiveHandler } from './linkage/queries/handlers/get-linkage-number-positive.handler';
 import { GetLinkageNumberPositiveByTypeHandler } from './linkage/queries/handlers/get-linkage-number-positive-by-type.handler';
 import { GetLinkageByAgeSexHandler } from './linkage/queries/handlers/get-linkage-by-age-sex.handler';
+import { GetLinkageBySexHandler } from './linkage/queries/handlers/get-linkage-by-sex.handler';
 import { GetLinkageByPopulationTypeHandler } from './linkage/queries/handlers/get-linkage-by-population-type.handler';
 import { GetLinkageByCountyHandler } from './linkage/queries/handlers/get-linkage-by-county.handler';
 import { GetLinkageByPartnerHandler } from './linkage/queries/handlers/get-linkage-by-partner.handler';
@@ -86,6 +88,7 @@ import { GetPnsIndexHandler } from './pns/queries/handlers/get-pns-index.handler
 
         GetNumberTestedPositivityHandler,
         GetUptakeByAgeSexHandler,
+        GetUptakeBySexHandler,
         GetUptakeByPopulationTypeHandler,
         GetUptakeByTestingStrategyHandler,
         GetUptakeByEntrypointHandler,
@@ -102,6 +105,7 @@ import { GetPnsIndexHandler } from './pns/queries/handlers/get-pns-index.handler
         GetLinkageNumberPositiveHandler,
         GetLinkageNumberPositiveByTypeHandler,
         GetLinkageByAgeSexHandler,
+        GetLinkageBySexHandler,
         GetLinkageByPopulationTypeHandler,
         GetLinkageByCountyHandler,
         GetLinkageByPartnerHandler,

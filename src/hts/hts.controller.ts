@@ -9,6 +9,7 @@ import { GetHtsAgenciesQuery } from './common/queries/impl/get-hts-agencies.quer
 import { GetHtsProjectsQuery } from './common/queries/impl/get-hts-projects.query';
 
 import { GetNumberTestedPositivityQuery } from './uptake/queries/impl/get-number-tested-positivity.query';
+import { GetUptakeBySexQuery } from './uptake/queries/impl/get-uptake-by-sex.query';
 import { GetUptakeByAgeSexQuery } from './uptake/queries/impl/get-uptake-by-age-sex.query';
 import { GetUptakeByPopulationTypeQuery } from './uptake/queries/impl/get-uptake-by-population-type.query';
 import { GetUptakeByTestingStrategyQuery } from './uptake/queries/impl/get-uptake-by-testing-strategy.query';
@@ -26,6 +27,7 @@ import { GetUptakeByPositivityQuery } from './uptake/queries/impl/get-uptake-by-
 import { GetLinkageNumberPositiveQuery } from './linkage/queries/impl/get-linkage-number-positive.query';
 import { GetLinkageNumberPositiveByTypeQuery } from './linkage/queries/impl/get-linkage-number-positive-by-type.query';
 import { GetLinkageByAgeSexQuery } from './linkage/queries/impl/get-linkage-by-age-sex.query';
+import { GetLinkageBySexQuery } from './linkage/queries/impl/get-linkage-by-sex.query';
 import { GetLinkageByPopulationTypeQuery } from './linkage/queries/impl/get-linkage-by-population-type.query';
 import { GetLinkageByEntryPointQuery } from './linkage/queries/impl/get-linkage-by-entry-point.query';
 import { GetLinkageByStrategyQuery } from './linkage/queries/impl/get-linkage-by-strategy.query';
@@ -281,6 +283,44 @@ export class HtsController {
         @Query('facility') facility
     ): Promise<any> {
         const query = new GetUptakeByPositivityQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('uptakeBySex')
+    async getUptakeBySex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('partner') partner,
+        @Query('facility') facility
+    ): Promise<any> {
+        const query = new GetUptakeBySexQuery();
 
         if(county) {
             query.county = county;
@@ -851,6 +891,45 @@ export class HtsController {
         @Query('month') month
     ): Promise<any> {
         const query = new GetLinkageByAgeSexQuery();
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('linkageBySex')
+    async getLinkageBySex(
+       @Query('facility') facility,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetLinkageBySexQuery();
 
         if(facility) {
             query.facility = facility;
