@@ -87,6 +87,7 @@ import { GetNumberOfClientChildrenWithAeQuery } from './adverse-events/queries/i
 import { GetNumberAeReportedInAdultsOver15Query } from './adverse-events/queries/impl/get-number-ae-reported-in-adults-over-15.query';
 import { GetNumberAeReportedInChildrenOver15Query } from './adverse-events/queries/impl/get-number-ae-reported-in-children-over-15.query';
 import { GetAeTypeBySeverityQuery } from './adverse-events/queries/impl/get-ae-type-by-severity.query';
+import { GetNewlyStartedDesegregatedQuery } from './new-on-art/queries/impl/get-newly-started-desegregated.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -2706,6 +2707,33 @@ export class CareTreatmentController {
         @Query('partner') partner
     ): Promise<any> {
         const query = new GetAeTypeBySeverityQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getNewlyStartedDesegregated')
+    async getNewlyStartedDesegregated(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetNewlyStartedDesegregatedQuery();
         if(county) {
             query.county = county;
         }
