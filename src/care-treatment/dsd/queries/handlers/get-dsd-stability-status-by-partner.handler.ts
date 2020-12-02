@@ -15,8 +15,8 @@ export class GetDsdStabilityStatusByPartnerHandler implements IQueryHandler<GetD
 
     async execute(query: GetDsdStabilityStatusByPartnerQuery): Promise<any> {
         const dsdStabilityStatusByPartner = this.repository.createQueryBuilder('f')
-            .select(['f.CTPartner partner, SUM([Stability]) stable'])
-            .where('f.[MFLCode] > 1');
+            .select(['f.CTPartner partner, SUM(TxCurr) txCurr, SUM(MMD) mmd, SUM(NonMMD) nonMmd, SUM(Stable) stable, SUM(UnStable) unStable'])
+            .where('f.MFLCode > 1');
 
         if (query.county) {
             dsdStabilityStatusByPartner.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -35,8 +35,8 @@ export class GetDsdStabilityStatusByPartnerHandler implements IQueryHandler<GetD
         }
 
         return await dsdStabilityStatusByPartner
-            .groupBy('[CTPartner]')
-            .orderBy('SUM([Stability])', 'DESC')
+            .groupBy('CTPartner')
+            .orderBy('SUM(Stable)', 'DESC')
             .getRawMany();
     }
 }

@@ -15,10 +15,10 @@ export class GetDsdStabilityStatusByAgeSexHandler implements IQueryHandler<GetDs
 
     async execute(query: GetDsdStabilityStatusByAgeSexQuery): Promise<any> {
         const dsdStabilityStatusByAgeSex = this.repository.createQueryBuilder('f')
-            .select(['[DATIM_AgeGroup] ageGroup, [Gender] gender, SUM([Stability]) stable'])
-            .where('f.[MFLCode] > 1')
-            .andWhere('f.[DATIM_AgeGroup] IS NOT NULL')
-            .andWhere('f.[Gender] IS NOT NULL');
+            .select(['DATIM_AgeGroup ageGroup, Gender gender, SUM(TxCurr) txCurr, SUM(MMD) mmd, SUM(NonMMD) nonMmd, SUM(Stable) stable, SUM(UnStable) unStable'])
+            .where('f.MFLCode > 1')
+            .andWhere('f.DATIM_AgeGroup IS NOT NULL')
+            .andWhere('f.Gender IS NOT NULL');
 
         if (query.county) {
             dsdStabilityStatusByAgeSex.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -37,8 +37,8 @@ export class GetDsdStabilityStatusByAgeSexHandler implements IQueryHandler<GetDs
         }
 
         return await dsdStabilityStatusByAgeSex
-            .groupBy('f.[DATIM_AgeGroup], f.[Gender]')
-            .orderBy('f.[DATIM_AgeGroup], f.[Gender]')
+            .groupBy('f.DATIM_AgeGroup, f.Gender')
+            .orderBy('f.DATIM_AgeGroup, f.Gender')
             .getRawMany();
     }
 }

@@ -15,8 +15,8 @@ export class GetDsdStabilityStatusHandler implements IQueryHandler<GetDsdStabili
 
     async execute(query: GetDsdStabilityStatusQuery): Promise<any> {
         const dsdStabilityStatus = this.repository.createQueryBuilder('f')
-            .select(['SUM([Stability]) stable'])
-            .where('f.[MFLCode] > 1');
+            .select(['SUM(TxCurr) txCurr, SUM(MMD) mmd, SUM(NonMMD) nonMmd, SUM(Stable) stable, SUM(UnStable) unStable'])
+            .where('f.MFLCode > 1');
 
         if (query.county) {
             dsdStabilityStatus.andWhere('f.County IN (:...counties)', { counties: query.county });

@@ -1,14 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransDsdMmdStable } from '../../entities/fact-trans-dsd-mmd-stable.model';
+import { FactTransDsdMmdActivePatients } from '../../entities/fact-trans-dsd-mmd-active-patients.model';
 import { Repository } from 'typeorm';
 import { GetDsdMmdStableQuery } from '../impl/get-dsd-mmd-stable.query';
 
 @QueryHandler(GetDsdMmdStableQuery)
 export class GetDsdMmdStableHandler implements IQueryHandler<GetDsdMmdStableQuery> {
     constructor(
-        @InjectRepository(FactTransDsdMmdStable, 'mssql')
-        private readonly repository: Repository<FactTransDsdMmdStable>
+        @InjectRepository(FactTransDsdMmdActivePatients, 'mssql')
+        private readonly repository: Repository<FactTransDsdMmdActivePatients>
     ) {
 
     }

@@ -1,23 +1,23 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransVLOutcome } from '../../entities/fact-trans-vl-outcome.model';
+import { FactTransOptimizeStartRegimen } from '../../entities/fact-trans-optimize-start-regimen.model';
 import { GetVlSuppressionByRegimenQuery } from '../impl/get-vl-suppression-by-regimen.query';
 
 @QueryHandler(GetVlSuppressionByRegimenQuery)
 export class GetVlSuppressionByRegimenHandler implements IQueryHandler<GetVlSuppressionByRegimenQuery> {
     constructor(
-        @InjectRepository(FactTransVLOutcome, 'mssql')
-        private readonly repository: Repository<FactTransVLOutcome>
+        @InjectRepository(FactTransOptimizeStartRegimen, 'mssql')
+        private readonly repository: Repository<FactTransOptimizeStartRegimen>
     ) {
+
     }
 
     async execute(query: GetVlSuppressionByRegimenQuery): Promise<any> {
         const vlSuppressionByRegimen = this.repository.createQueryBuilder('f')
-            .select(['f.CurrentRegimen regimen, f.Last12MVLResult suppression, SUM(f.Total_Last12MVL) vlDone'])
+            .select(['f.StartRegimen regimen, SUM(f.TXCurr) txCurr'])
             .where('f.MFLCode > 0')
-            .andWhere('f.CurrentRegimen IS NOT NULL')
-            .andWhere('f.Last12MVLResult IS NOT NULL');
+            .andWhere('f.StartRegimen IS NOT NULL');
 
         if (query.county) {
             vlSuppressionByRegimen.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -35,9 +35,6 @@ export class GetVlSuppressionByRegimenHandler implements IQueryHandler<GetVlSupp
             vlSuppressionByRegimen.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        return await vlSuppressionByRegimen
-            .groupBy('f.CurrentRegimen, f.Last12MVLResult')
-            .orderBy('f.CurrentRegimen, f.Last12MVLResult')
-            .getRawMany();
+        return await vlSuppressionByRegimen.groupBy('f.StartRegimen').orderBy('f.StartRegimen').getRawMany();
     }
 }
