@@ -15,8 +15,8 @@ export class GetDsdStabilityStatusByCountyHandler implements IQueryHandler<GetDs
 
     async execute(query: GetDsdStabilityStatusByCountyQuery): Promise<any> {
         const dsdStabilityStatusByCounty = this.repository.createQueryBuilder('f')
-            .select(['f.County county, SUM([Stability]) stable'])
-            .where('f.[MFLCode] > 1');
+            .select(['f.County county, SUM(TxCurr) txCurr, SUM(MMD) mmd, SUM(NonMMD) nonMmd, SUM(Stable) stable, SUM(UnStable) unStable'])
+            .where('f.MFLCode > 1');
 
         if (query.county) {
             dsdStabilityStatusByCounty.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -35,8 +35,8 @@ export class GetDsdStabilityStatusByCountyHandler implements IQueryHandler<GetDs
         }
 
         return await dsdStabilityStatusByCounty
-            .groupBy('[County]')
-            .orderBy('SUM([Stability])', 'DESC')
+            .groupBy('County')
+            .orderBy('SUM(Stable)', 'DESC')
             .getRawMany();
     }
 }

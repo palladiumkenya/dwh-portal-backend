@@ -46,7 +46,7 @@ import { GetMedianTimeToArtByCountyHandler } from './new-on-art/queries/handlers
 import { GetMedianTimeToArtByPartnerHandler } from './new-on-art/queries/handlers/get-median-time-to-art-by-partner.handler';
 
 import { FactTransDsdUnstable } from './dsd/entities/fact-trans-dsd-unstable.model';
-import { FactTransDsdMmdStable } from './dsd/entities/fact-trans-dsd-mmd-stable.model';
+import { FactTransDsdMmdActivePatients } from './dsd/entities/fact-trans-dsd-mmd-active-patients.model';
 import { FactTransDsdStabilityStatus } from './dsd/entities/fact-trans-dsd-stability-status.model';
 import { FactTransDsdAppointmentByStabilityStatus } from './dsd/entities/fact-trans-dsd-appointment-by-stability-status.model';
 
@@ -80,6 +80,7 @@ import { GetTreatmentOutcomesRetention24mHandler } from './treatment-outcomes/qu
 import { FactCTTimeToFirstVL } from './viral-load/entities/fact-ct-time-to-first-vl-grp.model';
 import { FactTransVLOutcome } from './viral-load/entities/fact-trans-vl-outcome.model';
 import { FactTransVLOverallUptake } from './viral-load/entities/fact-trans-vl-overall-uptake.model';
+import { FactTransOptimizeStartRegimen } from './viral-load/entities/fact-trans-optimize-start-regimen.model';
 
 import { GetVlOverallUptakeAndSuppressionHandler } from './viral-load/queries/handlers/get-vl-overall-uptake-and-suppression.handler';
 import { GetVlUptakeBySexHandler } from './viral-load/queries/handlers/get-vl-uptake-by-sex.handler';
@@ -128,7 +129,7 @@ import { GetAeTypeBySeverityHandler } from './adverse-events/queries/handlers/ge
                 FactCTTimeToArt,
                 FactTransDsdCascade,
                 FactTransDsdUnstable,
-                FactTransDsdMmdStable,
+                FactTransDsdMmdActivePatients,
                 FactTransDsdStabilityStatus,
                 FactTransDsdAppointmentByStabilityStatus,
                 FactTransNewCohort,
@@ -136,6 +137,7 @@ import { GetAeTypeBySeverityHandler } from './adverse-events/queries/handlers/ge
                 FactTransRetention,
                 FactTransVLOutcome,
                 FactTransVLOverallUptake,
+                FactTransOptimizeStartRegimen,
                 FactCTTimeToFirstVL,
                 FactTransAdverseEvents,
                 FactTransAeSeverity,

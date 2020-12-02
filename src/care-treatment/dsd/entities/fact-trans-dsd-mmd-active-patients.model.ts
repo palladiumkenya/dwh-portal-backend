@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('Fact_Trans_DSD_MMD_Stable')
-export class FactTransDsdMmdStable {
+@Entity('FACT_Trans_DSD_MMD_ActivePatients')
+export class FactTransDsdMmdActivePatients {
     @PrimaryColumn('text')
     MFLCode: string;
 
@@ -25,6 +25,9 @@ export class FactTransDsdMmdStable {
 
     @Column('int')
     Differentiatedcare: number;
+
+    @Column('int')
+    TXCurr: number;
 
     @Column('int')
     MMDModels: number;
