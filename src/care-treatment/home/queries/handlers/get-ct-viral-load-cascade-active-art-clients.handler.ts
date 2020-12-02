@@ -14,7 +14,7 @@ export class GetCtViralLoadCascadeActiveArtClientsHandler implements IQueryHandl
 
     async execute(query: GetCtViralLoadCascadeActiveArtClientsQuery): Promise<any> {
         const viralLoadCascade = this.repository.createQueryBuilder('f')
-            .select(['SUM([TXCURR_Total]) TX_CURR, SUM([Eligible4VL]) Eligible4VL, SUM([Last12MonthVL]) Last12MonthVL, SUM([Last12MVLSup]) Last12MVLSup'])
+            .select(['SUM([TXCURR_Total]) TX_CURR, SUM([Eligible4VL]) Eligible4VL, SUM([Last12MonthVL]) Last12MonthVL, SUM([Last12MVLSup]) Last12MVLSup, SUM([HighViremia]) HighViremia, SUM([LowViremia]) LowViremia'])
             .where('f.[TXCURR_Total] IS NOT NULL');
 
         if (query.county) {
