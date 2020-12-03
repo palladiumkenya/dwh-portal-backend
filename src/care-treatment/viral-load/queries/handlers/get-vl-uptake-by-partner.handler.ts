@@ -14,7 +14,7 @@ export class GetVlUptakeByPartnerHandler implements IQueryHandler<GetVlUptakeByP
 
     async execute(query: GetVlUptakeByPartnerQuery): Promise<any> {
         const vlUptakeByPartner = this.repository.createQueryBuilder('f')
-            .select(['f.CTPartner partner, SUM(f.VLDone) vlDone'])
+            .select(['f.CTPartner partner, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed'])
             .where('f.MFLCode > 0')
             .andWhere('f.CTPartner IS NOT NULL');
 

@@ -83,6 +83,7 @@ import { FactTransVLOverallUptake } from './viral-load/entities/fact-trans-vl-ov
 import { FactTransOptimizeStartRegimen } from './viral-load/entities/fact-trans-optimize-start-regimen.model';
 
 import { GetVlOverallUptakeAndSuppressionHandler } from './viral-load/queries/handlers/get-vl-overall-uptake-and-suppression.handler';
+import { GetVlOverallUptakeAndSuppressionBySexHandler } from './viral-load/queries/handlers/get-vl-overall-uptake-and-suppression-by-sex.handler';
 import { GetVlUptakeBySexHandler } from './viral-load/queries/handlers/get-vl-uptake-by-sex.handler';
 import { GetVlUptakeByAgeHandler } from './viral-load/queries/handlers/get-vl-uptake-by-age.handler';
 import { GetVlUptakeByCountyHandler } from './viral-load/queries/handlers/get-vl-uptake-by-county.handler';
@@ -205,6 +206,7 @@ import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handler
         GetCtTxCurrAgeGroupDistributionByCountyHandler,
         GetCtTxCurrAgeGroupDistributionByPartnerHandler,
         GetVlOverallUptakeAndSuppressionHandler,
+        GetVlOverallUptakeAndSuppressionBySexHandler,
         GetVlUptakeBySexHandler,
         GetVlUptakeByAgeHandler,
         GetVlUptakeByCountyHandler,

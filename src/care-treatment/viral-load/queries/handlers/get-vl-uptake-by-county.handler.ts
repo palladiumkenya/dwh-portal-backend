@@ -14,7 +14,7 @@ export class GetVlUptakeByCountyHandler implements IQueryHandler<GetVlUptakeByCo
 
     async execute(query: GetVlUptakeByCountyQuery): Promise<any> {
         const vlUptakeByCounty = this.repository.createQueryBuilder('f')
-            .select(['f.County county, SUM(f.VLDone) vlDone'])
+            .select(['f.County county, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed'])
             .where('f.MFLCode > 0')
             .andWhere('f.County IS NOT NULL');
 

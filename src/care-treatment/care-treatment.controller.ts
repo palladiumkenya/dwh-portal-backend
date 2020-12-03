@@ -59,6 +59,7 @@ import { GetTreatmentOutcomesRetention12mQuery } from './treatment-outcomes/quer
 import { GetTreatmentOutcomesRetention24mQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-retention-24m.query';
 
 import { GetVlOverallUptakeAndSuppressionQuery } from './viral-load/queries/impl/get-vl-overall-uptake-and-suppression.query';
+import { GetVlOverallUptakeAndSuppressionBySexQuery } from './viral-load/queries/impl/get-vl-overall-uptake-and-suppression-by-sex.query';
 import { GetVlUptakeBySexQuery } from './viral-load/queries/impl/get-vl-uptake-by-sex.query';
 import { GetVlUptakeByAgeQuery } from './viral-load/queries/impl/get-vl-uptake-by-age.query';
 import { GetVlUptakeByCountyQuery } from './viral-load/queries/impl/get-vl-uptake-by-county.query';
@@ -1819,6 +1820,43 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetVlOverallUptakeAndSuppressionQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlOverallUptakeAndSuppressionBySex')
+    async getVlOverallUptakeAndSuppressionBySex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlOverallUptakeAndSuppressionBySexQuery();
         if(county) {
             query.county = county;
         }
