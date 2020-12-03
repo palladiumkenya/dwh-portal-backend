@@ -14,9 +14,8 @@ export class GetVlOverallUptakeAndSuppressionHandler implements IQueryHandler<Ge
 
     async execute(query: GetVlOverallUptakeAndSuppressionQuery): Promise<any> {
         const vlOverallUptakeAndSuppression = this.repository.createQueryBuilder('f')
-            .select(['Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed'])
-            .where('f.MFLCode > 0')
-            .andWhere('f.Gender IS NOT NULL');
+            .select(['SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed'])
+            .where('f.MFLCode > 0');
 
         if (query.county) {
             vlOverallUptakeAndSuppression.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -34,8 +33,6 @@ export class GetVlOverallUptakeAndSuppressionHandler implements IQueryHandler<Ge
             vlOverallUptakeAndSuppression.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        return await vlOverallUptakeAndSuppression
-            .groupBy('f.Gender')
-            .getRawMany();
+        return await vlOverallUptakeAndSuppression.getRawOne();
     }
 }
