@@ -50,6 +50,7 @@ import { GetMedianTimeToArtByPartnerHandler } from './new-on-art/queries/handler
 
 import { FactTransDsdUnstable } from './dsd/entities/fact-trans-dsd-unstable.model';
 import { FactTransDsdMmdActivePatients } from './dsd/entities/fact-trans-dsd-mmd-active-patients.model';
+import { FactTransDsdMmdUptake } from './dsd/entities/fact-trans-dsd-mmd-uptake.model';
 import { FactTransDsdStabilityStatus } from './dsd/entities/fact-trans-dsd-stability-status.model';
 import { FactTransDsdAppointmentByStabilityStatus } from './dsd/entities/fact-trans-dsd-appointment-by-stability-status.model';
 
@@ -60,6 +61,8 @@ import { GetDsdStabilityStatusHandler } from './dsd/queries/handlers/get-dsd-sta
 import { GetDsdStabilityStatusByAgeSexHandler } from './dsd/queries/handlers/get-dsd-stability-status-by-age-sex.handler';
 import { GetDsdStabilityStatusByCountyHandler } from './dsd/queries/handlers/get-dsd-stability-status-by-county.handler';
 import { GetDsdStabilityStatusByPartnerHandler } from './dsd/queries/handlers/get-dsd-stability-status-by-partner.handler';
+import { GetDsdMmdUptakeOverallHandler } from './dsd/queries/handlers/get-dsd-mmd-uptake-overall.handler';
+import { GetDsdMmdUptakeOverallBySexHandler } from './dsd/queries/handlers/get-dsd-mmd-uptake-overall-by-sex.handler';
 import { GetDsdAppointmentDurationBySexHandler } from './dsd/queries/handlers/get-dsd-appointment-duration-by-sex.handler';
 import { GetDsdAppointmentDurationByAgeHandler } from './dsd/queries/handlers/get-dsd-appointment-duration-by-age.handler';
 import { GetDsdAppointmentDurationByCountyHandler } from './dsd/queries/handlers/get-dsd-appointment-duration-by-county.handler';
@@ -136,6 +139,7 @@ import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handler
                 FactTransDsdCascade,
                 FactTransDsdUnstable,
                 FactTransDsdMmdActivePatients,
+                FactTransDsdMmdUptake,
                 FactTransDsdStabilityStatus,
                 FactTransDsdAppointmentByStabilityStatus,
                 FactTransNewCohort,
@@ -192,6 +196,8 @@ import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handler
         GetDsdStabilityStatusByAgeSexHandler,
         GetDsdStabilityStatusByCountyHandler,
         GetDsdStabilityStatusByPartnerHandler,
+        GetDsdMmdUptakeOverallHandler,
+        GetDsdMmdUptakeOverallBySexHandler,
         GetDsdAppointmentDurationBySexHandler,
         GetDsdAppointmentDurationByAgeHandler,
         GetDsdAppointmentDurationByCountyHandler,
