@@ -7,6 +7,7 @@ import { GetCtFacilitiesQuery } from './common/queries/impl/get-ct-facilities.qu
 import { GetCtPartnersQuery } from './common/queries/impl/get-ct-partners.query';
 import { GetCtAgenciesQuery } from './common/queries/impl/get-ct-agencies.query';
 import { GetCtProjectsQuery } from './common/queries/impl/get-ct-projects.query';
+import { GetCtSitesQuery } from './common/queries/impl/get-ct-sites.query';
 
 import { GetActiveArtQuery } from './home/queries/impl/get-active-art.query';
 import { GetActiveArtAdultsQuery } from './home/queries/impl/get-active-art-adults.query';
@@ -168,6 +169,37 @@ export class CareTreatmentController {
         @Query('project') project
     ): Promise<any> {
         const query = new GetCtFacilitiesQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        if(project) {
+            query.project = project;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('sites')
+    async getSites(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project
+    ): Promise<any> {
+        const query = new GetCtSitesQuery();
         if(county) {
             query.county = county;
         }
