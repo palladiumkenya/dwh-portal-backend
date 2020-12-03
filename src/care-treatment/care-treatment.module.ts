@@ -117,6 +117,7 @@ import { GetNumberOfClientWithAeHandler } from './adverse-events/queries/handler
 import { GetNumberAeReportedInAdultsOver15Handler } from './adverse-events/queries/handlers/get-number-ae-reported-in-adults-over-15.handler';
 import { GetNumberAeReportedInChildrenOver15Handler } from './adverse-events/queries/handlers/get-number-ae-reported-in-children-over-15.handler';
 import { GetAeTypeBySeverityHandler } from './adverse-events/queries/handlers/get-ae-type-by-severity.handler';
+import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handlers/get-newly-started-desegregated.handler';
 
 @Module({
     imports: [
@@ -230,7 +231,8 @@ import { GetAeTypeBySeverityHandler } from './adverse-events/queries/handlers/ge
         GetNumberOfClientWithAeHandler,
         GetNumberAeReportedInAdultsOver15Handler,
         GetNumberAeReportedInChildrenOver15Handler,
-        GetAeTypeBySeverityHandler
+        GetAeTypeBySeverityHandler,
+        GetNewlyStartedDesegregatedHandler
     ],
     controllers: [CareTreatmentController]
 })
