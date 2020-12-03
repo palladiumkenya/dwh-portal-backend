@@ -42,6 +42,8 @@ import { GetDsdStabilityStatusQuery } from './dsd/queries/impl/get-dsd-stability
 import { GetDsdStabilityStatusByAgeSexQuery } from './dsd/queries/impl/get-dsd-stability-status-by-age-sex.query';
 import { GetDsdStabilityStatusByCountyQuery } from './dsd/queries/impl/get-dsd-stability-status-by-county.query';
 import { GetDsdStabilityStatusByPartnerQuery } from './dsd/queries/impl/get-dsd-stability-status-by-partner.query';
+import { GetDsdMmdUptakeOverallQuery } from './dsd/queries/impl/get-dsd-mmd-uptake-overall.query';
+import { GetDsdMmdUptakeOverallBySexQuery } from './dsd/queries/impl/get-dsd-mmd-uptake-overall-by-sex.query';
 import { GetDsdAppointmentDurationBySexQuery } from './dsd/queries/impl/get-dsd-appointment-duration-by-sex.query';
 import { GetDsdAppointmentDurationByAgeQuery } from './dsd/queries/impl/get-dsd-appointment-duration-by-age.query';
 import { GetDsdAppointmentDurationByCountyQuery } from './dsd/queries/impl/get-dsd-appointment-duration-by-county.query';
@@ -1216,6 +1218,80 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetDsdStabilityStatusByPartnerQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('dsdMmdUptakeOverall')
+    async getDsdMmdUptakeOverall(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetDsdMmdUptakeOverallQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('dsdMmdUptakeOverallBySex')
+    async getDsdMmdUptakeOverallBySex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetDsdMmdUptakeOverallBySexQuery();
         if(county) {
             query.county = county;
         }
