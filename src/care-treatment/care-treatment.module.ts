@@ -5,12 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { CareTreatmentController } from './care-treatment.controller';
 
+import { AllEmrSites } from './common/entities/all-emr-sites.model';
+
 import { GetCtCountyHandler } from './common/queries/handlers/get-ct-county.handler';
 import { GetCtSubCountyHandler } from './common/queries/handlers/get-ct-sub-county.handler';
 import { GetCtFacilitiesHandler } from './common/queries/handlers/get-ct-facilities.handler';
 import { GetCtPartnersHandler } from './common/queries/handlers/get-ct-partners.handler';
 import { GetCtAgenciesHandler } from './common/queries/handlers/get-ct-agencies.handler';
 import { GetCtProjectsHandler } from './common/queries/handlers/get-ct-projects.handler';
+import { GetCtSitesHandler } from './common/queries/handlers/get-ct-sites.handler';
 
 import { FactTransHmisStatsTxcurr } from './home/entities/fact-trans-hmis-stats-txcurr.model';
 import { FactTransDsdCascade } from './home/entities/fact-trans-dsd-cascade.model';
@@ -126,6 +129,7 @@ import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handler
         ConfigurationModule,
         TypeOrmModule.forFeature(
             [
+                AllEmrSites,
                 FactTransHmisStatsTxcurr,
                 FactTransNewlyStarted,
                 FactCTTimeToArt,
@@ -157,6 +161,7 @@ import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handler
         GetCtPartnersHandler,
         GetCtAgenciesHandler,
         GetCtProjectsHandler,
+        GetCtSitesHandler,
         GetActiveArtHandler,
         GetActiveChildrenHandler,
         GetActiveAdultsHandler,
