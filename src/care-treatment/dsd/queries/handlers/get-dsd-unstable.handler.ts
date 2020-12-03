@@ -15,7 +15,7 @@ export class GetDsdUnstableHandler implements IQueryHandler<GetDsdUnstableQuery>
 
     async execute(query: GetDsdUnstableQuery): Promise<any> {
         const dsdUnstable = this.repository.createQueryBuilder('f')
-            .select(['SUM([onARTlessthan12mnths]) onArtLessThan12Months, SUM([Agelessthan20Yrs]) ageLessThan20Years, SUM([Adherence]) poorAdherence, SUM([HighVL]) highVl, SUM([BMI]) bmiLessThan18'])
+            .select(['SUM([TxCurr]) txCurr, SUM([onARTlessthan12mnths]) onArtLessThan12Months, SUM([Agelessthan20Yrs]) ageLessThan20Years, SUM([Adherence]) poorAdherence, SUM([HighVL]) highVl, SUM([BMI]) bmiLessThan18'])
             .where('f.[MFLCode] > 1');
 
         if (query.county) {
