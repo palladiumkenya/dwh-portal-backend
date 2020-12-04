@@ -15,7 +15,7 @@ export class GetTreatmentOutcomesByFacilityHandler implements IQueryHandler<GetT
 
     async execute(query: GetTreatmentOutcomesByFacilityQuery): Promise<any> {
         const treatmentOutcomes = this.repository.createQueryBuilder('f')
-            .select(['f.ARTOutcome artOutcome, SUM(f.TotalOutcomes) totalOutcomes, f.FacilityName facility'])
+            .select(['f.ARTOutcome artOutcome, SUM(f.TotalOutcomes) totalOutcomes, MAX(f.County) county, MAX(f.Subcounty) subCounty, f.FacilityName facility, MAX(f.CTPartner) partner'])
             .where('f.MFLCode IS NOT NULL')
             .andWhere('f.artOutcome IS NOT NULL')
             .andWhere('f.FacilityName IS NOT NULL');
