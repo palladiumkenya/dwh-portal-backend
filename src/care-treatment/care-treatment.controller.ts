@@ -2915,9 +2915,12 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
-        @Query('partner') partner
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month
     ): Promise<any> {
         const query = new GetNewlyStartedDesegregatedQuery();
+
         if(county) {
             query.county = county;
         }
@@ -2932,6 +2935,14 @@ export class CareTreatmentController {
 
         if(partner) {
             query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
         }
 
         return this.queryBus.execute(query);
