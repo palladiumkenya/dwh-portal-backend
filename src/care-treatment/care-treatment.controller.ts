@@ -54,6 +54,7 @@ import { GetTreatmentOutcomesOverallQuery } from './treatment-outcomes/queries/i
 import { GetTreatmentOutcomesBySexQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-by-sex.query';
 import { GetTreatmentOutcomesByAgeQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-by-age.query';
 import { GetTreatmentOutcomesByYearQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-by-year.query';
+import { GetTreatmentOutcomesByFacilityQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-by-facility.query';
 import { GetTreatmentOutcomesByCountyQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-by-county.query';
 import { GetTreatmentOutcomesByPartnerQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-by-partner.query';
 import { GetTreatmentOutcomesRetention3mQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-retention-3m.query';
@@ -1615,6 +1616,43 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesByYearQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('treatmentOutcomesByFacility')
+    async getTreatmentOutcomesByFacility(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetTreatmentOutcomesByFacilityQuery();
         if(county) {
             query.county = county;
         }
