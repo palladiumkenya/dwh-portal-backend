@@ -76,6 +76,7 @@ import { GetTreatmentOutcomesOverallHandler } from './treatment-outcomes/queries
 import { GetTreatmentOutcomesBySexHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-by-sex.handler';
 import { GetTreatmentOutcomesByAgeHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-by-age.handler';
 import { GetTreatmentOutcomesByYearHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-by-year.handler';
+import { GetTreatmentOutcomesByFacilityHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-by-facility.handler';
 import { GetTreatmentOutcomesByCountyHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-by-county.handler';
 import { GetTreatmentOutcomesByPartnerHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-by-partner.handler';
 import { GetTreatmentOutcomesRetention3mHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-retention-3m.handler';
@@ -207,6 +208,7 @@ import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handler
         GetTreatmentOutcomesBySexHandler,
         GetTreatmentOutcomesByAgeHandler,
         GetTreatmentOutcomesByYearHandler,
+        GetTreatmentOutcomesByFacilityHandler,
         GetTreatmentOutcomesByCountyHandler,
         GetTreatmentOutcomesByPartnerHandler,
         GetTreatmentOutcomesRetention3mHandler,
