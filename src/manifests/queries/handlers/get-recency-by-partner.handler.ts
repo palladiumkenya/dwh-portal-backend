@@ -31,10 +31,10 @@ export class GetRecencyByPartnerHandler implements IQueryHandler<GetRecencyByPar
             params.push(query.county);
         }
 
-        // if(query.subCounty) {
-        //     recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and subCounty IN (?)`;
-        //     params.push(query.subCounty);
-        // }
+        if(query.subCounty) {
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and subCounty IN (?)`;
+            params.push(query.subCounty);
+        }
 
         // if(query.facility) {
         //     recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and facility IN (?)`;
@@ -98,7 +98,7 @@ export class GetRecencyByPartnerHandler implements IQueryHandler<GetRecencyByPar
         recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} GROUP BY partner
                                     \t) b ON b.partner = a.partner`;
 
-        recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} ORDER BY ROUND(recency * 100 / b.expected) DESC`;
+        recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} ORDER BY b.expected DESC`;
 
         return await this.repository.query(recencyOfReportingByPartnerSql, params);
     }

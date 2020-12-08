@@ -32,10 +32,10 @@ export class GetRecencyByCountyHandler implements IQueryHandler<GetRecencyByCoun
             params.push(query.county);
         }
 
-        // if(query.subCounty) {
-        //     recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and subCounty IN (?)`;
-        //     params.push(query.subCounty);
-        // }
+        if(query.subCounty) {
+            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and subCounty IN (?)`;
+            params.push(query.subCounty);
+        }
 
         // if(query.facility) {
         //     recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and facility IN (?)`;
@@ -100,7 +100,7 @@ export class GetRecencyByCountyHandler implements IQueryHandler<GetRecencyByCoun
                                     \t) b ON b.county = a.county`;
 
 
-        recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} ORDER BY ROUND(recency * 100 / b.expected) DESC`;
+        recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} ORDER BY b.expected DESC`;
 
         return await this.repository.query(recencyOfReportingByCountySql, params);
     }
