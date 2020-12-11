@@ -7,6 +7,7 @@ import { GetHtsFacilitiesQuery } from './common/queries/impl/get-hts-facilities.
 import { GetHtsPartnersQuery } from './common/queries/impl/get-hts-partners.query';
 import { GetHtsAgenciesQuery } from './common/queries/impl/get-hts-agencies.query';
 import { GetHtsProjectsQuery } from './common/queries/impl/get-hts-projects.query';
+import { GetHtsSitesQuery } from './common/queries/impl/get-hts-sites.query';
 
 import { GetNumberTestedPositivityQuery } from './uptake/queries/impl/get-number-tested-positivity.query';
 import { GetUptakeBySexQuery } from './uptake/queries/impl/get-uptake-by-sex.query';
@@ -47,6 +48,11 @@ import { GetPnsIndexQuery } from './pns/queries/impl/get-pns-index.query';
 export class HtsController {
     constructor(private readonly queryBus: QueryBus) {
 
+    }
+
+    @Get('sites')
+    async getHtsSites(): Promise<any> {
+        return this.queryBus.execute(new GetHtsSitesQuery());
     }
 
     @Get('counties')
