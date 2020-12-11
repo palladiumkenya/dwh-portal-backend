@@ -14,6 +14,7 @@ import { GetCtPartnersHandler } from './common/queries/handlers/get-ct-partners.
 import { GetCtAgenciesHandler } from './common/queries/handlers/get-ct-agencies.handler';
 import { GetCtProjectsHandler } from './common/queries/handlers/get-ct-projects.handler';
 import { GetCtSitesHandler } from './common/queries/handlers/get-ct-sites.handler';
+import { GetCtSiteGpsHandler } from './common/queries/handlers/get-ct-site-gps.handler';
 
 import { FactTransHmisStatsTxcurr } from './home/entities/fact-trans-hmis-stats-txcurr.model';
 import { FactTransDsdCascade } from './home/entities/fact-trans-dsd-cascade.model';
@@ -167,6 +168,7 @@ import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handler
         GetCtAgenciesHandler,
         GetCtProjectsHandler,
         GetCtSitesHandler,
+        GetCtSiteGpsHandler,
         GetActiveArtHandler,
         GetActiveChildrenHandler,
         GetActiveAdultsHandler,

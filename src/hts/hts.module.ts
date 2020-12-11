@@ -23,6 +23,7 @@ import { GetHtsFacilitiesHandler } from './common/queries/handlers/get-hts-facil
 import { GetHtsPartnersHandler } from './common/queries/handlers/get-hts-partners.handler';
 import { GetHtsAgenciesHandler } from './common/queries/handlers/get-hts-agencies.handler';
 import { GetHtsProjectsHandler } from './common/queries/handlers/get-hts-projects.handler';
+import { GetHtsSitesHandler } from './common/queries/handlers/get-hts-sites.handler';
 
 import { GetNumberTestedPositivityHandler } from './uptake/queries/handlers/get-number-tested-positivity.handler';
 import { GetUptakeByAgeSexHandler } from './uptake/queries/handlers/get-uptake-by-age-sex.handler';
@@ -85,6 +86,7 @@ import { GetPnsIndexHandler } from './pns/queries/handlers/get-pns-index.handler
         GetHtsPartnersHandler,
         GetHtsAgenciesHandler,
         GetHtsProjectsHandler,
+        GetHtsSitesHandler,
 
         GetNumberTestedPositivityHandler,
         GetUptakeByAgeSexHandler,

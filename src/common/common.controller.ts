@@ -6,6 +6,7 @@ import { GetFacilitiesQuery } from './queries/impl/get-facilities.query';
 import { GetPartnersQuery } from './queries/impl/get-partners.query';
 import { GetAgenciesQuery } from './queries/impl/get-agencies.query';
 import { GetProjectsQuery } from './queries/impl/get-projects.query';
+import { GetSitesQuery } from './queries/impl/get-sites.query';
 
 @Controller('common')
 export class CommonController {
@@ -197,5 +198,10 @@ export class CommonController {
             query.project = project;
         }
         return this.queryBus.execute(query);
+    }
+
+    @Get('sites')
+    async getSites(): Promise<any> {
+        return this.queryBus.execute(new GetSitesQuery());
     }
 }

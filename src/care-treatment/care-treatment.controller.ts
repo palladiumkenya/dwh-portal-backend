@@ -8,6 +8,7 @@ import { GetCtPartnersQuery } from './common/queries/impl/get-ct-partners.query'
 import { GetCtAgenciesQuery } from './common/queries/impl/get-ct-agencies.query';
 import { GetCtProjectsQuery } from './common/queries/impl/get-ct-projects.query';
 import { GetCtSitesQuery } from './common/queries/impl/get-ct-sites.query';
+import { GetCtSiteGpsQuery } from './common/queries/impl/get-ct-site-gps.query';
 
 import { GetActiveArtQuery } from './home/queries/impl/get-active-art.query';
 import { GetActiveArtAdultsQuery } from './home/queries/impl/get-active-art-adults.query';
@@ -194,7 +195,12 @@ export class CareTreatmentController {
     }
 
     @Get('sites')
-    async getSites(
+    async getSites(): Promise<any> {
+        return this.queryBus.execute(new GetCtSitesQuery());
+    }
+
+    @Get('siteGps')
+    async getSiteGps(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -202,7 +208,7 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project
     ): Promise<any> {
-        const query = new GetCtSitesQuery();
+        const query = new GetCtSiteGpsQuery();
         if(county) {
             query.county = county;
         }
