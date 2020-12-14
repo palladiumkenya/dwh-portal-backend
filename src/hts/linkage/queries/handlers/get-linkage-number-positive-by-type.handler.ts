@@ -11,7 +11,7 @@ export class GetLinkageNumberPositiveByTypeHandler implements IQueryHandler<GetL
         @InjectRepository(FactHtsUptake)
         private readonly repository: Repository<FactHtsUptake>
     ) {
-        
+
     }
 
     async execute(query: GetLinkageNumberPositiveByTypeQuery): Promise<any> {
@@ -31,7 +31,7 @@ export class GetLinkageNumberPositiveByTypeHandler implements IQueryHandler<GetL
             linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and SubCounty IN (?)`;
             params.push(query.subCounty);
         }
-        
+
         if(query.facility) {
             linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and FacilityName IN (?)`;
             params.push(query.facility);
@@ -56,7 +56,7 @@ export class GetLinkageNumberPositiveByTypeHandler implements IQueryHandler<GetL
             params.push(query.month);
         }
 
-        linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} GROUP BY TestedBefore, year, month ORDER BY TestedBefore, year, month`;
+        linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} GROUP BY TestedBefore, year, month`;
 
         return  await this.repository.query(linkageNumberPositiveByTypeSql, params);
     }

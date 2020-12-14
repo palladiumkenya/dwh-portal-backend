@@ -27,7 +27,7 @@ export class GetNumberTestedPositivityHandler implements IQueryHandler<GetNumber
 
         if(query.subCounty) {
             numberTestedPositivitySql = `${numberTestedPositivitySql} and SubCounty IN (?)`;
-            params.push(query.county);
+            params.push(query.subCounty);
         }
 
         if(query.facility) {
