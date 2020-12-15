@@ -22,7 +22,7 @@ export class GetUptakeByTbScreenedHandler implements IQueryHandler<GetUptakeByTb
             '             WHEN t.`tbScreening` IS NOT NULL THEN 1\n' +
             '             ELSE 0\n' +
             '           END) AS ScreenedTB\n' +
-            '  FROM `fact_hts_tbscreening` t WHERE `tbScreening` IS NULL OR `tbScreening` IS NOT NULL ';
+            '  FROM `fact_hts_tbscreening` t WHERE Tested > 0 ';
 
         if(query.county) {
             uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and County IN (?)`;
