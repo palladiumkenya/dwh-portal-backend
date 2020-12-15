@@ -16,7 +16,7 @@ export class GetReportedAesWithSeverityLevelsHandler implements IQueryHandler<Ge
         const reportedAesWithSeverity = this.repository.createQueryBuilder('f')
             .select('[AdverseEvent], [Severity] = CASE WHEN ISNULL([Severity],\'\') = \'\' THEN \'Unknown\' ELSE [Severity] END, SUM([Severity_total]) total')
             .where('[AdverseEvent] IS NOT NULL')
-            .having('SUM([Severity_total]) > 0');
+            .having('SUM([Severity_total]) > 30');
 
         if (query.county) {
             reportedAesWithSeverity
