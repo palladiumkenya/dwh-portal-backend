@@ -95,6 +95,8 @@ import { GetNumberAeReportedInChildrenOver15Query } from './adverse-events/queri
 import { GetAeTypeBySeverityQuery } from './adverse-events/queries/impl/get-ae-type-by-severity.query';
 import { GetNewlyStartedDesegregatedQuery } from './new-on-art/queries/impl/get-newly-started-desegregated.query';
 
+import { GetArtOptimizationOverviewQuery } from './art-optimization/queries/impl/get-art-optimization-overview.query';
+
 @Controller('care-treatment')
 export class CareTreatmentController {
     constructor(private readonly queryBus: QueryBus) {
@@ -2941,6 +2943,54 @@ export class CareTreatmentController {
 
         if(partner) {
             query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getArtOptimizationOverview')
+    async getArtOptimizationOverview(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetArtOptimizationOverviewQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
         }
 
         if (year) {

@@ -128,6 +128,10 @@ import { GetNumberAeReportedInChildrenOver15Handler } from './adverse-events/que
 import { GetAeTypeBySeverityHandler } from './adverse-events/queries/handlers/get-ae-type-by-severity.handler';
 import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handlers/get-newly-started-desegregated.handler';
 
+import { FactTransOptimizeRegLines } from './art-optimization/entities/fact-trans-optimize-reg-lines.model';
+
+import { GetArtOptimizationOverviewHandler } from './art-optimization/queries/handlers/get-art-optimization-overview.handler';
+
 @Module({
     imports: [
         CqrsModule,
@@ -155,7 +159,8 @@ import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handler
                 FactTransAeSeverity,
                 FactTransAeCauses,
                 FactTransAeCategories,
-                FactTransAeClients
+                FactTransAeClients,
+                FactTransOptimizeRegLines,
             ],
             'mssql'
         )
@@ -249,7 +254,8 @@ import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handler
         GetNumberAeReportedInAdultsOver15Handler,
         GetNumberAeReportedInChildrenOver15Handler,
         GetAeTypeBySeverityHandler,
-        GetNewlyStartedDesegregatedHandler
+        GetNewlyStartedDesegregatedHandler,
+        GetArtOptimizationOverviewHandler,
     ],
     controllers: [CareTreatmentController]
 })
