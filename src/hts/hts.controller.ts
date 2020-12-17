@@ -43,6 +43,7 @@ import { GetPnsSexualContactsByCountyQuery } from './pns/queries/impl/get-pns-se
 import { GetPnsChildrenCascadeQuery } from './pns/queries/impl/get-pns-children-cascade.query';
 import { GetPnsChildrenByYearQuery } from './pns/queries/impl/get-pns-children-by-year.query';
 import { GetPnsIndexQuery } from './pns/queries/impl/get-pns-index.query';
+import { GetPnsKnowledgeHivStatusCascadeQuery } from './pns/queries/impl/get-pns-knowledge-hiv-status-cascade.query';
 
 @Controller('hts')
 export class HtsController {
@@ -1446,6 +1447,54 @@ export class HtsController {
 
         if(partner) {
             query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('pnsKnowledgeHivStatusCascade')
+    async GetPnsKnowledgeHivStatusCascade(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetPnsKnowledgeHivStatusCascadeQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
         }
 
         if(year) {

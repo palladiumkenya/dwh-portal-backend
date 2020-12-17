@@ -16,6 +16,7 @@ import { FactHtsClientSelfTested } from './uptake/entities/fact-hts-clientselfte
 import { FactHtsuptake } from './pns/entities/fact-htsuptake.entity';
 import { FactPNSSexualPartner } from './pns/entities/fact-pns-sexual-partner.entity';
 import { FactPNSChildren } from './pns/entities/fact-pns-children.entity';
+import { FactPNSKnowledgeHivStatus } from './pns/entities/fact-pns-knowledge-hiv-status.entity';
 
 import { GetHtsCountiesHandler } from './common/queries/handlers/get-hts-counties.handler';
 import { GetHtsSubCountiesHandler } from './common/queries/handlers/get-hts-sub-counties.handler';
@@ -59,6 +60,7 @@ import { GetPnsSexualContactsByYearHandler } from './pns/queries/handlers/get-pn
 import { GetPnsChildrenCascadeHandler } from './pns/queries/handlers/get-pns-children-cascade.handler';
 import { GetPnsChildrenByYearHandler } from './pns/queries/handlers/get-pns-children-by-year.handler';
 import { GetPnsIndexHandler } from './pns/queries/handlers/get-pns-index.handler';
+import { GetPnsKnowledgeHivStatusCascadeHandler } from './pns/queries/handlers/get-pns-knowledge-hiv-status-cascade.handler';
 
 @Module({
     imports: [
@@ -77,6 +79,7 @@ import { GetPnsIndexHandler } from './pns/queries/handlers/get-pns-index.handler
             FactPNSSexualPartner,
             FactPNSChildren,
             FactHtsuptake,
+            FactPNSKnowledgeHivStatus,
         ])
     ],
     providers: [
@@ -122,6 +125,7 @@ import { GetPnsIndexHandler } from './pns/queries/handlers/get-pns-index.handler
         GetPnsChildrenCascadeHandler,
         GetPnsChildrenByYearHandler,
         GetPnsIndexHandler,
+        GetPnsKnowledgeHivStatusCascadeHandler,
     ],
     controllers: [HtsController]
 })
