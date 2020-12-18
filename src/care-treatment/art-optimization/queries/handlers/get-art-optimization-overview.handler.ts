@@ -39,20 +39,15 @@ export class GetArtOptimizationOverviewHandler implements IQueryHandler<GetArtOp
         // }
 
         // if (query.project) {
-        //     artOptimizationOverview.andWhere('f.CTPartner IN (:...project)', { project: query.project });
+        //     artOptimizationOverview.andWhere('f.project IN (:...project)', { project: query.project });
         // }
 
         // if(query.month) {
-        //     artOptimizationOverview.andWhere('f.StartART_Month = :month', { month: query.month });
+        //     artOptimizationOverview.andWhere('f.StartARTMonth IN (:...month)', { month: query.month });
         // }
 
-        // if(query.year) {
-        //     const yearVal = new Date().getFullYear();
-        //     if(query.year == yearVal && !query.month) {
-        //         artOptimizationOverview.andWhere('f.Start_Year >= :startYear', { startYear: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).getFullYear() });
-        //     } else {
-        //         artOptimizationOverview.andWhere('f.Start_Year = :startYear', { startYear: query.year });
-        //     }
+        // if (query.year) {
+        //     artOptimizationOverview.andWhere('f.StartARTYr IN (:...year)', { year: query.year });
         // }
 
         return await artOptimizationOverview

@@ -1,4 +1,4 @@
-export class GetArtOptimizationOverviewQuery {
+export class GetArtOptimizationNewByYearQuery {
     county?: string[];
     subCounty?: string[];
     facility?: string[];

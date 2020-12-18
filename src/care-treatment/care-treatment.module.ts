@@ -131,6 +131,13 @@ import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handler
 import { FactTransOptimizeRegLines } from './art-optimization/entities/fact-trans-optimize-reg-lines.model';
 
 import { GetArtOptimizationOverviewHandler } from './art-optimization/queries/handlers/get-art-optimization-overview.handler';
+import { GetArtOptimizationCurrentByAgeSexHandler } from './art-optimization/queries/handlers/get-art-optimization-current-by-age-sex.handler';
+import { GetArtOptimizationCurrentByRegimenHandler } from './art-optimization/queries/handlers/get-art-optimization-current-by-regimen.handler';
+import { GetArtOptimizationCurrentByCountyHandler } from './art-optimization/queries/handlers/get-art-optimization-current-by-county.handler';
+import { GetArtOptimizationCurrentByPartnerHandler } from './art-optimization/queries/handlers/get-art-optimization-current-by-partner.handler';
+import { GetArtOptimizationNewByCountyHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-county.handler';
+import { GetArtOptimizationNewByPartnerHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-partner.handler';
+import { GetArtOptimizationNewByYearHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-year.handler';
 
 @Module({
     imports: [
@@ -256,6 +263,13 @@ import { GetArtOptimizationOverviewHandler } from './art-optimization/queries/ha
         GetAeTypeBySeverityHandler,
         GetNewlyStartedDesegregatedHandler,
         GetArtOptimizationOverviewHandler,
+        GetArtOptimizationCurrentByAgeSexHandler,
+        GetArtOptimizationCurrentByRegimenHandler,
+        GetArtOptimizationCurrentByCountyHandler,
+        GetArtOptimizationCurrentByPartnerHandler,
+        GetArtOptimizationNewByCountyHandler,
+        GetArtOptimizationNewByPartnerHandler,
+        GetArtOptimizationNewByYearHandler,
     ],
     controllers: [CareTreatmentController]
 })
