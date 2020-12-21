@@ -52,6 +52,7 @@ export class GetArtOptimizationCurrentByCountyHandler implements IQueryHandler<G
 
         return await artOptimizationCurrentByCounty
             .groupBy('County, Agegroup, Gender')
+            .orderBy('County, Agegroup, Gender')
             .getRawMany();
     }
 }

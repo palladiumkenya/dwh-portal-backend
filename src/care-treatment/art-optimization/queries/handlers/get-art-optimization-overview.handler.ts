@@ -52,6 +52,7 @@ export class GetArtOptimizationOverviewHandler implements IQueryHandler<GetArtOp
 
         return await artOptimizationOverview
             .groupBy('Agegroup, Gender, CurrentRegimen, RegimenLine')
+            .orderBy('Agegroup, Gender, CurrentRegimen, RegimenLine')
             .getRawMany();
     }
 }

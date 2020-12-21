@@ -52,6 +52,7 @@ export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<G
 
         return await artOptimizationCurrentByAgeSex
             .groupBy('Agegroup, Gender, DATIM_AgeGroup')
+            .orderBy('Agegroup, Gender, DATIM_AgeGroup')
             .getRawMany();
     }
 }

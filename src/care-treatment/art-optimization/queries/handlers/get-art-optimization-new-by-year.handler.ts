@@ -52,6 +52,7 @@ export class GetArtOptimizationNewByYearHandler implements IQueryHandler<GetArtO
 
         return await artOptimizationNewByYear
             .groupBy('StartARTYr, StartARTMonth, StartRegimen')
+            .orderBy('StartARTYr, StartARTMonth, StartRegimen')
             .getRawMany();
     }
 }
