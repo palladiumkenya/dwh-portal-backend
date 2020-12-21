@@ -52,6 +52,7 @@ export class GetArtOptimizationCurrentByPartnerHandler implements IQueryHandler<
 
         return await artOptimizationCurrentByPartner
             .groupBy('CTPartner, Agegroup, Gender')
+            .orderBy('CTPartner, Agegroup, Gender')
             .getRawMany();
     }
 }

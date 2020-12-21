@@ -52,6 +52,7 @@ export class GetArtOptimizationNewByCountyHandler implements IQueryHandler<GetAr
 
         return await artOptimizationNewByCounty
             .groupBy('County, StartRegimen, StartARTYr, StartARTMonth')
+            .orderBy('County, StartRegimen, StartARTYr, StartARTMonth')
             .getRawMany();
     }
 }

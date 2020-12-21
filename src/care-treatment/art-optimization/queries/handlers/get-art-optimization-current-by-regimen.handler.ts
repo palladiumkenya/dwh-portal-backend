@@ -52,6 +52,7 @@ export class GetArtOptimizationCurrentByRegimenHandler implements IQueryHandler<
 
         return await artOptimizationCurrentByRegimen
             .groupBy('Agegroup, RegimenLine, Lastregimen')
+            .orderBy('Agegroup, RegimenLine, Lastregimen')
             .getRawMany();
     }
 }

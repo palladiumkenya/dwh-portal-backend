@@ -52,6 +52,7 @@ export class GetArtOptimizationNewByPartnerHandler implements IQueryHandler<GetA
 
         return await artOptimizationNewByPartner
             .groupBy('CTPartner, StartRegimen, StartARTYr, StartARTMonth')
+            .orderBy('CTPartner, StartRegimen, StartARTYr, StartARTMonth')
             .getRawMany();
     }
 }
