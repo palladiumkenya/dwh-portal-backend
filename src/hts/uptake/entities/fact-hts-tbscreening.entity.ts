@@ -34,4 +34,7 @@ export class FactHtsTBScreening {
 
     @Column('int')
     linked: number;
+
+    @Column('text')
+    TBSCreening_grp: string;
 }
