@@ -14,15 +14,7 @@ export class GetUptakeByTbScreenedHandler implements IQueryHandler<GetUptakeByTb
 
     async execute(query: GetUptakeByTbScreenedQuery): Promise<any> {
         const params = [];
-        let uptakeByTBScreenedSql = 'SELECT SUM(CASE \n' +
-            '             WHEN t.`tbScreening` IS NULL THEN 1\n' +
-            '             ELSE 0\n' +
-            '           END) AS NotScreenedTB,\n' +
-            '       SUM(CASE \n' +
-            '             WHEN t.`tbScreening` IS NOT NULL THEN 1\n' +
-            '             ELSE 0\n' +
-            '           END) AS ScreenedTB\n' +
-            '  FROM `fact_hts_tbscreening` t WHERE `tbScreening` IS NULL OR `tbScreening` IS NOT NULL ';
+        let uptakeByTBScreenedSql = 'SELECT TBSCreening_grp, SUM(Tested)Tested, SUM(Positive) Positive, SUM(Linked) Linked FROM fact_hts_tbscreening where TBSCreening_grp is not null ';
 
         if(query.county) {
             uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and County IN (?)`;
@@ -53,6 +45,8 @@ export class GetUptakeByTbScreenedHandler implements IQueryHandler<GetUptakeByTb
             uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and year=?`;
             params.push(query.year);
         }
+
+        uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} GROUP BY TBSCreening_grp`;
 
         return  await this.repository.query(uptakeByTBScreenedSql, params);
     }

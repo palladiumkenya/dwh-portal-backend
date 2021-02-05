@@ -128,6 +128,17 @@ import { GetNumberAeReportedInChildrenOver15Handler } from './adverse-events/que
 import { GetAeTypeBySeverityHandler } from './adverse-events/queries/handlers/get-ae-type-by-severity.handler';
 import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handlers/get-newly-started-desegregated.handler';
 
+import { FactTransOptimizeRegLines } from './art-optimization/entities/fact-trans-optimize-reg-lines.model';
+
+import { GetArtOptimizationOverviewHandler } from './art-optimization/queries/handlers/get-art-optimization-overview.handler';
+import { GetArtOptimizationCurrentByAgeSexHandler } from './art-optimization/queries/handlers/get-art-optimization-current-by-age-sex.handler';
+import { GetArtOptimizationCurrentByRegimenHandler } from './art-optimization/queries/handlers/get-art-optimization-current-by-regimen.handler';
+import { GetArtOptimizationCurrentByCountyHandler } from './art-optimization/queries/handlers/get-art-optimization-current-by-county.handler';
+import { GetArtOptimizationCurrentByPartnerHandler } from './art-optimization/queries/handlers/get-art-optimization-current-by-partner.handler';
+import { GetArtOptimizationNewByCountyHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-county.handler';
+import { GetArtOptimizationNewByPartnerHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-partner.handler';
+import { GetArtOptimizationNewByYearHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-year.handler';
+
 @Module({
     imports: [
         CqrsModule,
@@ -155,7 +166,8 @@ import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handler
                 FactTransAeSeverity,
                 FactTransAeCauses,
                 FactTransAeCategories,
-                FactTransAeClients
+                FactTransAeClients,
+                FactTransOptimizeRegLines,
             ],
             'mssql'
         )
@@ -249,7 +261,15 @@ import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handler
         GetNumberAeReportedInAdultsOver15Handler,
         GetNumberAeReportedInChildrenOver15Handler,
         GetAeTypeBySeverityHandler,
-        GetNewlyStartedDesegregatedHandler
+        GetNewlyStartedDesegregatedHandler,
+        GetArtOptimizationOverviewHandler,
+        GetArtOptimizationCurrentByAgeSexHandler,
+        GetArtOptimizationCurrentByRegimenHandler,
+        GetArtOptimizationCurrentByCountyHandler,
+        GetArtOptimizationCurrentByPartnerHandler,
+        GetArtOptimizationNewByCountyHandler,
+        GetArtOptimizationNewByPartnerHandler,
+        GetArtOptimizationNewByYearHandler,
     ],
     controllers: [CareTreatmentController]
 })
