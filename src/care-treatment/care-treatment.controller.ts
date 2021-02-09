@@ -8,6 +8,7 @@ import { GetCtPartnersQuery } from './common/queries/impl/get-ct-partners.query'
 import { GetCtAgenciesQuery } from './common/queries/impl/get-ct-agencies.query';
 import { GetCtProjectsQuery } from './common/queries/impl/get-ct-projects.query';
 import { GetCtSitesQuery } from './common/queries/impl/get-ct-sites.query';
+import { GetCtSiteGpsQuery } from './common/queries/impl/get-ct-site-gps.query';
 
 import { GetActiveArtQuery } from './home/queries/impl/get-active-art.query';
 import { GetActiveArtAdultsQuery } from './home/queries/impl/get-active-art-adults.query';
@@ -93,6 +94,15 @@ import { GetNumberAeReportedInAdultsOver15Query } from './adverse-events/queries
 import { GetNumberAeReportedInChildrenOver15Query } from './adverse-events/queries/impl/get-number-ae-reported-in-children-over-15.query';
 import { GetAeTypeBySeverityQuery } from './adverse-events/queries/impl/get-ae-type-by-severity.query';
 import { GetNewlyStartedDesegregatedQuery } from './new-on-art/queries/impl/get-newly-started-desegregated.query';
+
+import { GetArtOptimizationOverviewQuery } from './art-optimization/queries/impl/get-art-optimization-overview.query';
+import { GetArtOptimizationCurrentByAgeSexQuery } from './art-optimization/queries/impl/get-art-optimization-current-by-age-sex.query';
+import { GetArtOptimizationCurrentByRegimenQuery } from './art-optimization/queries/impl/get-art-optimization-current-by-regimen.query';
+import { GetArtOptimizationCurrentByCountyQuery } from './art-optimization/queries/impl/get-art-optimization-current-by-county.query';
+import { GetArtOptimizationCurrentByPartnerQuery } from './art-optimization/queries/impl/get-art-optimization-current-by-partner.query';
+import { GetArtOptimizationNewByCountyQuery } from './art-optimization/queries/impl/get-art-optimization-new-by-county.query';
+import { GetArtOptimizationNewByPartnerQuery } from './art-optimization/queries/impl/get-art-optimization-new-by-partner.query';
+import { GetArtOptimizationNewByYearQuery } from './art-optimization/queries/impl/get-art-optimization-new-by-year.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -194,7 +204,12 @@ export class CareTreatmentController {
     }
 
     @Get('sites')
-    async getSites(
+    async getSites(): Promise<any> {
+        return this.queryBus.execute(new GetCtSitesQuery());
+    }
+
+    @Get('siteGps')
+    async getSiteGps(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -202,7 +217,7 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project
     ): Promise<any> {
-        const query = new GetCtSitesQuery();
+        const query = new GetCtSiteGpsQuery();
         if(county) {
             query.county = county;
         }
@@ -2935,6 +2950,390 @@ export class CareTreatmentController {
 
         if(partner) {
             query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getArtOptimizationOverview')
+    async getArtOptimizationOverview(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetArtOptimizationOverviewQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getArtOptimizationCurrentByAgeSex')
+    async getArtOptimizationCurrentByAgeSex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetArtOptimizationCurrentByAgeSexQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getArtOptimizationCurrentByRegimen')
+    async getArtOptimizationCurrentByRegimen(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetArtOptimizationCurrentByRegimenQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getArtOptimizationCurrentByCounty')
+    async getArtOptimizationCurrentByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetArtOptimizationCurrentByCountyQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getArtOptimizationCurrentByPartner')
+    async getArtOptimizationCurrentByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetArtOptimizationCurrentByPartnerQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getArtOptimizationNewByCounty')
+    async getArtOptimizationNewByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetArtOptimizationNewByCountyQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getArtOptimizationNewByPartner')
+    async getArtOptimizationNewByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetArtOptimizationNewByPartnerQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getArtOptimizationNewByYear')
+    async getArtOptimizationNewByYear(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month
+    ): Promise<any> {
+        const query = new GetArtOptimizationNewByYearQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
         }
 
         if (year) {
