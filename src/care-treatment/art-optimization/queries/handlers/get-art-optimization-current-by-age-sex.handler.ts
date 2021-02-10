@@ -15,7 +15,7 @@ export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<G
 
     async execute(query: GetArtOptimizationCurrentByAgeSexQuery): Promise<any> {
         const artOptimizationCurrentByAgeSex = this.repository.createQueryBuilder('f')
-            .select(['Agegroup ageGroup, Gender gender, DATIM_AgeGroup datimAgeGroup, sum(TXCurr) txCurr'])
+            .select(['CurrentRegimen regimen, Gender gender, DATIM_AgeGroup datimAgeGroup, sum(TXCurr) txCurr'])
             .where('MFLCode IS NOT NULL');
 
         if (query.county) {
@@ -51,8 +51,8 @@ export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<G
         // }
 
         return await artOptimizationCurrentByAgeSex
-            .groupBy('Agegroup, Gender, DATIM_AgeGroup')
-            .orderBy('Agegroup, Gender, DATIM_AgeGroup')
+            .groupBy('CurrentRegimen, Gender, DATIM_AgeGroup')
+            .orderBy('CurrentRegimen, Gender, DATIM_AgeGroup')
             .getRawMany();
     }
 }
