@@ -113,6 +113,7 @@ import { FactTransAdverseEvents } from './adverse-events/entities/fact-trans-adv
 import { GetChildrenAdverseEventsHandler } from './adverse-events/queries/handlers/get-children-adverse-events.handler';
 import { GetAdultsAdverseEventsHandler } from './adverse-events/queries/handlers/get-adults-adverse-events.handler';
 import { GetAdverseEventsHandler } from './adverse-events/queries/handlers/get-adverse-events.handler';
+import { GetAdverseEventsClientsHandler } from './adverse-events/queries/handlers/get-adverse-events-clients.handler';
 import { FactTransAeSeverity } from './adverse-events/entities/fact-trans-ae-severity.model';
 import { GetAeSeverityGradingHandler } from './adverse-events/queries/handlers/get-ae-severity-grading.handler';
 import { GetAeActionsBySeverityHandler } from './adverse-events/queries/handlers/get-ae-actions-by-severity.handler';
@@ -253,6 +254,7 @@ import { GetArtOptimizationNewByYearHandler } from './art-optimization/queries/h
         GetChildrenAdverseEventsHandler,
         GetAdultsAdverseEventsHandler,
         GetAdverseEventsHandler,
+        GetAdverseEventsClientsHandler,
         GetAeSeverityGradingHandler,
         GetAeActionsBySeverityHandler,
         GetReportedCausesOfAeHandler,
