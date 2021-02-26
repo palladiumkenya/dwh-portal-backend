@@ -82,6 +82,7 @@ import { GetVlMedianTimeToFirstVlByCountyQuery } from './viral-load/queries/impl
 import { GetVlMedianTimeToFirstVlByPartnerQuery } from './viral-load/queries/impl/get-vl-median-time-to-first-vl-by-partner.query';
 
 import { GetAdverseEventsQuery } from './adverse-events/queries/impl/get-adverse-events.query';
+import { GetAdverseEventsClientsQuery } from './adverse-events/queries/impl/get-adverse-events-clients.query';
 import { GetChildrenAdverseEventsQuery } from './adverse-events/queries/impl/get-children-adverse-events.query';
 import { GetAdultsAdverseEventsQuery } from './adverse-events/queries/impl/get-adults-adverse-events.query';
 import { GetAeSeverityGradingQuery } from './adverse-events/queries/impl/get-ae-severity-grading.query';
@@ -2663,6 +2664,33 @@ export class CareTreatmentController {
         @Query('partner') partner
     ): Promise<any> {
         const query = new GetAdverseEventsQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getAdverseEventsClients')
+    async getAdverseEventsClients(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetAdverseEventsClientsQuery();
         if(county) {
             query.county = county;
         }
