@@ -15,10 +15,8 @@ export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<G
 
     async execute(query: GetDsdAppointmentDurationByCountyQuery): Promise<any> {
         const dsdAppointmentDuration = this.repository.createQueryBuilder('f')
-            .select(['SUM(NumPatients) patients, AppointmentsCategory, County county'])
+            .select(['SUM(NumPatients) patients, County county, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(NumPatients) as float)) percentStable'])
             .where('f.MFLCode > 1')
-            .andWhere('f.AppointmentsCategory IS NOT NULL')
-            .andWhere('f.County IS NOT NULL')
             .andWhere('f.Stability = :stability', { stability: "Stable"});
 
         if (query.county) {
@@ -38,8 +36,8 @@ export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<G
         }
 
         return await dsdAppointmentDuration
-            .groupBy('County, AppointmentsCategory')
-            .orderBy('AppointmentsCategory, County')
+            .groupBy('County')
+            .orderBy('percentStable', 'DESC')
             .getRawMany();
     }
 }
