@@ -15,9 +15,8 @@ export class GetDsdMmdStableHandler implements IQueryHandler<GetDsdMmdStableQuer
 
     async execute(query: GetDsdMmdStableQuery): Promise<any> {
         const dsdMmdStable = this.repository.createQueryBuilder('f')
-            .select(['f.[DifferentiatedCare] differentiatedCare, SUM([MMDModels]) mmdModels'])
-            .where('f.[MFLCode] > 1')
-            .andWhere('f.[DifferentiatedCare] IS NOT NULL');
+            .select(['f.[DifferentiatedCare] differentiatedCare, SUM([MMDModels]) mmdModels, SUM(TXCurr) TXCurr'])
+            .where('f.[MFLCode] > 1');
 
         if (query.county) {
             dsdMmdStable.andWhere('f.County IN (:...counties)', { counties: query.county });

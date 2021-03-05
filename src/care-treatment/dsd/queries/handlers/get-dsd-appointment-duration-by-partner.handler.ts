@@ -15,10 +15,8 @@ export class GetDsdAppointmentDurationByPartnerHandler implements IQueryHandler<
 
     async execute(query: GetDsdAppointmentDurationByPartnerQuery): Promise<any> {
         const dsdAppointmentDuration = this.repository.createQueryBuilder('f')
-            .select(['SUM(NumPatients) patients, AppointmentsCategory, CTPartner partner'])
+            .select(['SUM(NumPatients) patients, CTPartner partner, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(NumPatients) as float)) percentStable'])
             .where('f.MFLCode > 1')
-            .andWhere('f.AppointmentsCategory IS NOT NULL')
-            .andWhere('f.CTPartner IS NOT NULL')
             .andWhere('f.Stability = :stability', { stability: "Stable"});
 
         if (query.county) {
@@ -38,8 +36,8 @@ export class GetDsdAppointmentDurationByPartnerHandler implements IQueryHandler<
         }
 
         return await dsdAppointmentDuration
-            .groupBy('CTPartner, AppointmentsCategory')
-            .orderBy('AppointmentsCategory, CTPartner')
+            .groupBy('CTPartner')
+            .orderBy('percentStable', 'DESC')
             .getRawMany();
     }
 }
