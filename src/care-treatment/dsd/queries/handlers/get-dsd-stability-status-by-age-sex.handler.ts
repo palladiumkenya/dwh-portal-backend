@@ -15,7 +15,7 @@ export class GetDsdStabilityStatusByAgeSexHandler implements IQueryHandler<GetDs
 
     async execute(query: GetDsdStabilityStatusByAgeSexQuery): Promise<any> {
         const dsdStabilityStatusByAgeSex = this.repository.createQueryBuilder('f')
-            .select(['[DATIM_AgeGroup] ageGroup, SUM([NumPatients]) patients, Gender gender'])
+            .select(['[DATIM_AgeGroup] ageGroup, SUM([NumPatients]) patients, SUM(TXCurr) TXCurr, Gender gender'])
             .where('f.MFLCode > 1')
             .andWhere('f.Stability = :stability', { stability: "Stable"})
 
