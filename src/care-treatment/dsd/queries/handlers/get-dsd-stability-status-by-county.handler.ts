@@ -1,21 +1,21 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransDsdStabilityStatus } from '../../entities/fact-trans-dsd-stability-status.model';
 import { Repository } from 'typeorm';
 import { GetDsdStabilityStatusByCountyQuery } from '../impl/get-dsd-stability-status-by-county.query';
+import { FactTransDsdMmdUptake } from '../../entities/fact-trans-dsd-mmd-uptake.model';
 
 @QueryHandler(GetDsdStabilityStatusByCountyQuery)
 export class GetDsdStabilityStatusByCountyHandler implements IQueryHandler<GetDsdStabilityStatusByCountyQuery> {
     constructor(
-        @InjectRepository(FactTransDsdStabilityStatus, 'mssql')
-        private readonly repository: Repository<FactTransDsdStabilityStatus>
+        @InjectRepository(FactTransDsdMmdUptake, 'mssql')
+        private readonly repository: Repository<FactTransDsdMmdUptake>
     ) {
 
     }
 
     async execute(query: GetDsdStabilityStatusByCountyQuery): Promise<any> {
         const dsdStabilityStatusByCounty = this.repository.createQueryBuilder('f')
-            .select(['f.County county, SUM(TxCurr) txCurr, SUM(MMD) mmd, SUM(NonMMD) nonMmd, SUM(Stable) stable, SUM(UnStable) unStable'])
+            .select(['SUM(MMD) mmd, SUM(NonMMD) nonMmd, [County] county, CASE WHEN (SUM(NonMMD) = 0 and SUM(MMD) > 0) THEN 100 WHEN (SUM(NonMMD) = 0 and SUM(MMD) = 0) THEN 0 ELSE (CAST(SUM(MMD) as float)/CAST(SUM(NonMMD) as float)) END percentMMD'])
             .where('f.MFLCode > 1');
 
         if (query.county) {
@@ -36,7 +36,7 @@ export class GetDsdStabilityStatusByCountyHandler implements IQueryHandler<GetDs
 
         return await dsdStabilityStatusByCounty
             .groupBy('County')
-            .orderBy('SUM(Stable)', 'DESC')
+            .orderBy('percentMMD', 'DESC')
             .getRawMany();
     }
 }

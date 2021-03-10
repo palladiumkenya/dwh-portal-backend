@@ -28,4 +28,7 @@ export class FactTransDsdAppointmentByStabilityStatus {
 
     @Column('int')
     NumPatients: number;
+
+    @Column('int')
+    TXCurr: number;
 }
