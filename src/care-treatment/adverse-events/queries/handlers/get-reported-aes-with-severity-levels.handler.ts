@@ -39,7 +39,8 @@ export class GetReportedAesWithSeverityLevelsHandler implements IQueryHandler<Ge
         }
 
         return await reportedAesWithSeverity
-            .groupBy('[Severity], [AdverseEvent]')
+            .groupBy('[AdverseEvent], [Severity]')
+            .orderBy('SUM([Severity_total])')
             .getRawMany();
     }
 }
