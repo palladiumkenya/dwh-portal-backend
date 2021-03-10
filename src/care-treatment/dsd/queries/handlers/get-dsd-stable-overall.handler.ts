@@ -1,22 +1,22 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { GetDsdStableOverallQuery } from '../impl/get-dsd-stable-overall.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransDsdMmdActivePatients } from '../../entities/fact-trans-dsd-mmd-active-patients.model';
+import { FactTransDsdAppointmentByStabilityStatus } from '../../entities/fact-trans-dsd-appointment-by-stability-status.model';
 import { Repository } from 'typeorm';
-import { GetDsdMmdStableQuery } from '../impl/get-dsd-mmd-stable.query';
 
-@QueryHandler(GetDsdMmdStableQuery)
-export class GetDsdMmdStableHandler implements IQueryHandler<GetDsdMmdStableQuery> {
+@QueryHandler(GetDsdStableOverallQuery)
+export class GetDsdStableOverallHandler implements IQueryHandler<GetDsdStableOverallQuery> {
     constructor(
-        @InjectRepository(FactTransDsdMmdActivePatients, 'mssql')
-        private readonly repository: Repository<FactTransDsdMmdActivePatients>
+        @InjectRepository(FactTransDsdAppointmentByStabilityStatus, 'mssql')
+        private readonly repository: Repository<FactTransDsdAppointmentByStabilityStatus>
     ) {
-
     }
 
-    async execute(query: GetDsdMmdStableQuery): Promise<any> {
+    async execute(query: GetDsdStableOverallQuery): Promise<any> {
         const dsdMmdStable = this.repository.createQueryBuilder('f')
-            .select(['f.[DifferentiatedCare] differentiatedCare, SUM([MMDModels]) mmdModels, SUM(TXCurr) TXCurr'])
-            .where('f.[MFLCode] > 1');
+            .select(['SUM([StabilityAssessment]) Stable, SUM([NumPatients])TXCurr'])
+            .where('f.MFLCode > 1')
+            .andWhere('f.Stability = :stability', { stability: "Stable"});
 
         if (query.county) {
             dsdMmdStable.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -34,8 +34,6 @@ export class GetDsdMmdStableHandler implements IQueryHandler<GetDsdMmdStableQuer
             dsdMmdStable.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        return await dsdMmdStable
-            .groupBy('f.[DifferentiatedCare]')
-            .getRawMany();
+        return await dsdMmdStable.getRawOne();
     }
 }

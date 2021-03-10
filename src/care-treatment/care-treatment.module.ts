@@ -140,6 +140,7 @@ import { GetArtOptimizationCurrentByPartnerHandler } from './art-optimization/qu
 import { GetArtOptimizationNewByCountyHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-county.handler';
 import { GetArtOptimizationNewByPartnerHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-partner.handler';
 import { GetArtOptimizationNewByYearHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-year.handler';
+import { GetDsdStableOverallHandler } from './dsd/queries/handlers/get-dsd-stable-overall.handler';
 
 @Module({
     imports: [
@@ -274,6 +275,7 @@ import { GetArtOptimizationNewByYearHandler } from './art-optimization/queries/h
         GetArtOptimizationNewByCountyHandler,
         GetArtOptimizationNewByPartnerHandler,
         GetArtOptimizationNewByYearHandler,
+        GetDsdStableOverallHandler
     ],
     controllers: [CareTreatmentController]
 })
