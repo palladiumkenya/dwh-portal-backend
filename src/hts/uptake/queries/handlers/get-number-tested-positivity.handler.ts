@@ -60,6 +60,8 @@ export class GetNumberTestedPositivityHandler implements IQueryHandler<GetNumber
 
         numberTestedPositivitySql = `${numberTestedPositivitySql} GROUP BY TestedBefore, year,month`;
 
+        numberTestedPositivitySql = `${numberTestedPositivitySql} ORDER BY TestedBefore, year,month`;
+
         return await this.repository.query(numberTestedPositivitySql, params);
     }
 }
