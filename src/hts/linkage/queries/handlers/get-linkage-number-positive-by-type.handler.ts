@@ -58,6 +58,8 @@ export class GetLinkageNumberPositiveByTypeHandler implements IQueryHandler<GetL
 
         linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} GROUP BY TestedBefore, year, month`;
 
+        linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} ORDER BY TestedBefore, year, month`;
+
         return  await this.repository.query(linkageNumberPositiveByTypeSql, params);
     }
 }
