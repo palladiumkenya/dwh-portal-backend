@@ -106,6 +106,7 @@ import { GetArtOptimizationNewByCountyQuery } from './art-optimization/queries/i
 import { GetArtOptimizationNewByPartnerQuery } from './art-optimization/queries/impl/get-art-optimization-new-by-partner.query';
 import { GetArtOptimizationNewByYearQuery } from './art-optimization/queries/impl/get-art-optimization-new-by-year.query';
 import { GetDsdStableOverallQuery } from './dsd/queries/impl/get-dsd-stable-overall.query';
+import { GetVlOutcomesByYearAndSuppressionCategoryQuery } from './viral-load/queries/impl/get-vl-outcomes-by-year-and-suppression-category.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -2391,6 +2392,43 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetVlSuppressionByYearQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getVlSuppressionByYearAndSuppressionCategory')
+    async getVlSuppressionByYearAndSuppressionCategory(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlOutcomesByYearAndSuppressionCategoryQuery();
         if(county) {
             query.county = county;
         }

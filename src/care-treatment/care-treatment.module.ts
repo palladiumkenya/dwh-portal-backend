@@ -141,6 +141,7 @@ import { GetArtOptimizationNewByCountyHandler } from './art-optimization/queries
 import { GetArtOptimizationNewByPartnerHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-partner.handler';
 import { GetArtOptimizationNewByYearHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-year.handler';
 import { GetDsdStableOverallHandler } from './dsd/queries/handlers/get-dsd-stable-overall.handler';
+import { GetVlOutcomesByYearAndSuppressionCategoryHandler } from './viral-load/queries/handlers/get-vl-outcomes-by-year-and-suppression-category.handler';
 
 @Module({
     imports: [
@@ -275,7 +276,8 @@ import { GetDsdStableOverallHandler } from './dsd/queries/handlers/get-dsd-stabl
         GetArtOptimizationNewByCountyHandler,
         GetArtOptimizationNewByPartnerHandler,
         GetArtOptimizationNewByYearHandler,
-        GetDsdStableOverallHandler
+        GetDsdStableOverallHandler,
+        GetVlOutcomesByYearAndSuppressionCategoryHandler
     ],
     controllers: [CareTreatmentController]
 })
