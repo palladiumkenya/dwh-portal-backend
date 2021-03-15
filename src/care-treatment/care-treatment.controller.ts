@@ -58,6 +58,7 @@ import { GetTreatmentOutcomesByYearQuery } from './treatment-outcomes/queries/im
 import { GetTreatmentOutcomesByFacilityQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-by-facility.query';
 import { GetTreatmentOutcomesByCountyQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-by-county.query';
 import { GetTreatmentOutcomesByPartnerQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-by-partner.query';
+import { GetTreatmentOutcomesByPopulationTypeQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-by-population-type.query';
 import { GetTreatmentOutcomesRetention3mQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-retention-3m.query';
 import { GetTreatmentOutcomesRetention6mQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-retention-6m.query';
 import { GetTreatmentOutcomesRetention12mQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-retention-12m.query';
@@ -74,6 +75,7 @@ import { GetVlOutcomesBySexQuery } from './viral-load/queries/impl/get-vl-outcom
 import { GetVlSuppressionByAgeQuery } from './viral-load/queries/impl/get-vl-suppression-by-age.query';
 import { GetVlSuppressionByRegimenQuery } from './viral-load/queries/impl/get-vl-suppression-by-regimen.query';
 import { GetVlSuppressionByYearQuery } from './viral-load/queries/impl/get-vl-suppression-by-year.query';
+import { GetVlSuppressionByYearArtStartQuery } from './viral-load/queries/impl/get-vl-suppression-by-year-art-start.query';
 import { GetVlSuppressionByCountyQuery } from './viral-load/queries/impl/get-vl-suppression-by-county.query';
 import { GetVlSuppressionByPartnerQuery } from './viral-load/queries/impl/get-vl-suppression-by-partner.query';
 import { GetVlOverallUptakeAndSuppressionByFacilityQuery } from './viral-load/queries/impl/get-vl-overall-uptake-and-suppression-by-facility.query';
@@ -91,6 +93,7 @@ import { GetAeActionsBySeverityQuery } from './adverse-events/queries/impl/get-a
 import { GetReportedCausesOfAeQuery } from './adverse-events/queries/impl/get-reported-causes-of-ae.query';
 import { GetReportedAesWithSeverityLevelsQuery } from './adverse-events/queries/impl/get-reported-aes-with-severity-levels.query';
 import { GetAeActionsByDrugsQuery } from './adverse-events/queries/impl/get-ae-actions-by-drugs.query';
+import { GetAeActionsByDrugsNewQuery } from './adverse-events/queries/impl/get-ae-actions-by-drugs-new.query';
 import { GetNumberOfClientWithAeQuery } from './adverse-events/queries/impl/get-number-of-client-with-ae.query';
 import { GetNumberOfClientChildrenWithAeQuery } from './adverse-events/queries/impl/get-number-of-client-children-with-ae.query';
 import { GetNumberAeReportedInAdultsOver15Query } from './adverse-events/queries/impl/get-number-ae-reported-in-adults-over-15.query';
@@ -1811,6 +1814,43 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
+    @Get('treatmentOutcomesByPopulationType')
+    async getTreatmentOutcomesByPopulationType(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetTreatmentOutcomesByPopulationTypeQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
     @Get('treatmentOutcomesRetention3m')
     async getTreatmentOutcomesRetention3m(
         @Query('county') county,
@@ -2420,6 +2460,43 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
+    @Get('vlSuppressionByYearArtStart')
+    async getVlSuppressionByYearArtStart(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetVlSuppressionByYearArtStartQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
     @Get('getVlSuppressionByYearAndSuppressionCategory')
     async getVlSuppressionByYearAndSuppressionCategory(
         @Query('county') county,
@@ -2904,6 +2981,33 @@ export class CareTreatmentController {
         @Query('partner') partner
     ): Promise<any> {
         const query = new GetAeActionsByDrugsQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getAeActionsByDrugsNew')
+    async getAeActionsByDrugsNew(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetAeActionsByDrugsNewQuery();
         if(county) {
             query.county = county;
         }
