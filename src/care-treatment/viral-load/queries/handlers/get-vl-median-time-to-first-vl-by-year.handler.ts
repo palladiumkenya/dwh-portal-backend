@@ -1,33 +1,41 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactCTTimeToFirstVL } from '../../entities/fact-ct-time-to-first-vl-grp.model';
 import { Repository } from 'typeorm';
 import { GetVlMedianTimeToFirstVlByYearQuery } from '../impl/get-vl-median-time-to-first-vl-by-year.query';
+import { FactCtTimeToFirstVl } from '../../entities/fact-ct-time-to-first-vl.model';
 
 @QueryHandler(GetVlMedianTimeToFirstVlByYearQuery)
 export class GetVlMedianTimeToFirstVlByYearHandler implements IQueryHandler<GetVlMedianTimeToFirstVlByYearQuery> {
     constructor(
-        @InjectRepository(FactCTTimeToFirstVL, 'mssql')
-        private readonly repository: Repository<FactCTTimeToFirstVL>
+        @InjectRepository(FactCtTimeToFirstVl, 'mssql')
+        private readonly repository: Repository<FactCtTimeToFirstVl>
     ) {
 
     }
 
     async execute(query: GetVlMedianTimeToFirstVlByYearQuery): Promise<any> {
-        const medianTimeToFirstVlSql = `
-            SELECT
-                DISTINCT
-                year(StartARTDate) year,
-                PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY [TimetoFirstVL] DESC) OVER (PARTITION BY Year(StartARTDate)) AS time
-            FROM (    
-                SELECT
-                    CASE WHEN StartARTDate <= [FirstVLDate] THEN DATEDIFF(dd,StartARTDate,[FirstVLDate]) ELSE 0 END as TimetoFirstVL,
-                    StartARTDate
-                FROM Fact_Trans_New_Cohort
-                WHERE MFLCode > 1 AND Year(StartARTDate) >= 2004
-            ) TimetoFirstVL
-            ORDER BY Year(StartARTDate)
-        `;
-        return await this.repository.query(medianTimeToFirstVlSql);
+        const medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
+            .select(['distinct StartYr year, MedianTimeToFirstVL_year medianTime'])
+            .andWhere('f.MFLCode IS NOT NULL');
+
+        if (query.county) {
+            medianTimeToFirstVlSql.andWhere('f.County IN (:...counties)', { counties: query.county });
+        }
+
+        if (query.subCounty) {
+            medianTimeToFirstVlSql.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+        }
+
+        if (query.facility) {
+            medianTimeToFirstVlSql.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+        }
+
+        if (query.partner) {
+            medianTimeToFirstVlSql.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+
+        return await medianTimeToFirstVlSql
+            .orderBy('f.StartYr')
+            .getRawMany();
     }
 }
