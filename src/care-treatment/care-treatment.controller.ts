@@ -80,6 +80,7 @@ import { GetVlOverallUptakeAndSuppressionByFacilityQuery } from './viral-load/qu
 import { GetVlMedianTimeToFirstVlByYearQuery } from './viral-load/queries/impl/get-vl-median-time-to-first-vl-by-year.query';
 import { GetVlMedianTimeToFirstVlByCountyQuery } from './viral-load/queries/impl/get-vl-median-time-to-first-vl-by-county.query';
 import { GetVlMedianTimeToFirstVlByPartnerQuery } from './viral-load/queries/impl/get-vl-median-time-to-first-vl-by-partner.query';
+import { GetVlOutcomesByYearAndSuppressionCategoryQuery } from './viral-load/queries/impl/get-vl-outcomes-by-year-and-suppression-category.query';
 
 import { GetAdverseEventsQuery } from './adverse-events/queries/impl/get-adverse-events.query';
 import { GetAdverseEventsClientsQuery } from './adverse-events/queries/impl/get-adverse-events-clients.query';
@@ -106,7 +107,7 @@ import { GetArtOptimizationNewByCountyQuery } from './art-optimization/queries/i
 import { GetArtOptimizationNewByPartnerQuery } from './art-optimization/queries/impl/get-art-optimization-new-by-partner.query';
 import { GetArtOptimizationNewByYearQuery } from './art-optimization/queries/impl/get-art-optimization-new-by-year.query';
 import { GetDsdStableOverallQuery } from './dsd/queries/impl/get-dsd-stable-overall.query';
-import { GetVlOutcomesByYearAndSuppressionCategoryQuery } from './viral-load/queries/impl/get-vl-outcomes-by-year-and-suppression-category.query';
+
 
 @Controller('care-treatment')
 export class CareTreatmentController {

@@ -142,6 +142,7 @@ import { GetArtOptimizationNewByPartnerHandler } from './art-optimization/querie
 import { GetArtOptimizationNewByYearHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-year.handler';
 import { GetDsdStableOverallHandler } from './dsd/queries/handlers/get-dsd-stable-overall.handler';
 import { GetVlOutcomesByYearAndSuppressionCategoryHandler } from './viral-load/queries/handlers/get-vl-outcomes-by-year-and-suppression-category.handler';
+import { FactCtTimeToFirstVl } from './viral-load/entities/fact-ct-time-to-first-vl.model';
 
 @Module({
     imports: [
@@ -172,6 +173,7 @@ import { GetVlOutcomesByYearAndSuppressionCategoryHandler } from './viral-load/q
                 FactTransAeCategories,
                 FactTransAeClients,
                 FactTransOptimizeRegLines,
+                FactCtTimeToFirstVl
             ],
             'mssql'
         )
