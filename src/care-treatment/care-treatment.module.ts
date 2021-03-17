@@ -151,6 +151,9 @@ import { FactTransTimeToVl } from './viral-load/entities/fact-trans-time-to-vl.m
 import { GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-on-art-with-ae-by-type-of-suspected-causative-drugs.handler';
 import { FactTransAeCausativeDrugs } from './adverse-events/entities/fact-trans-ae-causitive-drugs.model';
 import { GetProportionOfPLHIVWithAeRelatedToArtHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-related-to-art.handler';
+import { GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-whose-regimen-changed.handler';
+import { GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-whose-regimen-was-stopped.handler';
+import { GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-whose-regimen-was-not-altered.handler';
 
 @Module({
     imports: [
@@ -295,7 +298,10 @@ import { GetProportionOfPLHIVWithAeRelatedToArtHandler } from './adverse-events/
         GetDsdStableOverallHandler,
         GetVlOutcomesByYearAndSuppressionCategoryHandler,
         GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandler,
-        GetProportionOfPLHIVWithAeRelatedToArtHandler
+        GetProportionOfPLHIVWithAeRelatedToArtHandler,
+        GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler,
+        GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler,
+        GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler
     ],
     controllers: [CareTreatmentController]
 })
