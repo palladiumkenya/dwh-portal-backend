@@ -16,7 +16,7 @@ export class GetProportionOfPLHIVWithAeRelatedToArtHandler implements IQueryHand
         const params = [];
         let proportionOfPlHIVWithAeRelatedToArt = 'SELECT \n' +
             '\n' +
-            'AdverseEventCause, SUM(Num) count_cat\n' +
+            'AdverseEventCause adverseEventCause, SUM(Num) count_cat\n' +
             '\n' +
             'FROM(SELECT  AdverseEventCause,\n' +
             'case when AdverseEventCause in (\'Anti TBS\', \'Isonaizid\') THEN \'Anti TBs\'\n' +
