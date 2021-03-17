@@ -112,6 +112,9 @@ import { GetArtOptimizationNewByYearQuery } from './art-optimization/queries/imp
 import { GetDsdStableOverallQuery } from './dsd/queries/impl/get-dsd-stable-overall.query';
 import { GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-on-art-with-ae-by-type-of-suspected-causative-drugs.query';
 import { GetProportionOfPLHIVWithAeRelatedToArtQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-with-ae-related-to-art.query';
+import { GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-with-ae-whose-regimen-changed.query';
+import { GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-with-ae-whose-regimen-was-stopped.query';
+import { GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-with-ae-whose-regimen-was-not-altered.query';
 
 
 @Controller('care-treatment')
@@ -3635,6 +3638,87 @@ export class CareTreatmentController {
 
         if (month) {
             query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getProportionOfPLHIVWithAeWhoseRegimenChanged')
+    async getProportionOfPLHIVWithAeWhoseRegimenChanged(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getProportionOfPLHIVWithAeWhoseRegimenWasStopped')
+    async getProportionOfPLHIVWithAeWhoseRegimenWasStopped(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getProportionOfPLHIVWithAeWhoseRegimenWasNotAltered')
+    async getProportionOfPLHIVWithAeWhoseRegimenWasNotAltered(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
         }
 
         return this.queryBus.execute(query);
