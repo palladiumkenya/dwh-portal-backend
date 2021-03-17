@@ -16,7 +16,7 @@ export class GetProportionOfPLHIVWithAeRelatedToArtHandler implements IQueryHand
         const params = [];
         let proportionOfPlHIVWithAeRelatedToArt = 'SELECT \n' +
             '\n' +
-            'AdverseEventCause, SUM(Num) count_cat\n' +
+            'AdverseEventCause adverseEventCause, SUM(Num) count_cat\n' +
             '\n' +
             'FROM(SELECT  AdverseEventCause,\n' +
             'case when AdverseEventCause in (\'Anti TBS\', \'Isonaizid\') THEN \'Anti TBs\'\n' +
@@ -48,7 +48,7 @@ export class GetProportionOfPLHIVWithAeRelatedToArtHandler implements IQueryHand
             params.push(query.partner);
         }
 
-        proportionOfPlHIVWithAeRelatedToArt = `${proportionOfPlHIVWithAeRelatedToArt} GROUP BY AdverseEventCause`;
+        proportionOfPlHIVWithAeRelatedToArt = `${proportionOfPlHIVWithAeRelatedToArt} GROUP BY AdverseEventCause ORDER BY SUM(Num) DESC`;
         return  await this.repository.query(proportionOfPlHIVWithAeRelatedToArt, params);
     }
 }
