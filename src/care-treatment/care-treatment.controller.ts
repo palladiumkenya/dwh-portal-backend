@@ -110,6 +110,8 @@ import { GetArtOptimizationNewByCountyQuery } from './art-optimization/queries/i
 import { GetArtOptimizationNewByPartnerQuery } from './art-optimization/queries/impl/get-art-optimization-new-by-partner.query';
 import { GetArtOptimizationNewByYearQuery } from './art-optimization/queries/impl/get-art-optimization-new-by-year.query';
 import { GetDsdStableOverallQuery } from './dsd/queries/impl/get-dsd-stable-overall.query';
+import { GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-on-art-with-ae-by-type-of-suspected-causative-drugs.query';
+import { GetProportionOfPLHIVWithAeRelatedToArtQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-with-ae-related-to-art.query';
 
 
 @Controller('care-treatment')
@@ -3143,6 +3145,60 @@ export class CareTreatmentController {
         @Query('partner') partner
     ): Promise<any> {
         const query = new GetAeTypeBySeverityQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getProportionOfPLHIVWithAeByTypeOfSuspectedDrugs')
+    async getProportionOfPLHIVWithAeByTypeOfSuspectedDrugs(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getProportionOfPLHIVWithAeRelatedToArt')
+    async getProportionOfPLHIVWithAeRelatedToArt(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetProportionOfPLHIVWithAeRelatedToArtQuery();
         if(county) {
             query.county = county;
         }

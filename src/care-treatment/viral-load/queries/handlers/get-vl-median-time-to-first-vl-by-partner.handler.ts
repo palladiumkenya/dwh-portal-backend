@@ -1,36 +1,59 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactCTTimeToFirstVL } from '../../entities/fact-ct-time-to-first-vl-grp.model';
 import { Repository } from 'typeorm';
 import { GetVlMedianTimeToFirstVlByPartnerQuery } from '../impl/get-vl-median-time-to-first-vl-by-partner.query';
+import { FactTimeToVlLast12M } from '../../entities/fact-time-to-vl-last-12m.model';
 
 @QueryHandler(GetVlMedianTimeToFirstVlByPartnerQuery)
 export class GetVlMedianTimeToFirstVlByPartnerHandler implements IQueryHandler<GetVlMedianTimeToFirstVlByPartnerQuery> {
     constructor(
-        @InjectRepository(FactCTTimeToFirstVL, 'mssql')
-        private readonly repository: Repository<FactCTTimeToFirstVL>
+        @InjectRepository(FactTimeToVlLast12M, 'mssql')
+        private readonly repository: Repository<FactTimeToVlLast12M>
     ) {
 
     }
 
     async execute(query: GetVlMedianTimeToFirstVlByPartnerQuery): Promise<any> {
-        const medianTimeToFirstVlSql = `
-            SELECT * FROM (
-                SELECT
-                    DISTINCT
-                    CTPartner partner,
-                    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY [TimetoFirstVL] DESC) OVER (PARTITION BY CTPartner) AS time
-                FROM (
-                    SELECT
-                        CASE WHEN StartARTDate <= [FirstVLDate] THEN DATEDIFF(dd,StartARTDate,[FirstVLDate]) ELSE 0 END as [TimetoFirstVL],
-                        StartARTDate,
-                        CTPartner
-                    FROM Fact_Trans_New_Cohort
-                    WHERE MFLCode > 1 AND CTPartner is not null AND CTPartner <> '' AND Year(StartARTDate) >= 2004
-                ) [TimetoFirstVL]
-            ) a
-            ORDER BY a.time DESC
-        `;
-        return await this.repository.query(medianTimeToFirstVlSql);
+        let medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
+            .select(['CTPartner Partner, MedianTimeToFirstVL_Partner medianTime'])
+            .andWhere('f.MFLCode IS NOT NULL');
+
+        if (query.county) {
+            medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
+                .select(['CTPartner Partner, MedianTimeToFirstVL_Partner medianTime'])
+                .andWhere('f.County = :County', { County: query.county });
+
+            return await medianTimeToFirstVlSql
+                .groupBy('CTPartner, MedianTimeToFirstVL_Partner')
+                .orderBy('f.MedianTimeToFirstVL_Partner', 'DESC')
+                .getRawMany();
+        }
+
+        if (query.subCounty) {
+            medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
+                .select(['CTPartner Partner, MedianTimeToFirstVL_Partner medianTime'])
+                .andWhere('f.SubCounty = :SubCounty', { SubCounty: query.subCounty });
+
+            return await medianTimeToFirstVlSql
+                .groupBy('CTPartner, MedianTimeToFirstVL_Partner')
+                .orderBy('f.MedianTimeToFirstVL_Partner', 'DESC')
+                .getRawMany();
+        }
+
+        if (query.partner) {
+            medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
+                .select(['CTPartner Partner, MedianTimeToFirstVL_Partner medianTime'])
+                .andWhere('f.CTPartner = :CTPartner', { CTPartner: query.partner });
+
+            return await medianTimeToFirstVlSql
+                .groupBy('CTPartner, MedianTimeToFirstVL_Partner')
+                .orderBy('f.MedianTimeToFirstVL_Partner', 'DESC')
+                .getRawMany();
+        }
+
+        return await medianTimeToFirstVlSql
+            .groupBy('CTPartner, MedianTimeToFirstVL_Partner')
+            .orderBy('f.MedianTimeToFirstVL_Partner', 'DESC')
+            .getRawMany();
     }
 }

@@ -146,7 +146,11 @@ import { GetArtOptimizationNewByPartnerHandler } from './art-optimization/querie
 import { GetArtOptimizationNewByYearHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-year.handler';
 import { GetDsdStableOverallHandler } from './dsd/queries/handlers/get-dsd-stable-overall.handler';
 import { GetVlOutcomesByYearAndSuppressionCategoryHandler } from './viral-load/queries/handlers/get-vl-outcomes-by-year-and-suppression-category.handler';
-import { FactCtTimeToFirstVl } from './viral-load/entities/fact-ct-time-to-first-vl.model';
+import { FactTimeToVlLast12M } from './viral-load/entities/fact-time-to-vl-last-12m.model';
+import { FactTransTimeToVl } from './viral-load/entities/fact-trans-time-to-vl.model';
+import { GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-on-art-with-ae-by-type-of-suspected-causative-drugs.handler';
+import { FactTransAeCausativeDrugs } from './adverse-events/entities/fact-trans-ae-causitive-drugs.model';
+import { GetProportionOfPLHIVWithAeRelatedToArtHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-related-to-art.handler';
 
 @Module({
     imports: [
@@ -178,7 +182,9 @@ import { FactCtTimeToFirstVl } from './viral-load/entities/fact-ct-time-to-first
                 FactTransAeCategories,
                 FactTransAeClients,
                 FactTransOptimizeRegLines,
-                FactCtTimeToFirstVl
+                FactTransTimeToVl,
+                FactTimeToVlLast12M,
+                FactTransAeCausativeDrugs
             ],
             'mssql'
         )
@@ -287,7 +293,9 @@ import { FactCtTimeToFirstVl } from './viral-load/entities/fact-ct-time-to-first
         GetArtOptimizationNewByPartnerHandler,
         GetArtOptimizationNewByYearHandler,
         GetDsdStableOverallHandler,
-        GetVlOutcomesByYearAndSuppressionCategoryHandler
+        GetVlOutcomesByYearAndSuppressionCategoryHandler,
+        GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandler,
+        GetProportionOfPLHIVWithAeRelatedToArtHandler
     ],
     controllers: [CareTreatmentController]
 })
