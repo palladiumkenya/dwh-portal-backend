@@ -31,4 +31,7 @@ export class FactTransDsdUnstable {
 
     @Column('int')
     BMI: number;
+
+    @Column('int')
+    LatestPregnancy: number;
 }
