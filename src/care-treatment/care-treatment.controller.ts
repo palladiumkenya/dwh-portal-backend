@@ -115,6 +115,9 @@ import { GetProportionOfPLHIVWithAeRelatedToArtQuery } from './adverse-events/qu
 import { GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-with-ae-whose-regimen-changed.query';
 import { GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-with-ae-whose-regimen-was-stopped.query';
 import { GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-with-ae-whose-regimen-was-not-altered.query';
+import { Get6MonthViralSuppressionByYearOfArtStartQuery } from './viral-load/queries/impl/get-6-month-viral-suppression-by-year-of-art-start.query';
+import { Get12MonthViralSuppressionByYearOfArtStartQuery } from './viral-load/queries/impl/get-12-month-viral-suppression-by-year-of-art-start.query';
+import { Get24MonthViralSuppressionByYearOfArtStartQuery } from './viral-load/queries/impl/get-24-month-viral-suppression-by-year-of-art-start.query';
 
 
 @Controller('care-treatment')
@@ -3723,4 +3726,86 @@ export class CareTreatmentController {
 
         return this.queryBus.execute(query);
     }
+
+    @Get('get6MonthViralSuppressionByYearOfArtStart')
+    async get6MonthViralSuppressionByYearOfArtStart(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new Get6MonthViralSuppressionByYearOfArtStartQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('get12MonthViralSuppressionByYearOfArtStart')
+    async get12MonthViralSuppressionByYearOfArtStart(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new Get12MonthViralSuppressionByYearOfArtStartQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('get24MonthViralSuppressionByYearOfArtStart')
+    async get24MonthViralSuppressionByYearOfArtStart(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new Get24MonthViralSuppressionByYearOfArtStartQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
 }

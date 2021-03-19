@@ -17,7 +17,8 @@ export class GetAeActionsByDrugsNewHandler implements IQueryHandler<GetAeActions
             .select('[AdverseEventCause], [AdverseEventActionTaken], SUM([AdverseEventCause_Total]) total')
             .where('[MFLCode] > 0')
             .andWhere('[AdverseEventCause] IS NOT NULL')
-            .andWhere('[AdverseEventActionTaken] IS NOT NULL');
+            .andWhere('[AdverseEventActionTaken] IS NOT NULL')
+            .andWhere('f.AdverseEventActionTaken NOT IN (:...AdverseEventActionTaken)', { AdverseEventActionTaken: ["Other", "Select"]});
 
         if (query.county) {
             aeActionsByDrugsNew
