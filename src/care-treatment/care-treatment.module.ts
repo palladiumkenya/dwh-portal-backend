@@ -154,6 +154,10 @@ import { GetProportionOfPLHIVWithAeRelatedToArtHandler } from './adverse-events/
 import { GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-whose-regimen-changed.handler';
 import { GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-whose-regimen-was-stopped.handler';
 import { GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-whose-regimen-was-not-altered.handler';
+import { FactTransVlSuppressionArtStart } from './viral-load/entities/fact-trans-vl-suppression-art-start.model';
+import { Get6MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-6-month-viral-suppression-by-year-of-art-start.handler';
+import { Get24MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-24-month-viral-suppression-by-year-of-art-start.handler';
+import { Get12MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-12-month-viral-suppression-by-year-of-art-start.handler';
 
 @Module({
     imports: [
@@ -187,7 +191,8 @@ import { GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler } from './ad
                 FactTransOptimizeRegLines,
                 FactTransTimeToVl,
                 FactTimeToVlLast12M,
-                FactTransAeCausativeDrugs
+                FactTransAeCausativeDrugs,
+                FactTransVlSuppressionArtStart
             ],
             'mssql'
         )
@@ -301,7 +306,10 @@ import { GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler } from './ad
         GetProportionOfPLHIVWithAeRelatedToArtHandler,
         GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler,
         GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler,
-        GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler
+        GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler,
+        Get6MonthViralSuppressionByYearOfArtStartHandler,
+        Get12MonthViralSuppressionByYearOfArtStartHandler,
+        Get24MonthViralSuppressionByYearOfArtStartHandler
     ],
     controllers: [CareTreatmentController]
 })
