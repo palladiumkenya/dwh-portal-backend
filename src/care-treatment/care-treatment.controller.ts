@@ -631,6 +631,7 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
+        @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
     ): Promise<any> {
@@ -647,6 +648,10 @@ export class CareTreatmentController {
             query.facility = facility;
         }
 
+        if (partner) {
+            query.partner = partner;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -655,6 +660,7 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
+        @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
     ): Promise<any> {
@@ -669,6 +675,10 @@ export class CareTreatmentController {
 
         if(facility) {
             query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
         }
 
         return this.queryBus.execute(query);
@@ -975,6 +985,7 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
+        @Query('partner') partner,
         @Query('year') year,
         @Query('month') month
     ): Promise<any> {
@@ -991,6 +1002,10 @@ export class CareTreatmentController {
             query.facility = facility;
         }
 
+        if (partner) {
+            query.partner = partner;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -999,6 +1014,7 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
+        @Query('partner') partner,
         @Query('year') year,
         @Query('month') month
     ): Promise<any> {
@@ -1013,6 +1029,10 @@ export class CareTreatmentController {
 
         if(facility) {
             query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
         }
 
         return this.queryBus.execute(query);
