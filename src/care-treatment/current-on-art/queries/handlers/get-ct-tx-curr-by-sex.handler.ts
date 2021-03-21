@@ -32,6 +32,10 @@ export class GetCtTxCurrBySexHandler implements IQueryHandler<GetCtTxCurrBySexQu
                 .andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
+        if (query.partner) {
+            txCurrBySex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+
         return await txCurrBySex
             .groupBy('[Gender]')
             .orderBy('[Gender]')
