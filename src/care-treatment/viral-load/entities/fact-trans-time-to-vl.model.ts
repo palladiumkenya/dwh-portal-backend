@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('Fact_Trans_TimeToVL')
+@Entity('FACT_CT_TimeToVL')
 export class FactTransTimeToVl {
     @PrimaryColumn('text')
     MFLCode: string;
