@@ -15,9 +15,10 @@ export class GetVlSuppressionByRegimenHandler implements IQueryHandler<GetVlSupp
 
     async execute(query: GetVlSuppressionByRegimenQuery): Promise<any> {
         const vlSuppressionByRegimen = this.repository.createQueryBuilder('f')
-            .select(['f.StartRegimen regimen, SUM(f.TXCurr) txCurr'])
+            .select(['f.StartRegimen regimen, Last12MVLResult, count(Last12MVLResult) count'])
             .where('f.MFLCode > 0')
-            .andWhere('f.StartRegimen IS NOT NULL');
+            .andWhere('f.StartRegimen IS NOT NULL')
+            .andWhere('f.Last12MVLResult IS NOT NULL');
 
         if (query.county) {
             vlSuppressionByRegimen.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -35,6 +36,6 @@ export class GetVlSuppressionByRegimenHandler implements IQueryHandler<GetVlSupp
             vlSuppressionByRegimen.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        return await vlSuppressionByRegimen.groupBy('f.StartRegimen').orderBy('f.StartRegimen').getRawMany();
+        return await vlSuppressionByRegimen.groupBy('f.StartRegimen, f.Last12MVLResult').orderBy('f.StartRegimen').getRawMany();
     }
 }
