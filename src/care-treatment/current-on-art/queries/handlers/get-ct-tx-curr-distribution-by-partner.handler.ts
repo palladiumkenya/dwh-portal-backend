@@ -32,6 +32,11 @@ export class GetCtTxCurrDistributionByPartnerHandler implements IQueryHandler<Ge
                 .andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
+        if (query.partner) {
+            txCurrDistributionByPartner
+                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+
         return await txCurrDistributionByPartner
             .groupBy('[CTPartner]')
             .orderBy('SUM([TXCURR_Total])', 'DESC')

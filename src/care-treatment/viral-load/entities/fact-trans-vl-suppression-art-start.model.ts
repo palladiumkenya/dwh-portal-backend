@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('Fact_Trans_DSD_Unstable')
-export class FactTransDsdUnstable {
+@Entity('FACT_TRANS_VLSuppression_ARTStart')
+export class FactTransVlSuppressionArtStart {
     @PrimaryColumn('text')
     MFLCode: string;
 
@@ -12,26 +12,32 @@ export class FactTransDsdUnstable {
     County: string;
 
     @Column('text')
-    SubCounty: string;
+    Subcounty: string;
 
     @Column('text')
     CTPartner: string;
 
     @Column('int')
-    onARTlessthan12mnths: number;
+    VLAt6Months: number;
 
     @Column('int')
-    Agelessthan20Yrs: number;
+    VLAt6Months_Sup: number;
 
     @Column('int')
-    Adherence: number;
+    VLAt12Months: number;
 
     @Column('int')
-    HighVL: number;
+    VLAt12Months_Sup: number;
 
     @Column('int')
-    BMI: number;
+    VLAt18Months: number;
 
     @Column('int')
-    LatestPregnancy: number;
+    VLAt18Months_Sup: number;
+
+    @Column('int')
+    VLAt24Months: number;
+
+    @Column('int')
+    VLAt24Months_Sup: number;
 }
