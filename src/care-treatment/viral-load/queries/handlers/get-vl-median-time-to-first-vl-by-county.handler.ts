@@ -16,6 +16,7 @@ export class GetVlMedianTimeToFirstVlByCountyHandler implements IQueryHandler<Ge
     async execute(query: GetVlMedianTimeToFirstVlByCountyQuery): Promise<any> {
         let medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
             .select(['County, MedianTimeToFirstVL_County medianTime'])
+            .where('f.[County] IS NOT NULL')
             .andWhere('f.MFLCode IS NOT NULL');
 
         if (query.county) {

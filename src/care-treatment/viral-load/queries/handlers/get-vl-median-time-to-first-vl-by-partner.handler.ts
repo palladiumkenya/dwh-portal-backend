@@ -16,6 +16,7 @@ export class GetVlMedianTimeToFirstVlByPartnerHandler implements IQueryHandler<G
     async execute(query: GetVlMedianTimeToFirstVlByPartnerQuery): Promise<any> {
         let medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
             .select(['CTPartner Partner, MedianTimeToFirstVL_Partner medianTime'])
+            .where('f.[CTPartner] IS NOT NULL')
             .andWhere('f.MFLCode IS NOT NULL');
 
         if (query.county) {
