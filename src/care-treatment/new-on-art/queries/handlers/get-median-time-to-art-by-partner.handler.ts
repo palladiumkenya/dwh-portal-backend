@@ -1,36 +1,61 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactCTTimeToArt } from '../../entities/fact-ct-time-to-art-grp.model';
 import { Repository } from 'typeorm';
 import { GetMedianTimeToArtByPartnerQuery } from '../impl/get-median-time-to-art-by-partner.query';
+import { FactCtTimeToArtLast12M } from '../../entities/fact-ct-time-to-art-last-12-m.model';
 
 @QueryHandler(GetMedianTimeToArtByPartnerQuery)
 export class GetMedianTimeToArtByPartnerHandler implements IQueryHandler<GetMedianTimeToArtByPartnerQuery> {
     constructor(
-        @InjectRepository(FactCTTimeToArt, 'mssql')
-        private readonly repository: Repository<FactCTTimeToArt>
+        @InjectRepository(FactCtTimeToArtLast12M, 'mssql')
+        private readonly repository: Repository<FactCtTimeToArtLast12M>
     ) {
 
     }
 
     async execute(query: GetMedianTimeToArtByPartnerQuery): Promise<any> {
-        const medianTimeToArtSql = `
-            SELECT * FROM (
-                SELECT
-                    DISTINCT
-                    CTPartner partner,
-                    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY TimeToART DESC) OVER (PARTITION BY CTPartner) AS time
-                FROM (
-                    SELECT
-                        CASE WHEN EnrollmentDate <= StartARTDate THEN DATEDIFF(dd,EnrollmentDate,StartARTDate) ELSE 0 END as TimeToART,
-                        EnrollmentDate,
-                        CTPartner
-                    FROM Fact_Trans_New_Cohort
-                    WHERE MFLCode > 1 AND CTPartner is not null AND CTPartner <> '' AND Year(EnrollmentDate) >= 2011 AND EnrollmentDate <= GETDATE()
-                ) TimeToART
-            ) a
-            ORDER BY a.time DESC
-        `;
-        return await this.repository.query(medianTimeToArtSql);
+        let medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
+            .select(['CTPartner partner, MedianTimeToART_Partner medianTime'])
+            .where('f.[CTPartner] IS NOT NULL')
+            .andWhere('f.MFLCode IS NOT NULL');
+
+        if (query.county) {
+            medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
+                .select(['CTPartner partner, MedianTimeToART_Partner medianTime'])
+                .andWhere('f.County = :County', { County: query.county });
+
+            return await medianTimeToARTPartnerSql
+                .groupBy('CTPartner, MedianTimeToART_Partner')
+                .orderBy('f.MedianTimeToART_Partner', 'DESC')
+                .getRawMany();
+        }
+
+        if (query.subCounty) {
+            medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
+                .select(['CTPartner partner, MedianTimeToART_Partner medianTime'])
+                .andWhere('f.SubCounty = :SubCounty', { SubCounty: query.subCounty });
+
+
+            return await medianTimeToARTPartnerSql
+                .groupBy('CTPartner, MedianTimeToART_Partner')
+                .orderBy('f.MedianTimeToART_Partner', 'DESC')
+                .getRawMany();
+        }
+
+        if (query.partner) {
+            medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
+                .select(['CTPartner partner, MedianTimeToART_Partner medianTime'])
+                .andWhere('f.CTPartner = :Partner', { Partner: query.partner });
+
+            return await medianTimeToARTPartnerSql
+                .groupBy('CTPartner, MedianTimeToART_Partner')
+                .orderBy('f.MedianTimeToART_Partner', 'DESC')
+                .getRawMany();
+        }
+
+        return await medianTimeToARTPartnerSql
+            .groupBy('CTPartner, MedianTimeToART_Partner')
+            .orderBy('f.MedianTimeToART_Partner', 'DESC')
+            .getRawMany();
     }
 }
