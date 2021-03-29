@@ -18,6 +18,7 @@ import { GetCtSiteGpsHandler } from './common/queries/handlers/get-ct-site-gps.h
 
 import { FactTransHmisStatsTxcurr } from './home/entities/fact-trans-hmis-stats-txcurr.model';
 import { FactTransDsdCascade } from './home/entities/fact-trans-dsd-cascade.model';
+import { FactCtTimeToArt } from './new-on-art/entities/fact-ct-time-to-art.model';
 
 import { GetActiveArtHandler } from './home/queries/handlers/get-active-art.handler';
 import { GetActiveChildrenHandler } from './home/queries/handlers/get-active-children.handler';
@@ -158,6 +159,8 @@ import { FactTransVlSuppressionArtStart } from './viral-load/entities/fact-trans
 import { Get6MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-6-month-viral-suppression-by-year-of-art-start.handler';
 import { Get24MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-24-month-viral-suppression-by-year-of-art-start.handler';
 import { Get12MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-12-month-viral-suppression-by-year-of-art-start.handler';
+import { FactCtTimeToArtLast12M } from './new-on-art/entities/fact-ct-time-to-art-last-12-m.model';
+
 
 @Module({
     imports: [
@@ -192,7 +195,9 @@ import { Get12MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/
                 FactTransTimeToVl,
                 FactTimeToVlLast12M,
                 FactTransAeCausativeDrugs,
-                FactTransVlSuppressionArtStart
+                FactTransVlSuppressionArtStart,
+                FactCtTimeToArt,
+                FactCtTimeToArtLast12M
             ],
             'mssql'
         )
