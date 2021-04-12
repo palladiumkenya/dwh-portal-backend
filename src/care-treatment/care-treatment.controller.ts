@@ -118,6 +118,8 @@ import { GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery } from './adve
 import { Get6MonthViralSuppressionByYearOfArtStartQuery } from './viral-load/queries/impl/get-6-month-viral-suppression-by-year-of-art-start.query';
 import { Get12MonthViralSuppressionByYearOfArtStartQuery } from './viral-load/queries/impl/get-12-month-viral-suppression-by-year-of-art-start.query';
 import { Get24MonthViralSuppressionByYearOfArtStartQuery } from './viral-load/queries/impl/get-24-month-viral-suppression-by-year-of-art-start.query';
+import { GetRegimenDistributionBasedOnWeightBandsQuery } from './art-optimization/queries/impl/get-regimen-distribution-based-on-weight-bands.query';
+import { GetRegimenDistributionBasedOnAgeBandsQuery } from './art-optimization/queries/impl/get-regimen-distribution-based-on-age-bands.query';
 
 
 @Controller('care-treatment')
@@ -3828,4 +3830,59 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
+    @Get('getRegimenDistributionByWeightBands')
+    async getRegimenDistributionByWeightBands(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetRegimenDistributionBasedOnWeightBandsQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getRegimenDistributionByAgeBands')
+    async getRegimenDistributionByAgeBands(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetRegimenDistributionBasedOnAgeBandsQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
 }

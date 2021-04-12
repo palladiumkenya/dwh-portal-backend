@@ -160,6 +160,8 @@ import { Get6MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/q
 import { Get24MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-24-month-viral-suppression-by-year-of-art-start.handler';
 import { Get12MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-12-month-viral-suppression-by-year-of-art-start.handler';
 import { FactCtTimeToArtLast12M } from './new-on-art/entities/fact-ct-time-to-art-last-12-m.model';
+import { GetRegimenDistributionBasedOnWeightBandsHandler } from './art-optimization/queries/handlers/get-regimen-distribution-based-on-weight-bands.handler';
+import { GetRegimenDistributionBasedOnAgeBandsHandler } from './art-optimization/queries/handlers/get-regimen-distribution-based-on-age-bands.handler';
 
 
 @Module({
@@ -314,7 +316,9 @@ import { FactCtTimeToArtLast12M } from './new-on-art/entities/fact-ct-time-to-ar
         GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler,
         Get6MonthViralSuppressionByYearOfArtStartHandler,
         Get12MonthViralSuppressionByYearOfArtStartHandler,
-        Get24MonthViralSuppressionByYearOfArtStartHandler
+        Get24MonthViralSuppressionByYearOfArtStartHandler,
+        GetRegimenDistributionBasedOnWeightBandsHandler,
+        GetRegimenDistributionBasedOnAgeBandsHandler
     ],
     controllers: [CareTreatmentController]
 })
