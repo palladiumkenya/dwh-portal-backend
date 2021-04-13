@@ -10,6 +10,7 @@ import { GetOverallReportingQuery } from './queries/impl/get-overall-reporting.q
 import { GetRecencyByPartnerQuery } from './queries/impl/get-recency-by-partner.query';
 import { GetRecencyByCountyQuery } from './queries/impl/get-recency-by-county.query';
 import { GetConsistencyByCountyPartnerQuery } from './queries/impl/get-consistency-by-county-partner.query';
+import { GetExpectedUploadsPartnerCountyQuery } from './queries/impl/get-expected-uploads-partner-county.query';
 
 @Controller('manifests')
 export class ManifestsController {
@@ -47,6 +48,46 @@ export class ManifestsController {
         }
         if (month) {
             query.month = month;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('expectedPartnerCounty/:docket')
+    async getUploadsByPartnerCounty(
+        @Param('docket') docket,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('reportingType') reportingType
+    ): Promise<any> {
+        const query = new GetExpectedUploadsPartnerCountyQuery(docket);
+        if (county) {
+            query.county = county;
+        }
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
+        }
+        if (partner) {
+            query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
+        }
+        if(reportingType) {
+            query.reportingType = reportingType;
         }
         return this.queryBus.execute(query);
     }

@@ -15,13 +15,13 @@ export class GetTxNewTrendsHandler implements IQueryHandler<GetTxNewTrendsQuery>
 
     async execute(query: GetTxNewTrendsQuery): Promise<any> {
         const txNew = this.repository.createQueryBuilder('f')
-            .select(['[Start_Year] year, [StartART_Month] month, SUM([StartedART]) txNew'])
+            .select(['[Start_Year] year, [StartART_Month] month, SUM([StartedART]) txNew, Gender gender'])
             .where('f.[StartedART] > 0');
 
         if (query.partner) {
             txNew.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
-        
+
         if (query.county) {
             txNew.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
@@ -48,7 +48,7 @@ export class GetTxNewTrendsHandler implements IQueryHandler<GetTxNewTrendsQuery>
         }
 
         return await txNew
-            .groupBy('f.[Start_Year], f.[StartART_Month]')
+            .groupBy('f.[Start_Year], f.[StartART_Month], f.Gender')
             .orderBy('f.[Start_Year], f.[StartART_Month]')
             .getRawMany();
     }

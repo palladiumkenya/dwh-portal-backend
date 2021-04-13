@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('FACT_CT_TimeToFirstVL')
-export class FactCtTimeToFirstVl {
+@Entity('FACT_CT_TimeToVL')
+export class FactTransTimeToVl {
     @PrimaryColumn('text')
     MFLCode: string;
 
@@ -34,4 +34,7 @@ export class FactCtTimeToFirstVl {
 
     @Column('float')
     MedianTimeToFirstVL_yearFacility: number;
+
+    @Column('float')
+    MedianTimeToFirstVL_YearCountyPartner: number;
 }

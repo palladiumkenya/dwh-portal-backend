@@ -110,6 +110,16 @@ import { GetArtOptimizationNewByCountyQuery } from './art-optimization/queries/i
 import { GetArtOptimizationNewByPartnerQuery } from './art-optimization/queries/impl/get-art-optimization-new-by-partner.query';
 import { GetArtOptimizationNewByYearQuery } from './art-optimization/queries/impl/get-art-optimization-new-by-year.query';
 import { GetDsdStableOverallQuery } from './dsd/queries/impl/get-dsd-stable-overall.query';
+import { GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-on-art-with-ae-by-type-of-suspected-causative-drugs.query';
+import { GetProportionOfPLHIVWithAeRelatedToArtQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-with-ae-related-to-art.query';
+import { GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-with-ae-whose-regimen-changed.query';
+import { GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-with-ae-whose-regimen-was-stopped.query';
+import { GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery } from './adverse-events/queries/impl/get-proportion-of-plhiv-with-ae-whose-regimen-was-not-altered.query';
+import { Get6MonthViralSuppressionByYearOfArtStartQuery } from './viral-load/queries/impl/get-6-month-viral-suppression-by-year-of-art-start.query';
+import { Get12MonthViralSuppressionByYearOfArtStartQuery } from './viral-load/queries/impl/get-12-month-viral-suppression-by-year-of-art-start.query';
+import { Get24MonthViralSuppressionByYearOfArtStartQuery } from './viral-load/queries/impl/get-24-month-viral-suppression-by-year-of-art-start.query';
+import { GetRegimenDistributionBasedOnWeightBandsQuery } from './art-optimization/queries/impl/get-regimen-distribution-based-on-weight-bands.query';
+import { GetRegimenDistributionBasedOnAgeBandsQuery } from './art-optimization/queries/impl/get-regimen-distribution-based-on-age-bands.query';
 
 
 @Controller('care-treatment')
@@ -623,6 +633,7 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
+        @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
     ): Promise<any> {
@@ -639,6 +650,10 @@ export class CareTreatmentController {
             query.facility = facility;
         }
 
+        if (partner) {
+            query.partner = partner;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -647,6 +662,7 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
+        @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
     ): Promise<any> {
@@ -661,6 +677,10 @@ export class CareTreatmentController {
 
         if(facility) {
             query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
         }
 
         return this.queryBus.execute(query);
@@ -967,6 +987,7 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
+        @Query('partner') partner,
         @Query('year') year,
         @Query('month') month
     ): Promise<any> {
@@ -983,6 +1004,10 @@ export class CareTreatmentController {
             query.facility = facility;
         }
 
+        if (partner) {
+            query.partner = partner;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -991,6 +1016,7 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
+        @Query('partner') partner,
         @Query('year') year,
         @Query('month') month
     ): Promise<any> {
@@ -1005,6 +1031,10 @@ export class CareTreatmentController {
 
         if(facility) {
             query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
         }
 
         return this.queryBus.execute(query);
@@ -3162,6 +3192,60 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
+    @Get('getProportionOfPLHIVWithAeByTypeOfSuspectedDrugs')
+    async getProportionOfPLHIVWithAeByTypeOfSuspectedDrugs(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getProportionOfPLHIVWithAeRelatedToArt')
+    async getProportionOfPLHIVWithAeRelatedToArt(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetProportionOfPLHIVWithAeRelatedToArtQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
     @Get('getNewlyStartedDesegregated')
     async getNewlyStartedDesegregated(
         @Query('county') county,
@@ -3579,6 +3663,224 @@ export class CareTreatmentController {
 
         if (month) {
             query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getProportionOfPLHIVWithAeWhoseRegimenChanged')
+    async getProportionOfPLHIVWithAeWhoseRegimenChanged(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getProportionOfPLHIVWithAeWhoseRegimenWasStopped')
+    async getProportionOfPLHIVWithAeWhoseRegimenWasStopped(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getProportionOfPLHIVWithAeWhoseRegimenWasNotAltered')
+    async getProportionOfPLHIVWithAeWhoseRegimenWasNotAltered(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('get6MonthViralSuppressionByYearOfArtStart')
+    async get6MonthViralSuppressionByYearOfArtStart(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new Get6MonthViralSuppressionByYearOfArtStartQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('get12MonthViralSuppressionByYearOfArtStart')
+    async get12MonthViralSuppressionByYearOfArtStart(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new Get12MonthViralSuppressionByYearOfArtStartQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('get24MonthViralSuppressionByYearOfArtStart')
+    async get24MonthViralSuppressionByYearOfArtStart(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new Get24MonthViralSuppressionByYearOfArtStartQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getRegimenDistributionByWeightBands')
+    async getRegimenDistributionByWeightBands(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetRegimenDistributionBasedOnWeightBandsQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getRegimenDistributionByAgeBands')
+    async getRegimenDistributionByAgeBands(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner
+    ): Promise<any> {
+        const query = new GetRegimenDistributionBasedOnAgeBandsQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
         }
 
         return this.queryBus.execute(query);

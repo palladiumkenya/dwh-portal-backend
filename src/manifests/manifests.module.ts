@@ -14,6 +14,7 @@ import { GetOverallReportingHandler } from './queries/handlers/get-overall-repor
 import { GetRecencyByPartnerHandler } from './queries/handlers/get-recency-by-partner.handler';
 import { GetRecencyByCountyHandler } from './queries/handlers/get-recency-by-county.handler';
 import { GetConsistencyByCountyPartnerHandler } from './queries/handlers/get-consistency-by-county-partner.handler';
+import { GetExpectedUploadsPartnerCountyHandler } from './queries/handlers/get-expected-uploads-partner-county.handler';
 
 @Module({
     imports: [
@@ -30,7 +31,8 @@ import { GetConsistencyByCountyPartnerHandler } from './queries/handlers/get-con
         GetOverallReportingHandler,
         GetRecencyByCountyHandler,
         GetRecencyByPartnerHandler,
-        GetConsistencyByCountyPartnerHandler
+        GetConsistencyByCountyPartnerHandler,
+        GetExpectedUploadsPartnerCountyHandler
     ],
     controllers: [ManifestsController],
 })

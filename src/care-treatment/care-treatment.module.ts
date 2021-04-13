@@ -18,6 +18,7 @@ import { GetCtSiteGpsHandler } from './common/queries/handlers/get-ct-site-gps.h
 
 import { FactTransHmisStatsTxcurr } from './home/entities/fact-trans-hmis-stats-txcurr.model';
 import { FactTransDsdCascade } from './home/entities/fact-trans-dsd-cascade.model';
+import { FactCtTimeToArt } from './new-on-art/entities/fact-ct-time-to-art.model';
 
 import { GetActiveArtHandler } from './home/queries/handlers/get-active-art.handler';
 import { GetActiveChildrenHandler } from './home/queries/handlers/get-active-children.handler';
@@ -146,7 +147,22 @@ import { GetArtOptimizationNewByPartnerHandler } from './art-optimization/querie
 import { GetArtOptimizationNewByYearHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-year.handler';
 import { GetDsdStableOverallHandler } from './dsd/queries/handlers/get-dsd-stable-overall.handler';
 import { GetVlOutcomesByYearAndSuppressionCategoryHandler } from './viral-load/queries/handlers/get-vl-outcomes-by-year-and-suppression-category.handler';
-import { FactCtTimeToFirstVl } from './viral-load/entities/fact-ct-time-to-first-vl.model';
+import { FactTimeToVlLast12M } from './viral-load/entities/fact-time-to-vl-last-12m.model';
+import { FactTransTimeToVl } from './viral-load/entities/fact-trans-time-to-vl.model';
+import { GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-on-art-with-ae-by-type-of-suspected-causative-drugs.handler';
+import { FactTransAeCausativeDrugs } from './adverse-events/entities/fact-trans-ae-causitive-drugs.model';
+import { GetProportionOfPLHIVWithAeRelatedToArtHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-related-to-art.handler';
+import { GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-whose-regimen-changed.handler';
+import { GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-whose-regimen-was-stopped.handler';
+import { GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-whose-regimen-was-not-altered.handler';
+import { FactTransVlSuppressionArtStart } from './viral-load/entities/fact-trans-vl-suppression-art-start.model';
+import { Get6MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-6-month-viral-suppression-by-year-of-art-start.handler';
+import { Get24MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-24-month-viral-suppression-by-year-of-art-start.handler';
+import { Get12MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-12-month-viral-suppression-by-year-of-art-start.handler';
+import { FactCtTimeToArtLast12M } from './new-on-art/entities/fact-ct-time-to-art-last-12-m.model';
+import { GetRegimenDistributionBasedOnWeightBandsHandler } from './art-optimization/queries/handlers/get-regimen-distribution-based-on-weight-bands.handler';
+import { GetRegimenDistributionBasedOnAgeBandsHandler } from './art-optimization/queries/handlers/get-regimen-distribution-based-on-age-bands.handler';
+
 
 @Module({
     imports: [
@@ -178,7 +194,12 @@ import { FactCtTimeToFirstVl } from './viral-load/entities/fact-ct-time-to-first
                 FactTransAeCategories,
                 FactTransAeClients,
                 FactTransOptimizeRegLines,
-                FactCtTimeToFirstVl
+                FactTransTimeToVl,
+                FactTimeToVlLast12M,
+                FactTransAeCausativeDrugs,
+                FactTransVlSuppressionArtStart,
+                FactCtTimeToArt,
+                FactCtTimeToArtLast12M
             ],
             'mssql'
         )
@@ -287,7 +308,17 @@ import { FactCtTimeToFirstVl } from './viral-load/entities/fact-ct-time-to-first
         GetArtOptimizationNewByPartnerHandler,
         GetArtOptimizationNewByYearHandler,
         GetDsdStableOverallHandler,
-        GetVlOutcomesByYearAndSuppressionCategoryHandler
+        GetVlOutcomesByYearAndSuppressionCategoryHandler,
+        GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandler,
+        GetProportionOfPLHIVWithAeRelatedToArtHandler,
+        GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler,
+        GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler,
+        GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler,
+        Get6MonthViralSuppressionByYearOfArtStartHandler,
+        Get12MonthViralSuppressionByYearOfArtStartHandler,
+        Get24MonthViralSuppressionByYearOfArtStartHandler,
+        GetRegimenDistributionBasedOnWeightBandsHandler,
+        GetRegimenDistributionBasedOnAgeBandsHandler
     ],
     controllers: [CareTreatmentController]
 })
