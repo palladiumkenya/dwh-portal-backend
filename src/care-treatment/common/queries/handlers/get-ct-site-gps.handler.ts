@@ -17,7 +17,8 @@ export class GetCtSiteGpsHandler implements IQueryHandler<GetCtSiteGpsQuery> {
         const facilities = this.repository.createQueryBuilder('q')
             .select(['facilityId mfl, name facility, county, subCounty, agency, partner, owner, latitude, longitude, EMR emr, isCT, isPkv, isHts'])
             .where('q.name IS NOT NULL')
-            .andWhere('q.EMR IS NOT NULL');
+            .andWhere('q.EMR IS NOT NULL')
+            .andWhere("q.EMR <> ''");
 
         if (query.county) {
             facilities.andWhere('q.county IN (:...county)', { county: query.county });
