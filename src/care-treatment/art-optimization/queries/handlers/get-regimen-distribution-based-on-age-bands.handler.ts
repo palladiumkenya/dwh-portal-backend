@@ -20,7 +20,7 @@ export class GetRegimenDistributionBasedOnAgeBandsHandler implements IQueryHandl
             '\'5-9 Years\' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE Lastregimen = f.[Lastregimen] and [AgeBands] = \'5-9 Years\'), 0),\n' +
             '\'10-14 Years\' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE Lastregimen = f.[Lastregimen] and [AgeBands] = \'10-14 Years\'), 0),\n' +
             '\'Grand Total\' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE Lastregimen = f.[Lastregimen] and [AgeBands] IN (\'<2 Years\', \'2-4 Years\', \'5-9 Years\', \'10-14 Years\')), 0)'])
-            .where('f.RegimenLine = \'First Regimen Line\' AND f.Lastregimen is not null');
+            .where('f.RegimenLine = \'First Regimen Line\' AND f.Lastregimen is not null AND f.AgeBands in (\'10-14 Years\',\'5-9 Years\',\'2-4 Years\',\'<2 Years\')');
 
         if (query.county) {
             regimenDistributionBasedOnAgeBands.andWhere('f.County IN (:...county)', { county: query.county });

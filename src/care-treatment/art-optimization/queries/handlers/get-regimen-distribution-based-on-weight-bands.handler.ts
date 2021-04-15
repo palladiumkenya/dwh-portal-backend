@@ -17,7 +17,7 @@ export class GetRegimenDistributionBasedOnWeightBandsHandler implements IQueryHa
             .select(['Lastregimen, \'<20Kgs\' = ISNULL((SELECT SUM([TxCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] y WHERE y.Lastregimen = f.[Lastregimen] and WeightBands = \'<20Kgs\'), 0),\n' +
             '\'20-35Kgs\' = ISNULL((SELECT SUM([TxCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE Lastregimen = f.[Lastregimen] and WeightBands = \'20-35Kgs\'), 0),\n' +
             '\'>35Kgs\' = ISNULL((SELECT SUM([TxCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE Lastregimen = f.[Lastregimen] and WeightBands = \'>35Kgs\'), 0)'])
-            .where('f.RegimenLine = \'First Regimen Line\' AND f.Lastregimen is not null');
+            .where('f.RegimenLine = \'First Regimen Line\' AND f.Lastregimen is not null AND f.AgeBands in (\'10-14 Years\',\'5-9 Years\',\'2-4 Years\',\'<2 Years\')');
 
         if (query.county) {
             regimenDistributionBasedOnWeight.andWhere('f.County IN (:...county)', { county: query.county });
