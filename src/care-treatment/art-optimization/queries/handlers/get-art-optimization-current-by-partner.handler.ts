@@ -50,6 +50,14 @@ export class GetArtOptimizationCurrentByPartnerHandler implements IQueryHandler<
         //     artOptimizationCurrentByPartner.andWhere('f.StartARTYr IN (:...year)', { year: query.year });
         // }
 
+        if (query.gender) {
+            artOptimizationCurrentByPartner.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            artOptimizationCurrentByPartner.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+        }
+
         return await artOptimizationCurrentByPartner
             .groupBy('CTPartner, CurrentRegimen, Gender')
             .orderBy('CTPartner, CurrentRegimen, Gender')

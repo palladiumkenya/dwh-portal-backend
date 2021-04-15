@@ -7,4 +7,6 @@ export class GetArtOptimizationNewByPartnerQuery {
     project?: string[];
     year?: number[];
     month?: number[];
+    gender?: string[];
+    datimAgeGroup?: string[];
 }

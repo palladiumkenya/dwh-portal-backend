@@ -7,4 +7,6 @@ export class GetArtOptimizationNewByYearQuery {
     project?: string[];
     year?: number[];
     month?: number[];
+    gender?: string[];
+    datimAgeGroup?: string[];
 }

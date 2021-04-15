@@ -50,6 +50,14 @@ export class GetArtOptimizationOverviewHandler implements IQueryHandler<GetArtOp
         //     artOptimizationOverview.andWhere('f.StartARTYr IN (:...year)', { year: query.year });
         // }
 
+        if (query.gender) {
+            artOptimizationOverview.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            artOptimizationOverview.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+        }
+
         return await artOptimizationOverview
             .groupBy('Agegroup, Gender, CurrentRegimen, RegimenLine')
             .orderBy('Agegroup, Gender, CurrentRegimen, RegimenLine')
