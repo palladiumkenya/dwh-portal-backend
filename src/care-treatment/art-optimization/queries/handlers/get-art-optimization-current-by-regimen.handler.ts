@@ -50,6 +50,14 @@ export class GetArtOptimizationCurrentByRegimenHandler implements IQueryHandler<
         //     artOptimizationCurrentByRegimen.andWhere('f.StartARTYr IN (:...year)', { year: query.year });
         // }
 
+        if (query.gender) {
+            artOptimizationCurrentByRegimen.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            artOptimizationCurrentByRegimen.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+        }
+
         return await artOptimizationCurrentByRegimen
             .groupBy('Agegroup, RegimenLine, Lastregimen')
             .orderBy('Agegroup, RegimenLine, Lastregimen')

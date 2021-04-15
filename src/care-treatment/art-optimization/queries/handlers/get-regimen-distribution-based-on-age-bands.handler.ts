@@ -38,6 +38,14 @@ export class GetRegimenDistributionBasedOnAgeBandsHandler implements IQueryHandl
             regimenDistributionBasedOnAgeBands.andWhere('f.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
+        if (query.gender) {
+            regimenDistributionBasedOnAgeBands.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            regimenDistributionBasedOnAgeBands.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+        }
+
         return await regimenDistributionBasedOnAgeBands
             .groupBy('Lastregimen')
             .orderBy('Lastregimen')

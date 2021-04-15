@@ -7,4 +7,6 @@ export class GetRegimenDistributionBasedOnWeightBandsQuery {
     project?: string[];
     year?: number[];
     month?: number[];
+    gender?: string[];
+    datimAgeGroup?: string[];
 }

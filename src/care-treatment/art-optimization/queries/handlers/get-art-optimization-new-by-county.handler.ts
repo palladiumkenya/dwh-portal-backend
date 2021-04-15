@@ -50,6 +50,14 @@ export class GetArtOptimizationNewByCountyHandler implements IQueryHandler<GetAr
             artOptimizationNewByCounty.andWhere('f.StartARTYr IN (:...year)', { year: query.year });
         }
 
+        if (query.gender) {
+            artOptimizationNewByCounty.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            artOptimizationNewByCounty.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+        }
+
         return await artOptimizationNewByCounty
             .groupBy('County, StartRegimen, StartARTYr, StartARTMonth')
             .orderBy('County, StartRegimen, StartARTYr, StartARTMonth')
