@@ -37,4 +37,10 @@ export class FactTransOptimizeRegLines {
 
     @Column('text')
     RegimenLine: string;
+
+    @Column('text')
+    PopulationType: string;
+
+    @Column('text')
+    LatestPregnancy: string;
 }

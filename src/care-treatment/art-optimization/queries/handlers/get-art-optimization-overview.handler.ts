@@ -58,6 +58,15 @@ export class GetArtOptimizationOverviewHandler implements IQueryHandler<GetArtOp
             artOptimizationOverview.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
         }
 
+        if (query.populationType) {
+            artOptimizationOverview.andWhere('f.PopulationType IN (:...populationType)', { populationType: query.populationType });
+        }
+
+        if (query.latestPregnancy) {
+            artOptimizationOverview.andWhere('f.LatestPregnancy IN (:...latestPregnancy)', { latestPregnancy: query.latestPregnancy });
+        }
+
+
         return await artOptimizationOverview
             .groupBy('Agegroup, Gender, CurrentRegimen, RegimenLine')
             .orderBy('Agegroup, Gender, CurrentRegimen, RegimenLine')

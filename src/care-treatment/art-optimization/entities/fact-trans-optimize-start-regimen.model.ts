@@ -40,4 +40,10 @@ export class FactTransOptimizeStartRegimen {
 
     @Column('text')
     Firstregimen: string;
+
+    @Column('text')
+    PopulationType: string;
+
+    @Column('text')
+    LatestPregnancy: string;
 }

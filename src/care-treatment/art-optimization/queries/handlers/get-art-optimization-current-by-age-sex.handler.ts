@@ -58,6 +58,14 @@ export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<G
             artOptimizationCurrentByAgeSex.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
         }
 
+        if (query.populationType) {
+            artOptimizationCurrentByAgeSex.andWhere('f.PopulationType IN (:...populationType)', { populationType: query.populationType });
+        }
+
+        if (query.latestPregnancy) {
+            artOptimizationCurrentByAgeSex.andWhere('f.LatestPregnancy IN (:...latestPregnancy)', { latestPregnancy: query.latestPregnancy });
+        }
+
         return await artOptimizationCurrentByAgeSex
             .groupBy('CurrentRegimen, Gender, DATIM_AgeGroup')
             .orderBy('CurrentRegimen, Gender, DATIM_AgeGroup')

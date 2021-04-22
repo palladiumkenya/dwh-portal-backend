@@ -9,4 +9,6 @@ export class GetArtOptimizationNewByYearQuery {
     month?: number[];
     gender?: string[];
     datimAgeGroup?: string[];
+    populationType?: string[];
+    latestPregnancy?: string[];
 }
