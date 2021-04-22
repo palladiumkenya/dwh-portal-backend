@@ -3295,7 +3295,9 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationOverviewQuery();
 
@@ -3339,6 +3341,14 @@ export class CareTreatmentController {
             query.datimAgeGroup = datimAgeGroup;
         }
 
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3353,7 +3363,9 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationCurrentByAgeSexQuery();
 
@@ -3397,6 +3409,14 @@ export class CareTreatmentController {
             query.datimAgeGroup = datimAgeGroup;
         }
 
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3411,7 +3431,9 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationCurrentByRegimenQuery();
 
@@ -3455,6 +3477,14 @@ export class CareTreatmentController {
             query.datimAgeGroup = datimAgeGroup;
         }
 
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3469,7 +3499,9 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationCurrentByCountyQuery();
 
@@ -3513,6 +3545,14 @@ export class CareTreatmentController {
             query.datimAgeGroup = datimAgeGroup;
         }
 
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3527,7 +3567,9 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationCurrentByPartnerQuery();
 
@@ -3571,6 +3613,14 @@ export class CareTreatmentController {
             query.datimAgeGroup = datimAgeGroup;
         }
 
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3585,7 +3635,9 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationNewByCountyQuery();
 
@@ -3629,6 +3681,14 @@ export class CareTreatmentController {
             query.datimAgeGroup = datimAgeGroup;
         }
 
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3643,7 +3703,9 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationNewByPartnerQuery();
 
@@ -3687,6 +3749,14 @@ export class CareTreatmentController {
             query.datimAgeGroup = datimAgeGroup;
         }
 
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3701,7 +3771,9 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationNewByYearQuery();
 
@@ -3743,6 +3815,14 @@ export class CareTreatmentController {
 
         if (datimAgeGroup) {
             query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
         }
 
         return this.queryBus.execute(query);
@@ -3921,7 +4001,9 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetRegimenDistributionBasedOnWeightBandsQuery();
 
@@ -3965,6 +4047,14 @@ export class CareTreatmentController {
             query.datimAgeGroup = datimAgeGroup;
         }
 
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3979,7 +4069,9 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetRegimenDistributionBasedOnAgeBandsQuery();
 
@@ -4021,6 +4113,14 @@ export class CareTreatmentController {
 
         if (datimAgeGroup) {
             query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
         }
 
         return this.queryBus.execute(query);

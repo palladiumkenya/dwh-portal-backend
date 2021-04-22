@@ -58,6 +58,14 @@ export class GetArtOptimizationNewByYearHandler implements IQueryHandler<GetArtO
             artOptimizationNewByYear.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
         }
 
+        if (query.populationType) {
+            artOptimizationNewByYear.andWhere('f.PopulationType IN (:...populationType)', { populationType: query.populationType });
+        }
+
+        if (query.latestPregnancy) {
+            artOptimizationNewByYear.andWhere('f.LatestPregnancy IN (:...latestPregnancy)', { latestPregnancy: query.latestPregnancy });
+        }
+
         return await artOptimizationNewByYear
             .groupBy('StartARTYr, StartARTMonth, StartRegimen')
             .orderBy('StartARTYr, StartARTMonth, StartRegimen')

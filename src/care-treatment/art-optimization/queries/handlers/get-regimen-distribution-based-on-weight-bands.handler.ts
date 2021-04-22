@@ -44,6 +44,14 @@ export class GetRegimenDistributionBasedOnWeightBandsHandler implements IQueryHa
             regimenDistributionBasedOnWeight.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
         }
 
+        if (query.populationType) {
+            regimenDistributionBasedOnWeight.andWhere('f.PopulationType IN (:...populationType)', { populationType: query.populationType });
+        }
+
+        if (query.latestPregnancy) {
+            regimenDistributionBasedOnWeight.andWhere('f.LatestPregnancy IN (:...latestPregnancy)', { latestPregnancy: query.latestPregnancy });
+        }
+
         return await regimenDistributionBasedOnWeight
             .groupBy('Lastregimen')
             .orderBy('Lastregimen')
