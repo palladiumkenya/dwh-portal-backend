@@ -14,7 +14,7 @@ export class GetAeSeverityGradingHandler implements IQueryHandler<GetAeSeverityG
 
     async execute(query: GetAeSeverityGradingQuery): Promise<any> {
         const aeSeverityGrading = this.repository.createQueryBuilder('f')
-            .select('[Severity], SUM([Severity_Total]) total')
+            .select('[Severity], DATIM_AgeGroup ageGroup, SUM([Severity_Total]) total')
             .where('ISNULL([Severity],\'\') <> \'\'');
 
         if (query.county) {
@@ -38,7 +38,7 @@ export class GetAeSeverityGradingHandler implements IQueryHandler<GetAeSeverityG
         }
 
         return await aeSeverityGrading
-            .groupBy('Severity')
+            .groupBy('Severity, DATIM_AgeGroup')
             .getRawMany();
     }
 }
