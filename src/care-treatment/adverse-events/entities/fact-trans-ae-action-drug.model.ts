@@ -25,4 +25,7 @@ export class FactTransAeActionDrug {
 
     @Column('text')
     AdverseEventActionTaken: string;
+
+    @Column('text')
+    DATIM_AgeGroup: string;
 }
