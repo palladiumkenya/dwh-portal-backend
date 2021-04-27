@@ -25,4 +25,7 @@ export class FactTransAeCategories {
 
     @Column('int')
     Severity_total: number;
+
+    @Column('text')
+    DATIM_AgeGroup: string;
 }
