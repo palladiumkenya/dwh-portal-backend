@@ -118,6 +118,8 @@ import { GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery } from './adve
 import { Get6MonthViralSuppressionByYearOfArtStartQuery } from './viral-load/queries/impl/get-6-month-viral-suppression-by-year-of-art-start.query';
 import { Get12MonthViralSuppressionByYearOfArtStartQuery } from './viral-load/queries/impl/get-12-month-viral-suppression-by-year-of-art-start.query';
 import { Get24MonthViralSuppressionByYearOfArtStartQuery } from './viral-load/queries/impl/get-24-month-viral-suppression-by-year-of-art-start.query';
+import { GetRegimenDistributionBasedOnWeightBandsQuery } from './art-optimization/queries/impl/get-regimen-distribution-based-on-weight-bands.query';
+import { GetRegimenDistributionBasedOnAgeBandsQuery } from './art-optimization/queries/impl/get-regimen-distribution-based-on-age-bands.query';
 
 
 @Controller('care-treatment')
@@ -3291,7 +3293,11 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationOverviewQuery();
 
@@ -3327,6 +3333,22 @@ export class CareTreatmentController {
             query.month = month;
         }
 
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3339,7 +3361,11 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationCurrentByAgeSexQuery();
 
@@ -3375,6 +3401,22 @@ export class CareTreatmentController {
             query.month = month;
         }
 
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3387,7 +3429,11 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationCurrentByRegimenQuery();
 
@@ -3423,6 +3469,22 @@ export class CareTreatmentController {
             query.month = month;
         }
 
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3435,7 +3497,11 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationCurrentByCountyQuery();
 
@@ -3471,6 +3537,22 @@ export class CareTreatmentController {
             query.month = month;
         }
 
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3483,7 +3565,11 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationCurrentByPartnerQuery();
 
@@ -3519,6 +3605,22 @@ export class CareTreatmentController {
             query.month = month;
         }
 
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3531,7 +3633,11 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationNewByCountyQuery();
 
@@ -3567,6 +3673,22 @@ export class CareTreatmentController {
             query.month = month;
         }
 
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3579,7 +3701,11 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationNewByPartnerQuery();
 
@@ -3615,6 +3741,22 @@ export class CareTreatmentController {
             query.month = month;
         }
 
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -3627,7 +3769,11 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetArtOptimizationNewByYearQuery();
 
@@ -3661,6 +3807,22 @@ export class CareTreatmentController {
 
         if (month) {
             query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
         }
 
         return this.queryBus.execute(query);
@@ -3828,4 +3990,139 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
+    @Get('getRegimenDistributionByWeightBands')
+    async getRegimenDistributionByWeightBands(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
+    ): Promise<any> {
+        const query = new GetRegimenDistributionBasedOnWeightBandsQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getRegimenDistributionByAgeBands')
+    async getRegimenDistributionByAgeBands(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
+    ): Promise<any> {
+        const query = new GetRegimenDistributionBasedOnAgeBandsQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
+        return this.queryBus.execute(query);
+    }
 }

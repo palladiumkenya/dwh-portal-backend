@@ -50,6 +50,22 @@ export class GetArtOptimizationNewByPartnerHandler implements IQueryHandler<GetA
             artOptimizationNewByPartner.andWhere('f.StartARTYr IN (:...year)', { year: query.year });
         }
 
+        if (query.gender) {
+            artOptimizationNewByPartner.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            artOptimizationNewByPartner.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+        }
+
+        if (query.populationType) {
+            artOptimizationNewByPartner.andWhere('f.PopulationType IN (:...populationType)', { populationType: query.populationType });
+        }
+
+        if (query.latestPregnancy) {
+            artOptimizationNewByPartner.andWhere('f.LatestPregnancy IN (:...latestPregnancy)', { latestPregnancy: query.latestPregnancy });
+        }
+
         return await artOptimizationNewByPartner
             .groupBy('CTPartner, StartRegimen, StartARTYr, StartARTMonth')
             .orderBy('CTPartner, StartRegimen, StartARTYr, StartARTMonth')

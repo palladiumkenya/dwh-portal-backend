@@ -18,7 +18,7 @@ export class GetAeActionsBySeverityHandler implements IQueryHandler<GetAeActions
                 '\t\t\t\t\t\t\tWHEN [AdverseEventActionTaken] = \'Select\' OR [AdverseEventActionTaken] IS NULL OR [AdverseEventActionTaken] = \'Other\' THEN \'Undocumented\' \n' +
                 '\t\t\t\t\t\t\tWHEN [AdverseEventActionTaken] = \'Severe\' OR [AdverseEventActionTaken] = \'Mild\' OR [AdverseEventActionTaken] = \'Moderate\' THEN \'Undocumented\' \n' +
                 '\t\t\t\t\t\t\tELSE [AdverseEventActionTaken] END,\n' +
-                'SUM([Severity_Total]) total')
+                'SUM([Severity_Total]) total, DATIM_AgeGroup ageGroup')
             .where('ISNULL([Severity],\'\') <> \'\'');
 
         if (query.county) {
@@ -42,7 +42,7 @@ export class GetAeActionsBySeverityHandler implements IQueryHandler<GetAeActions
         }
 
         return await aeActionsBySeverity
-            .groupBy('Severity, AdverseEventActionTaken')
+            .groupBy('Severity, AdverseEventActionTaken, DATIM_AgeGroup')
             .getRawMany();
     }
 }

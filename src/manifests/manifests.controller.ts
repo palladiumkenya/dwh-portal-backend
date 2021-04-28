@@ -7,6 +7,7 @@ import { GetTrendsRecencyQuery } from './queries/impl/get-trends-recency.query';
 import { GetTrendsConsistencyQuery } from './queries/impl/get-trends-consistency.query';
 import { GetEmrDistributionQuery } from './queries/impl/get-emr-distribution.query';
 import { GetOverallReportingQuery } from './queries/impl/get-overall-reporting.query';
+import { GetOverallReportingByFacilityQuery } from './queries/impl/get-overall-reporting-by-facility.query';
 import { GetRecencyByPartnerQuery } from './queries/impl/get-recency-by-partner.query';
 import { GetRecencyByCountyQuery } from './queries/impl/get-recency-by-county.query';
 import { GetConsistencyByCountyPartnerQuery } from './queries/impl/get-consistency-by-county-partner.query';
@@ -315,6 +316,50 @@ export class ManifestsController {
         @Query('reportingType') reportingType
     ): Promise<any> {
         const query = new GetOverallReportingQuery(docket);
+        if (county) {
+            query.county = county;
+        }
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
+        }
+        if (partner) {
+            query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
+        }
+        if (period) {
+            query.period = period;
+        }
+        if(reportingType) {
+            query.reportingType = reportingType;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('overallReportingByFacility/:docket')
+    async getOverallReportingByFacility(
+        @Param('docket') docket,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('period') period,
+        @Query('reportingType') reportingType
+    ): Promise<any> {
+        const query = new GetOverallReportingByFacilityQuery(docket);
         if (county) {
             query.county = county;
         }

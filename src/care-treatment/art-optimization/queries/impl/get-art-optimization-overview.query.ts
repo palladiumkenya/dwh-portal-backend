@@ -7,4 +7,8 @@ export class GetArtOptimizationOverviewQuery {
     project?: string[];
     year?: number[];
     month?: number[];
+    gender?: string[];
+    datimAgeGroup?: string[];
+    populationType?: string[];
+    latestPregnancy?: string[];
 }

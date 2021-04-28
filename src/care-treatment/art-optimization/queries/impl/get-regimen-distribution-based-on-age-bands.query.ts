@@ -1,4 +1,4 @@
-export class GetArtOptimizationCurrentByCountyQuery {
+export class GetRegimenDistributionBasedOnAgeBandsQuery {
     county?: string[];
     subCounty?: string[];
     facility?: string[];

@@ -50,6 +50,22 @@ export class GetArtOptimizationCurrentByRegimenHandler implements IQueryHandler<
         //     artOptimizationCurrentByRegimen.andWhere('f.StartARTYr IN (:...year)', { year: query.year });
         // }
 
+        if (query.gender) {
+            artOptimizationCurrentByRegimen.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            artOptimizationCurrentByRegimen.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+        }
+
+        if (query.populationType) {
+            artOptimizationCurrentByRegimen.andWhere('f.PopulationType IN (:...populationType)', { populationType: query.populationType });
+        }
+
+        if (query.latestPregnancy) {
+            artOptimizationCurrentByRegimen.andWhere('f.LatestPregnancy IN (:...latestPregnancy)', { latestPregnancy: query.latestPregnancy });
+        }
+
         return await artOptimizationCurrentByRegimen
             .groupBy('Agegroup, RegimenLine, Lastregimen')
             .orderBy('Agegroup, RegimenLine, Lastregimen')

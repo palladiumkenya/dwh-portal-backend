@@ -25,4 +25,7 @@ export class FactTransAeCauses {
 
     @Column('int')
     Total_AdverseEventCause: number;
+
+    @Column('text')
+    DATIM_AgeGroup: string;
 }

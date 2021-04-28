@@ -50,6 +50,22 @@ export class GetArtOptimizationCurrentByCountyHandler implements IQueryHandler<G
         //     artOptimizationCurrentByCounty.andWhere('f.StartARTYr IN (:...year)', { year: query.year });
         // }
 
+        if (query.gender) {
+            artOptimizationCurrentByCounty.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            artOptimizationCurrentByCounty.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+        }
+
+        if (query.populationType) {
+            artOptimizationCurrentByCounty.andWhere('f.PopulationType IN (:...populationType)', { populationType: query.populationType });
+        }
+
+        if (query.latestPregnancy) {
+            artOptimizationCurrentByCounty.andWhere('f.LatestPregnancy IN (:...latestPregnancy)', { latestPregnancy: query.latestPregnancy });
+        }
+
         return await artOptimizationCurrentByCounty
             .groupBy('County, CurrentRegimen, Gender')
             .orderBy('County, CurrentRegimen, Gender')

@@ -14,7 +14,7 @@ export class GetAeActionsByDrugsHandler implements IQueryHandler<GetAeActionsByD
 
     async execute(query: GetAeActionsByDrugsQuery): Promise<any> {
         const aeActionsByDrugs = this.repository.createQueryBuilder('f')
-            .select('[Severity], [AdverseEventCause], SUM([Total_AdverseEventCause]) total')
+            .select('[Severity], [AdverseEventCause], SUM([Total_AdverseEventCause]) total, DATIM_AgeGroup ageGroup')
             .where('[AdverseEventCause] IS NOT NULL');
 
         if (query.county) {
@@ -38,7 +38,7 @@ export class GetAeActionsByDrugsHandler implements IQueryHandler<GetAeActionsByD
         }
 
         return await aeActionsByDrugs
-            .groupBy('[Severity], [AdverseEventCause]')
+            .groupBy('[Severity], [AdverseEventCause], DATIM_AgeGroup')
             .getRawMany();
     }
 }
