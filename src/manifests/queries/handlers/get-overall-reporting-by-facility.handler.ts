@@ -19,35 +19,32 @@ export class GetOverallReportingByFacilityHandler implements IQueryHandler<GetOv
         const params = [];
         let overAllReportingByFacilitySql;
         if (query.docket.toLowerCase() === 'hts') {
-            overAllReportingByFacilitySql = `Select Distinct df.FacilityId,Name as FacilityName,County,subCounty,Agency,Partner, f.year,f.month, f.docketId ,f.timeId as uploaddate
+            overAllReportingByFacilitySql = `SELECT * from (Select Distinct df.FacilityId,Name as FacilityName,County,subCounty,Agency,Partner, f.year,f.month, f.docketId ,f.timeId as uploaddate
                 from (select name,facilityId,county,subcounty,agency,partner, ? AS docket from dim_facility where isHts = 1) df
                 LEFT JOIN (SELECT * FROM (
                             SELECT DISTINCT ROW_NUMBER ( ) OVER (PARTITION BY FacilityId,docketId,Concat(Month(fm.timeId),'-', Year(fm.timeId)) ORDER BY (cast(fm.timeId as date)) desc) AS RowID,
                             FacilityId,docketId,fm.timeId, dt.year,dt.month FROM  fact_manifest fm
                             inner join dim_time dt on dt.timeId=fm.timeId
                             where dt.year = ? and dt.month = ?
-                )u where RowId=1) f on f.facilityId=df.facilityId and df.docket=f.docketId
-                Where docket IS NOT NULL `;
+                )u where RowId=1) f on f.facilityId=df.facilityId and df.docket=f.docketId) Y `;
         } else if (query.docket.toLowerCase() === 'pkv') {
-            overAllReportingByFacilitySql = `Select Distinct df.FacilityId,Name as FacilityName,County,subCounty,Agency,Partner, f.year,f.month, f.docketId ,f.timeId as uploaddate
+            overAllReportingByFacilitySql = `SELECT * from (Select Distinct df.FacilityId,Name as FacilityName,County,subCounty,Agency,Partner, f.year,f.month, f.docketId ,f.timeId as uploaddate
                 from (select name,facilityId,county,subcounty,agency,partner, ? AS docket from dim_facility where isPkv = 1) df
                 LEFT JOIN (SELECT * FROM (
                             SELECT DISTINCT ROW_NUMBER ( ) OVER (PARTITION BY FacilityId,docketId,Concat(Month(fm.timeId),'-', Year(fm.timeId)) ORDER BY (cast(fm.timeId as date)) desc) AS RowID,
                             FacilityId,docketId,fm.timeId, dt.year,dt.month FROM  fact_manifest fm
                             inner join dim_time dt on dt.timeId=fm.timeId
                             where dt.year = ? and dt.month = ?
-                )u where RowId=1) f on f.facilityId=df.facilityId and df.docket=f.docketId
-                Where docket IS NOT NULL `;
+                )u where RowId=1) f on f.facilityId=df.facilityId and df.docket=f.docketId) Y `;
         } else {
-            overAllReportingByFacilitySql = `Select Distinct df.FacilityId,Name as FacilityName,County,subCounty,Agency,Partner, f.year,f.month, f.docketId ,f.timeId as uploaddate
+            overAllReportingByFacilitySql = `SELECT * from (Select Distinct df.FacilityId,Name as FacilityName,County,subCounty,Agency,Partner, f.year,f.month, f.docketId ,f.timeId as uploaddate
                 from (select name,facilityId,county,subcounty,agency,partner, ? AS docket from dim_facility where isCt = 1) df
                 LEFT JOIN (SELECT * FROM (
                             SELECT DISTINCT ROW_NUMBER ( ) OVER (PARTITION BY FacilityId,docketId,Concat(Month(fm.timeId),'-', Year(fm.timeId)) ORDER BY (cast(fm.timeId as date)) desc) AS RowID,
                             FacilityId,docketId,fm.timeId, dt.year,dt.month FROM  fact_manifest fm
                             inner join dim_time dt on dt.timeId=fm.timeId
                             where dt.year = ? and dt.month = ?
-                )u where RowId=1) f on f.facilityId=df.facilityId and df.docket=f.docketId
-                Where docket IS NOT NULL `;
+                )u where RowId=1) f on f.facilityId=df.facilityId and df.docket=f.docketId) Y `;
         }
 
         params.push(query.docket.toLowerCase());
@@ -65,9 +62,9 @@ export class GetOverallReportingByFacilityHandler implements IQueryHandler<GetOv
         }
 
         if (query.reportingType === '0') {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and timeid is null `;
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} WHERE uploaddate is null `;
         } else {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and timeid is not null `;
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} WHERE uploaddate is not null `;
         }
 
         if (query.county) {
@@ -81,7 +78,7 @@ export class GetOverallReportingByFacilityHandler implements IQueryHandler<GetOv
         }
 
         if (query.facility) {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and Name IN (?)`;
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and FacilityName IN (?)`;
             params.push(query.facility);
         }
 
