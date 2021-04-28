@@ -64,7 +64,7 @@ export class GetOverallReportingByFacilityHandler implements IQueryHandler<GetOv
             params.push(month);
         }
 
-        if (query.reportingType == '0') {
+        if (query.reportingType === '0') {
             overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and timeid is null `;
         } else {
             overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and timeid is not null `;
