@@ -17,17 +17,38 @@ export class GetOverallReportingByFacilityHandler implements IQueryHandler<GetOv
 
     async execute(query: GetOverallReportingByFacilityQuery): Promise<OverallReportingByFacilityDto> {
         const params = [];
-        let overAllReportingByFacilitySql = `Select Distinct df.FacilityId,Name as FacilityName,County,subCounty,Agency,Partner, f.year,f.month, f.docketId ,f.timeId as uploaddate
-            from (select name,facilityId,county,subcounty,agency,partner, case when  isCt = 1  then 'CT'
-                    when  isPkv = 1 then 'PKV'
-                    when  isHts = 1 then 'HTS' end AS docket from dim_facility) df
-            LEFT JOIN (SELECT * FROM (
-                        SELECT DISTINCT ROW_NUMBER ( ) OVER (PARTITION BY FacilityId,docketId,Concat(Month(fm.timeId),'-', Year(fm.timeId)) ORDER BY (cast(fm.timeId as date)) desc) AS RowID,
-                        FacilityId,docketId,fm.timeId, dt.year,dt.month FROM  fact_manifest fm
-                        inner join dim_time dt on dt.timeId=fm.timeId
-                        where dt.year = ? and dt.month = ?
-            )u where RowId=1) f on f.facilityId=df.facilityId and df.docket=f.docketId
-            Where docket = ? `
+        let overAllReportingByFacilitySql;
+        if (query.docket.toLowerCase() === 'hts') {
+            overAllReportingByFacilitySql = `Select Distinct df.FacilityId,Name as FacilityName,County,subCounty,Agency,Partner, f.year,f.month, f.docketId ,f.timeId as uploaddate
+                from (select name,facilityId,county,subcounty,agency,partner, 'hts' AS docket from dim_facility where isHts = 1) df
+                LEFT JOIN (SELECT * FROM (
+                            SELECT DISTINCT ROW_NUMBER ( ) OVER (PARTITION BY FacilityId,docketId,Concat(Month(fm.timeId),'-', Year(fm.timeId)) ORDER BY (cast(fm.timeId as date)) desc) AS RowID,
+                            FacilityId,docketId,fm.timeId, dt.year,dt.month FROM  fact_manifest fm
+                            inner join dim_time dt on dt.timeId=fm.timeId
+                            where dt.year = ? and dt.month = ?
+                )u where RowId=1) f on f.facilityId=df.facilityId and df.docket=f.docketId
+                Where docket IS NOT NULL `;
+        } else if (query.docket.toLowerCase() === 'pkv') {
+            overAllReportingByFacilitySql = `Select Distinct df.FacilityId,Name as FacilityName,County,subCounty,Agency,Partner, f.year,f.month, f.docketId ,f.timeId as uploaddate
+                from (select name,facilityId,county,subcounty,agency,partner, 'pkv' AS docket from dim_facility where isPkv = 1) df
+                LEFT JOIN (SELECT * FROM (
+                            SELECT DISTINCT ROW_NUMBER ( ) OVER (PARTITION BY FacilityId,docketId,Concat(Month(fm.timeId),'-', Year(fm.timeId)) ORDER BY (cast(fm.timeId as date)) desc) AS RowID,
+                            FacilityId,docketId,fm.timeId, dt.year,dt.month FROM  fact_manifest fm
+                            inner join dim_time dt on dt.timeId=fm.timeId
+                            where dt.year = ? and dt.month = ?
+                )u where RowId=1) f on f.facilityId=df.facilityId and df.docket=f.docketId
+                Where docket IS NOT NULL `;
+        } else {
+            overAllReportingByFacilitySql = `Select Distinct df.FacilityId,Name as FacilityName,County,subCounty,Agency,Partner, f.year,f.month, f.docketId ,f.timeId as uploaddate
+                from (select name,facilityId,county,subcounty,agency,partner, 'ct' AS docket from dim_facility where isCt = 1) df
+                LEFT JOIN (SELECT * FROM (
+                            SELECT DISTINCT ROW_NUMBER ( ) OVER (PARTITION BY FacilityId,docketId,Concat(Month(fm.timeId),'-', Year(fm.timeId)) ORDER BY (cast(fm.timeId as date)) desc) AS RowID,
+                            FacilityId,docketId,fm.timeId, dt.year,dt.month FROM  fact_manifest fm
+                            inner join dim_time dt on dt.timeId=fm.timeId
+                            where dt.year = ? and dt.month = ?
+                )u where RowId=1) f on f.facilityId=df.facilityId and df.docket=f.docketId
+                Where docket IS NOT NULL `;
+        }
 
         if (query.period) {
             const year = query.period.split(',')[0];
@@ -40,8 +61,6 @@ export class GetOverallReportingByFacilityHandler implements IQueryHandler<GetOv
             params.push(year);
             params.push(month);
         }
-        
-        params.push(query.docket);
 
         if (query.reportingType == '0') {
             overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and timeid is null `;
