@@ -1,20 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetAeSeverityGradingQuery } from '../impl/get-ae-severity-grading.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAeSeverity } from '../../entities/fact-trans-ae-severity.model';
+import { FactTransAdverseEvents } from '../../entities/fact-trans-adverse-events.model';
 import { Repository } from 'typeorm';
 
 @QueryHandler(GetAeSeverityGradingQuery)
 export class GetAeSeverityGradingHandler implements IQueryHandler<GetAeSeverityGradingQuery> {
     constructor(
-        @InjectRepository(FactTransAeSeverity, 'mssql')
-        private readonly repository: Repository<FactTransAeSeverity>
+        @InjectRepository(FactTransAdverseEvents, 'mssql')
+        private readonly repository: Repository<FactTransAdverseEvents>
     ) {
     }
 
     async execute(query: GetAeSeverityGradingQuery): Promise<any> {
         const aeSeverityGrading = this.repository.createQueryBuilder('f')
-            .select('[Severity], DATIM_AgeGroup ageGroup, SUM([Severity_Total]) total')
+            .select('[Severity], AgeGroup ageGroup, SUM([AdverseEvent_Total]) total')
             .where('ISNULL([Severity],\'\') <> \'\'');
 
         if (query.county) {
@@ -38,7 +38,7 @@ export class GetAeSeverityGradingHandler implements IQueryHandler<GetAeSeverityG
         }
 
         return await aeSeverityGrading
-            .groupBy('Severity, DATIM_AgeGroup')
+            .groupBy('Severity, AgeGroup')
             .getRawMany();
     }
 }
