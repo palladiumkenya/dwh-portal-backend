@@ -1,14 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetAeActionsBySeverityQuery } from '../impl/get-ae-actions-by-severity.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAeSeverity } from '../../entities/fact-trans-ae-severity.model';
+import { FactTransAdverseEvents } from '../../entities/fact-trans-adverse-events.model';
 import { Repository } from 'typeorm';
 
 @QueryHandler(GetAeActionsBySeverityQuery)
 export class GetAeActionsBySeverityHandler implements IQueryHandler<GetAeActionsBySeverityQuery> {
     constructor(
-        @InjectRepository(FactTransAeSeverity, 'mssql')
-        private readonly repository: Repository<FactTransAeSeverity>
+        @InjectRepository(FactTransAdverseEvents, 'mssql')
+        private readonly repository: Repository<FactTransAdverseEvents>
     ) {
     }
 
@@ -18,7 +18,7 @@ export class GetAeActionsBySeverityHandler implements IQueryHandler<GetAeActions
                 '\t\t\t\t\t\t\tWHEN [AdverseEventActionTaken] = \'Select\' OR [AdverseEventActionTaken] IS NULL OR [AdverseEventActionTaken] = \'Other\' THEN \'Undocumented\' \n' +
                 '\t\t\t\t\t\t\tWHEN [AdverseEventActionTaken] = \'Severe\' OR [AdverseEventActionTaken] = \'Mild\' OR [AdverseEventActionTaken] = \'Moderate\' THEN \'Undocumented\' \n' +
                 '\t\t\t\t\t\t\tELSE [AdverseEventActionTaken] END,\n' +
-                'SUM([Severity_Total]) total, DATIM_AgeGroup ageGroup')
+                'SUM([AdverseEvent_Total]) total, AgeGroup ageGroup')
             .where('ISNULL([Severity],\'\') <> \'\'');
 
         if (query.county) {
@@ -42,7 +42,7 @@ export class GetAeActionsBySeverityHandler implements IQueryHandler<GetAeActions
         }
 
         return await aeActionsBySeverity
-            .groupBy('Severity, AdverseEventActionTaken, DATIM_AgeGroup')
+            .groupBy('Severity, AdverseEventActionTaken, AgeGroup')
             .getRawMany();
     }
 }
