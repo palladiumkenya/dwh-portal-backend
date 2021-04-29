@@ -25,4 +25,10 @@ export class FactTransAdverseEvents {
 
     @Column('int')
     AdverseEvent_Total: number;
+
+    @Column('text')
+    Severity: string;
+
+    @Column('text')
+    AdverseEventActionTaken: string;
 }
