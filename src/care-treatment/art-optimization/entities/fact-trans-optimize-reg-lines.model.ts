@@ -36,6 +36,9 @@ export class FactTransOptimizeRegLines {
     Lastregimen: string;
 
     @Column('text')
+    LastRegimenClean: string;
+
+    @Column('text')
     RegimenLine: string;
 
     @Column('text')
