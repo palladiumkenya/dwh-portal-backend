@@ -12,6 +12,7 @@ import { GetTrendsConsistencyHandler } from './queries/handlers/get-trends-consi
 import { GetEmrDistributionHandler } from './queries/handlers/get-emr-distribution.handler';
 import { GetOverallReportingHandler } from './queries/handlers/get-overall-reporting.handler';
 import { GetOverallReportingByFacilityHandler } from './queries/handlers/get-overall-reporting-by-facility.handler';
+import { GetConsistencyByFacilityHandler } from './queries/handlers/get-consistency-by-facility.handler';
 import { GetRecencyByPartnerHandler } from './queries/handlers/get-recency-by-partner.handler';
 import { GetRecencyByCountyHandler } from './queries/handlers/get-recency-by-county.handler';
 import { GetConsistencyByCountyPartnerHandler } from './queries/handlers/get-consistency-by-county-partner.handler';
@@ -24,6 +25,7 @@ import { GetExpectedUploadsPartnerCountyHandler } from './queries/handlers/get-e
         TypeOrmModule.forFeature([FactManifest])],
     providers: [
         GetConsistencyUploadsHandler,
+        GetConsistencyByFacilityHandler,
         GetExpectedUploadsHandler,
         GetRecencyUploadsHandler,
         GetTrendsRecencyHandler,
