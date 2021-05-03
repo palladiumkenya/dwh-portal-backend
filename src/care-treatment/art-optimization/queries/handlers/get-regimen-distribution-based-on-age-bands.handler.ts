@@ -14,13 +14,13 @@ export class GetRegimenDistributionBasedOnAgeBandsHandler implements IQueryHandl
 
     async execute(query: GetRegimenDistributionBasedOnAgeBandsQuery): Promise<any> {
         const regimenDistributionBasedOnAgeBands = this.repository.createQueryBuilder('f')
-            .select(['[Lastregimen],\n' +
-            '\'<2 Years\' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] y WHERE y.Lastregimen = f.[Lastregimen] and [AgeBands] = \'<2 Years\'), 0),\n' +
-            '\'2-4 Years\' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE Lastregimen = f.[Lastregimen] and [AgeBands] = \'2-4 Years\'), 0),\n' +
-            '\'5-9 Years\' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE Lastregimen = f.[Lastregimen] and [AgeBands] = \'5-9 Years\'), 0),\n' +
-            '\'10-14 Years\' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE Lastregimen = f.[Lastregimen] and [AgeBands] = \'10-14 Years\'), 0),\n' +
-            '\'Grand Total\' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE Lastregimen = f.[Lastregimen] and [AgeBands] IN (\'<2 Years\', \'2-4 Years\', \'5-9 Years\', \'10-14 Years\')), 0)'])
-            .where('f.RegimenLine = \'First Regimen Line\' AND f.Lastregimen is not null AND f.AgeBands in (\'10-14 Years\',\'5-9 Years\',\'2-4 Years\',\'<2 Years\')');
+            .select(['[LastRegimenClean] Lastregimen,\n' +
+            '\'<2 Years\' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] y WHERE y.LastRegimenClean = f.[LastRegimenClean] and [AgeBands] = \'<2 Years\'), 0),\n' +
+            '\'2-4 Years\' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE LastRegimenClean = f.[LastRegimenClean] and [AgeBands] = \'2-4 Years\'), 0),\n' +
+            '\'5-9 Years\' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE LastRegimenClean = f.[LastRegimenClean] and [AgeBands] = \'5-9 Years\'), 0),\n' +
+            '\'10-14 Years\' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE LastRegimenClean = f.[LastRegimenClean] and [AgeBands] = \'10-14 Years\'), 0),\n' +
+            '\'Grand Total\' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE LastRegimenClean = f.[LastRegimenClean] and [AgeBands] IN (\'<2 Years\', \'2-4 Years\', \'5-9 Years\', \'10-14 Years\')), 0)'])
+            .where('f.RegimenLine = \'First Regimen Line\' AND f.LastRegimenClean is not null AND f.AgeBands in (\'10-14 Years\',\'5-9 Years\',\'2-4 Years\',\'<2 Years\')');
 
         if (query.county) {
             regimenDistributionBasedOnAgeBands.andWhere('f.County IN (:...county)', { county: query.county });
@@ -55,8 +55,8 @@ export class GetRegimenDistributionBasedOnAgeBandsHandler implements IQueryHandl
         }
 
         return await regimenDistributionBasedOnAgeBands
-            .groupBy('Lastregimen')
-            .orderBy('Lastregimen')
+            .groupBy('LastRegimenClean')
+            .orderBy('LastRegimenClean')
             .getRawMany();
     }
 }
