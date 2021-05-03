@@ -15,7 +15,7 @@ export class GetArtOptimizationCurrentByRegimenHandler implements IQueryHandler<
 
     async execute(query: GetArtOptimizationCurrentByRegimenQuery): Promise<any> {
         const artOptimizationCurrentByRegimen = this.repository.createQueryBuilder('f')
-            .select(['Agegroup ageGroup, RegimenLine regimenLine, Lastregimen lastRegimen, sum(TXCurr) txCurr'])
+            .select(['Agegroup ageGroup, RegimenLine regimenLine, LastRegimenClean lastRegimen, sum(TXCurr) txCurr'])
             .where('MFLCode IS NOT NULL');
 
         if (query.county) {
@@ -67,8 +67,8 @@ export class GetArtOptimizationCurrentByRegimenHandler implements IQueryHandler<
         }
 
         return await artOptimizationCurrentByRegimen
-            .groupBy('Agegroup, RegimenLine, Lastregimen')
-            .orderBy('Agegroup, RegimenLine, Lastregimen')
+            .groupBy('Agegroup, RegimenLine, LastRegimenClean')
+            .orderBy('Agegroup, RegimenLine, LastRegimenClean')
             .getRawMany();
     }
 }
