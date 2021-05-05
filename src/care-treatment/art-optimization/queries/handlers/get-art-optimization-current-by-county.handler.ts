@@ -15,7 +15,7 @@ export class GetArtOptimizationCurrentByCountyHandler implements IQueryHandler<G
 
     async execute(query: GetArtOptimizationCurrentByCountyQuery): Promise<any> {
         const artOptimizationCurrentByCounty = this.repository.createQueryBuilder('f')
-            .select(['County county, CurrentRegimen regimen, Gender gender, sum(TXCurr) txCurr'])
+            .select(['County county, CurrentRegimen regimen, Gender gender, Agegroup, sum(TXCurr) txCurr'])
             .where('MFLCode IS NOT NULL');
 
         if (query.county) {
@@ -67,8 +67,8 @@ export class GetArtOptimizationCurrentByCountyHandler implements IQueryHandler<G
         }
 
         return await artOptimizationCurrentByCounty
-            .groupBy('County, CurrentRegimen, Gender')
-            .orderBy('County, CurrentRegimen, Gender')
+            .groupBy('County, CurrentRegimen, Gender, Agegroup')
+            .orderBy('County, CurrentRegimen, Gender, Agegroup')
             .getRawMany();
     }
 }
