@@ -31,4 +31,7 @@ export class FactTransAdverseEvents {
 
     @Column('text')
     AdverseEventActionTaken: string;
+
+    @Column('text')
+    AdverseEvent: string;
 }
