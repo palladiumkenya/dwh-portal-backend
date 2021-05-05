@@ -15,7 +15,7 @@ export class GetArtOptimizationCurrentByPartnerHandler implements IQueryHandler<
 
     async execute(query: GetArtOptimizationCurrentByPartnerQuery): Promise<any> {
         const artOptimizationCurrentByPartner = this.repository.createQueryBuilder('f')
-            .select(['CTPartner partner, CurrentRegimen regimen, Gender gender, sum(TXCurr) txCurr'])
+            .select(['CTPartner partner, CurrentRegimen regimen, Gender gender, Agegroup, sum(TXCurr) txCurr'])
             .where('MFLCode IS NOT NULL');
 
         if (query.county) {
@@ -67,8 +67,8 @@ export class GetArtOptimizationCurrentByPartnerHandler implements IQueryHandler<
         }
 
         return await artOptimizationCurrentByPartner
-            .groupBy('CTPartner, CurrentRegimen, Gender')
-            .orderBy('CTPartner, CurrentRegimen, Gender')
+            .groupBy('CTPartner, CurrentRegimen, Gender, Agegroup')
+            .orderBy('CTPartner, CurrentRegimen, Gender, Agegroup')
             .getRawMany();
     }
 }
