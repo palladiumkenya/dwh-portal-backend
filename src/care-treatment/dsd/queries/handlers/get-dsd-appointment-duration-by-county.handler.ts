@@ -15,7 +15,7 @@ export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<G
 
     async execute(query: GetDsdAppointmentDurationByCountyQuery): Promise<any> {
         const dsdAppointmentDuration = this.repository.createQueryBuilder('f')
-            .select(['SUM(TXCurr) patients, SUM([StabilityAssessment]) stablePatients, County county, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
+            .select(['SUM(TXCurr) patients, DATIM_AgeGroup, SUM([StabilityAssessment]) stablePatients, County county, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
             .where('f.MFLCode > 1')
             .andWhere('f.Stability = :stability', { stability: "Stable"});
 
@@ -36,7 +36,7 @@ export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<G
         }
 
         return await dsdAppointmentDuration
-            .groupBy('County')
+            .groupBy('County, DATIM_AgeGroup')
             .orderBy('percentStable', 'DESC')
             .getRawMany();
     }
