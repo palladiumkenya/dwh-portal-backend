@@ -14,7 +14,7 @@ export class GetDsdStableOverallHandler implements IQueryHandler<GetDsdStableOve
 
     async execute(query: GetDsdStableOverallQuery): Promise<any> {
         const dsdMmdStable = this.repository.createQueryBuilder('f')
-            .select(['SUM([StabilityAssessment]) Stable, SUM([NumPatients])TXCurr'])
+            .select(['SUM([StabilityAssessment]) Stable, SUM([NumPatients])TXCurr, DATIM_AgeGroup ageGroup'])
             .where('f.MFLCode > 1')
             .andWhere('f.Stability = :stability', { stability: "Stable"});
 
@@ -34,6 +34,8 @@ export class GetDsdStableOverallHandler implements IQueryHandler<GetDsdStableOve
             dsdMmdStable.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        return await dsdMmdStable.getRawOne();
+        return await dsdMmdStable
+            .groupBy('DATIM_AgeGroup')
+            .getRawMany();
     }
 }
