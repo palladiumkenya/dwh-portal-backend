@@ -22,19 +22,19 @@ export class GetDsdStabilityStatusByCountyHandler implements IQueryHandler<GetDs
             dsdStabilityStatusByCounty = this.repository.createQueryBuilder('f')
                 .select(['SUM(MMD) mmd, SUM(NonMMD) nonMmd, [SubCounty] county, CASE WHEN (SUM(NonMMD) = 0 and SUM(MMD) > 0) THEN 100 WHEN (SUM(NonMMD) = 0 and SUM(MMD) = 0) THEN 0 ELSE (CAST(SUM(MMD) as float)/CAST(SUM(NonMMD) as float)) END percentMMD'])
                 .where('f.MFLCode > 1');
-            dsdStabilityStatusByCounty.andWhere('f.County IN (:...counties)', { counties: query.county });
+            dsdStabilityStatusByCounty.andWhere('f.County IN (:counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            dsdStabilityStatusByCounty.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            dsdStabilityStatusByCounty.andWhere('f.SubCounty IN (:subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
-            dsdStabilityStatusByCounty.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+            dsdStabilityStatusByCounty.andWhere('f.FacilityName IN (:facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
-            dsdStabilityStatusByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdStabilityStatusByCounty.andWhere('f.CTPartner IN (:partners)', { partners: query.partner });
         }
 
         if (query.county) {
