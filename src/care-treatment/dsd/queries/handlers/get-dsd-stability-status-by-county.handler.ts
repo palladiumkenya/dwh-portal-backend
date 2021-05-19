@@ -39,12 +39,12 @@ export class GetDsdStabilityStatusByCountyHandler implements IQueryHandler<GetDs
 
         if (query.county) {
             return await dsdStabilityStatusByCounty
-                .groupBy('County')
+                .groupBy('SubCounty')
                 .orderBy('percentMMD', 'DESC')
                 .getRawMany();
         } else {
             return await dsdStabilityStatusByCounty
-                .groupBy('SubCounty')
+                .groupBy('County')
                 .orderBy('percentMMD', 'DESC')
                 .getRawMany();
         }
