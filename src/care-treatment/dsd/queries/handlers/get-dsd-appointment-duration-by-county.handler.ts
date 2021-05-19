@@ -24,19 +24,19 @@ export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<G
                 .select(['SUM(TXCurr) patients, DATIM_AgeGroup, SUM([StabilityAssessment]) stablePatients, SubCounty county, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
                 .where('f.MFLCode > 1')
                 .andWhere('f.Stability = :stability', { stability: "Stable"});
-            dsdAppointmentDuration.andWhere('f.County IN (:...counties)', { counties: query.county });
+            dsdAppointmentDuration.andWhere('f.County IN (:counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            dsdAppointmentDuration.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            dsdAppointmentDuration.andWhere('f.SubCounty IN (:subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
-            dsdAppointmentDuration.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+            dsdAppointmentDuration.andWhere('f.FacilityName IN (:facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
-            dsdAppointmentDuration.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdAppointmentDuration.andWhere('f.CTPartner IN (:partners)', { partners: query.partner });
         }
 
         if (query.county) {
