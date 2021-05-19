@@ -14,12 +14,16 @@ export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<G
     }
 
     async execute(query: GetDsdAppointmentDurationByCountyQuery): Promise<any> {
-        const dsdAppointmentDuration = this.repository.createQueryBuilder('f')
+        let dsdAppointmentDuration = this.repository.createQueryBuilder('f')
             .select(['SUM(TXCurr) patients, DATIM_AgeGroup, SUM([StabilityAssessment]) stablePatients, County county, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
             .where('f.MFLCode > 1')
             .andWhere('f.Stability = :stability', { stability: "Stable"});
 
         if (query.county) {
+            dsdAppointmentDuration = this.repository.createQueryBuilder('f')
+                .select(['SUM(TXCurr) patients, DATIM_AgeGroup, SUM([StabilityAssessment]) stablePatients, SubCounty county, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
+                .where('f.MFLCode > 1')
+                .andWhere('f.Stability = :stability', { stability: "Stable"});
             dsdAppointmentDuration.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
@@ -35,9 +39,16 @@ export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<G
             dsdAppointmentDuration.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        return await dsdAppointmentDuration
-            .groupBy('County, DATIM_AgeGroup')
-            .orderBy('percentStable', 'DESC')
-            .getRawMany();
+        if (query.county) {
+            return await dsdAppointmentDuration
+                .groupBy('SubCounty, DATIM_AgeGroup')
+                .orderBy('percentStable', 'DESC')
+                .getRawMany();
+        } else {
+            return await dsdAppointmentDuration
+                .groupBy('County, DATIM_AgeGroup')
+                .orderBy('percentStable', 'DESC')
+                .getRawMany();
+        }
     }
 }
