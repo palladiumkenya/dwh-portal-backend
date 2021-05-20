@@ -52,6 +52,7 @@ import { GetDsdAppointmentDurationByPartnerQuery } from './dsd/queries/impl/get-
 import { GetDsdAppointmentDurationCategorizationByStabilityStatusQuery } from './dsd/queries/impl/get-dsd-appointment-duration-categorization-by-stability-status.query';
 
 import { GetTreatmentOutcomesOverallQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-overall.query';
+import { GetTreatmentOutcomesOverallLast12mQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-overall-last-12m.query';
 import { GetTreatmentOutcomesBySexQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-by-sex.query';
 import { GetTreatmentOutcomesByAgeQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-by-age.query';
 import { GetTreatmentOutcomesByYearQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-by-year.query';
@@ -1595,6 +1596,43 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesOverallQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('treatmentOutcomesOverallLast12m')
+    async getTreatmentOutcomesOverallLast12m(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetTreatmentOutcomesOverallLast12mQuery();
         if(county) {
             query.county = county;
         }

@@ -26,6 +26,9 @@ export class FactTransTreatmentOutcomes {
     @Column('int')
     StartYear: number;
 
+    @Column('int')
+    StartMonth: number;
+
     @Column('text')
     ARTOutcome: string;
 
