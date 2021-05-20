@@ -15,7 +15,7 @@ export class GetTreatmentOutcomesOverallLast12mHandler implements IQueryHandler<
     }
 
     async execute(query: GetTreatmentOutcomesOverallLast12mQuery): Promise<any> {
-        let fromDate = moment().startOf('month').subtract(13, 'month').format("YYYY-MM-DD");
+        let fromDate = moment().startOf('month').subtract(12, 'month').format("YYYY-MM-DD");
         let toDate = moment().startOf('month').subtract(1, 'month').endOf('month').format("YYYY-MM-DD");
         if (query.fromDate) {
             fromDate = moment(query.fromDate, 'YYYY-MM-DD').startOf('month').format("YYYY-MM-DD");
