@@ -1629,8 +1629,8 @@ export class CareTreatmentController {
         @Query('subCounty') subCounty,
         @Query('facility') facility,
         @Query('partner') partner,
-        @Query('year') year,
-        @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesOverallLast12mQuery();
         if(county) {
@@ -1649,12 +1649,12 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
-            query.year = year;
+        if(fromDate) {
+            query.fromDate = fromDate;
         }
 
-        if(month) {
-            query.month = month;
+        if(toDate) {
+            query.toDate = toDate;
         }
 
         return this.queryBus.execute(query);
