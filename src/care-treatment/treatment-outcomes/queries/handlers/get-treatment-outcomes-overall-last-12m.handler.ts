@@ -15,33 +15,23 @@ export class GetTreatmentOutcomesOverallLast12mHandler implements IQueryHandler<
     }
 
     async execute(query: GetTreatmentOutcomesOverallLast12mQuery): Promise<any> {
-        const months = [];
-        const years = [];
-        for(var i=0; i < 13; i++)
-        {
-            const date = moment().startOf('month').subtract(i+1, 'month');
-            const month = parseInt(date.format('M'));
-            const year = parseInt(date.format('YYYY'));
-            if (months.indexOf(month) === -1) {
-                months.push(month)
-            }
-            if (years.indexOf(year) === -1) {
-                years.push(year)
-            }
+        let fromDate = moment().startOf('month').subtract(13, 'month').format("YYYY-MM-DD");
+        let toDate = moment().startOf('month').subtract(1, 'month').endOf('month').format("YYYY-MM-DD");
+        if (query.fromDate) {
+            fromDate = moment(query.fromDate, 'YYYY-MM-DD').startOf('month').format("YYYY-MM-DD");
+        }
+        if (query.toDate) {
+            toDate = moment(query.toDate, 'YYYY-MM-DD').endOf('month').format("YYYY-MM-DD");
         }
         
         const treatmentOutcomes = this.repository.createQueryBuilder('f')
             .select(['ARTOutcome artOutcome, SUM(TotalOutcomes) totalOutcomes'])
             .where('f.MFLCode IS NOT NULL')
-            .andWhere('f.artOutcome IS NOT NULL');
-
-        if (months.length) {
-            treatmentOutcomes.andWhere('f.StartMonth IN (:...months)', { months });
-        }
-
-        if (years.length) {
-            treatmentOutcomes.andWhere('f.StartYear IN (:...years)', { years });
-        }
+            .andWhere('f.artOutcome IS NOT NULL')
+            .andWhere("CAST(CONCAT(StartYear , '-' , StartMonth,'-' , '01') AS Date) BETWEEN :fromDate AND :toDate", {
+                fromDate: fromDate,
+                toDate: toDate
+            });
 
         if (query.county) {
             treatmentOutcomes.andWhere('f.County IN (:...counties)', { counties: query.county });
