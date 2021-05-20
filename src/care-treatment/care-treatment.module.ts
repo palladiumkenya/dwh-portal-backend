@@ -75,6 +75,7 @@ import { FactTransRetention } from './treatment-outcomes/entities/fact-trans-ret
 import { FactTransTreatmentOutcomes } from './treatment-outcomes/entities/fact-trans-treatment-outcomes.model';
 
 import { GetTreatmentOutcomesOverallHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-overall.handler';
+import { GetTreatmentOutcomesOverallLast12mHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-overall-last-12m.handler';
 import { GetTreatmentOutcomesBySexHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-by-sex.handler';
 import { GetTreatmentOutcomesByAgeHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-by-age.handler';
 import { GetTreatmentOutcomesByYearHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-by-year.handler';
@@ -251,6 +252,7 @@ import { GetRegimenDistributionBasedOnAgeBandsHandler } from './art-optimization
         GetDsdAppointmentDurationByPartnerHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
         GetTreatmentOutcomesOverallHandler,
+        GetTreatmentOutcomesOverallLast12mHandler,
         GetTreatmentOutcomesBySexHandler,
         GetTreatmentOutcomesByAgeHandler,
         GetTreatmentOutcomesByYearHandler,
