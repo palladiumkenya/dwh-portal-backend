@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransTreatmentOutcomes } from '../../entities/fact-trans-treatment-outcomes.model';
 import { Repository } from 'typeorm';
 import { GetTreatmentOutcomesByFacilityQuery } from '../impl/get-treatment-outcomes-by-facility.query';
+import moment = require('moment');
 
 @QueryHandler(GetTreatmentOutcomesByFacilityQuery)
 export class GetTreatmentOutcomesByFacilityHandler implements IQueryHandler<GetTreatmentOutcomesByFacilityQuery> {
@@ -14,11 +15,23 @@ export class GetTreatmentOutcomesByFacilityHandler implements IQueryHandler<GetT
     }
 
     async execute(query: GetTreatmentOutcomesByFacilityQuery): Promise<any> {
+        let fromDate = moment().startOf('month').subtract(12, 'month').format("YYYY-MM-DD");
+        let toDate = moment().startOf('month').subtract(1, 'month').endOf('month').format("YYYY-MM-DD");
+        if (query.fromDate) {
+            fromDate = moment(query.fromDate, 'YYYY-MM-DD').startOf('month').format("YYYY-MM-DD");
+        }
+        if (query.toDate) {
+            toDate = moment(query.toDate, 'YYYY-MM-DD').endOf('month').format("YYYY-MM-DD");
+        }
         const treatmentOutcomes = this.repository.createQueryBuilder('f')
             .select(['f.ARTOutcome artOutcome, SUM(f.TotalOutcomes) totalOutcomes, MAX(f.County) county, MAX(f.Subcounty) subCounty, f.FacilityName facility, MAX(f.CTPartner) partner'])
             .where('f.MFLCode IS NOT NULL')
             .andWhere('f.artOutcome IS NOT NULL')
-            .andWhere('f.FacilityName IS NOT NULL');
+            .andWhere('f.FacilityName IS NOT NULL')
+            .andWhere("CAST(CONCAT(StartYear , '-' , StartMonth,'-' , '01') AS Date) BETWEEN :fromDate AND :toDate", {
+                fromDate: fromDate,
+                toDate: toDate
+            });
 
         if (query.county) {
             treatmentOutcomes.andWhere('f.County IN (:...counties)', { counties: query.county });
