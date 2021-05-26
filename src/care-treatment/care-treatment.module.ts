@@ -163,6 +163,9 @@ import { Get12MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/
 import { FactCtTimeToArtLast12M } from './new-on-art/entities/fact-ct-time-to-art-last-12-m.model';
 import { GetRegimenDistributionBasedOnWeightBandsHandler } from './art-optimization/queries/handlers/get-regimen-distribution-based-on-weight-bands.handler';
 import { GetRegimenDistributionBasedOnAgeBandsHandler } from './art-optimization/queries/handlers/get-regimen-distribution-based-on-age-bands.handler';
+import { FactTransOtzEnrollments } from './otz/entities/fact-trans-otz-enrollments.model';
+import { GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-sex.handler';
+import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-age.handler';
 
 
 @Module({
@@ -200,7 +203,8 @@ import { GetRegimenDistributionBasedOnAgeBandsHandler } from './art-optimization
                 FactTransAeCausativeDrugs,
                 FactTransVlSuppressionArtStart,
                 FactCtTimeToArt,
-                FactCtTimeToArtLast12M
+                FactCtTimeToArtLast12M,
+                FactTransOtzEnrollments
             ],
             'mssql'
         )
@@ -320,7 +324,9 @@ import { GetRegimenDistributionBasedOnAgeBandsHandler } from './art-optimization
         Get12MonthViralSuppressionByYearOfArtStartHandler,
         Get24MonthViralSuppressionByYearOfArtStartHandler,
         GetRegimenDistributionBasedOnWeightBandsHandler,
-        GetRegimenDistributionBasedOnAgeBandsHandler
+        GetRegimenDistributionBasedOnAgeBandsHandler,
+        GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler,
+        GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler
     ],
     controllers: [CareTreatmentController]
 })
