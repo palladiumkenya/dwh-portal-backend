@@ -165,6 +165,7 @@ import { GetRegimenDistributionBasedOnAgeBandsHandler } from './art-optimization
 import { FactTransOtzEnrollments } from './otz/entities/fact-trans-otz-enrollments.model';
 import { GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-sex.handler';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-age.handler';
+import { GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-county.handler';
 
 
 @Module({
@@ -324,7 +325,8 @@ import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler } from './otz/queries/ha
         GetRegimenDistributionBasedOnWeightBandsHandler,
         GetRegimenDistributionBasedOnAgeBandsHandler,
         GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler,
-        GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler
+        GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler,
+        GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler
     ],
     controllers: [CareTreatmentController]
 })
