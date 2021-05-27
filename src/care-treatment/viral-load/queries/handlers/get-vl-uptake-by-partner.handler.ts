@@ -19,19 +19,19 @@ export class GetVlUptakeByPartnerHandler implements IQueryHandler<GetVlUptakeByP
             .andWhere('f.CTPartner IS NOT NULL');
 
         if (query.county) {
-            vlUptakeByPartner.andWhere('f.CTPartner IN (:...counties)', { counties: query.county });
+            vlUptakeByPartner.andWhere('f.County IN (:counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            vlUptakeByPartner.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            vlUptakeByPartner.andWhere('f.SubCounty IN (:subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
-            vlUptakeByPartner.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+            vlUptakeByPartner.andWhere('f.FacilityName IN (:facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
-            vlUptakeByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlUptakeByPartner.andWhere('f.CTPartner IN (:partners)', { partners: query.partner });
         }
 
         return await vlUptakeByPartner

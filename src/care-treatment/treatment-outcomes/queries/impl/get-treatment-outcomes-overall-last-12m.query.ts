@@ -1,4 +1,4 @@
-export class GetTreatmentOutcomesByPartnerQuery {
+export class GetTreatmentOutcomesOverallLast12mQuery {
     county?: string[];
     subCounty?: string[];
     facility?: string[];

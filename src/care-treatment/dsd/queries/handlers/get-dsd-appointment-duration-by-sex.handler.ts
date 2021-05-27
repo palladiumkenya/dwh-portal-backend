@@ -18,8 +18,7 @@ export class GetDsdAppointmentDurationBySexHandler implements IQueryHandler<GetD
             .select(['SUM(NumPatients) patients, AppointmentsCategory, Gender'])
             .where('f.MFLCode > 1')
             .andWhere('f.AppointmentsCategory IS NOT NULL')
-            .andWhere('f.Gender IS NOT NULL')
-            .andWhere('f.Stability = :stability', { stability: "Stable"});
+            .andWhere('f.Gender IS NOT NULL');
 
         if (query.county) {
             dsdAppointmentDuration.andWhere('f.County IN (:...counties)', { counties: query.county });

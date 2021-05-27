@@ -75,6 +75,7 @@ import { FactTransRetention } from './treatment-outcomes/entities/fact-trans-ret
 import { FactTransTreatmentOutcomes } from './treatment-outcomes/entities/fact-trans-treatment-outcomes.model';
 
 import { GetTreatmentOutcomesOverallHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-overall.handler';
+import { GetTreatmentOutcomesOverallLast12mHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-overall-last-12m.handler';
 import { GetTreatmentOutcomesBySexHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-by-sex.handler';
 import { GetTreatmentOutcomesByAgeHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-by-age.handler';
 import { GetTreatmentOutcomesByYearHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-by-year.handler';
@@ -162,6 +163,10 @@ import { Get12MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/
 import { FactCtTimeToArtLast12M } from './new-on-art/entities/fact-ct-time-to-art-last-12-m.model';
 import { GetRegimenDistributionBasedOnWeightBandsHandler } from './art-optimization/queries/handlers/get-regimen-distribution-based-on-weight-bands.handler';
 import { GetRegimenDistributionBasedOnAgeBandsHandler } from './art-optimization/queries/handlers/get-regimen-distribution-based-on-age-bands.handler';
+import { FactTransOtzEnrollments } from './otz/entities/fact-trans-otz-enrollments.model';
+import { GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-sex.handler';
+import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-age.handler';
+import { GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-county.handler';
 
 
 @Module({
@@ -199,7 +204,8 @@ import { GetRegimenDistributionBasedOnAgeBandsHandler } from './art-optimization
                 FactTransAeCausativeDrugs,
                 FactTransVlSuppressionArtStart,
                 FactCtTimeToArt,
-                FactCtTimeToArtLast12M
+                FactCtTimeToArtLast12M,
+                FactTransOtzEnrollments
             ],
             'mssql'
         )
@@ -251,6 +257,7 @@ import { GetRegimenDistributionBasedOnAgeBandsHandler } from './art-optimization
         GetDsdAppointmentDurationByPartnerHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
         GetTreatmentOutcomesOverallHandler,
+        GetTreatmentOutcomesOverallLast12mHandler,
         GetTreatmentOutcomesBySexHandler,
         GetTreatmentOutcomesByAgeHandler,
         GetTreatmentOutcomesByYearHandler,
@@ -318,7 +325,10 @@ import { GetRegimenDistributionBasedOnAgeBandsHandler } from './art-optimization
         Get12MonthViralSuppressionByYearOfArtStartHandler,
         Get24MonthViralSuppressionByYearOfArtStartHandler,
         GetRegimenDistributionBasedOnWeightBandsHandler,
-        GetRegimenDistributionBasedOnAgeBandsHandler
+        GetRegimenDistributionBasedOnAgeBandsHandler,
+        GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler,
+        GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler,
+        GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler
     ],
     controllers: [CareTreatmentController]
 })
