@@ -168,6 +168,7 @@ import { GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler } from './otz/queries/ha
 import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-age.handler';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-county.handler';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-partner.handler';
+import { GetVlUptakeAmongAlhivEnrolledInOtzBySexHandler } from './otz/queries/handlers/get-vl-uptake-among-alhiv-enrolled-in-otz-by-sex.handler';
 
 
 @Module({
@@ -330,7 +331,8 @@ import { GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler } from './otz/querie
         GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler,
         GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler,
         GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler,
-        GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler
+        GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler,
+        GetVlUptakeAmongAlhivEnrolledInOtzBySexHandler
     ],
     controllers: [CareTreatmentController]
 })

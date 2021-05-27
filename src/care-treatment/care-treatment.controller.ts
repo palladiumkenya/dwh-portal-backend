@@ -125,6 +125,7 @@ import { GetOtzEnrollmentAmongAlhivAndOnArtBySexQuery } from './otz/queries/impl
 import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeQuery } from './otz/queries/impl/get-otz-enrollment-among-alhiv-and-on-art-by-age.query';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByCountyQuery } from './otz/queries/impl/get-otz-enrollment-among-alhiv-and-on-art-by-county.query';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByPartnerQuery } from './otz/queries/impl/get-otz-enrollment-among-alhiv-and-on-art-by-partner.query';
+import { GetVlUptakeAmongAlhivEnrolledInOtzBySexQuery } from './otz/queries/impl/get-vl-uptake-among-alhiv-enrolled-in-otz-by-sex.query';
 
 
 @Controller('care-treatment')
@@ -4356,6 +4357,65 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetOtzEnrollmentAmongAlhivAndOnArtByPartnerQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+
+    @Get('getVlUptakeAmongAlHivEnrolledInOtzBySex')
+    async getVlUptakeAmongAlHivEnrolledInOtzBySex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetVlUptakeAmongAlhivEnrolledInOtzBySexQuery();
 
         if(county) {
             query.county = county;

@@ -15,7 +15,6 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler implements IQueryHan
     async execute(query: GetOtzEnrollmentAmongAlhivAndOnArtByAgeQuery) {
         const otzEnrollmentsByAge = this.repository.createQueryBuilder('f')
             .select(['[DATIM_AgeGroup] ageGroup, SUM([TXCurr]) TXCurr, SUM(f.[TXCurr]) * 100.0 / SUM(SUM(f.[TXCurr])) OVER () AS Percentage'])
-            .where('f.[MFLCode] > 1')
             .andWhere('f.OTZEnrollmentDate IS NOT NULL');
 
         if (query.county) {
