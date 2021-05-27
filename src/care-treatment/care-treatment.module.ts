@@ -34,6 +34,7 @@ import { GetCtTxCurrAgeGroupDistributionByPartnerHandler } from './current-on-ar
 import { GetCtTxCurrAgeGroupDistributionByCountyHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-age-group-distribution-by-county.handler';
 import { GetCtTxCurrByAgeAndSexHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-by-age-and-sex.handler';
 import { GetCtTxCurrBySexHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-by-sex.handler';
+import { GetCtTxCurrByFacilityHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-by-facility.handler';
 import { GetCtTxCurrDistributionByCountyHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-distribution-by-county.handler';
 import { GetCtTxCurrDistributionByPartnerHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-distribution-by-partner.handler';
 
@@ -230,6 +231,7 @@ import { GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler } from './otz/queries
         GetCtViralLoadSuppressionPercentageHandler,
         GetCtTxCurrByAgeAndSexHandler,
         GetCtTxCurrBySexHandler,
+        GetCtTxCurrByFacilityHandler,
         GetCtTxCurrDistributionByCountyHandler,
         GetCtTxCurrDistributionByPartnerHandler,
         GetTxNewTrendsHandler,
