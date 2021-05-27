@@ -15,7 +15,6 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler implements IQueryHan
     async execute(query: GetOtzEnrollmentAmongAlhivAndOnArtBySexQuery): Promise<any> {
         const otzEnrollmentsBySex = this.repository.createQueryBuilder('f')
             .select(['[Gender], SUM([TXCurr]) TXCurr, SUM(f.[TXCurr]) * 100.0 / SUM(SUM(f.[TXCurr])) OVER () AS Percentage'])
-            .where('f.[MFLCode] > 1')
             .andWhere('f.OTZEnrollmentDate IS NOT NULL');
 
         if (query.county) {
