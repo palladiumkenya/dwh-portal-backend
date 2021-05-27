@@ -173,6 +173,7 @@ import { GetVlUptakeAmongAlhivEnrolledInOtzByAgeHandler } from './otz/queries/ha
 import { GetVlUptakeAmongAlhivEnrolledInOtzByCountyHandler } from './otz/queries/handlers/get-vl-uptake-among-alhiv-enrolled-in-otz-by-county.handler';
 import { GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler } from './otz/queries/handlers/get-vl-uptake-among-alhiv-enrolled-in-otz-by-partner.handler';
 import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training.handler';
+import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-county.handler';
 
 
 @Module({
@@ -340,7 +341,8 @@ import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingHandler } f
         GetVlUptakeAmongAlhivEnrolledInOtzByAgeHandler,
         GetVlUptakeAmongAlhivEnrolledInOtzByCountyHandler,
         GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler,
-        GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingHandler
+        GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingHandler,
+        GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyHandler
     ],
     controllers: [CareTreatmentController]
 })
