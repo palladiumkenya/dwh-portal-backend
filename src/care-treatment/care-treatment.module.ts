@@ -174,6 +174,9 @@ import { GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler } from './otz/querie
 import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training.handler';
 import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-county.handler';
 import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartnerHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-partner.handler';
+import { FactTransOtzOutcome } from './otz/entities/fact-trans-otz-outcome.model';
+import { GetOtzOutcomesAmongAlhivWithReSuppressionHandler } from './otz/queries/handlers/get-otz-outcomes-among-alhiv-with-re-suppression.handler';
+import { GetOtzOutcomesAmongAlhivWithBaselineVlHandler } from './otz/queries/handlers/get-otz-outcomes-among-alhiv-with-baseline-vl.handler';
 
 
 @Module({
@@ -212,7 +215,8 @@ import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartnerHa
                 FactTransVlSuppressionArtStart,
                 FactCtTimeToArt,
                 FactCtTimeToArtLast12M,
-                FactTransOtzEnrollments
+                FactTransOtzEnrollments,
+                FactTransOtzOutcome
             ],
             'mssql'
         )
@@ -342,7 +346,9 @@ import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartnerHa
         GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler,
         GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingHandler,
         GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyHandler,
-        GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartnerHandler
+        GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartnerHandler,
+        GetOtzOutcomesAmongAlhivWithReSuppressionHandler,
+        GetOtzOutcomesAmongAlhivWithBaselineVlHandler
     ],
     controllers: [CareTreatmentController]
 })
