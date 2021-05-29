@@ -136,6 +136,10 @@ import { GetOtzOutcomesAmongAlhivWithBaselineVlQuery } from './otz/queries/impl/
 import { GetOtzOutcomesAmongAlhivWithReSuppressionQuery } from './otz/queries/impl/get-otz-outcomes-among-alhiv-with-re-suppression.query';
 import { GetOtzOutcomesAmongAlhivWithSustainedSuppressionQuery } from './otz/queries/impl/get-otz-outcomes-among-alhiv-with-sustained-suppression.query';
 import { GetOtzOutcomesByGenderQuery } from './otz/queries/impl/get-otz-outcomes-by-gender.query';
+import { GetOtzOutcomesByPopulationTypeQuery } from './otz/queries/impl/get-otz-outcomes-by-population-type.query';
+import { GetOtzOutcomesByYearOfArtStartQuery } from './otz/queries/impl/get-otz-outcomes-by-year-of-art-start.query';
+import { GetOtzOutcomesByCountyQuery } from './otz/queries/impl/get-otz-outcomes-by-county.query';
+import { GetOtzOutcomesByPartnerQuery } from './otz/queries/impl/get-otz-outcomes-by-partner.query';
 
 
 @Controller('care-treatment')
@@ -5012,6 +5016,240 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetOtzOutcomesByGenderQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getOtzOutcomesByPopulationType')
+    async getOtzOutcomesByPopulationType(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetOtzOutcomesByPopulationTypeQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+
+    @Get('getOtzOutcomesByYearOfArtStart')
+    async getOtzOutcomesByYearOfArtStart(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetOtzOutcomesByYearOfArtStartQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getOtzOutcomesByCounty')
+    async getOtzOutcomesByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetOtzOutcomesByCountyQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+
+    @Get('getOtzOutcomesByPartner')
+    async getOtzOutcomesByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetOtzOutcomesByPartnerQuery();
 
         if(county) {
             query.county = county;

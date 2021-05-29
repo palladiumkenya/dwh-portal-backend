@@ -180,6 +180,10 @@ import { GetOtzOutcomesAmongAlhivWithReSuppressionHandler } from './otz/queries/
 import { GetOtzOutcomesAmongAlhivWithBaselineVlHandler } from './otz/queries/handlers/get-otz-outcomes-among-alhiv-with-baseline-vl.handler';
 import { GetOtzOutcomesAmongAlhivWithSustainedSuppressionHandler } from './otz/queries/handlers/get-otz-outcomes-among-alhiv-with-sustained-suppression.handler';
 import { GetOtzOutcomesByGenderHandler } from './otz/queries/handlers/get-otz-outcomes-by-gender.handler';
+import { GetOtzOutcomesByPopulationTypeHandler } from './otz/queries/handlers/get-otz-outcomes-by-population-type.handler';
+import { GetOtzOutcomesByYearOfArtStartHandler } from './otz/queries/handlers/get-otz-outcomes-by-year-of-art-start.handler';
+import { GetOtzOutcomesByPartnerHandler } from './otz/queries/handlers/get-otz-outcomes-by-partner.handler';
+import { GetOtzOutcomesByCountyHandler } from './otz/queries/handlers/get-otz-outcomes-by-county.handler';
 
 
 @Module({
@@ -354,7 +358,11 @@ import { GetOtzOutcomesByGenderHandler } from './otz/queries/handlers/get-otz-ou
         GetOtzOutcomesAmongAlhivWithReSuppressionHandler,
         GetOtzOutcomesAmongAlhivWithBaselineVlHandler,
         GetOtzOutcomesAmongAlhivWithSustainedSuppressionHandler,
-        GetOtzOutcomesByGenderHandler
+        GetOtzOutcomesByGenderHandler,
+        GetOtzOutcomesByPopulationTypeHandler,
+        GetOtzOutcomesByYearOfArtStartHandler,
+        GetOtzOutcomesByPartnerHandler,
+        GetOtzOutcomesByCountyHandler
     ],
     controllers: [CareTreatmentController]
 })
