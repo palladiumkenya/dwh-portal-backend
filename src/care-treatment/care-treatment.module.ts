@@ -179,6 +179,7 @@ import { FactTransOtzOutcome } from './otz/entities/fact-trans-otz-outcome.model
 import { GetOtzOutcomesAmongAlhivWithReSuppressionHandler } from './otz/queries/handlers/get-otz-outcomes-among-alhiv-with-re-suppression.handler';
 import { GetOtzOutcomesAmongAlhivWithBaselineVlHandler } from './otz/queries/handlers/get-otz-outcomes-among-alhiv-with-baseline-vl.handler';
 import { GetOtzOutcomesAmongAlhivWithSustainedSuppressionHandler } from './otz/queries/handlers/get-otz-outcomes-among-alhiv-with-sustained-suppression.handler';
+import { GetOtzOutcomesByGenderHandler } from './otz/queries/handlers/get-otz-outcomes-by-gender.handler';
 
 
 @Module({
@@ -352,7 +353,8 @@ import { GetOtzOutcomesAmongAlhivWithSustainedSuppressionHandler } from './otz/q
         GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartnerHandler,
         GetOtzOutcomesAmongAlhivWithReSuppressionHandler,
         GetOtzOutcomesAmongAlhivWithBaselineVlHandler,
-        GetOtzOutcomesAmongAlhivWithSustainedSuppressionHandler
+        GetOtzOutcomesAmongAlhivWithSustainedSuppressionHandler,
+        GetOtzOutcomesByGenderHandler
     ],
     controllers: [CareTreatmentController]
 })
