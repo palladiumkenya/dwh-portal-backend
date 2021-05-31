@@ -14,7 +14,7 @@ export class GetVlOutcomesHvlByFacilityHandler implements IQueryHandler<GetVlOut
 
     async execute(query: GetVlOutcomesHvlByFacilityQuery): Promise<any> {
         const vlOutcomeHvlByFacility = this.repository.createQueryBuilder('f')
-            .select(['MFLCode, FacilityName facility, County county, SubCounty subCounty, CTPartner partner, SUM(Total_Last12MVL) patients'])
+            .select(['MFLCode mfl, FacilityName facility, County county, SubCounty subCounty, CTPartner partner, SUM(Total_Last12MVL) patients'])
             .where('MFLCode > 0')
             .andWhere('FacilityName IS NOT NULL');
 
