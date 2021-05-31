@@ -111,6 +111,7 @@ import { GetVlOverallUptakeAndSuppressionByFacilityHandler } from './viral-load/
 import { GetVlMedianTimeToFirstVlByYearHandler } from './viral-load/queries/handlers/get-vl-median-time-to-first-vl-by-year.handler';
 import { GetVlMedianTimeToFirstVlByCountyHandler } from './viral-load/queries/handlers/get-vl-median-time-to-first-vl-by-county.handler';
 import { GetVlMedianTimeToFirstVlByPartnerHandler } from './viral-load/queries/handlers/get-vl-median-time-to-first-vl-by-partner.handler';
+import { GetVlOutcomesHvlByFacilityHandler } from './viral-load/queries/handlers/get-vl-outcomes-hvl-by-facility.handler';
 
 import { FactTransAdverseEvents } from './adverse-events/entities/fact-trans-adverse-events.model';
 import { FactTransAeActionDrug } from './adverse-events/entities/fact-trans-ae-action-drug.model';
@@ -298,6 +299,7 @@ import { GetOtzOutcomesByCountyHandler } from './otz/queries/handlers/get-otz-ou
         GetVlUptakeByPartnerHandler,
         GetVlOutcomesOverallHandler,
         GetVlOutcomesBySexHandler,
+        GetVlOutcomesHvlByFacilityHandler,
         GetVlSuppressionByAgeHandler,
         GetVlSuppressionByRegimenHandler,
         GetVlSuppressionByYearHandler,

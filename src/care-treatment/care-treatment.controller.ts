@@ -84,6 +84,7 @@ import { GetVlMedianTimeToFirstVlByYearQuery } from './viral-load/queries/impl/g
 import { GetVlMedianTimeToFirstVlByCountyQuery } from './viral-load/queries/impl/get-vl-median-time-to-first-vl-by-county.query';
 import { GetVlMedianTimeToFirstVlByPartnerQuery } from './viral-load/queries/impl/get-vl-median-time-to-first-vl-by-partner.query';
 import { GetVlOutcomesByYearAndSuppressionCategoryQuery } from './viral-load/queries/impl/get-vl-outcomes-by-year-and-suppression-category.query';
+import { GetVlOutcomesHvlByFacilityQuery } from './viral-load/queries/impl/get-vl-outcomes-hvl-by-facility.query';
 
 import { GetAdverseEventsQuery } from './adverse-events/queries/impl/get-adverse-events.query';
 import { GetAdverseEventsClientsQuery } from './adverse-events/queries/impl/get-adverse-events-clients.query';
@@ -2616,6 +2617,74 @@ export class CareTreatmentController {
 
         if(month) {
             query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getVlOutcomesHvlByFacility')
+    async getVlOutcomesHvlByFacility(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
+    ): Promise<any> {
+        const query = new GetVlOutcomesHvlByFacilityQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
         }
 
         return this.queryBus.execute(query);
