@@ -167,6 +167,23 @@ import { FactTransOtzEnrollments } from './otz/entities/fact-trans-otz-enrollmen
 import { GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-sex.handler';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-age.handler';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-county.handler';
+import { GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-partner.handler';
+import { GetVlUptakeAmongAlhivEnrolledInOtzBySexHandler } from './otz/queries/handlers/get-vl-uptake-among-alhiv-enrolled-in-otz-by-sex.handler';
+import { GetVlUptakeAmongAlhivEnrolledInOtzByAgeHandler } from './otz/queries/handlers/get-vl-uptake-among-alhiv-enrolled-in-otz-by-age.handler';
+import { GetVlUptakeAmongAlhivEnrolledInOtzByCountyHandler } from './otz/queries/handlers/get-vl-uptake-among-alhiv-enrolled-in-otz-by-county.handler';
+import { GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler } from './otz/queries/handlers/get-vl-uptake-among-alhiv-enrolled-in-otz-by-partner.handler';
+import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training.handler';
+import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-county.handler';
+import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartnerHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-partner.handler';
+import { FactTransOtzOutcome } from './otz/entities/fact-trans-otz-outcome.model';
+import { GetOtzOutcomesAmongAlhivWithReSuppressionHandler } from './otz/queries/handlers/get-otz-outcomes-among-alhiv-with-re-suppression.handler';
+import { GetOtzOutcomesAmongAlhivWithBaselineVlHandler } from './otz/queries/handlers/get-otz-outcomes-among-alhiv-with-baseline-vl.handler';
+import { GetOtzOutcomesAmongAlhivWithSustainedSuppressionHandler } from './otz/queries/handlers/get-otz-outcomes-among-alhiv-with-sustained-suppression.handler';
+import { GetOtzOutcomesByGenderHandler } from './otz/queries/handlers/get-otz-outcomes-by-gender.handler';
+import { GetOtzOutcomesByPopulationTypeHandler } from './otz/queries/handlers/get-otz-outcomes-by-population-type.handler';
+import { GetOtzOutcomesByYearOfArtStartHandler } from './otz/queries/handlers/get-otz-outcomes-by-year-of-art-start.handler';
+import { GetOtzOutcomesByPartnerHandler } from './otz/queries/handlers/get-otz-outcomes-by-partner.handler';
+import { GetOtzOutcomesByCountyHandler } from './otz/queries/handlers/get-otz-outcomes-by-county.handler';
 
 
 @Module({
@@ -205,7 +222,8 @@ import { GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler } from './otz/queries
                 FactTransVlSuppressionArtStart,
                 FactCtTimeToArt,
                 FactCtTimeToArtLast12M,
-                FactTransOtzEnrollments
+                FactTransOtzEnrollments,
+                FactTransOtzOutcome
             ],
             'mssql'
         )
@@ -328,7 +346,23 @@ import { GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler } from './otz/queries
         GetRegimenDistributionBasedOnAgeBandsHandler,
         GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler,
         GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler,
-        GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler
+        GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler,
+        GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler,
+        GetVlUptakeAmongAlhivEnrolledInOtzBySexHandler,
+        GetVlUptakeAmongAlhivEnrolledInOtzByAgeHandler,
+        GetVlUptakeAmongAlhivEnrolledInOtzByCountyHandler,
+        GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler,
+        GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingHandler,
+        GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyHandler,
+        GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartnerHandler,
+        GetOtzOutcomesAmongAlhivWithReSuppressionHandler,
+        GetOtzOutcomesAmongAlhivWithBaselineVlHandler,
+        GetOtzOutcomesAmongAlhivWithSustainedSuppressionHandler,
+        GetOtzOutcomesByGenderHandler,
+        GetOtzOutcomesByPopulationTypeHandler,
+        GetOtzOutcomesByYearOfArtStartHandler,
+        GetOtzOutcomesByPartnerHandler,
+        GetOtzOutcomesByCountyHandler
     ],
     controllers: [CareTreatmentController]
 })
