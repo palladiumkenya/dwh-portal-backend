@@ -185,6 +185,10 @@ import { GetOtzOutcomesByPopulationTypeHandler } from './otz/queries/handlers/ge
 import { GetOtzOutcomesByYearOfArtStartHandler } from './otz/queries/handlers/get-otz-outcomes-by-year-of-art-start.handler';
 import { GetOtzOutcomesByPartnerHandler } from './otz/queries/handlers/get-otz-outcomes-by-partner.handler';
 import { GetOtzOutcomesByCountyHandler } from './otz/queries/handlers/get-otz-outcomes-by-county.handler';
+import { GetOtzAdolescentsHandler } from './otz/queries/handlers/get-otz-adolescents.handler';
+import { GetOtzEnrolledHandler } from './otz/queries/handlers/get-otz-enrolled.handler';
+import { GetOtzTotalWithVlResultsHandler } from './otz/queries/handlers/get-otz-total-with-vl-results.handler';
+import { GetOtzTotalWithVlLessThan1000Handler } from './otz/queries/handlers/get-otz-total-with-vl-less-than-1000.handler';
 
 
 @Module({
@@ -364,7 +368,11 @@ import { GetOtzOutcomesByCountyHandler } from './otz/queries/handlers/get-otz-ou
         GetOtzOutcomesByPopulationTypeHandler,
         GetOtzOutcomesByYearOfArtStartHandler,
         GetOtzOutcomesByPartnerHandler,
-        GetOtzOutcomesByCountyHandler
+        GetOtzOutcomesByCountyHandler,
+        GetOtzAdolescentsHandler,
+        GetOtzEnrolledHandler,
+        GetOtzTotalWithVlResultsHandler,
+        GetOtzTotalWithVlLessThan1000Handler
     ],
     controllers: [CareTreatmentController]
 })
