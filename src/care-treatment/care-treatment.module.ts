@@ -198,6 +198,8 @@ import { GetProportionOfOvcClientsEnrolledInCpimsByGenderHandler } from './ovc/q
 import { GetOvcDistributionByPartnerHandler } from './ovc/queries/handlers/get-ovc-distribution-by-partner.handler';
 import { GetOvcDistributionByCountyHandler } from './ovc/queries/handlers/get-ovc-distribution-by-county.handler';
 import { GetOvcClientsExitReasonsHandler } from './ovc/queries/handlers/get-ovc-clients-exit-reasons.handler';
+import { GetOvcViralSuppressionAmongOvcPatientsGenderHandler } from './ovc/queries/handlers/get-ovc-viral-suppression-among-ovc-patients-gender.handler';
+import { GetOvcViralSuppressionAmongOvcPatientsOverallHandler } from './ovc/queries/handlers/get-ovc-viral-suppression-among-ovc-patients-overall.handler';
 
 
 @Module({
@@ -390,7 +392,9 @@ import { GetOvcClientsExitReasonsHandler } from './ovc/queries/handlers/get-ovc-
         GetProportionOfOvcClientsEnrolledInCpimsByGenderHandler,
         GetOvcDistributionByPartnerHandler,
         GetOvcDistributionByCountyHandler,
-        GetOvcClientsExitReasonsHandler
+        GetOvcClientsExitReasonsHandler,
+        GetOvcViralSuppressionAmongOvcPatientsGenderHandler,
+        GetOvcViralSuppressionAmongOvcPatientsOverallHandler
     ],
     controllers: [CareTreatmentController]
 })
