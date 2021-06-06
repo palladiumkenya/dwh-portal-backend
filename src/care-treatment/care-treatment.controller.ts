@@ -151,6 +151,8 @@ import { GetProportionOfOvcClientsEnrolledInCpimsByGenderQuery } from './ovc/que
 import { GetOvcDistributionByCountyQuery } from './ovc/queries/impl/get-ovc-distribution-by-county.query';
 import { GetOvcDistributionByPartnerQuery } from './ovc/queries/impl/get-ovc-distribution-by-partner.query';
 import { GetOvcClientsExitReasonsQuery } from './ovc/queries/impl/get-ovc-clients-exit-reasons.query';
+import { GetOvcViralSuppressionAmongOvcPatientsOverallQuery } from './ovc/queries/impl/get-ovc-viral-suppression-among-ovc-patients-overall.query';
+import { GetOvcViralSuppressionAmongOvcPatientsGenderQuery } from './ovc/queries/impl/get-ovc-viral-suppression-among-ovc-patients-gender.query';
 
 
 @Controller('care-treatment')
@@ -5921,6 +5923,123 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetOvcClientsExitReasonsQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getOvcViralSuppressionAmongOvcPatientsOverall')
+    async getOvcViralSuppressionAmongOvcPatientsOverall(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetOvcViralSuppressionAmongOvcPatientsOverallQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+
+    @Get('getOvcViralSuppressionAmongOvcPatientsByGender')
+    async getOvcViralSuppressionAmongOvcPatientsByGender(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetOvcViralSuppressionAmongOvcPatientsGenderQuery();
 
         if(county) {
             query.county = county;
