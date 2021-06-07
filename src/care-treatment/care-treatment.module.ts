@@ -185,6 +185,21 @@ import { GetOtzOutcomesByPopulationTypeHandler } from './otz/queries/handlers/ge
 import { GetOtzOutcomesByYearOfArtStartHandler } from './otz/queries/handlers/get-otz-outcomes-by-year-of-art-start.handler';
 import { GetOtzOutcomesByPartnerHandler } from './otz/queries/handlers/get-otz-outcomes-by-partner.handler';
 import { GetOtzOutcomesByCountyHandler } from './otz/queries/handlers/get-otz-outcomes-by-county.handler';
+import { GetOtzAdolescentsHandler } from './otz/queries/handlers/get-otz-adolescents.handler';
+import { GetOtzEnrolledHandler } from './otz/queries/handlers/get-otz-enrolled.handler';
+import { GetOtzTotalWithVlResultsHandler } from './otz/queries/handlers/get-otz-total-with-vl-results.handler';
+import { GetOtzTotalWithVlLessThan1000Handler } from './otz/queries/handlers/get-otz-total-with-vl-less-than-1000.handler';
+import { FactTransOvcEnrollments } from './ovc/entities/fact-trans-ovc-enrollments.model';
+import { GetOvcOverallOvcServHandler } from './ovc/queries/handlers/get-ovc-overall-ovc-serv.handler';
+import { GetOvcServBySexHandler } from './ovc/queries/handlers/get-ovc-serv-by-sex.handler';
+import { GetOvcCaregiversRelationshipToOvcClientHandler } from './ovc/queries/handlers/get-ovc-caregivers-relationship-to-ovc-client.handler';
+import { GetProportionOfOvcClientsEnrolledInCpimsOverallHandler } from './ovc/queries/handlers/get-proportion-of-ovc-clients-enrolled-in-cpims-overall.handler';
+import { GetProportionOfOvcClientsEnrolledInCpimsByGenderHandler } from './ovc/queries/handlers/get-proportion-of-ovc-clients-enrolled-in-cpims-by-gender.handler';
+import { GetOvcDistributionByPartnerHandler } from './ovc/queries/handlers/get-ovc-distribution-by-partner.handler';
+import { GetOvcDistributionByCountyHandler } from './ovc/queries/handlers/get-ovc-distribution-by-county.handler';
+import { GetOvcClientsExitReasonsHandler } from './ovc/queries/handlers/get-ovc-clients-exit-reasons.handler';
+import { GetOvcViralSuppressionAmongOvcPatientsGenderHandler } from './ovc/queries/handlers/get-ovc-viral-suppression-among-ovc-patients-gender.handler';
+import { GetOvcViralSuppressionAmongOvcPatientsOverallHandler } from './ovc/queries/handlers/get-ovc-viral-suppression-among-ovc-patients-overall.handler';
 
 
 @Module({
@@ -224,7 +239,8 @@ import { GetOtzOutcomesByCountyHandler } from './otz/queries/handlers/get-otz-ou
                 FactCtTimeToArt,
                 FactCtTimeToArtLast12M,
                 FactTransOtzEnrollments,
-                FactTransOtzOutcome
+                FactTransOtzOutcome,
+                FactTransOvcEnrollments
             ],
             'mssql'
         )
@@ -364,7 +380,21 @@ import { GetOtzOutcomesByCountyHandler } from './otz/queries/handlers/get-otz-ou
         GetOtzOutcomesByPopulationTypeHandler,
         GetOtzOutcomesByYearOfArtStartHandler,
         GetOtzOutcomesByPartnerHandler,
-        GetOtzOutcomesByCountyHandler
+        GetOtzOutcomesByCountyHandler,
+        GetOtzAdolescentsHandler,
+        GetOtzEnrolledHandler,
+        GetOtzTotalWithVlResultsHandler,
+        GetOtzTotalWithVlLessThan1000Handler,
+        GetOvcOverallOvcServHandler,
+        GetOvcServBySexHandler,
+        GetOvcCaregiversRelationshipToOvcClientHandler,
+        GetProportionOfOvcClientsEnrolledInCpimsOverallHandler,
+        GetProportionOfOvcClientsEnrolledInCpimsByGenderHandler,
+        GetOvcDistributionByPartnerHandler,
+        GetOvcDistributionByCountyHandler,
+        GetOvcClientsExitReasonsHandler,
+        GetOvcViralSuppressionAmongOvcPatientsGenderHandler,
+        GetOvcViralSuppressionAmongOvcPatientsOverallHandler
     ],
     controllers: [CareTreatmentController]
 })
