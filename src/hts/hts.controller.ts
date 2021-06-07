@@ -34,6 +34,7 @@ import { GetLinkageByEntryPointQuery } from './linkage/queries/impl/get-linkage-
 import { GetLinkageByStrategyQuery } from './linkage/queries/impl/get-linkage-by-strategy.query';
 import { GetLinkageByCountyQuery } from './linkage/queries/impl/get-linkage-by-county.query';
 import { GetLinkageByPartnerQuery } from './linkage/queries/impl/get-linkage-by-partner.query';
+import { GetLinkageNumberNotLinkedByFacilityQuery } from './linkage/queries/impl/get-linkage-number-not-linked-by-facility.query';
 
 import { GetPnsSexualContactsCascadeQuery } from './pns/queries/impl/get-pns-sexual-contacts-cascade.query';
 import { GetPnsSexualContactsByAgeSexQuery } from './pns/queries/impl/get-pns-sexual-contacts-by-age-sex.query';
@@ -1128,6 +1129,44 @@ export class HtsController {
         @Query('facility') facility
     ): Promise<any> {
         const query = new GetLinkageByStrategyQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('linkageNumberNotLinkedByFacility')
+    async getLinkageNumberNotLinkedByFacility(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('partner') partner,
+        @Query('facility') facility
+    ): Promise<any> {
+        const query = new GetLinkageNumberNotLinkedByFacilityQuery();
 
         if(county) {
             query.county = county;
