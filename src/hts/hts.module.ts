@@ -51,6 +51,7 @@ import { GetLinkageByCountyHandler } from './linkage/queries/handlers/get-linkag
 import { GetLinkageByPartnerHandler } from './linkage/queries/handlers/get-linkage-by-partner.handler';
 import { GetLinkageByEntryPointHandler } from './linkage/queries/handlers/get-linkage-by-entry-point.handler';
 import { GetLinkageByStrategyHandler } from './linkage/queries/handlers/get-linkage-by-strategy.handler';
+import { GetLinkageNumberNotLinkedByFacilityHandler } from './linkage/queries/handlers/get-linkage-number-not-linked-by-facility.handler';
 
 import { GetPnsSexualContactsCascadeHandler } from './pns/queries/handlers/get-pns-sexual-contacts-cascade.handler';
 import { GetPnsSexualContactsByAgeSexHandler } from './pns/queries/handlers/get-pns-sexual-contacts-by-age-sex.handler';
@@ -116,6 +117,7 @@ import { GetPnsKnowledgeHivStatusCascadeHandler } from './pns/queries/handlers/g
         GetLinkageByPartnerHandler,
         GetLinkageByEntryPointHandler,
         GetLinkageByStrategyHandler,
+        GetLinkageNumberNotLinkedByFacilityHandler,
 
         GetPnsSexualContactsCascadeHandler,
         GetPnsSexualContactsByAgeSexHandler,

@@ -16,7 +16,8 @@ export class GetVlOutcomesHvlByFacilityHandler implements IQueryHandler<GetVlOut
         const vlOutcomeHvlByFacility = this.repository.createQueryBuilder('f')
             .select(['MFLCode mfl, FacilityName facility, County county, SubCounty subCounty, CTPartner partner, SUM(Total_Last12MVL) patients'])
             .where('MFLCode > 0')
-            .andWhere('FacilityName IS NOT NULL');
+            .andWhere('FacilityName IS NOT NULL')
+            .andWhere("Last12MVLResult = 'HVL'");
 
         if (query.county) {
             vlOutcomeHvlByFacility.andWhere('County IN (:...counties)', { counties: query.county });
