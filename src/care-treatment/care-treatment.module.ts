@@ -87,6 +87,7 @@ import { GetTreatmentOutcomesRetention3mHandler } from './treatment-outcomes/que
 import { GetTreatmentOutcomesRetention6mHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-retention-6m.handler';
 import { GetTreatmentOutcomesRetention12mHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-retention-12m.handler';
 import { GetTreatmentOutcomesRetention24mHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-retention-24m.handler';
+import { GetTreatmentOutcomesUndocumentedByFacilityHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-undocumented-by-facility.handler';
 
 import { FactCTTimeToFirstVL } from './viral-load/entities/fact-ct-time-to-first-vl-grp.model';
 import { FactTransVLOutcome } from './viral-load/entities/fact-trans-vl-outcome.model';
@@ -304,6 +305,7 @@ import { GetOvcViralSuppressionAmongOvcPatientsOverallHandler } from './ovc/quer
         GetTreatmentOutcomesRetention6mHandler,
         GetTreatmentOutcomesRetention12mHandler,
         GetTreatmentOutcomesRetention24mHandler,
+        GetTreatmentOutcomesUndocumentedByFacilityHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
         GetCtTxCurrAgeGroupDistributionByCountyHandler,
         GetCtTxCurrAgeGroupDistributionByPartnerHandler,
