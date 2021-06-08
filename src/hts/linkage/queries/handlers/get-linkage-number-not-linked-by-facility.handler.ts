@@ -19,7 +19,7 @@ export class GetLinkageNumberNotLinkedByFacilityHandler implements IQueryHandler
         
         let linkageNumberNotLinkedByFacilitySql = 'SELECT ' +
             'MFLCode mfl, FacilityName facility, County county, subcounty subCounty, CTPartner partner, Sum(Positive) positive, Sum(Linked) linked ' +
-            'FROM fact_htsuptake WHERE MFLCode > 0 ';
+            'FROM fact_htsuptake WHERE MFLCode > 0 AND Positive > 0 ';
 
         if(query.county) {
             linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and County IN (?)`;
