@@ -157,6 +157,7 @@ import { GetOvcClientsExitReasonsQuery } from './ovc/queries/impl/get-ovc-client
 import { GetOvcViralSuppressionAmongOvcPatientsOverallQuery } from './ovc/queries/impl/get-ovc-viral-suppression-among-ovc-patients-overall.query';
 import { GetOvcViralSuppressionAmongOvcPatientsGenderQuery } from './ovc/queries/impl/get-ovc-viral-suppression-among-ovc-patients-gender.query';
 
+import { GetMissingDiagnosisDateByFacilityQuery } from './new-on-art/queries/impl/get-missing-diagnosis-date-by-facility.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -2118,6 +2119,76 @@ export class CareTreatmentController {
         @Query('latestPregnancy') latestPregnancy 
     ): Promise<any> {
         const query = new GetTreatmentOutcomesUndocumentedByFacilityQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        if (populationType) {
+            query.populationType = populationType;
+        }
+
+        if (latestPregnancy) {
+            query.latestPregnancy = latestPregnancy;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    
+
+    @Get('missingDiagnosisDateByFacility')
+    async missingDiagnosisDateByFacility(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('populationType') populationType,
+        @Query('latestPregnancy') latestPregnancy 
+    ): Promise<any> {
+        const query = new GetMissingDiagnosisDateByFacilityQuery();
 
         if(county) {
             query.county = county;
