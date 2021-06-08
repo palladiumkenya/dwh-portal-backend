@@ -201,6 +201,7 @@ import { GetOvcDistributionByCountyHandler } from './ovc/queries/handlers/get-ov
 import { GetOvcClientsExitReasonsHandler } from './ovc/queries/handlers/get-ovc-clients-exit-reasons.handler';
 import { GetOvcViralSuppressionAmongOvcPatientsGenderHandler } from './ovc/queries/handlers/get-ovc-viral-suppression-among-ovc-patients-gender.handler';
 import { GetOvcViralSuppressionAmongOvcPatientsOverallHandler } from './ovc/queries/handlers/get-ovc-viral-suppression-among-ovc-patients-overall.handler';
+import { GetMissingDiagnosisDateByFacilityHandler } from './new-on-art/queries/handlers/get-missing-diagnosis-date-by-facility.handler';
 
 
 @Module({
@@ -396,7 +397,9 @@ import { GetOvcViralSuppressionAmongOvcPatientsOverallHandler } from './ovc/quer
         GetOvcDistributionByCountyHandler,
         GetOvcClientsExitReasonsHandler,
         GetOvcViralSuppressionAmongOvcPatientsGenderHandler,
-        GetOvcViralSuppressionAmongOvcPatientsOverallHandler
+        GetOvcViralSuppressionAmongOvcPatientsOverallHandler,
+
+        GetMissingDiagnosisDateByFacilityHandler
     ],
     controllers: [CareTreatmentController]
 })

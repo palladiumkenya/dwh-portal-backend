@@ -1,23 +1,23 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransTreatmentOutcomes } from '../../entities/fact-trans-treatment-outcomes.model';
+import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { GetTreatmentOutcomesUndocumentedByFacilityQuery } from '../impl/get-treatment-outcomes-undocumented-by-facility.query';
 
 @QueryHandler(GetTreatmentOutcomesUndocumentedByFacilityQuery)
 export class GetTreatmentOutcomesUndocumentedByFacilityHandler implements IQueryHandler<GetTreatmentOutcomesUndocumentedByFacilityQuery> {
     constructor(
-        @InjectRepository(FactTransTreatmentOutcomes, 'mssql')
-        private readonly repository: Repository<FactTransTreatmentOutcomes>
+        @InjectRepository(FactTransNewCohort, 'mssql')
+        private readonly repository: Repository<FactTransNewCohort>
     ) {
     }
 
     async execute(query: GetTreatmentOutcomesUndocumentedByFacilityQuery): Promise<any> {
         const treatmentOutcomesUndocumentedByFacility = this.repository.createQueryBuilder('f')
-            .select(['MFLCode mfl, FacilityName facility, County county, SubCounty subCounty, CTPartner partner, SUM(TotalOutcomes) patients'])
+            .select(['MFLCode mfl, FacilityName facility, County county, SubCounty subCounty, CTPartner partner, COUNT(*) patients'])
             .where('MFLCode > 0')
-            .andWhere('FacilityName IS NOT NULL')
-            .andWhere("ARTOutcome = 'LTFU'");
+            .andWhere('StartARTDate IS NOT NULL')
+            .andWhere("ARTOutcome = 'UL'");
 
         if (query.county) {
             treatmentOutcomesUndocumentedByFacility.andWhere('County IN (:...counties)', { counties: query.county });
@@ -47,17 +47,17 @@ export class GetTreatmentOutcomesUndocumentedByFacilityHandler implements IQuery
             treatmentOutcomesUndocumentedByFacility.andWhere('Gender IN (:...gender)', { gender: query.gender });
         }
 
-        if (query.datimAgeGroup) {
-            treatmentOutcomesUndocumentedByFacility.andWhere('DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+        // if (query.datimAgeGroup) {
+        //     treatmentOutcomesUndocumentedByFacility.andWhere('DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+        // }
+
+        if (query.populationType) {
+            treatmentOutcomesUndocumentedByFacility.andWhere('PopulationType IN (:...populationType)', { populationType: query.populationType });
         }
 
-        // if (query.populationType) {
-        //     treatmentOutcomesUndocumentedByFacility.andWhere('PopulationType IN (:...populationType)', { populationType: query.populationType });
-        // }
-
-        // if (query.latestPregnancy) {
-        //     treatmentOutcomesUndocumentedByFacility.andWhere('LatestPregnancy IN (:...latestPregnancy)', { latestPregnancy: query.latestPregnancy });
-        // }
+        if (query.latestPregnancy) {
+            treatmentOutcomesUndocumentedByFacility.andWhere('LatestPregnancy IN (:...latestPregnancy)', { latestPregnancy: query.latestPregnancy });
+        }
 
         return await treatmentOutcomesUndocumentedByFacility
             .groupBy('FacilityName, MFLCode, County, SubCounty, CTPartner')
