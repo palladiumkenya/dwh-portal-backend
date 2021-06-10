@@ -202,6 +202,7 @@ import { GetOvcClientsExitReasonsHandler } from './ovc/queries/handlers/get-ovc-
 import { GetOvcViralSuppressionAmongOvcPatientsGenderHandler } from './ovc/queries/handlers/get-ovc-viral-suppression-among-ovc-patients-gender.handler';
 import { GetOvcViralSuppressionAmongOvcPatientsOverallHandler } from './ovc/queries/handlers/get-ovc-viral-suppression-among-ovc-patients-overall.handler';
 import { GetMissingDiagnosisDateByFacilityHandler } from './new-on-art/queries/handlers/get-missing-diagnosis-date-by-facility.handler';
+import { GetTreatmentOutcomesNetCohortHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-net-cohort.handler';
 
 
 @Module({
@@ -398,7 +399,7 @@ import { GetMissingDiagnosisDateByFacilityHandler } from './new-on-art/queries/h
         GetOvcClientsExitReasonsHandler,
         GetOvcViralSuppressionAmongOvcPatientsGenderHandler,
         GetOvcViralSuppressionAmongOvcPatientsOverallHandler,
-
+        GetTreatmentOutcomesNetCohortHandler,
         GetMissingDiagnosisDateByFacilityHandler
     ],
     controllers: [CareTreatmentController]
