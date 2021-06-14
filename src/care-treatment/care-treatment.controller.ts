@@ -158,6 +158,7 @@ import { GetOvcViralSuppressionAmongOvcPatientsOverallQuery } from './ovc/querie
 import { GetOvcViralSuppressionAmongOvcPatientsGenderQuery } from './ovc/queries/impl/get-ovc-viral-suppression-among-ovc-patients-gender.query';
 
 import { GetMissingDiagnosisDateByFacilityQuery } from './new-on-art/queries/impl/get-missing-diagnosis-date-by-facility.query';
+import { GetTreatmentOutcomesNetCohortQuery } from './treatment-outcomes/queries/impl/get-treatment-outcomes-net-cohort.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -1632,6 +1633,43 @@ export class CareTreatmentController {
         @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesOverallQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if(toDate) {
+            query.toDate = toDate;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('treatmentOutcomesNetCohort')
+    async getTreatmentOutcomesNetCohort(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
+    ): Promise<any> {
+        const query = new GetTreatmentOutcomesNetCohortQuery();
         if(county) {
             query.county = county;
         }
