@@ -203,6 +203,7 @@ import { GetOvcViralSuppressionAmongOvcPatientsGenderHandler } from './ovc/queri
 import { GetOvcViralSuppressionAmongOvcPatientsOverallHandler } from './ovc/queries/handlers/get-ovc-viral-suppression-among-ovc-patients-overall.handler';
 import { GetMissingDiagnosisDateByFacilityHandler } from './new-on-art/queries/handlers/get-missing-diagnosis-date-by-facility.handler';
 import { GetTreatmentOutcomesNetCohortHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-net-cohort.handler';
+import { FactTransCohortRetention } from './treatment-outcomes/entities/fact-trans-cohort-retention.model';
 
 
 @Module({
@@ -243,7 +244,8 @@ import { GetTreatmentOutcomesNetCohortHandler } from './treatment-outcomes/queri
                 FactCtTimeToArtLast12M,
                 FactTransOtzEnrollments,
                 FactTransOtzOutcome,
-                FactTransOvcEnrollments
+                FactTransOvcEnrollments,
+                FactTransCohortRetention
             ],
             'mssql'
         )
