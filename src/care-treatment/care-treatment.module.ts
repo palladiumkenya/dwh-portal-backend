@@ -204,6 +204,7 @@ import { GetOvcViralSuppressionAmongOvcPatientsOverallHandler } from './ovc/quer
 import { GetMissingDiagnosisDateByFacilityHandler } from './new-on-art/queries/handlers/get-missing-diagnosis-date-by-facility.handler';
 import { GetTreatmentOutcomesNetCohortHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-net-cohort.handler';
 import { FactTransCohortRetention } from './treatment-outcomes/entities/fact-trans-cohort-retention.model';
+import { GetOtzEnrolledAdolescentsByAgeHandler } from './otz/queries/handlers/get-otz-enrolled-adolescents-by-age.handler';
 
 
 @Module({
@@ -402,7 +403,8 @@ import { FactTransCohortRetention } from './treatment-outcomes/entities/fact-tra
         GetOvcViralSuppressionAmongOvcPatientsGenderHandler,
         GetOvcViralSuppressionAmongOvcPatientsOverallHandler,
         GetTreatmentOutcomesNetCohortHandler,
-        GetMissingDiagnosisDateByFacilityHandler
+        GetMissingDiagnosisDateByFacilityHandler,
+        GetOtzEnrolledAdolescentsByAgeHandler
     ],
     controllers: [CareTreatmentController]
 })
