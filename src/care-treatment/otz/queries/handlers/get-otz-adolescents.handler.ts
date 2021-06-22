@@ -14,7 +14,7 @@ export class GetOtzAdolescentsHandler implements IQueryHandler<GetOtzAdolescents
 
     async execute(query: GetOtzAdolescentsQuery): Promise<any> {
         const otzTotalAdolescents = this.repository.createQueryBuilder('f')
-            .select(['count(*) totalAdolescents']);
+            .select(['count(*) totalAdolescents, Gender']);
 
         if (query.county) {
             otzTotalAdolescents.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -32,6 +32,9 @@ export class GetOtzAdolescentsHandler implements IQueryHandler<GetOtzAdolescents
             otzTotalAdolescents.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        return await otzTotalAdolescents.getRawOne();
+        return await otzTotalAdolescents
+            .groupBy('Gender')
+            .orderBy('Gender')
+            .getRawMany();
     }
 }
