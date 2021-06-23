@@ -205,6 +205,8 @@ import { GetMissingDiagnosisDateByFacilityHandler } from './new-on-art/queries/h
 import { GetTreatmentOutcomesNetCohortHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-net-cohort.handler';
 import { FactTransCohortRetention } from './treatment-outcomes/entities/fact-trans-cohort-retention.model';
 import { GetOtzEnrolledAdolescentsByAgeHandler } from './otz/queries/handlers/get-otz-enrolled-adolescents-by-age.handler';
+import { GetOtzAdolescentsEnrolledByPartnerHandler } from './otz/queries/handlers/get-otz-adolescents-enrolled-by-partner.handler';
+import { GetOtzAdolescentsEnrolledByCountyHandler } from './otz/queries/handlers/get-otz-adolescents-enrolled-by-county.handler';
 
 
 @Module({
@@ -404,7 +406,9 @@ import { GetOtzEnrolledAdolescentsByAgeHandler } from './otz/queries/handlers/ge
         GetOvcViralSuppressionAmongOvcPatientsOverallHandler,
         GetTreatmentOutcomesNetCohortHandler,
         GetMissingDiagnosisDateByFacilityHandler,
-        GetOtzEnrolledAdolescentsByAgeHandler
+        GetOtzEnrolledAdolescentsByAgeHandler,
+        GetOtzAdolescentsEnrolledByPartnerHandler,
+        GetOtzAdolescentsEnrolledByCountyHandler
     ],
     controllers: [CareTreatmentController]
 })
