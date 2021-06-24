@@ -14,7 +14,7 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler implements IQuer
 
     async execute(query: GetOtzEnrollmentAmongAlhivAndOnArtByPartnerQuery) {
         const otzEnrollmentsPartner = this.repository.createQueryBuilder('f')
-            .select(['[CTPartner] partner, SUM([TXCurr]) TXCurr, SUM(f.[TXCurr]) * 100.0 / SUM(SUM(f.[TXCurr])) OVER () AS Percentage'])
+            .select(['[CTPartner] partner, COUNT(OTZ_Traning) count_training, SUM([TXCurr]) TXCurr, SUM(f.[TXCurr]) * 100.0 / SUM(SUM(f.[TXCurr])) OVER () AS Percentage'])
             .andWhere('f.OTZEnrollmentDate IS NOT NULL');
 
         if (query.county) {
