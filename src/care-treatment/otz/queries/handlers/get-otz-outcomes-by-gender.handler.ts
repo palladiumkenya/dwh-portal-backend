@@ -14,7 +14,7 @@ export class GetOtzOutcomesByGenderHandler implements IQueryHandler<GetOtzOutcom
 
     async execute(query: GetOtzOutcomesByGenderQuery): Promise<any> {
         const otzOutcomesByGender = this.repository.createQueryBuilder('f')
-            .select(['[Gender], [Outcome], SUM([Total_OutCome]) outcomesByGender'])
+            .select(['[Gender], CASE WHEN [Outcome] IS NULL THEN \'Active\' ELSE [Outcome] END, SUM([Total_OutCome]) outcomesByGender'])
             .andWhere('f.MFLCode IS NOT NULL');
 
         if (query.county) {
