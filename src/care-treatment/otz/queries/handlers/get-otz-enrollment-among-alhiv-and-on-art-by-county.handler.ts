@@ -14,7 +14,7 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler implements IQuery
 
     async execute(query: GetOtzEnrollmentAmongAlhivAndOnArtByCountyQuery) {
         const otzEnrollmentsCounty = this.repository.createQueryBuilder('f')
-            .select(['[County], SUM([TXCurr]) TXCurr, SUM(f.[TXCurr]) * 100.0 / SUM(SUM(f.[TXCurr])) OVER () AS Percentage'])
+            .select(['[County], COUNT(OTZ_Traning) count_training, SUM([TXCurr]) TXCurr, SUM(f.[TXCurr]) * 100.0 / SUM(SUM(f.[TXCurr])) OVER () AS Percentage'])
             .andWhere('f.OTZEnrollmentDate IS NOT NULL');
 
         if (query.county) {
