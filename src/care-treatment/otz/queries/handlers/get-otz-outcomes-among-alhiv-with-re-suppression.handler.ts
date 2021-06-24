@@ -16,8 +16,8 @@ export class GetOtzOutcomesAmongAlhivWithReSuppressionHandler implements IQueryH
         const baselineVlReSuppression = this.repository.createQueryBuilder('f')
             .select(['DISTINCT\n' +
             'AlHivWithVlGreaterThan1000 = (SELECT COUNT(*) FROM [dbo].[FACT_Trans_OTZEnrollments] b WHERE (CASE WHEN FirstVL = \'undetectable\' THEN 1 ELSE FirstVL END) >= 1000 AND b.OTZEnrollmentDate is not null),\n' +
-            'ALHivWithVLLessThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[FACT_Trans_OTZEnrollments] b WHERE (CASE WHEN [Last12MonthVLResult] = \'undetectable\' THEN 1 ELSE [Last12MonthVLResult] END) < 1000 AND b.OTZEnrollmentDate is not null AND (CASE WHEN FirstVL = \'undetectable\' THEN 1 ELSE FirstVL END) >= 1000 AND b.OTZEnrollmentDate is not null),\n' +
-            'ALHivWithVLGreaterThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[FACT_Trans_OTZEnrollments] b WHERE (CASE WHEN [Last12MonthVLResult] = \'undetectable\' THEN 1 ELSE [Last12MonthVLResult] END) >= 1000 AND b.OTZEnrollmentDate is not null AND (CASE WHEN FirstVL = \'undetectable\' THEN 1 ELSE FirstVL END) >= 1000 AND b.OTZEnrollmentDate is not null)'])
+            'ALHivWithVLLessThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[FACT_Trans_OTZEnrollments] b WHERE (CASE WHEN [Last12MonthVLResults] = \'undetectable\' THEN 1 ELSE [Last12MonthVLResults] END) < 1000 AND b.OTZEnrollmentDate is not null AND (CASE WHEN FirstVL = \'undetectable\' THEN 1 ELSE FirstVL END) >= 1000 AND b.OTZEnrollmentDate is not null),\n' +
+            'ALHivWithVLGreaterThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[FACT_Trans_OTZEnrollments] b WHERE (CASE WHEN [Last12MonthVLResults] = \'undetectable\' THEN 1 ELSE [Last12MonthVLResults] END) >= 1000 AND b.OTZEnrollmentDate is not null AND (CASE WHEN FirstVL = \'undetectable\' THEN 1 ELSE FirstVL END) >= 1000 AND b.OTZEnrollmentDate is not null)'])
             .andWhere('f.OTZEnrollmentDate IS NOT NULL');
 
         if (query.county) {
