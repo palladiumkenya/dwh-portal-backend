@@ -162,6 +162,7 @@ import { GetTreatmentOutcomesNetCohortQuery } from './treatment-outcomes/queries
 import { GetOtzEnrolledAdolescentsByAgeQuery } from './otz/queries/impl/get-otz-enrolled-adolescents-by-age.query';
 import { GetOtzAdolescentsEnrolledByCountyQuery } from './otz/queries/impl/get-otz-adolescents-enrolled-by-county.query';
 import { GetOtzAdolescentsEnrolledByPartnerQuery } from './otz/queries/impl/get-otz-adolescents-enrolled-by-partner.query';
+import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexQuery } from './otz/queries/impl/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-sex.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -6502,6 +6503,65 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetOvcViralSuppressionAmongOvcPatientsGenderQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+
+    @Get('getProportionOfOtzTrainingBySex')
+    async getProportionOfOtzTrainingBySex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexQuery();
 
         if(county) {
             query.county = county;

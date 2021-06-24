@@ -15,7 +15,7 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartn
     async execute(query: GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartnerQuery): Promise<any> {
         const proportionWhoCompletedTrainingByCounty = this.repository.createQueryBuilder('f')
             .select(['CTPartner partner, COUNT([OTZ_Traning]) count_training, COUNT([OTZ_Traning]) * 100.0/ SUM(SUM([OTZ_Traning])) over () as proportion_training_percent'])
-            .andWhere('f.OTZEnrollmentDate IS NOT NULL');
+            .andWhere('f.OTZEnrollmentDate IS NOT NULL AND OTZ_Traning = 1');
 
         if (query.county) {
             proportionWhoCompletedTrainingByCounty.andWhere('f.County IN (:...counties)', { counties: query.county });
