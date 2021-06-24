@@ -207,6 +207,7 @@ import { FactTransCohortRetention } from './treatment-outcomes/entities/fact-tra
 import { GetOtzEnrolledAdolescentsByAgeHandler } from './otz/queries/handlers/get-otz-enrolled-adolescents-by-age.handler';
 import { GetOtzAdolescentsEnrolledByPartnerHandler } from './otz/queries/handlers/get-otz-adolescents-enrolled-by-partner.handler';
 import { GetOtzAdolescentsEnrolledByCountyHandler } from './otz/queries/handlers/get-otz-adolescents-enrolled-by-county.handler';
+import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-sex.handler';
 
 
 @Module({
@@ -408,7 +409,8 @@ import { GetOtzAdolescentsEnrolledByCountyHandler } from './otz/queries/handlers
         GetMissingDiagnosisDateByFacilityHandler,
         GetOtzEnrolledAdolescentsByAgeHandler,
         GetOtzAdolescentsEnrolledByPartnerHandler,
-        GetOtzAdolescentsEnrolledByCountyHandler
+        GetOtzAdolescentsEnrolledByCountyHandler,
+        GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHandler
     ],
     controllers: [CareTreatmentController]
 })
