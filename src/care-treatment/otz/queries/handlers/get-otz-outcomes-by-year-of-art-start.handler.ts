@@ -14,7 +14,7 @@ export class GetOtzOutcomesByYearOfArtStartHandler implements IQueryHandler<GetO
 
     async execute(query: GetOtzOutcomesByYearOfArtStartQuery): Promise<any> {
         const otzOutcomesByYearOfArtStart = this.repository.createQueryBuilder('f')
-            .select(['[OTZStart_Year], [Outcome], SUM([Total_OutCome]) outcomesByYearOfArtStart'])
+            .select(['[OTZStart_Year], CASE WHEN [Outcome] IS NULL THEN \'Active\' ELSE [Outcome] END AS Outcome, SUM([Total_OutCome]) outcomesByYearOfArtStart'])
             .andWhere('f.MFLCode IS NOT NULL');
 
         if (query.county) {

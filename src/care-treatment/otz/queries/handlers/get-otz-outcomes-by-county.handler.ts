@@ -14,7 +14,7 @@ export class GetOtzOutcomesByCountyHandler implements IQueryHandler<GetOtzOutcom
 
     async execute(query: GetOtzOutcomesByCountyQuery): Promise<any> {
         const otzOutcomesByCounty = this.repository.createQueryBuilder('f')
-            .select(['[County], [Outcome], SUM([Total_OutCome]) outcomesByCounty'])
+            .select(['[County], CASE WHEN [Outcome] IS NULL THEN \'Active\' ELSE [Outcome] END AS Outcome, SUM([Total_OutCome]) outcomesByCounty'])
             .andWhere('f.MFLCode IS NOT NULL');
 
         if (query.county) {
