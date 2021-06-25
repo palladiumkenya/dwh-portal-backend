@@ -14,8 +14,8 @@ export class GetOtzOutcomesByPopulationTypeHandler implements IQueryHandler<GetO
 
     async execute(query: GetOtzOutcomesByPopulationTypeQuery): Promise<any> {
         const otzOutcomesByPopulationType = this.repository.createQueryBuilder('f')
-            .select(['[PopulationType], [Outcome], SUM([Total_OutCome]) outcomesByPopulationType'])
-            .andWhere('f.MFLCode IS NOT NULL');
+            .select(['[PopulationType], CASE WHEN [Outcome] IS NULL THEN \'Active\' ELSE [Outcome] END AS Outcome, SUM([Total_OutCome]) outcomesByPopulationType'])
+            .andWhere('f.MFLCode IS NOT NULL AND [PopulationType] IS NOT NULL');
 
         if (query.county) {
             otzOutcomesByPopulationType.andWhere('f.County IN (:...counties)', { counties: query.county });
