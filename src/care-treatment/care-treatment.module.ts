@@ -208,6 +208,7 @@ import { GetOtzEnrolledAdolescentsByAgeHandler } from './otz/queries/handlers/ge
 import { GetOtzAdolescentsEnrolledByPartnerHandler } from './otz/queries/handlers/get-otz-adolescents-enrolled-by-partner.handler';
 import { GetOtzAdolescentsEnrolledByCountyHandler } from './otz/queries/handlers/get-otz-adolescents-enrolled-by-county.handler';
 import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-sex.handler';
+import { GetOtzOutcomesByAgeGroupsHandler } from './otz/queries/handlers/get-otz-outcomes-by-age-groups.handler';
 
 
 @Module({
@@ -410,7 +411,8 @@ import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHandle
         GetOtzEnrolledAdolescentsByAgeHandler,
         GetOtzAdolescentsEnrolledByPartnerHandler,
         GetOtzAdolescentsEnrolledByCountyHandler,
-        GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHandler
+        GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHandler,
+        GetOtzOutcomesByAgeGroupsHandler
     ],
     controllers: [CareTreatmentController]
 })
