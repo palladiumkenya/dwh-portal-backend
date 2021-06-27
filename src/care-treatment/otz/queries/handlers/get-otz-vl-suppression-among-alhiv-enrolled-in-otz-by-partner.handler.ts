@@ -1,0 +1,40 @@
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerQuery } from '../impl/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-partner.query';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
+import { Repository } from 'typeorm';
+
+@QueryHandler(GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerQuery)
+export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler implements IQueryHandler<GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerQuery> {
+    constructor(
+        @InjectRepository(FactTransOtzEnrollments, 'mssql')
+        private readonly repository: Repository<FactTransOtzEnrollments>
+    ) {
+    }
+
+    async execute(query: GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerQuery): Promise<any> {
+        const vlSuppressionOtzByPartner = this.repository.createQueryBuilder('f')
+            .select(['[CTPartner], Last12MVLResult, COUNT(Last12MVLResult) AS vlSuppression'])
+            .andWhere('f.MFLCode IS NOT NULL');
+
+        if (query.county) {
+            vlSuppressionOtzByPartner.andWhere('f.County IN (:...counties)', { counties: query.county });
+        }
+
+        if (query.subCounty) {
+            vlSuppressionOtzByPartner.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+        }
+
+        if (query.facility) {
+            vlSuppressionOtzByPartner.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+        }
+
+        if (query.partner) {
+            vlSuppressionOtzByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+
+        return await vlSuppressionOtzByPartner
+            .groupBy('[CTPartner], Last12MVLResult')
+            .getRawMany();
+    }
+}
