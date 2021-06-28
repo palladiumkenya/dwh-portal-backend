@@ -14,8 +14,8 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler implement
 
     async execute(query: GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyQuery): Promise<any> {
         const vlSuppressionOtzByCounty = this.repository.createQueryBuilder('f')
-            .select(['[County], Last12MVLResult, COUNT(Last12MVLResult) AS vlSuppression'])
-            .andWhere('f.MFLCode IS NOT NULL');
+            .select(['[County], Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression'])
+            .andWhere('f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL');
 
         if (query.county) {
             vlSuppressionOtzByCounty.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -35,6 +35,7 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler implement
 
         return await vlSuppressionOtzByCounty
             .groupBy('[County], Last12MVLResult')
+            .orderBy('[County]')
             .getRawMany();
     }
 }
