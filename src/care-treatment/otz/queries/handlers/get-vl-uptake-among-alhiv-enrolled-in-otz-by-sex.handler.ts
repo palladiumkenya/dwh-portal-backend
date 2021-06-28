@@ -14,7 +14,7 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzBySexHandler implements IQueryHan
 
     async execute(query: GetVlUptakeAmongAlhivEnrolledInOtzBySexQuery): Promise<any> {
         const vlUptakeAmongAlHivEnrolledInOtzBySex = this.repository.createQueryBuilder('f')
-            .select(['[Gender], COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM(SUM([EligibleVL])) over () as vl_uptake_percent'])
+            .select(['[Gender], COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent'])
             .andWhere('f.OTZEnrollmentDate IS NOT NULL');
 
         if (query.county) {

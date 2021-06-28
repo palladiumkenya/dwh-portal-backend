@@ -14,7 +14,7 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler implements IQuer
 
     async execute(query: GetVlUptakeAmongAlhivEnrolledInOtzByPartnerQuery): Promise<any> {
         const vlUptakeAmongAlHivEnrolledInOtzByCounty = this.repository.createQueryBuilder('f')
-            .select(['[CTPartner] partner, COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM(SUM([EligibleVL])) over () as vl_uptake_percent'])
+            .select(['[CTPartner] partner, COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent'])
             .andWhere('f.OTZEnrollmentDate IS NOT NULL');
 
         if (query.county) {

@@ -1,0 +1,40 @@
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { GetOtzOutcomesByAgeGroupsQuery } from '../impl/get-otz-outcomes-by-age-groups.query';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FactTransOtzOutcome } from '../../entities/fact-trans-otz-outcome.model';
+import { Repository } from 'typeorm';
+
+@QueryHandler(GetOtzOutcomesByAgeGroupsQuery)
+export class GetOtzOutcomesByAgeGroupsHandler implements IQueryHandler<GetOtzOutcomesByAgeGroupsQuery> {
+    constructor(
+        @InjectRepository(FactTransOtzOutcome, 'mssql')
+        private readonly repository: Repository<FactTransOtzOutcome>
+    ) {
+    }
+
+    async execute(query: GetOtzOutcomesByAgeGroupsQuery): Promise<any> {
+        const otzOutcomesByAgeGroups = this.repository.createQueryBuilder('f')
+            .select(['[AgeGroup], CASE WHEN [Outcome] IS NULL THEN \'Active\' ELSE [Outcome] END as Outcome, SUM([Total_OutCome]) outcomesByAgeGroup'])
+            .andWhere('f.MFLCode IS NOT NULL');
+
+        if (query.county) {
+            otzOutcomesByAgeGroups.andWhere('f.County IN (:...counties)', { counties: query.county });
+        }
+
+        if (query.subCounty) {
+            otzOutcomesByAgeGroups.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+        }
+
+        if (query.facility) {
+            otzOutcomesByAgeGroups.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+        }
+
+        if (query.partner) {
+            otzOutcomesByAgeGroups.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+
+        return await otzOutcomesByAgeGroups
+            .groupBy('[AgeGroup], [Outcome]')
+            .getRawMany();
+    }
+}

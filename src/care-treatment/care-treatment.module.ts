@@ -203,6 +203,16 @@ import { GetOvcViralSuppressionAmongOvcPatientsGenderHandler } from './ovc/queri
 import { GetOvcViralSuppressionAmongOvcPatientsOverallHandler } from './ovc/queries/handlers/get-ovc-viral-suppression-among-ovc-patients-overall.handler';
 import { GetMissingDiagnosisDateByFacilityHandler } from './new-on-art/queries/handlers/get-missing-diagnosis-date-by-facility.handler';
 import { GetTreatmentOutcomesNetCohortHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-net-cohort.handler';
+import { FactTransCohortRetention } from './treatment-outcomes/entities/fact-trans-cohort-retention.model';
+import { GetOtzEnrolledAdolescentsByAgeHandler } from './otz/queries/handlers/get-otz-enrolled-adolescents-by-age.handler';
+import { GetOtzAdolescentsEnrolledByPartnerHandler } from './otz/queries/handlers/get-otz-adolescents-enrolled-by-partner.handler';
+import { GetOtzAdolescentsEnrolledByCountyHandler } from './otz/queries/handlers/get-otz-adolescents-enrolled-by-county.handler';
+import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-sex.handler';
+import { GetOtzOutcomesByAgeGroupsHandler } from './otz/queries/handlers/get-otz-outcomes-by-age-groups.handler';
+import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-age.handler';
+import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-county.handler';
+import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-partner.handler';
+import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-sex.handler';
 
 
 @Module({
@@ -243,7 +253,8 @@ import { GetTreatmentOutcomesNetCohortHandler } from './treatment-outcomes/queri
                 FactCtTimeToArtLast12M,
                 FactTransOtzEnrollments,
                 FactTransOtzOutcome,
-                FactTransOvcEnrollments
+                FactTransOvcEnrollments,
+                FactTransCohortRetention
             ],
             'mssql'
         )
@@ -400,7 +411,16 @@ import { GetTreatmentOutcomesNetCohortHandler } from './treatment-outcomes/queri
         GetOvcViralSuppressionAmongOvcPatientsGenderHandler,
         GetOvcViralSuppressionAmongOvcPatientsOverallHandler,
         GetTreatmentOutcomesNetCohortHandler,
-        GetMissingDiagnosisDateByFacilityHandler
+        GetMissingDiagnosisDateByFacilityHandler,
+        GetOtzEnrolledAdolescentsByAgeHandler,
+        GetOtzAdolescentsEnrolledByPartnerHandler,
+        GetOtzAdolescentsEnrolledByCountyHandler,
+        GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHandler,
+        GetOtzOutcomesByAgeGroupsHandler,
+        GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeHandler,
+        GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler,
+        GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler,
+        GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler
     ],
     controllers: [CareTreatmentController]
 })

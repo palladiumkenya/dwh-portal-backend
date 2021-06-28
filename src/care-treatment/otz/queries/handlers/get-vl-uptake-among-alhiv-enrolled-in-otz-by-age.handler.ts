@@ -14,7 +14,7 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByAgeHandler implements IQueryHan
 
     async execute(query: GetVlUptakeAmongAlhivEnrolledInOtzByAgeQuery): Promise<any> {
         const vlUptakeAmongAlHivEnrolledInOtzByAge = this.repository.createQueryBuilder('f')
-            .select(['[DATIM_AgeGroup] ageGroup, COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM(SUM([EligibleVL])) over () as vl_uptake_percent'])
+            .select(['[DATIM_AgeGroup] ageGroup, COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent'])
             .andWhere('f.OTZEnrollmentDate IS NOT NULL');
 
         if (query.county) {

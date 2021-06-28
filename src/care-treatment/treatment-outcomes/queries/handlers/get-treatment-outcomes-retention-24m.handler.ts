@@ -1,22 +1,22 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransRetention } from '../../entities/fact-trans-retention.model';
 import { Repository } from 'typeorm';
 import { GetTreatmentOutcomesRetention24mQuery } from '../impl/get-treatment-outcomes-retention-24m.query';
+import { FactTransCohortRetention } from '../../entities/fact-trans-cohort-retention.model';
 
 @QueryHandler(GetTreatmentOutcomesRetention24mQuery)
 export class GetTreatmentOutcomesRetention24mHandler implements IQueryHandler<GetTreatmentOutcomesRetention24mQuery> {
     constructor(
-        @InjectRepository(FactTransRetention, 'mssql')
-        private readonly repository: Repository<FactTransRetention>
+        @InjectRepository(FactTransCohortRetention, 'mssql')
+        private readonly repository: Repository<FactTransCohortRetention>
     ) {
 
     }
 
     async execute(query: GetTreatmentOutcomesRetention24mQuery): Promise<any> {
         const retention = this.repository.createQueryBuilder('f')
-            .select(['f.StartART_Year year, SUM([18Mstatus]) retention'])
-            .where('f.MFLCode IS NOT NULL');
+            .select(['StartARTYear, SUM([M18Retained]) m18Retention, (SUM(f.[M18Retained]) * 100.0)/ Sum(SUM(f.[M18NetCohort])) OVER (partition by StartARTYear Order by StartARTYear) AS Percentage'])
+            .where('Year(GetDate())- StartARTYear <=10');
 
         if (query.county) {
             retention.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -35,8 +35,9 @@ export class GetTreatmentOutcomesRetention24mHandler implements IQueryHandler<Ge
         }
 
         return await retention
-            .groupBy('f.StartART_Year')
-            .orderBy('f.StartART_Year')
+            .groupBy('f.StartArtYear')
+            .having('SUM([M18NetCohort])>0')
+            .orderBy('f.StartArtYear')
             .getRawMany();
     }
 }

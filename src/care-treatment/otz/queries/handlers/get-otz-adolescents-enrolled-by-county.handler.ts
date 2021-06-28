@@ -1,21 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetOtzEnrollmentAmongAlhivAndOnArtByCountyQuery } from '../impl/get-otz-enrollment-among-alhiv-and-on-art-by-county.query';
+import { GetOtzAdolescentsEnrolledByCountyQuery } from '../impl/get-otz-adolescents-enrolled-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
 
-@QueryHandler(GetOtzEnrollmentAmongAlhivAndOnArtByCountyQuery)
-export class GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler implements IQueryHandler<GetOtzEnrollmentAmongAlhivAndOnArtByCountyQuery> {
+@QueryHandler(GetOtzAdolescentsEnrolledByCountyQuery)
+export class GetOtzAdolescentsEnrolledByCountyHandler implements IQueryHandler<GetOtzAdolescentsEnrolledByCountyQuery> {
     constructor(
         @InjectRepository(FactTransOtzEnrollments, 'mssql')
         private readonly repository: Repository<FactTransOtzEnrollments>
     ) {
     }
 
-    async execute(query: GetOtzEnrollmentAmongAlhivAndOnArtByCountyQuery) {
+    async execute(query: GetOtzAdolescentsEnrolledByCountyQuery): Promise<any> {
         const otzEnrollmentsCounty = this.repository.createQueryBuilder('f')
-            .select(['[County], COUNT(OTZ_Traning) count_training, SUM([TXCurr]) TXCurr, SUM(f.[TXCurr]) * 100.0 / SUM(SUM(f.[TXCurr])) OVER () AS Percentage'])
-            .andWhere('f.OTZEnrollmentDate IS NOT NULL');
+            .select(['[County], COUNT(*) totalAdolescents']);
 
         if (query.county) {
             otzEnrollmentsCounty.andWhere('f.County IN (:...counties)', { counties: query.county });
