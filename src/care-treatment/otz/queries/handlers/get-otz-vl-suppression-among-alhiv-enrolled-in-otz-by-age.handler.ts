@@ -14,8 +14,8 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeHandler implements I
 
     async execute(query: GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeQuery): Promise<any> {
         const vlSuppressionOtzByAge = this.repository.createQueryBuilder('f')
-            .select(['[DATIM_AgeGroup] ageGroup, Last12MVLResult, COUNT(Last12MVLResult) AS vlSuppression'])
-            .andWhere('f.MFLCode IS NOT NULL');
+            .select(['[DATIM_AgeGroup] ageGroup, Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression'])
+            .andWhere('f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL');
 
         if (query.county) {
             vlSuppressionOtzByAge.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -35,6 +35,7 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeHandler implements I
 
         return await vlSuppressionOtzByAge
             .groupBy('[DATIM_AgeGroup], Last12MVLResult')
+            .orderBy('[DATIM_AgeGroup]')
             .getRawMany();
     }
 }

@@ -14,8 +14,8 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler implements I
 
     async execute(query: GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexQuery): Promise<any> {
         const vlSuppressionOtzBySex = this.repository.createQueryBuilder('f')
-            .select(['[Gender], Last12MVLResult, COUNT(Last12MVLResult) AS vlSuppression'])
-            .andWhere('f.MFLCode IS NOT NULL');
+            .select(['[Gender], Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression'])
+            .andWhere('f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL');
 
         if (query.county) {
             vlSuppressionOtzBySex.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -35,6 +35,7 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler implements I
 
         return await vlSuppressionOtzBySex
             .groupBy('[Gender], Last12MVLResult')
+            .orderBy('[Gender]')
             .getRawMany();
     }
 }
