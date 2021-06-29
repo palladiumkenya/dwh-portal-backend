@@ -20,7 +20,7 @@ export class GetConsistencyByFacilityHandler implements IQueryHandler<GetConsist
         let consistencyByFacilitySql;
         if (query.docket.toLowerCase() === 'hts') {
             consistencyByFacilitySql = `select
-                d.facilityId as MFLCode, name as FacilityName,County,Subcounty,Agency,Partner,ownership,
+                d.facilityId as MFLCode, name as FacilityName,County,Subcounty,Agency,Partner,
                 case when NumberOfUploads is NULL THEN 0 ELSE NumberOfUploads END AS NumberOfUploads
                 from dim_facility d
                 left join (
@@ -36,7 +36,7 @@ export class GetConsistencyByFacilityHandler implements IQueryHandler<GetConsist
                 where isHts = 1 and (NumberOfUploads <3 OR NumberOfUploads is NULL) `;
         } else if (query.docket.toLowerCase() === 'pkv') {
             consistencyByFacilitySql = `select
-                d.facilityId as MFLCode, name as FacilityName,County,Subcounty,Agency,Partner,ownership,
+                d.facilityId as MFLCode, name as FacilityName,County,Subcounty,Agency,Partner,
                 case when NumberOfUploads is NULL THEN 0 ELSE NumberOfUploads END AS NumberOfUploads
                 from dim_facility d
                 left join (
@@ -52,7 +52,7 @@ export class GetConsistencyByFacilityHandler implements IQueryHandler<GetConsist
                 where isPkv = 1 and (NumberOfUploads <3 OR NumberOfUploads is NULL) `;
         } else {
             consistencyByFacilitySql = `select
-                d.facilityId as MFLCode, name as FacilityName,County,Subcounty,Agency,Partner,ownership,
+                d.facilityId as MFLCode, name as FacilityName,County,Subcounty,Agency,Partner,
                 case when NumberOfUploads is NULL THEN 0 ELSE NumberOfUploads END AS NumberOfUploads
                 from dim_facility d
                 left join (
