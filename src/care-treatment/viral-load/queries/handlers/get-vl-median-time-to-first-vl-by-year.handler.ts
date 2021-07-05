@@ -64,11 +64,11 @@ export class GetVlMedianTimeToFirstVlByYearHandler implements IQueryHandler<GetV
 
         if (query.partner) {
             medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
-                .select(['StartYr year, MedianTimeToFirstVL_yearPartner medianTime'])
+                .select(['StartYr year, MedianTimeToFirstVL_year medianTime'])
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
 
             return await medianTimeToFirstVlSql
-                .groupBy('StartYr, MedianTimeToFirstVL_yearPartner')
+                .groupBy('StartYr, MedianTimeToFirstVL_year')
                 .orderBy('f.StartYr')
                 .getRawMany();
         }
