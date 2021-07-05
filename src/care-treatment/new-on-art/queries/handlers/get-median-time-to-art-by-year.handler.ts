@@ -20,7 +20,7 @@ export class GetMedianTimeToArtByYearHandler implements IQueryHandler<GetMedianT
         if (query.county) {
             medianTimeToARTSql = this.repository.createQueryBuilder('f')
                 .select(['StartYr year, MedianTimeToARTDiagnosis_yearCounty medianTime'])
-                .andWhere('f.County = :County', { County: query.county });
+                .andWhere('f.County IN (:...counties)', { counties: query.county });
 
             return await medianTimeToARTSql
                 .groupBy('StartYr, MedianTimeToARTDiagnosis_yearCounty')
@@ -31,8 +31,8 @@ export class GetMedianTimeToArtByYearHandler implements IQueryHandler<GetMedianT
         if (query.county && query.partner) {
             medianTimeToARTSql = this.repository.createQueryBuilder('f')
                 .select(['StartYr year, MedianTimeToARTDiagnosis_YearCountyPartner medianTime'])
-                .andWhere('f.CTPartner = :CTPartner', { CTPartner: query.partner })
-                .andWhere('f.County = :County', { County: query.county });
+                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner })
+                .andWhere('f.County IN (:...counties)', { counties: query.county });
 
             return await medianTimeToARTSql
                 .groupBy('StartYr, MedianTimeToARTDiagnosis_YearCountyPartner')
@@ -43,7 +43,7 @@ export class GetMedianTimeToArtByYearHandler implements IQueryHandler<GetMedianT
         if (query.subCounty) {
             medianTimeToARTSql = this.repository.createQueryBuilder('f')
                 .select(['StartYr year, MedianTimeToARTDiagnosis_yearSbCty medianTime'])
-                .andWhere('f.SubCounty = :SubCounty', { SubCounty: query.subCounty });
+                .andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
 
             return await medianTimeToARTSql
                 .groupBy('StartYr, MedianTimeToARTDiagnosis_yearSbCty')
@@ -54,7 +54,7 @@ export class GetMedianTimeToArtByYearHandler implements IQueryHandler<GetMedianT
         if (query.facility) {
             medianTimeToARTSql = this.repository.createQueryBuilder('f')
                 .select(['StartYr year, MedianTimeToARTDiagnosis_yearFacility medianTime'])
-                .andWhere('f.FacilityName = :FacilityName', { FacilityName: query.facility });
+                .andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
 
             return await medianTimeToARTSql
                 .groupBy('StartYr, MedianTimeToARTDiagnosis_yearFacility')
@@ -65,7 +65,7 @@ export class GetMedianTimeToArtByYearHandler implements IQueryHandler<GetMedianT
         if (query.partner) {
             medianTimeToARTSql = this.repository.createQueryBuilder('f')
                 .select(['StartYr year, MedianTimeToARTDiagnosis_yearPartner medianTime'])
-                .andWhere('f.CTPartner = :CTPartner', { CTPartner: query.partner });
+                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
 
             return await medianTimeToARTSql
                 .groupBy('StartYr, MedianTimeToARTDiagnosis_yearPartner')

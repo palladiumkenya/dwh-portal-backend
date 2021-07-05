@@ -22,7 +22,7 @@ export class GetMedianTimeToArtByPartnerHandler implements IQueryHandler<GetMedi
         if (query.county) {
             medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
                 .select(['CTPartner partner, MedianTimeToART_Partner medianTime'])
-                .andWhere('f.County = :County', { County: query.county });
+                .andWhere('f.County IN (:...counties)', { counties: query.county });
 
             return await medianTimeToARTPartnerSql
                 .groupBy('CTPartner, MedianTimeToART_Partner')
@@ -33,7 +33,7 @@ export class GetMedianTimeToArtByPartnerHandler implements IQueryHandler<GetMedi
         if (query.subCounty) {
             medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
                 .select(['CTPartner partner, MedianTimeToART_Partner medianTime'])
-                .andWhere('f.SubCounty = :SubCounty', { SubCounty: query.subCounty });
+                .andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
 
 
             return await medianTimeToARTPartnerSql
@@ -45,7 +45,7 @@ export class GetMedianTimeToArtByPartnerHandler implements IQueryHandler<GetMedi
         if (query.partner) {
             medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
                 .select(['CTPartner partner, MedianTimeToART_Partner medianTime'])
-                .andWhere('f.CTPartner = :Partner', { Partner: query.partner });
+                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
 
             return await medianTimeToARTPartnerSql
                 .groupBy('CTPartner, MedianTimeToART_Partner')
