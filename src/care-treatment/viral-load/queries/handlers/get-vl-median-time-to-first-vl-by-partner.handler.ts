@@ -22,7 +22,7 @@ export class GetVlMedianTimeToFirstVlByPartnerHandler implements IQueryHandler<G
         if (query.county) {
             medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
                 .select(['CTPartner Partner, MedianTimeToFirstVL_Partner medianTime'])
-                .andWhere('f.County = :County', { County: query.county });
+                .andWhere('f.County IN (:...counties)', { counties: query.county });
 
             return await medianTimeToFirstVlSql
                 .groupBy('CTPartner, MedianTimeToFirstVL_Partner')
@@ -33,7 +33,7 @@ export class GetVlMedianTimeToFirstVlByPartnerHandler implements IQueryHandler<G
         if (query.subCounty) {
             medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
                 .select(['CTPartner Partner, MedianTimeToFirstVL_Partner medianTime'])
-                .andWhere('f.SubCounty = :SubCounty', { SubCounty: query.subCounty });
+                .andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
 
             return await medianTimeToFirstVlSql
                 .groupBy('CTPartner, MedianTimeToFirstVL_Partner')
@@ -44,7 +44,7 @@ export class GetVlMedianTimeToFirstVlByPartnerHandler implements IQueryHandler<G
         if (query.partner) {
             medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
                 .select(['CTPartner Partner, MedianTimeToFirstVL_Partner medianTime'])
-                .andWhere('f.CTPartner = :CTPartner', { CTPartner: query.partner });
+                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
 
             return await medianTimeToFirstVlSql
                 .groupBy('CTPartner, MedianTimeToFirstVL_Partner')
