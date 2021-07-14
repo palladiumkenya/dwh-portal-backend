@@ -18,6 +18,7 @@ export class GetCtSiteGpsHandler implements IQueryHandler<GetCtSiteGpsQuery> {
             .select(['facilityId mfl, name facility, county, subCounty, agency, partner, owner, latitude, longitude, LTRIM(RTRIM(EMR)) emr, isCT, isPkv, isHts'])
             .where('q.name IS NOT NULL')
             .andWhere('q.EMR IS NOT NULL')
+            .andWhere("q.partner <> 'IRDO'")
             .andWhere("q.EMR <> ''");
 
         if (query.county) {
