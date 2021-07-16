@@ -17,10 +17,10 @@ export class GetRecencyByCountyHandler implements IQueryHandler<GetRecencyByCoun
     async execute(query: GetRecencyByCountyQuery): Promise<RecencyByCountyDto> {
         const params = [];
         params.push(query.docket);
-        let recencyOfReportingByCountySql = `SELECT a.county
-            \t,recency
+        let recencyOfReportingByCountySql = `SELECT b.county
+            \t,CASE WHEN recency IS NULL THEN 0 ELSE recency END AS recency
             \t,b.expected
-            \t,ROUND(recency * 100 / b.expected) AS Percentage
+            \t,CASE WHEN recency IS NULL THEN 0 ELSE ROUND(recency * 100 / b.expected) END AS Percentage
             FROM (
             \tSELECT SUM(recency) AS recency
             \t\t,county
@@ -63,7 +63,7 @@ export class GetRecencyByCountyHandler implements IQueryHandler<GetRecencyByCoun
         if (query.docket) {
             recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} GROUP BY county
                                     \t) a
-                                    INNER JOIN (
+                                    RIGHT JOIN (
                                     \tSELECT SUM(expected) AS expected
                                     \t\t,county
                                     \tFROM expected_uploads
