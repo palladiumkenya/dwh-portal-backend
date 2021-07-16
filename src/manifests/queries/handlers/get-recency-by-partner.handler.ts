@@ -16,10 +16,10 @@ export class GetRecencyByPartnerHandler implements IQueryHandler<GetRecencyByPar
     async execute(query: GetRecencyByPartnerQuery): Promise<RecencyByPartnerDto> {
         const params = [];
         params.push(query.docket);
-        let recencyOfReportingByPartnerSql = `SELECT a.partner
-                                    \t,recency
+        let recencyOfReportingByPartnerSql = `SELECT CASE WHEN b.partner IS NULL OR b.partner = 'NULL' THEN 'No Partner' ELSE b.partner END AS partner
+                                    \t,CASE WHEN recency IS NULL THEN 0 ELSE recency END AS recency
                                     \t,b.expected
-                                    \t,ROUND(recency * 100 / b.expected) AS Percentage
+                                    \t,CASE WHEN recency IS NULL THEN 0 ELSE ROUND(recency * 100 / b.expected) END AS Percentage
                                     FROM (
                                     \tSELECT SUM(recency) AS recency
                                     \t\t,partner
@@ -62,7 +62,7 @@ export class GetRecencyByPartnerHandler implements IQueryHandler<GetRecencyByPar
         if (query.docket) {
             recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} GROUP BY partner
                                     \t) a
-                                    INNER JOIN (
+                                    RIGHT JOIN (
                                     \tSELECT SUM(expected) AS expected
                                     \t\t,partner
                                     \tFROM expected_uploads
