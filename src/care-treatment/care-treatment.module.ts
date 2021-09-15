@@ -216,6 +216,7 @@ import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler } from './otz/qu
 import { GetCovidAdultPLHIVCurrentOnTreatmentHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment.handler';
 import { FactTransCovidVaccines } from './covid/entities/fact-trans-covid-vaccines.model';
 import { GetCovidPartiallyVaccinatedHandler } from './covid/queries/handlers/get-covid-partially-vaccinated.handler';
+import { GetCovidFullyVaccinatedHandler } from './covid/queries/handlers/get-covid-fully-vaccinated.handler';
 
 
 @Module({
@@ -426,7 +427,8 @@ import { GetCovidPartiallyVaccinatedHandler } from './covid/queries/handlers/get
         GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler,
         GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler,
         GetCovidAdultPLHIVCurrentOnTreatmentHandler,
-        GetCovidPartiallyVaccinatedHandler
+        GetCovidPartiallyVaccinatedHandler,
+        GetCovidFullyVaccinatedHandler
     ],
     controllers: [CareTreatmentController]
 })

@@ -16,7 +16,7 @@ export class GetCovidPartiallyVaccinatedHandler implements IQueryHandler<GetCovi
     async execute(query: GetCovidPartiallyVaccinatedQuery): Promise<any> {
         const covidPartiallyVaccinated = this.repository.createQueryBuilder('f')
             .select(['Count (f.PatientID) PartiallyVaccinated'])
-            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID')
+            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode = g.MFLCode and f.PatientPK = g.PatientPK')
             .where('g.ageLV >= 18 AND f.VaccinationStatus=\'Partially Vaccinated\' ');
 
         if (query.county) {
@@ -34,10 +34,6 @@ export class GetCovidPartiallyVaccinatedHandler implements IQueryHandler<GetCovi
         if (query.partner) {
             covidPartiallyVaccinated.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
-
-
-        console.log(covidPartiallyVaccinated);
-
 
         return await covidPartiallyVaccinated.getRawOne();
     }
