@@ -213,6 +213,7 @@ import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeHandler } from './otz/qu
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-county.handler';
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-partner.handler';
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-sex.handler';
+import { GetCovidAdultPLHIVCurrentOnTreatmentHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment.handler';
 
 
 @Module({
@@ -420,7 +421,8 @@ import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler } from './otz/qu
         GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeHandler,
         GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler,
         GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler,
-        GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler
+        GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler,
+        GetCovidAdultPLHIVCurrentOnTreatmentHandler
     ],
     controllers: [CareTreatmentController]
 })
