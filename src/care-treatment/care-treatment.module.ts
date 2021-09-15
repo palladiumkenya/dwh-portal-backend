@@ -217,6 +217,8 @@ import { GetCovidAdultPLHIVCurrentOnTreatmentHandler } from './covid/queries/han
 import { FactTransCovidVaccines } from './covid/entities/fact-trans-covid-vaccines.model';
 import { GetCovidPartiallyVaccinatedHandler } from './covid/queries/handlers/get-covid-partially-vaccinated.handler';
 import { GetCovidFullyVaccinatedHandler } from './covid/queries/handlers/get-covid-fully-vaccinated.handler';
+import { DimAgeGroups } from './common/entities/dim-age-groups.model';
+import { GetCovidAdultPLHIVVaccinatedByAgeHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-age.handler';
 
 
 @Module({
@@ -259,7 +261,8 @@ import { GetCovidFullyVaccinatedHandler } from './covid/queries/handlers/get-cov
                 FactTransOtzOutcome,
                 FactTransOvcEnrollments,
                 FactTransCohortRetention,
-                FactTransCovidVaccines
+                FactTransCovidVaccines,
+                DimAgeGroups
             ],
             'mssql'
         )
@@ -428,7 +431,8 @@ import { GetCovidFullyVaccinatedHandler } from './covid/queries/handlers/get-cov
         GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler,
         GetCovidAdultPLHIVCurrentOnTreatmentHandler,
         GetCovidPartiallyVaccinatedHandler,
-        GetCovidFullyVaccinatedHandler
+        GetCovidFullyVaccinatedHandler,
+        GetCovidAdultPLHIVVaccinatedByAgeHandler
     ],
     controllers: [CareTreatmentController]
 })
