@@ -214,6 +214,9 @@ import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler } from './otz
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-partner.handler';
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-sex.handler';
 import { GetCovidAdultPLHIVCurrentOnTreatmentHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment.handler';
+import { FactTransCovidVaccines } from './covid/entities/fact-trans-covid-vaccines.model';
+import { GetCovidPartiallyVaccinatedHandler } from './covid/queries/handlers/get-covid-partially-vaccinated.handler';
+import { GetCovidFullyVaccinatedHandler } from './covid/queries/handlers/get-covid-fully-vaccinated.handler';
 
 
 @Module({
@@ -255,7 +258,8 @@ import { GetCovidAdultPLHIVCurrentOnTreatmentHandler } from './covid/queries/han
                 FactTransOtzEnrollments,
                 FactTransOtzOutcome,
                 FactTransOvcEnrollments,
-                FactTransCohortRetention
+                FactTransCohortRetention,
+                FactTransCovidVaccines
             ],
             'mssql'
         )
@@ -422,7 +426,9 @@ import { GetCovidAdultPLHIVCurrentOnTreatmentHandler } from './covid/queries/han
         GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler,
         GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler,
         GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler,
-        GetCovidAdultPLHIVCurrentOnTreatmentHandler
+        GetCovidAdultPLHIVCurrentOnTreatmentHandler,
+        GetCovidPartiallyVaccinatedHandler,
+        GetCovidFullyVaccinatedHandler
     ],
     controllers: [CareTreatmentController]
 })

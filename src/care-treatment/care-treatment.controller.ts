@@ -169,6 +169,8 @@ import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeQuery } from './otz/quer
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyQuery } from './otz/queries/impl/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-county.query';
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerQuery } from './otz/queries/impl/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-partner.query';
 import { GetCovidAdultPLHIVCurrentOnTreatmentQuery } from './covid/queries/impl/get-covid-adult-plhiv-current-on-treatment.query';
+import { GetCovidPartiallyVaccinatedQuery } from './covid/queries/impl/get-covid-partially-vaccinated.query';
+import { GetCovidFullyVaccinatedQuery } from './covid/queries/impl/get-covid-fully-vaccinated.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -6962,4 +6964,119 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
+    @Get('getCovidPartiallyVaccinated')
+    async getCovidPartiallyVaccinated(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidPartiallyVaccinatedQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidFullyVaccinated')
+    async getCovidFullyVaccinated(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidFullyVaccinatedQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
 }
