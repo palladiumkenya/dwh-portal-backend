@@ -226,6 +226,8 @@ import { GetCovidAdultPLHIVCurrentOnTreatmentByGenderHandler } from './covid/que
 import { GetCovidAdultPLHIVCurrentOnTreatmentByAgeGroupHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment-by-age-group.handler';
 import { GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment-by-county.handler';
 import { GetCovidAdultPLHIVCurrentOnTreatmentByPartnerHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment-by-partner.handler';
+import { GetCovidPLHIVCurrentOnArtHandler } from './covid/queries/handlers/get-covid-plhiv-current-on-art.handler';
+import { GetCovidSeverityByGenderHandler } from './covid/queries/handlers/get-covid-severity-by-gender.handler';
 
 
 @Module({
@@ -446,7 +448,9 @@ import { GetCovidAdultPLHIVCurrentOnTreatmentByPartnerHandler } from './covid/qu
         GetCovidAdultPLHIVCurrentOnTreatmentByGenderHandler,
         GetCovidAdultPLHIVCurrentOnTreatmentByAgeGroupHandler,
         GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler,
-        GetCovidAdultPLHIVCurrentOnTreatmentByPartnerHandler
+        GetCovidAdultPLHIVCurrentOnTreatmentByPartnerHandler,
+        GetCovidPLHIVCurrentOnArtHandler,
+        GetCovidSeverityByGenderHandler
     ],
     controllers: [CareTreatmentController]
 })
