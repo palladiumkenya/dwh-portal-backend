@@ -222,6 +222,10 @@ import { GetCovidAdultPLHIVVaccinatedByAgeHandler } from './covid/queries/handle
 import { GetCovidAdultPLHIVVaccinatedByGenderHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-gender.handler';
 import { GetCovidAdultPLHIVVaccinatedByPartnerHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-partner.handler';
 import { GetCovidAdultPLHIVVaccinatedByCountyHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-county.handler';
+import { GetCovidAdultPLHIVCurrentOnTreatmentByGenderHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment-by-gender.handler';
+import { GetCovidAdultPLHIVCurrentOnTreatmentByAgeGroupHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment-by-age-group.handler';
+import { GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment-by-county.handler';
+import { GetCovidAdultPLHIVCurrentOnTreatmentByPartnerHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment-by-partner.handler';
 
 
 @Module({
@@ -438,7 +442,11 @@ import { GetCovidAdultPLHIVVaccinatedByCountyHandler } from './covid/queries/han
         GetCovidAdultPLHIVVaccinatedByAgeHandler,
         GetCovidAdultPLHIVVaccinatedByGenderHandler,
         GetCovidAdultPLHIVVaccinatedByPartnerHandler,
-        GetCovidAdultPLHIVVaccinatedByCountyHandler
+        GetCovidAdultPLHIVVaccinatedByCountyHandler,
+        GetCovidAdultPLHIVCurrentOnTreatmentByGenderHandler,
+        GetCovidAdultPLHIVCurrentOnTreatmentByAgeGroupHandler,
+        GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler,
+        GetCovidAdultPLHIVCurrentOnTreatmentByPartnerHandler
     ],
     controllers: [CareTreatmentController]
 })
