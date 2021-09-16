@@ -175,6 +175,10 @@ import { GetCovidAdultPLHIVVaccinatedByAgeQuery } from './covid/queries/impl/get
 import { GetCovidAdultPlhivVaccinatedByGenderQuery } from './covid/queries/impl/get-covid-adult-plhiv-vaccinated-by-gender.query';
 import { GetCovidAdultPlhivVaccinatedByCountyQuery } from './covid/queries/impl/get-covid-adult-plhiv-vaccinated-by-county.query';
 import { GetCovidAdultPlhivVaccinatedByPartnerQuery } from './covid/queries/impl/get-covid-adult-plhiv-vaccinated-by-partner.query';
+import { GetCovidAdultPlhivCurrentOnTreatmentByGenderQuery } from './covid/queries/impl/get-covid-adult-plhiv-current-on-treatment-by-gender.query';
+import { GetCovidAdultPlhivCurrentOnTreatmentByAgeGroupQuery } from './covid/queries/impl/get-covid-adult-plhiv-current-on-treatment-by-age-group.query';
+import { GetCovidAdultPlhivCurrentOnTreatmentByCountyQuery } from './covid/queries/impl/get-covid-adult-plhiv-current-on-treatment-by-county.query';
+import { GetCovidAdultPlhivCurrentOnTreatmentByPartnerQuery } from './covid/queries/impl/get-covid-adult-plhiv-current-on-treatment-by-partner.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -7315,4 +7319,237 @@ export class CareTreatmentController {
 
         return this.queryBus.execute(query);
     }
+
+    @Get('getCovidAdultPLHIVCurrentOnTreatmentByGender')
+    async getCovidAdultPLHIVCurrentOnTreatmentByGender(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidAdultPlhivCurrentOnTreatmentByGenderQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidAdultPLHIVCurrentOnTreatmentByAgeGroup')
+    async getCovidAdultPLHIVCurrentOnTreatmentByAgeGroup(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidAdultPlhivCurrentOnTreatmentByAgeGroupQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidAdultPLHIVCurrentOnTreatmentByCounty')
+    async getCovidAdultPLHIVCurrentOnTreatmentByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidAdultPlhivCurrentOnTreatmentByCountyQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidAdultPLHIVCurrentOnTreatmentByPartner')
+    async getCovidAdultPLHIVCurrentOnTreatmentByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidAdultPlhivCurrentOnTreatmentByPartnerQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
 }
