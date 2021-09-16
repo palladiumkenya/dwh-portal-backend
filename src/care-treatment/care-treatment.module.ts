@@ -220,6 +220,8 @@ import { GetCovidFullyVaccinatedHandler } from './covid/queries/handlers/get-cov
 import { DimAgeGroups } from './common/entities/dim-age-groups.model';
 import { GetCovidAdultPLHIVVaccinatedByAgeHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-age.handler';
 import { GetCovidAdultPLHIVVaccinatedByGenderHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-gender.handler';
+import { GetCovidAdultPLHIVVaccinatedByPartnerHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-partner.handler';
+import { GetCovidAdultPLHIVVaccinatedByCountyHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-county.handler';
 
 
 @Module({
@@ -434,7 +436,9 @@ import { GetCovidAdultPLHIVVaccinatedByGenderHandler } from './covid/queries/han
         GetCovidPartiallyVaccinatedHandler,
         GetCovidFullyVaccinatedHandler,
         GetCovidAdultPLHIVVaccinatedByAgeHandler,
-        GetCovidAdultPLHIVVaccinatedByGenderHandler
+        GetCovidAdultPLHIVVaccinatedByGenderHandler,
+        GetCovidAdultPLHIVVaccinatedByPartnerHandler,
+        GetCovidAdultPLHIVVaccinatedByCountyHandler
     ],
     controllers: [CareTreatmentController]
 })
