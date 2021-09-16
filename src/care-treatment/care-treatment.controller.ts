@@ -179,6 +179,8 @@ import { GetCovidAdultPlhivCurrentOnTreatmentByGenderQuery } from './covid/queri
 import { GetCovidAdultPlhivCurrentOnTreatmentByAgeGroupQuery } from './covid/queries/impl/get-covid-adult-plhiv-current-on-treatment-by-age-group.query';
 import { GetCovidAdultPlhivCurrentOnTreatmentByCountyQuery } from './covid/queries/impl/get-covid-adult-plhiv-current-on-treatment-by-county.query';
 import { GetCovidAdultPlhivCurrentOnTreatmentByPartnerQuery } from './covid/queries/impl/get-covid-adult-plhiv-current-on-treatment-by-partner.query';
+import { GetCovidPlhivCurrentOnArtQuery } from './covid/queries/impl/get-covid-plhiv-current-on-art.query';
+import { GetCovidSeverityByGenderQuery } from './covid/queries/impl/get-covid-severity-by-gender.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -7508,6 +7510,122 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetCovidAdultPlhivCurrentOnTreatmentByPartnerQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidPLHIVCurrentOnArt')
+    async getCovidPLHIVCurrentOnArt(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidPlhivCurrentOnArtQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidSeverityByGender')
+    async getCovidSeverityByGender(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidSeverityByGenderQuery();
 
         if(county) {
             query.county = county;
