@@ -231,6 +231,9 @@ import { GetCovidSeverityByGenderHandler } from './covid/queries/handlers/get-co
 import { GetCovidOverallAdmissionHandler } from './covid/queries/handlers/get-covid-overall-admission.handler';
 import { GetCovidOverallAdmissionMalesHandler } from './covid/queries/handlers/get-covid-overall-admission-males.handler';
 import { GetCovidOverallAdmissionFemalesHandler } from './covid/queries/handlers/get-covid-overall-admission-females.handler';
+import { GetCovidAdmissionByAgeHandler } from './covid/queries/handlers/get-covid-admission-by-age.handler';
+import { GetCovidEverHadInfectionHandler } from './covid/queries/handlers/get-covid-ever-had-infection.handler';
+import { GetCovidSymptomaticInfectionsHandler } from './covid/queries/handlers/get-covid-symptomatic-infections.handler';
 
 
 @Module({
@@ -456,7 +459,10 @@ import { GetCovidOverallAdmissionFemalesHandler } from './covid/queries/handlers
         GetCovidSeverityByGenderHandler,
         GetCovidOverallAdmissionHandler,
         GetCovidOverallAdmissionMalesHandler,
-        GetCovidOverallAdmissionFemalesHandler
+        GetCovidOverallAdmissionFemalesHandler,
+        GetCovidAdmissionByAgeHandler,
+        GetCovidEverHadInfectionHandler,
+        GetCovidSymptomaticInfectionsHandler
     ],
     controllers: [CareTreatmentController]
 })
