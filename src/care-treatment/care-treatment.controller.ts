@@ -172,6 +172,7 @@ import { GetCovidAdultPLHIVCurrentOnTreatmentQuery } from './covid/queries/impl/
 import { GetCovidPartiallyVaccinatedQuery } from './covid/queries/impl/get-covid-partially-vaccinated.query';
 import { GetCovidFullyVaccinatedQuery } from './covid/queries/impl/get-covid-fully-vaccinated.query';
 import { GetCovidAdultPLHIVVaccinatedByAgeQuery } from './covid/queries/impl/get-covid-adult-plhiv-vaccinated-by-age.query';
+import { GetCovidAdultPlhivVaccinatedByGenderQuery } from './covid/queries/impl/get-covid-adult-plhiv-vaccinated-by-gender.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -7095,6 +7096,64 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetCovidAdultPLHIVVaccinatedByAgeQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidAdultPLHIVVaccinatedByGender')
+    async getCovidAdultPLHIVVaccinatedByGender(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidAdultPlhivVaccinatedByGenderQuery();
 
         if(county) {
             query.county = county;
