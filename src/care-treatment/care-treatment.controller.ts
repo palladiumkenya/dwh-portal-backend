@@ -184,6 +184,10 @@ import { GetCovidSeverityByGenderQuery } from './covid/queries/impl/get-covid-se
 import { GetCovidOverallAdmissionQuery } from './covid/queries/impl/get-covid-overall-admission.query';
 import { GetCovidOverallAdmissionMalesQuery } from './covid/queries/impl/get-covid-overall-admission-males.query';
 import { GetCovidOverallAdmissionFemalesQuery } from './covid/queries/impl/get-covid-overall-admission-females.query';
+import { GetCovidAdmissionByAgeQuery } from './covid/queries/impl/get-covid-admission-by-age.query';
+import { GetCovidEverHadInfectionQuery } from './covid/queries/impl/get-covid-ever-had-infection.query';
+import { GetCovidSymptomaticInfectionsQuery } from './covid/queries/impl/get-covid-symptomatic-infections.query';
+import { GetCovidOverallMissedAppointmentsQuery } from './covid/queries/impl/get-covid-overall-missed-appointments.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -7804,6 +7808,238 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetCovidOverallAdmissionFemalesQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidAdmissionByAge')
+    async getCovidAdmissionByAge(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidAdmissionByAgeQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('everHadCovidInfection')
+    async everHadCovidInfection(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidEverHadInfectionQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidSymptomaticInfection')
+    async getCovidSymptomaticInfection(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidSymptomaticInfectionsQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidOverallMissedAppointment')
+    async getCovidOverallMissedAppointment(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidOverallMissedAppointmentsQuery();
 
         if(county) {
             query.county = county;

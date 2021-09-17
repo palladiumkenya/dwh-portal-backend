@@ -39,6 +39,7 @@ export class GetCovidAdultPLHIVVaccinatedByCountyHandler implements IQueryHandle
 
         return await adultPLHIVVaccinatedByCounty
             .groupBy('County,VaccinationStatus')
+            .orderBy('Count(*)', 'DESC')
             .getRawMany();
     }
 }
