@@ -234,6 +234,7 @@ import { GetCovidOverallAdmissionFemalesHandler } from './covid/queries/handlers
 import { GetCovidAdmissionByAgeHandler } from './covid/queries/handlers/get-covid-admission-by-age.handler';
 import { GetCovidEverHadInfectionHandler } from './covid/queries/handlers/get-covid-ever-had-infection.handler';
 import { GetCovidSymptomaticInfectionsHandler } from './covid/queries/handlers/get-covid-symptomatic-infections.handler';
+import { GetCovidOverallMissedAppointmentsHandler } from './covid/queries/handlers/get-covid-overall-missed-appointments.handler';
 
 
 @Module({
@@ -462,7 +463,8 @@ import { GetCovidSymptomaticInfectionsHandler } from './covid/queries/handlers/g
         GetCovidOverallAdmissionFemalesHandler,
         GetCovidAdmissionByAgeHandler,
         GetCovidEverHadInfectionHandler,
-        GetCovidSymptomaticInfectionsHandler
+        GetCovidSymptomaticInfectionsHandler,
+        GetCovidOverallMissedAppointmentsHandler
     ],
     controllers: [CareTreatmentController]
 })
