@@ -669,6 +669,7 @@ export class CareTreatmentController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('agency') agency,
     ): Promise<any> {
         const query = new GetCtViralLoadCascadeActiveArtClientsQuery();
         if(county) {
@@ -695,6 +696,10 @@ export class CareTreatmentController {
             query.month = month;
         }
 
+        if (agency) {
+            query.agency = agency;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -706,6 +711,7 @@ export class CareTreatmentController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('agency') agency,
     ): Promise<any> {
         const query = new GetCtTxCurrByAgeAndSexQuery();
         if(county) {
@@ -722,6 +728,10 @@ export class CareTreatmentController {
 
         if (partner) {
             query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
         }
 
         return this.queryBus.execute(query);
