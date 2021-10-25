@@ -235,6 +235,9 @@ import { GetCovidAdmissionByAgeHandler } from './covid/queries/handlers/get-covi
 import { GetCovidEverHadInfectionHandler } from './covid/queries/handlers/get-covid-ever-had-infection.handler';
 import { GetCovidSymptomaticInfectionsHandler } from './covid/queries/handlers/get-covid-symptomatic-infections.handler';
 import { GetCovidOverallMissedAppointmentsHandler } from './covid/queries/handlers/get-covid-overall-missed-appointments.handler';
+import { GetCovidPercentageWhoMissedAppointmentsByAgeHandler } from './covid/queries/handlers/get-covid-percentage-who-missed-appointments-by-age.handler';
+import { GetCovidPercentageWhoMissedAppointmentsByCountyHandler } from './covid/queries/handlers/get-covid-percentage-who-missed-appointments-by-county.handler';
+import { GetCovidPercentageWhoMissedAppointmentsByPartnerHandler } from './covid/queries/handlers/get-covid-percentage-who-missed-appointments-by-partner.handler';
 
 
 @Module({
@@ -464,7 +467,10 @@ import { GetCovidOverallMissedAppointmentsHandler } from './covid/queries/handle
         GetCovidAdmissionByAgeHandler,
         GetCovidEverHadInfectionHandler,
         GetCovidSymptomaticInfectionsHandler,
-        GetCovidOverallMissedAppointmentsHandler
+        GetCovidOverallMissedAppointmentsHandler,
+        GetCovidPercentageWhoMissedAppointmentsByAgeHandler,
+        GetCovidPercentageWhoMissedAppointmentsByCountyHandler,
+        GetCovidPercentageWhoMissedAppointmentsByPartnerHandler
     ],
     controllers: [CareTreatmentController]
 })

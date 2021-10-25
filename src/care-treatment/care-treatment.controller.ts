@@ -188,6 +188,9 @@ import { GetCovidAdmissionByAgeQuery } from './covid/queries/impl/get-covid-admi
 import { GetCovidEverHadInfectionQuery } from './covid/queries/impl/get-covid-ever-had-infection.query';
 import { GetCovidSymptomaticInfectionsQuery } from './covid/queries/impl/get-covid-symptomatic-infections.query';
 import { GetCovidOverallMissedAppointmentsQuery } from './covid/queries/impl/get-covid-overall-missed-appointments.query';
+import { GetCovidPercentageWhoMissedAppointmentsByAgeQuery } from './covid/queries/impl/get-covid-percentage-who-missed-appointments-by-age.query';
+import { GetCovidPercentageWhoMissedAppointmentsByCountyQuery } from './covid/queries/impl/get-covid-percentage-who-missed-appointments-by-county.query';
+import { GetCovidPercentageWhoMissedAppointmentsByPartnerQuery } from './covid/queries/impl/get-covid-percentage-who-missed-appointments-by-partner.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -8040,6 +8043,180 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetCovidOverallMissedAppointmentsQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidPercentageWhoMissedAppointmentsByAgeGroup')
+    async getCovidPercentageWhoMissedAppointmentsByAgeGroup(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidPercentageWhoMissedAppointmentsByAgeQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidPercentageWhoMissedAppointmentsByCounty')
+    async getCovidPercentageWhoMissedAppointmentsByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidPercentageWhoMissedAppointmentsByCountyQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidPercentageWhoMissedAppointmentsByPartner')
+    async getCovidPercentageWhoMissedAppointmentsByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidPercentageWhoMissedAppointmentsByPartnerQuery();
 
         if(county) {
             query.county = county;
