@@ -39,6 +39,7 @@ export class GetCovidPercentageWhoMissedAppointmentsByAgeHandler implements IQue
 
         return await covidPercentageWhoMissedAppointmentsByAge
             .groupBy('AgeGroup')
+            .orderBy('AgeGroup')
             .getRawMany();
     }
 }
