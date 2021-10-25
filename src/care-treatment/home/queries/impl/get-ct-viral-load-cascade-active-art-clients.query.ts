@@ -3,6 +3,7 @@ export class GetCtViralLoadCascadeActiveArtClientsQuery {
     subCounty?: string[];
     facility?: string[];
     partner?: string[];
+    agency?: string[];
     year?: number;
     month?: number;
 }
