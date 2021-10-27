@@ -774,6 +774,10 @@ export class CareTreatmentController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetTxNewTrendsQuery();
         if(county) {
@@ -800,6 +804,22 @@ export class CareTreatmentController {
             query.month = month;
         }
 
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -811,6 +831,10 @@ export class CareTreatmentController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetTxNewByAgeSexQuery();
         if(county) {
@@ -835,6 +859,22 @@ export class CareTreatmentController {
 
         if(month) {
             query.month = month;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
