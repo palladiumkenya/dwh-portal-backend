@@ -73,6 +73,17 @@ export class GetMedianTimeToArtByYearHandler implements IQueryHandler<GetMedianT
                 .getRawMany();
         }
 
+        if (query.agency) {
+            medianTimeToARTSql = this.repository.createQueryBuilder('f')
+                .select(['StartYr year, MedianTimeToARTDiagnosis_YearCTAgency medianTime'])
+                .andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+
+            return await medianTimeToARTSql
+                .groupBy('StartYr, MedianTimeToARTDiagnosis_YearCTAgency')
+                .orderBy('f.StartYr')
+                .getRawMany();
+        }
+
         return await medianTimeToARTSql
             .groupBy('StartYr, MedianTimeToARTDiagnosis_year')
             .orderBy('f.StartYr')
