@@ -34,9 +34,9 @@ export class GetArtOptimizationOverviewHandler implements IQueryHandler<GetArtOp
             artOptimizationOverview.andWhere('f.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
-        // if (query.agency) {
-        //     artOptimizationOverview.andWhere('f.agency IN (:...agency)', { agency: query.agency });
-        // }
+        if (query.agency) {
+            artOptimizationOverview.andWhere('f.CTAgency IN (:...agency)', { agency: query.agency });
+        }
 
         // if (query.project) {
         //     artOptimizationOverview.andWhere('f.project IN (:...project)', { project: query.project });

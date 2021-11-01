@@ -5,4 +5,8 @@ export class GetMedianTimeToArtByPartnerQuery {
     partner?: string[];
     year?: number;
     month?: number;
+    project?: string[];
+    gender?: string[];
+    datimAgeGroup?: string[];
+    agency?: string[];
 }

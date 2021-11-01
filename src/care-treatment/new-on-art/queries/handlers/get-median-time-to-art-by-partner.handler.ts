@@ -53,6 +53,17 @@ export class GetMedianTimeToArtByPartnerHandler implements IQueryHandler<GetMedi
                 .getRawMany();
         }
 
+        if (query.agency) {
+            medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
+                .select(['CTPartner partner, MedianTimeToART_Partner medianTime'])
+                .andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+
+            return await medianTimeToARTPartnerSql
+                .groupBy('CTPartner, MedianTimeToART_Partner')
+                .orderBy('f.MedianTimeToART_Partner', 'DESC')
+                .getRawMany();
+        }
+
         return await medianTimeToARTPartnerSql
             .groupBy('CTPartner, MedianTimeToART_Partner')
             .orderBy('f.MedianTimeToART_Partner', 'DESC')
