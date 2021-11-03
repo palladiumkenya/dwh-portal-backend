@@ -34,9 +34,9 @@ export class GetArtOptimizationNewByPartnerHandler implements IQueryHandler<GetA
             artOptimizationNewByPartner.andWhere('f.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
-        // if (query.agency) {
-        //     artOptimizationNewByPartner.andWhere('f.agency IN (:...agency)', { agency: query.agency });
-        // }
+        if (query.agency) {
+            artOptimizationNewByPartner.andWhere('f.agency IN (:...agency)', { agency: query.agency });
+        }
 
         // if (query.project) {
         //     artOptimizationNewByPartner.andWhere('f.project IN (:...project)', { project: query.project });

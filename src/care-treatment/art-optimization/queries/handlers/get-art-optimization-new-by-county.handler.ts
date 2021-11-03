@@ -34,9 +34,9 @@ export class GetArtOptimizationNewByCountyHandler implements IQueryHandler<GetAr
             artOptimizationNewByCounty.andWhere('f.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
-        // if (query.agency) {
-        //     artOptimizationNewByCounty.andWhere('f.agency IN (:...agency)', { agency: query.agency });
-        // }
+        if (query.agency) {
+            artOptimizationNewByCounty.andWhere('f.agency IN (:...agency)', { agency: query.agency });
+        }
 
         // if (query.project) {
         //     artOptimizationNewByCounty.andWhere('f.project IN (:...project)', { project: query.project });
