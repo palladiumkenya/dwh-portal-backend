@@ -39,6 +39,10 @@ export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<G
             dsdAppointmentDuration.andWhere('f.CTPartner IN (:partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            dsdAppointmentDuration.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         if (query.county) {
             return await dsdAppointmentDuration
                 .groupBy('SubCounty, DATIM_AgeGroup')

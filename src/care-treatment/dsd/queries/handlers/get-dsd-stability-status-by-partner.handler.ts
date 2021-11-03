@@ -34,6 +34,10 @@ export class GetDsdStabilityStatusByPartnerHandler implements IQueryHandler<GetD
             dsdStabilityStatusByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            dsdStabilityStatusByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await dsdStabilityStatusByPartner
             .groupBy('CTPartner')
             .orderBy('percentMMD', 'DESC')

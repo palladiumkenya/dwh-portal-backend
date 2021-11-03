@@ -37,6 +37,10 @@ export class GetDsdStabilityStatusByCountyHandler implements IQueryHandler<GetDs
             dsdStabilityStatusByCounty.andWhere('f.CTPartner IN (:partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            dsdStabilityStatusByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         if (query.county) {
             return await dsdStabilityStatusByCounty
                 .groupBy('SubCounty')
