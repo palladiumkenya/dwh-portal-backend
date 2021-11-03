@@ -34,6 +34,10 @@ export class GetDsdMmdUptakeOverallBySexHandler implements IQueryHandler<GetDsdM
             dsdMmdStable.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            dsdMmdStable.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await dsdMmdStable.groupBy('f.Gender').getRawMany();
     }
 }

@@ -34,6 +34,10 @@ export class GetDsdCascadeHandler implements IQueryHandler<GetDsdCascadeQuery> {
             dsdCascade.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            dsdCascade.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await dsdCascade.getRawOne();
     }
 }
