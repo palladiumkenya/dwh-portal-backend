@@ -35,7 +35,7 @@ export class GetArtOptimizationNewByCountyHandler implements IQueryHandler<GetAr
         }
 
         if (query.agency) {
-            artOptimizationNewByCounty.andWhere('f.agency IN (:...agency)', { agency: query.agency });
+            artOptimizationNewByCounty.andWhere('f.CTAgency IN (:...agency)', { agency: query.agency });
         }
 
         // if (query.project) {

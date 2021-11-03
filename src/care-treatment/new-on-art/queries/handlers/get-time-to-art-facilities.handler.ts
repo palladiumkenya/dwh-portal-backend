@@ -35,6 +35,10 @@ export class GetTimeToArtFacilitiesHandler implements IQueryHandler<GetTimeToArt
             timeToArtFacilities.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
+        if (query.agency) {
+            timeToArtFacilities.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         if(query.year) {
             const yearVal = new Date().getFullYear();
             if(query.year == yearVal && !query.month) {
