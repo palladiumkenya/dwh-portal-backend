@@ -37,6 +37,10 @@ export class GetNumberAeReportedInAdultsOver15Handler implements IQueryHandler<G
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            noOfReportedAeinAdults.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await noOfReportedAeinAdults.getRawOne();
     }
 }

@@ -33,6 +33,10 @@ export class GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandl
             proportionOfPlHIVByCausativeDrugs.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
+        if (query.agency) {
+            proportionOfPlHIVByCausativeDrugs.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await proportionOfPlHIVByCausativeDrugs
             .groupBy('f.AdverseEventCause')
             .orderBy('SUM(Num)', 'DESC')

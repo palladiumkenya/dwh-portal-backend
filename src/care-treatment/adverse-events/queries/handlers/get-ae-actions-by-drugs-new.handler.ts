@@ -40,6 +40,10 @@ export class GetAeActionsByDrugsNewHandler implements IQueryHandler<GetAeActions
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            aeActionsByDrugsNew.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await aeActionsByDrugsNew
             .groupBy('[AdverseEventCause], [AdverseEventActionTaken], DATIM_AgeGroup')
             .orderBy('[AdverseEventCause], [AdverseEventActionTaken]')

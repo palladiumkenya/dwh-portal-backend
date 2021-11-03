@@ -37,6 +37,10 @@ export class GetAeSeverityGradingHandler implements IQueryHandler<GetAeSeverityG
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            aeSeverityGrading.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await aeSeverityGrading
             .groupBy('Severity, AgeGroup')
             .getRawMany();
