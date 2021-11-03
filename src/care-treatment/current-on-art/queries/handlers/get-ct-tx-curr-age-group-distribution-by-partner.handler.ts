@@ -37,6 +37,11 @@ export class GetCtTxCurrAgeGroupDistributionByPartnerHandler implements IQueryHa
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            txCurrAgeGroupDistributionByPartner
+                .andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await txCurrAgeGroupDistributionByPartner
             .groupBy('[CTPartner], [ageGroup], Gender')
             .orderBy('SUM([TXCURR_Total])', 'DESC')

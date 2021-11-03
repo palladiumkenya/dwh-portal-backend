@@ -41,6 +41,11 @@ export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHan
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            txCurrAgeGroupDistributionByCounty
+                .andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         if (query.county) {
             return await txCurrAgeGroupDistributionByCounty
                 .groupBy('[Subcounty], [ageGroup]')
