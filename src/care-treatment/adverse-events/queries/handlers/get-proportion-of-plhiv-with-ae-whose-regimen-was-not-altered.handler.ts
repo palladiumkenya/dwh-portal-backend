@@ -33,6 +33,10 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler implemen
             proportionOfPLHIVWithAeWhoseRegimenNotAltered.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
+        if (query.agency) {
+            proportionOfPLHIVWithAeWhoseRegimenNotAltered.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await proportionOfPLHIVWithAeWhoseRegimenNotAltered
             .groupBy('f.AdverseEventActionTaken')
             .getRawOne();

@@ -37,6 +37,10 @@ export class GetAeTypeBySeverityHandler implements IQueryHandler<GetAeTypeBySeve
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            aeTypesBySeverity.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await aeTypesBySeverity
             .groupBy('Severity, AdverseEvent')
             .getRawMany();

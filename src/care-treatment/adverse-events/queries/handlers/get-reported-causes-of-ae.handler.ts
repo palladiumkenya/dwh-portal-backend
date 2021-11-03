@@ -37,6 +37,10 @@ export class GetReportedCausesOfAeHandler implements IQueryHandler<GetReportedCa
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            reportedCausesOfAes.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await reportedCausesOfAes
             .groupBy('AdverseEventCause')
             .getRawMany();

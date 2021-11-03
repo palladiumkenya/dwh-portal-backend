@@ -38,6 +38,10 @@ export class GetNumberOfClientChildrenWithAeHandler implements IQueryHandler<Get
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            noOfClientsChildrenWithAe.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await noOfClientsChildrenWithAe.getRawOne();
     }
 }

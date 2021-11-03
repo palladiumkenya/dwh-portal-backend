@@ -48,6 +48,11 @@ export class GetProportionOfPLHIVWithAeRelatedToArtHandler implements IQueryHand
             params.push(query.partner);
         }
 
+        if (query.agency) {
+            proportionOfPlHIVWithAeRelatedToArt = `${proportionOfPlHIVWithAeRelatedToArt} and CTAgency IN (?)`;
+            params.push(query.agency);
+        }
+
         proportionOfPlHIVWithAeRelatedToArt = `${proportionOfPlHIVWithAeRelatedToArt} GROUP BY AdverseEventCause ORDER BY SUM(Num) DESC`;
         return  await this.repository.query(proportionOfPlHIVWithAeRelatedToArt, params);
     }
