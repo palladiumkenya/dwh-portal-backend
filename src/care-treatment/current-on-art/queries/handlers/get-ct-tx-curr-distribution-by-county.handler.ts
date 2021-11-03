@@ -41,6 +41,10 @@ export class GetCtTxCurrDistributionByCountyHandler implements IQueryHandler<Get
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            txCurrDistributionByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         if (query.county) {
             return await txCurrDistributionByCounty
                 .groupBy('[Subcounty]')

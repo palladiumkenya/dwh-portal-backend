@@ -44,12 +44,23 @@ export class GetMedianTimeToArtByCountyHandler implements IQueryHandler<GetMedia
 
         if (query.partner) {
             medianTimeToARTCountySql = this.repository.createQueryBuilder('f')
-                .select(['County county, MedianTimeToART_County medianTime'])
+                .select(['County county, MedianTimeToART_Partner medianTime'])
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
 
             return await medianTimeToARTCountySql
-                .groupBy('County, MedianTimeToART_County')
-                .orderBy('f.MedianTimeToART_County', 'DESC')
+                .groupBy('County, MedianTimeToART_Partner')
+                .orderBy('f.MedianTimeToART_Partner', 'DESC')
+                .getRawMany();
+        }
+
+        if (query.agency) {
+            medianTimeToARTCountySql = this.repository.createQueryBuilder('f')
+                .select(['County county, MedianTimeToART_CTAgency medianTime'])
+                .andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+
+            return await medianTimeToARTCountySql
+                .groupBy('County, MedianTimeToART_CTAgency')
+                .orderBy('f.MedianTimeToART_CTAgency', 'DESC')
                 .getRawMany();
         }
 
