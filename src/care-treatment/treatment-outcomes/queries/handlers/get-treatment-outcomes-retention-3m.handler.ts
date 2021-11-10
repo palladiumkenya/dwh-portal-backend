@@ -34,6 +34,10 @@ export class GetTreatmentOutcomesRetention3mHandler implements IQueryHandler<Get
             retention.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            retention.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await retention
             .groupBy('f.StartARTYear')
             .orderBy('f.StartArtYear')

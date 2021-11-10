@@ -34,6 +34,10 @@ export class GetTreatmentOutcomesRetention12mHandler implements IQueryHandler<Ge
             retention.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            retention.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await retention
             .groupBy('f.StartArtYear')
             .having('SUM([M12NetCohort])>0')
