@@ -33,6 +33,10 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler implements IQuer
             otzEnrollmentsPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            otzEnrollmentsPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await otzEnrollmentsPartner
             .groupBy('CTPartner')
             .getRawMany();

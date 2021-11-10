@@ -36,6 +36,10 @@ export class GetOtzOutcomesAmongAlhivWithReSuppressionHandler implements IQueryH
             baselineVlReSuppression.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            baselineVlReSuppression.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await baselineVlReSuppression.getRawMany();
     }
 }

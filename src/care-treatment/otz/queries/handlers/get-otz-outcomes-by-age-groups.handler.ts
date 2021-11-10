@@ -33,6 +33,10 @@ export class GetOtzOutcomesByAgeGroupsHandler implements IQueryHandler<GetOtzOut
             otzOutcomesByAgeGroups.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            otzOutcomesByAgeGroups.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await otzOutcomesByAgeGroups
             .groupBy('[AgeGroup], [Outcome]')
             .getRawMany();

@@ -36,6 +36,10 @@ export class GetOtzOutcomesAmongAlhivWithBaselineVlHandler implements IQueryHand
             baselineVl.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            baselineVl.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await baselineVl.getRawMany();
     }
 }

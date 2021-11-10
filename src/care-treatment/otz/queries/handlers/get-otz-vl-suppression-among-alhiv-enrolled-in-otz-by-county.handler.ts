@@ -33,6 +33,10 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler implement
             vlSuppressionOtzByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            vlSuppressionOtzByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await vlSuppressionOtzByCounty
             .groupBy('[County], Last12MVLResult')
             .orderBy('[County]')

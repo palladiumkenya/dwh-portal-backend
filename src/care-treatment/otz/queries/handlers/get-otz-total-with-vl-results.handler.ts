@@ -34,6 +34,10 @@ export class GetOtzTotalWithVlResultsHandler implements IQueryHandler<GetOtzTota
             totalWithVlResults.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            totalWithVlResults.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await totalWithVlResults.getRawOne();
     }
 }
