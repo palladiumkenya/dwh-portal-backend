@@ -52,6 +52,17 @@ export class GetVlMedianTimeToFirstVlByPartnerHandler implements IQueryHandler<G
                 .getRawMany();
         }
 
+        if (query.agency) {
+            medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
+                .select(['CTPartner Partner, MedianTimeToFirstVL_Partner medianTime'])
+                .andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+
+            return await medianTimeToFirstVlSql
+                .groupBy('CTPartner, MedianTimeToFirstVL_Partner')
+                .orderBy('f.MedianTimeToFirstVL_Partner', 'DESC')
+                .getRawMany();
+        }
+
         return await medianTimeToFirstVlSql
             .groupBy('CTPartner, MedianTimeToFirstVL_Partner')
             .orderBy('f.MedianTimeToFirstVL_Partner', 'DESC')
