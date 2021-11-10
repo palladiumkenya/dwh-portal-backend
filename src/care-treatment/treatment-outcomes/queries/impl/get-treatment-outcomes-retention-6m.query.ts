@@ -5,4 +5,10 @@ export class GetTreatmentOutcomesRetention6mQuery {
     partner?: string[];
     year?: number;
     month?: number;
+    fromDate?: string;
+    toDate?: string;
+    project?: string[];
+    gender?: string[];
+    datimAgeGroup?: string[];
+    agency?: string[];
 }

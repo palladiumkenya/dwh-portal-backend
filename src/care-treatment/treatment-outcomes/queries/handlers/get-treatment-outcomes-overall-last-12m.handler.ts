@@ -49,6 +49,10 @@ export class GetTreatmentOutcomesOverallLast12mHandler implements IQueryHandler<
             treatmentOutcomes.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            treatmentOutcomes.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await treatmentOutcomes
             .groupBy('f.artOutcome')
             .getRawMany();

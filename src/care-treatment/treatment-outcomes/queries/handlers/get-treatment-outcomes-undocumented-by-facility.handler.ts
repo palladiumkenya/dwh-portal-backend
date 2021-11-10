@@ -35,9 +35,9 @@ export class GetTreatmentOutcomesUndocumentedByFacilityHandler implements IQuery
             treatmentOutcomesUndocumentedByFacility.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        // if (query.agency) {
-        //     treatmentOutcomesUndocumentedByFacility.andWhere('agency IN (:...agency)', { agency: query.agency });
-        // }
+        if (query.agency) {
+            treatmentOutcomesUndocumentedByFacility.andWhere('CTAgency IN (:...agency)', { agency: query.agency });
+        }
 
         // if (query.project) {
         //     treatmentOutcomesUndocumentedByFacility.andWhere('project IN (:...project)', { project: query.project });
