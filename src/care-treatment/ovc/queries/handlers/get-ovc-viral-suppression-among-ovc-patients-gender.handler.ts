@@ -34,6 +34,10 @@ export class GetOvcViralSuppressionAmongOvcPatientsGenderHandler implements IQue
             viralSuppressionAmongOvcByGender.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            viralSuppressionAmongOvcByGender.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await viralSuppressionAmongOvcByGender
             .groupBy('Last12MVLResult, Gender')
             .getRawMany();
