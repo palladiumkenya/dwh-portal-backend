@@ -35,6 +35,10 @@ export class GetOtzTotalWithVlLessThan1000Handler implements IQueryHandler<GetOt
             totalWithVLLessThan1000.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            totalWithVLLessThan1000.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await totalWithVLLessThan1000.getRawOne();
     }
 }

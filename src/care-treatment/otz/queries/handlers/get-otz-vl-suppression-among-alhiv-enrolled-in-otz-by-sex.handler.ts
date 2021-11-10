@@ -33,6 +33,10 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler implements I
             vlSuppressionOtzBySex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            vlSuppressionOtzBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await vlSuppressionOtzBySex
             .groupBy('[Gender], Last12MVLResult')
             .orderBy('[Gender]')

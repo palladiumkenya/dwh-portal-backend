@@ -33,6 +33,10 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler implements IQuer
             vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await vlUptakeAmongAlHivEnrolledInOtzByCounty
             .groupBy('CTPartner')
             .getRawMany();

@@ -33,6 +33,10 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHa
             proportionWhoCompletedTrainingByGender.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            proportionWhoCompletedTrainingByGender.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await proportionWhoCompletedTrainingByGender
             .groupBy('OTZ_Traning, [Gender]')
             .getRawMany();

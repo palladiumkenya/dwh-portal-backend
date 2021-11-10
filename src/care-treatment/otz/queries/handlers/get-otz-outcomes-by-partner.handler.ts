@@ -33,6 +33,10 @@ export class GetOtzOutcomesByPartnerHandler implements IQueryHandler<GetOtzOutco
             otzOutcomesByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            otzOutcomesByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await otzOutcomesByPartner
             .groupBy('[CTPartner], [Outcome]')
             .getRawMany();
