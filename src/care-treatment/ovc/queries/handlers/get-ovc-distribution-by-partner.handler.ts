@@ -34,6 +34,10 @@ export class GetOvcDistributionByPartnerHandler implements IQueryHandler<GetOvcD
             overOvcServByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            overOvcServByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await overOvcServByPartner
             .groupBy('CTPartner')
             .getRawMany();

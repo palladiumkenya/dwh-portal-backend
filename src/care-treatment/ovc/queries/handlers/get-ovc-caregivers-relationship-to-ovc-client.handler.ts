@@ -35,6 +35,10 @@ export class GetOvcCaregiversRelationshipToOvcClientHandler implements IQueryHan
             ovcCareGiversRelationships.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            ovcCareGiversRelationships.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await ovcCareGiversRelationships
             .groupBy('RelationshipToClient')
             .getRawMany();
