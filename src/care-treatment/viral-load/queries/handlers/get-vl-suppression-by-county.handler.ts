@@ -34,6 +34,10 @@ export class GetVlSuppressionByCountyHandler implements IQueryHandler<GetVlSuppr
             vlSuppressionByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            vlSuppressionByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await vlSuppressionByCounty
             .groupBy('f.County')
             .orderBy('SUM(f.VirallySuppressed)', 'DESC')

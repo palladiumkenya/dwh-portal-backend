@@ -33,6 +33,11 @@ export class GetVlOverallUptakeAndSuppressionHandler implements IQueryHandler<Ge
             vlOverallUptakeAndSuppression.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            vlOverallUptakeAndSuppression.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+
         return await vlOverallUptakeAndSuppression.getRawOne();
     }
 }

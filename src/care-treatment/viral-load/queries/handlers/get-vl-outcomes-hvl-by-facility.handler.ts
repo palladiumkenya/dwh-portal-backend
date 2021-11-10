@@ -35,9 +35,9 @@ export class GetVlOutcomesHvlByFacilityHandler implements IQueryHandler<GetVlOut
             vlOutcomeHvlByFacility.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        // if (query.agency) {
-        //     vlOutcomeHvlByFacility.andWhere('agency IN (:...agency)', { agency: query.agency });
-        // }
+        if (query.agency) {
+            vlOutcomeHvlByFacility.andWhere('CTAgency IN (:...agency)', { agency: query.agency });
+        }
 
         // if (query.project) {
         //     vlOutcomeHvlByFacility.andWhere('project IN (:...project)', { project: query.project });
