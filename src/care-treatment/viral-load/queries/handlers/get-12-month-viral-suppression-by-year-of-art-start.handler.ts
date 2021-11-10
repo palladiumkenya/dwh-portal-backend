@@ -34,6 +34,10 @@ export class Get12MonthViralSuppressionByYearOfArtStartHandler implements IQuery
             twelveMonthViralSupByYearOfArtStart.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            twelveMonthViralSupByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await twelveMonthViralSupByYearOfArtStart
             .groupBy('f.StartYear')
             .orderBy('StartYear')

@@ -34,6 +34,10 @@ export class GetVlOverallUptakeAndSuppressionByFacilityHandler implements IQuery
             vlOverallUptakeAndSuppression.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            vlOverallUptakeAndSuppression.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await vlOverallUptakeAndSuppression
             .groupBy('f.FacilityName, f.SubCounty, f.County, f.CTPartner')
             .orderBy('f.FacilityName')

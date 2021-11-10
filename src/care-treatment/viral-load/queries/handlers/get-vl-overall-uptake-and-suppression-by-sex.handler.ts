@@ -34,6 +34,10 @@ export class GetVlOverallUptakeAndSuppressionBySexHandler implements IQueryHandl
             vlOverallUptakeAndSuppressionBySex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            vlOverallUptakeAndSuppressionBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await vlOverallUptakeAndSuppressionBySex
             .groupBy('f.Gender')
             .getRawMany();

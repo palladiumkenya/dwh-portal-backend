@@ -34,6 +34,10 @@ export class GetVlOutcomesByYearAndSuppressionCategoryHandler implements IQueryH
             vlSuppressionByYear.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            vlSuppressionByYear.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await vlSuppressionByYear
             .groupBy('f.StartART_Year, f.Last12MVLResult')
             .orderBy('f.StartART_Year')

@@ -34,6 +34,10 @@ export class GetVlUptakeBySexHandler implements IQueryHandler<GetVlUptakeBySexQu
             vlUptakeBySex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            vlUptakeBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await vlUptakeBySex
             .groupBy('f.Gender')
             .getRawMany();

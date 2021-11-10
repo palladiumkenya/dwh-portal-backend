@@ -34,6 +34,10 @@ export class GetVlOutcomesOverallHandler implements IQueryHandler<GetVlOutcomesO
             vlOutcomesOverall.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            vlOutcomesOverall.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await vlOutcomesOverall
             .groupBy('f.Last12MVLResult')
             .getRawMany();
