@@ -15,7 +15,7 @@ export class GetDsdMmdStableHandler implements IQueryHandler<GetDsdMmdStableQuer
 
     async execute(query: GetDsdMmdStableQuery): Promise<any> {
         const dsdMmdStable = this.repository.createQueryBuilder('f')
-            .select(['f.[DifferentiatedCare] differentiatedCare, SUM(f.TXCurr) mmdModels, SUM(f.TXCurr) * 100.0 / SUM(SUM(f.TXCurr)) OVER () AS Percentage'])
+            .select(['f.[DifferentiatedCare] differentiatedCare, SUM(f.MMDModels) mmdModels, SUM(f.TXCurr) * 100.0 / SUM(SUM(f.TXCurr)) OVER () AS Percentage'])
             .where('f.[MFLCode] > 1');
 
         if (query.county) {
