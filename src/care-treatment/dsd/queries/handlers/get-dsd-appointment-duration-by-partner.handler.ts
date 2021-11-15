@@ -15,7 +15,7 @@ export class GetDsdAppointmentDurationByPartnerHandler implements IQueryHandler<
 
     async execute(query: GetDsdAppointmentDurationByPartnerQuery): Promise<any> {
         const dsdAppointmentDuration = this.repository.createQueryBuilder('f')
-            .select(['SUM(TXCurr) patients, DATIM_AgeGroup ageGroup, SUM([StabilityAssessment]) stablePatients, CTPartner partner, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
+            .select(['SUM(TXCurr) patients, DATIM_AgeGroup ageGroup, SUM([NumPatients]) stablePatients, CTPartner partner, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
             .where('f.MFLCode > 1')
             .andWhere('f.Stability = :stability', { stability: "Stable"});
 
