@@ -13,47 +13,33 @@ export class GetProportionOfPLHIVWithAeRelatedToArtHandler implements IQueryHand
     }
 
     async execute(query: GetProportionOfPLHIVWithAeRelatedToArtQuery): Promise<any> {
-        const params = [];
-        let proportionOfPlHIVWithAeRelatedToArt = 'SELECT \n' +
-            '\n' +
-            'AdverseEventCause adverseEventCause, SUM(Num) count_cat\n' +
-            '\n' +
-            'FROM(SELECT  AdverseEventCause,\n' +
-            'case when AdverseEventCause in (\'Anti TBS\', \'Isonaizid\') THEN \'Anti TBs\'\n' +
-            'When AdverseEventCause in (\'Dolutegravir\',\'Atazanavir\',\'TLE\',\'Efavirenz\',\'Tenofavir\',\'Didanosin\',\'Lamivudine\',\'Lamivudine\',\'Lopinavir\',\'Abacavir\',\'TLD\',\'Nevirapine\',\'Zidovudine\',\'Stavudine\') THEN \'ARVS\'\n' +
-            'When AdverseEventCause= \'More than one ARVs\' THEN \'More than one ARV\'\n' +
-            ' when AdverseEventCause in (\'CTX\', \'Dapsone\') THEN \'Prophylaxis\'\n' +
-            'else AdverseEventCause end as Type,\n' +
-            'Num, MFLCode, FacilityName,County, SubCounty,CTPartner\n' +
-            'FROM [PortalDev].[dbo].[Fact_Trans_AECausitiveDrugs]) A\n' +
-            'WHERE A.Type = \'ARVS\'';
+        const proportionOfPlHIVWithAeRelatedToArt = this.repository.createQueryBuilder('f')
+            .select(['AdverseEventCause adverseEventCause, SUM(Num) count_cat'])
+            .andWhere('AdverseEventCause IN (\'Dolutegravir\',\'Atazanavir\',\'TLE\',\'Efavirenz\',\'Tenofavir\',\'Didanosin\',\'Lamivudine\',\'Lamivudine\',\'Lopinavir\',\'Abacavir\',\'TLD\',\'Nevirapine\',\'Zidovudine\',\'Stavudine\')');
 
-        if(query.subCounty) {
-            proportionOfPlHIVWithAeRelatedToArt = `${proportionOfPlHIVWithAeRelatedToArt} and SubCounty IN (?)`;
-            params.push(query.subCounty);
+        if (query.county) {
+            proportionOfPlHIVWithAeRelatedToArt.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
-        if(query.county) {
-            proportionOfPlHIVWithAeRelatedToArt = `${proportionOfPlHIVWithAeRelatedToArt} and County IN (?)`;
-            params.push(query.county);
+        if (query.subCounty) {
+            proportionOfPlHIVWithAeRelatedToArt.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
-        if(query.facility) {
-            proportionOfPlHIVWithAeRelatedToArt = `${proportionOfPlHIVWithAeRelatedToArt} and FacilityName IN (?)`;
-            params.push(query.facility);
+        if (query.partner) {
+            proportionOfPlHIVWithAeRelatedToArt.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        if(query.partner) {
-            proportionOfPlHIVWithAeRelatedToArt = `${proportionOfPlHIVWithAeRelatedToArt} and CTPartner IN (?)`;
-            params.push(query.partner);
+        if (query.facility) {
+            proportionOfPlHIVWithAeRelatedToArt.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
         if (query.agency) {
-            proportionOfPlHIVWithAeRelatedToArt = `${proportionOfPlHIVWithAeRelatedToArt} and CTAgency IN (?)`;
-            params.push(query.agency);
+            proportionOfPlHIVWithAeRelatedToArt.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
-        proportionOfPlHIVWithAeRelatedToArt = `${proportionOfPlHIVWithAeRelatedToArt} GROUP BY AdverseEventCause ORDER BY SUM(Num) DESC`;
-        return  await this.repository.query(proportionOfPlHIVWithAeRelatedToArt, params);
+        return await proportionOfPlHIVWithAeRelatedToArt
+            .groupBy('f.AdverseEventCause')
+            .orderBy('SUM(Num)', 'DESC')
+            .getRawMany();
     }
 }
