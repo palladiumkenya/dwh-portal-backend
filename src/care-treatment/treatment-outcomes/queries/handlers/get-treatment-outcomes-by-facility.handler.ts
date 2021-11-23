@@ -49,6 +49,10 @@ export class GetTreatmentOutcomesByFacilityHandler implements IQueryHandler<GetT
             treatmentOutcomes.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            treatmentOutcomes.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await treatmentOutcomes
             .groupBy('f.FacilityName, f.ARTOutcome')
             .orderBy('f.ARTOutcome, f.FacilityName')

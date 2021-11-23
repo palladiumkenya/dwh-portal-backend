@@ -50,6 +50,10 @@ export class GetNewlyStartedDesegregatedHandler implements IQueryHandler<GetNewl
             newlyStartedDesegregated.andWhere('f.StartART_Month = :month', { month: query.month });
         }
 
+        if (query.agency) {
+            newlyStartedDesegregated.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await newlyStartedDesegregated
             .getRawOne();
     }

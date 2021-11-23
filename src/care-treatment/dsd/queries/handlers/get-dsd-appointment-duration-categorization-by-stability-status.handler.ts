@@ -33,6 +33,10 @@ export class GetDsdAppointmentDurationCategorizationByStabilityStatusHandler imp
             dsdAppointmentCategorization.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            dsdAppointmentCategorization.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await dsdAppointmentCategorization
             .groupBy('[Stability], [AppointmentsCategory]')
             .orderBy('AppointmentsCategory, Stability')

@@ -53,6 +53,17 @@ export class GetVlMedianTimeToFirstVlByCountyHandler implements IQueryHandler<Ge
                 .getRawMany();
         }
 
+        if (query.agency) {
+            medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
+                .select(['County County, MedianTimeToFirstVL_County medianTime'])
+                .andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+
+            return await medianTimeToFirstVlSql
+                .groupBy('County, MedianTimeToFirstVL_County')
+                .orderBy('f.MedianTimeToFirstVL_County', 'DESC')
+                .getRawMany();
+        }
+
 
         return await medianTimeToFirstVlSql
             .groupBy('County, MedianTimeToFirstVL_County')

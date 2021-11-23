@@ -34,6 +34,10 @@ export class GetVlUptakeByCountyHandler implements IQueryHandler<GetVlUptakeByCo
             vlUptakeByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            vlUptakeByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await vlUptakeByCounty
             .groupBy('f.County')
             .orderBy('SUM(f.VLDone)', 'DESC')

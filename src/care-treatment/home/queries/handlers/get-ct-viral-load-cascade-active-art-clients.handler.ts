@@ -37,6 +37,10 @@ export class GetCtViralLoadCascadeActiveArtClientsHandler implements IQueryHandl
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            viralLoadCascade.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await viralLoadCascade
             .getRawOne();
     }

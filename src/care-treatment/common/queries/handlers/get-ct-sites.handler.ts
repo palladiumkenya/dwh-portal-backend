@@ -15,7 +15,7 @@ export class GetCtSitesHandler implements IQueryHandler<GetCtSitesQuery> {
 
     async execute(query: GetCtSitesQuery): Promise<any> {
         const facilities = this.repository.createQueryBuilder('q')
-            .select(['max(MFLCode) mfl, FacilityName facility, max(County) county, max(Subcounty) subCounty, max(CTPartner) partner'])
+            .select(['max(MFLCode) mfl, FacilityName facility, max(County) county, max(Subcounty) subCounty, max(CTPartner) partner, max(CTAgency) agency'])
             .where('q.FacilityName IS NOT NULL');
 
         return await facilities.groupBy('q.FacilityName').orderBy('q.FacilityName').getRawMany();

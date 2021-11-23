@@ -37,6 +37,10 @@ export class GetAdultsAdverseEventsHandler implements IQueryHandler<GetAdultsAdv
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            adultsAEs.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await adultsAEs
             .groupBy('AgeGroup, Gender')
             .getRawMany();

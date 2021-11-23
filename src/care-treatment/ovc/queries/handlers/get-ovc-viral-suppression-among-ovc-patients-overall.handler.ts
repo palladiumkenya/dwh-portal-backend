@@ -34,6 +34,10 @@ export class GetOvcViralSuppressionAmongOvcPatientsOverallHandler implements IQu
             viralSuppressionAmongOvcPatients.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            viralSuppressionAmongOvcPatients.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await viralSuppressionAmongOvcPatients
             .groupBy('Last12MVLResult')
             .getRawMany();

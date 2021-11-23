@@ -34,9 +34,9 @@ export class GetArtOptimizationNewByYearHandler implements IQueryHandler<GetArtO
             artOptimizationNewByYear.andWhere('f.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
-        // if (query.agency) {
-        //     artOptimizationNewByYear.andWhere('f.agency IN (:...agency)', { agency: query.agency });
-        // }
+        if (query.agency) {
+            artOptimizationNewByYear.andWhere('f.CTAgency IN (:...agency)', { agency: query.agency });
+        }
 
         // if (query.project) {
         //     artOptimizationNewByYear.andWhere('f.project IN (:...project)', { project: query.project });

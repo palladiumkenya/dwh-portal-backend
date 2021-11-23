@@ -213,6 +213,31 @@ import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeHandler } from './otz/qu
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-county.handler';
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-partner.handler';
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-sex.handler';
+import { GetCovidAdultPLHIVCurrentOnTreatmentHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment.handler';
+import { FactTransCovidVaccines } from './covid/entities/fact-trans-covid-vaccines.model';
+import { GetCovidPartiallyVaccinatedHandler } from './covid/queries/handlers/get-covid-partially-vaccinated.handler';
+import { GetCovidFullyVaccinatedHandler } from './covid/queries/handlers/get-covid-fully-vaccinated.handler';
+import { DimAgeGroups } from './common/entities/dim-age-groups.model';
+import { GetCovidAdultPLHIVVaccinatedByAgeHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-age.handler';
+import { GetCovidAdultPLHIVVaccinatedByGenderHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-gender.handler';
+import { GetCovidAdultPLHIVVaccinatedByPartnerHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-partner.handler';
+import { GetCovidAdultPLHIVVaccinatedByCountyHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-county.handler';
+import { GetCovidAdultPLHIVCurrentOnTreatmentByGenderHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment-by-gender.handler';
+import { GetCovidAdultPLHIVCurrentOnTreatmentByAgeGroupHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment-by-age-group.handler';
+import { GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment-by-county.handler';
+import { GetCovidAdultPLHIVCurrentOnTreatmentByPartnerHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment-by-partner.handler';
+import { GetCovidPLHIVCurrentOnArtHandler } from './covid/queries/handlers/get-covid-plhiv-current-on-art.handler';
+import { GetCovidSeverityByGenderHandler } from './covid/queries/handlers/get-covid-severity-by-gender.handler';
+import { GetCovidOverallAdmissionHandler } from './covid/queries/handlers/get-covid-overall-admission.handler';
+import { GetCovidOverallAdmissionMalesHandler } from './covid/queries/handlers/get-covid-overall-admission-males.handler';
+import { GetCovidOverallAdmissionFemalesHandler } from './covid/queries/handlers/get-covid-overall-admission-females.handler';
+import { GetCovidAdmissionByAgeHandler } from './covid/queries/handlers/get-covid-admission-by-age.handler';
+import { GetCovidEverHadInfectionHandler } from './covid/queries/handlers/get-covid-ever-had-infection.handler';
+import { GetCovidSymptomaticInfectionsHandler } from './covid/queries/handlers/get-covid-symptomatic-infections.handler';
+import { GetCovidOverallMissedAppointmentsHandler } from './covid/queries/handlers/get-covid-overall-missed-appointments.handler';
+import { GetCovidPercentageWhoMissedAppointmentsByAgeHandler } from './covid/queries/handlers/get-covid-percentage-who-missed-appointments-by-age.handler';
+import { GetCovidPercentageWhoMissedAppointmentsByCountyHandler } from './covid/queries/handlers/get-covid-percentage-who-missed-appointments-by-county.handler';
+import { GetCovidPercentageWhoMissedAppointmentsByPartnerHandler } from './covid/queries/handlers/get-covid-percentage-who-missed-appointments-by-partner.handler';
 
 
 @Module({
@@ -254,7 +279,9 @@ import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler } from './otz/qu
                 FactTransOtzEnrollments,
                 FactTransOtzOutcome,
                 FactTransOvcEnrollments,
-                FactTransCohortRetention
+                FactTransCohortRetention,
+                FactTransCovidVaccines,
+                DimAgeGroups
             ],
             'mssql'
         )
@@ -420,7 +447,30 @@ import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler } from './otz/qu
         GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeHandler,
         GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler,
         GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler,
-        GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler
+        GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler,
+        GetCovidAdultPLHIVCurrentOnTreatmentHandler,
+        GetCovidPartiallyVaccinatedHandler,
+        GetCovidFullyVaccinatedHandler,
+        GetCovidAdultPLHIVVaccinatedByAgeHandler,
+        GetCovidAdultPLHIVVaccinatedByGenderHandler,
+        GetCovidAdultPLHIVVaccinatedByPartnerHandler,
+        GetCovidAdultPLHIVVaccinatedByCountyHandler,
+        GetCovidAdultPLHIVCurrentOnTreatmentByGenderHandler,
+        GetCovidAdultPLHIVCurrentOnTreatmentByAgeGroupHandler,
+        GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler,
+        GetCovidAdultPLHIVCurrentOnTreatmentByPartnerHandler,
+        GetCovidPLHIVCurrentOnArtHandler,
+        GetCovidSeverityByGenderHandler,
+        GetCovidOverallAdmissionHandler,
+        GetCovidOverallAdmissionMalesHandler,
+        GetCovidOverallAdmissionFemalesHandler,
+        GetCovidAdmissionByAgeHandler,
+        GetCovidEverHadInfectionHandler,
+        GetCovidSymptomaticInfectionsHandler,
+        GetCovidOverallMissedAppointmentsHandler,
+        GetCovidPercentageWhoMissedAppointmentsByAgeHandler,
+        GetCovidPercentageWhoMissedAppointmentsByCountyHandler,
+        GetCovidPercentageWhoMissedAppointmentsByPartnerHandler
     ],
     controllers: [CareTreatmentController]
 })

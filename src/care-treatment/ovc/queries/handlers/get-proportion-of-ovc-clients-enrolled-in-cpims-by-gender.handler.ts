@@ -34,6 +34,10 @@ export class GetProportionOfOvcClientsEnrolledInCpimsByGenderHandler implements 
             enrolledInCIPMS.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            enrolledInCIPMS.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await enrolledInCIPMS
             .groupBy('EnrolledinCPIMS, Gender')
             .getRawMany();

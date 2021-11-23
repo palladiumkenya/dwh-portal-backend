@@ -21,24 +21,24 @@ export class GetMedianTimeToArtByPartnerHandler implements IQueryHandler<GetMedi
 
         if (query.county) {
             medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
-                .select(['CTPartner partner, MedianTimeToART_Partner medianTime'])
+                .select(['CTPartner partner, MedianTimeToART_County medianTime'])
                 .andWhere('f.County IN (:...counties)', { counties: query.county });
 
             return await medianTimeToARTPartnerSql
-                .groupBy('CTPartner, MedianTimeToART_Partner')
-                .orderBy('f.MedianTimeToART_Partner', 'DESC')
+                .groupBy('CTPartner, MedianTimeToART_County')
+                .orderBy('f.MedianTimeToART_County', 'DESC')
                 .getRawMany();
         }
 
         if (query.subCounty) {
             medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
-                .select(['CTPartner partner, MedianTimeToART_Partner medianTime'])
+                .select(['CTPartner partner, MedianTimeToART_SbCty medianTime'])
                 .andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
 
 
             return await medianTimeToARTPartnerSql
-                .groupBy('CTPartner, MedianTimeToART_Partner')
-                .orderBy('f.MedianTimeToART_Partner', 'DESC')
+                .groupBy('CTPartner, MedianTimeToART_SbCty')
+                .orderBy('f.MedianTimeToART_SbCty', 'DESC')
                 .getRawMany();
         }
 
@@ -50,6 +50,17 @@ export class GetMedianTimeToArtByPartnerHandler implements IQueryHandler<GetMedi
             return await medianTimeToARTPartnerSql
                 .groupBy('CTPartner, MedianTimeToART_Partner')
                 .orderBy('f.MedianTimeToART_Partner', 'DESC')
+                .getRawMany();
+        }
+
+        if (query.agency) {
+            medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
+                .select(['CTPartner partner, MedianTimeToART_CTAgency medianTime'])
+                .andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+
+            return await medianTimeToARTPartnerSql
+                .groupBy('CTPartner, MedianTimeToART_CTAgency')
+                .orderBy('f.MedianTimeToART_CTAgency', 'DESC')
                 .getRawMany();
         }
 

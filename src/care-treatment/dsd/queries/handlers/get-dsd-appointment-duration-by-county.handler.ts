@@ -15,13 +15,13 @@ export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<G
 
     async execute(query: GetDsdAppointmentDurationByCountyQuery): Promise<any> {
         let dsdAppointmentDuration = this.repository.createQueryBuilder('f')
-            .select(['SUM(TXCurr) patients, DATIM_AgeGroup, SUM([StabilityAssessment]) stablePatients, County county, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
+            .select(['SUM(TXCurr) patients, DATIM_AgeGroup, SUM([NumPatients]) stablePatients, County county, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
             .where('f.MFLCode > 1')
             .andWhere('f.Stability = :stability', { stability: "Stable"});
 
         if (query.county) {
             dsdAppointmentDuration = this.repository.createQueryBuilder('f')
-                .select(['SUM(TXCurr) patients, DATIM_AgeGroup, SUM([StabilityAssessment]) stablePatients, SubCounty county, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
+                .select(['SUM(TXCurr) patients, DATIM_AgeGroup, SUM([NumPatients]) stablePatients, SubCounty county, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
                 .where('f.MFLCode > 1')
                 .andWhere('f.Stability = :stability', { stability: "Stable"});
             dsdAppointmentDuration.andWhere('f.County IN (:counties)', { counties: query.county });
@@ -37,6 +37,10 @@ export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<G
 
         if (query.partner) {
             dsdAppointmentDuration.andWhere('f.CTPartner IN (:partners)', { partners: query.partner });
+        }
+
+        if (query.agency) {
+            dsdAppointmentDuration.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.county) {

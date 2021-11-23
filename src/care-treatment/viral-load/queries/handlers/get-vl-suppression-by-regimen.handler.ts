@@ -36,6 +36,10 @@ export class GetVlSuppressionByRegimenHandler implements IQueryHandler<GetVlSupp
             vlSuppressionByRegimen.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            vlSuppressionByRegimen.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await vlSuppressionByRegimen.groupBy('f.StartRegimen, f.Last12MVLResult').orderBy('f.StartRegimen').getRawMany();
     }
 }

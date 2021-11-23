@@ -34,6 +34,10 @@ export class GetOvcServBySexHandler implements IQueryHandler<GetOvcServBySexQuer
             ovcServBySex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            ovcServBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await ovcServBySex
             .groupBy('Gender')
             .getRawMany();

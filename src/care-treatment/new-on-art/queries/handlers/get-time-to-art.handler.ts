@@ -35,6 +35,10 @@ export class GetTimeToArtHandler implements IQueryHandler<GetTimeToArtQuery> {
             timeToArt.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            timeToArt.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         timeToArt.andWhere('f.StartART_Year >= :startYear', { startYear: 2011 });
 
         return await timeToArt

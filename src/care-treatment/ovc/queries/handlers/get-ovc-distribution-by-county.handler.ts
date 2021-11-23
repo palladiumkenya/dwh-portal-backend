@@ -34,6 +34,10 @@ export class GetOvcDistributionByCountyHandler implements IQueryHandler<GetOvcDi
             overOvcServByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            overOvcServByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await overOvcServByCounty
             .groupBy('County')
             .getRawMany();

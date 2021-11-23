@@ -35,9 +35,9 @@ export class GetMissingDiagnosisDateByFacilityHandler implements IQueryHandler<G
             missingDiagnosisDateByFacility.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
         }
 
-        // if (query.agency) {
-        //     missingDiagnosisDateByFacility.andWhere('agency IN (:...agency)', { agency: query.agency });
-        // }
+        if (query.agency) {
+            missingDiagnosisDateByFacility.andWhere('CTAgency IN (:...agency)', { agency: query.agency });
+        }
 
         // if (query.project) {
         //     missingDiagnosisDateByFacility.andWhere('project IN (:...project)', { project: query.project });

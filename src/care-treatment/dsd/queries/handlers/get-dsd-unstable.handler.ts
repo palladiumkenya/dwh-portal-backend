@@ -34,6 +34,10 @@ export class GetDsdUnstableHandler implements IQueryHandler<GetDsdUnstableQuery>
             dsdUnstable.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            dsdUnstable.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await dsdUnstable.getRawOne();
     }
 }

@@ -32,6 +32,10 @@ export class GetOtzEnrolledAdolescentsByAgeHandler implements IQueryHandler<GetO
             otzTotalAdolescentsByAgeGroup.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            otzTotalAdolescentsByAgeGroup.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await otzTotalAdolescentsByAgeGroup
             .groupBy('[DATIM_AgeGroup]')
             .orderBy('[DATIM_AgeGroup]')

@@ -33,6 +33,10 @@ export class GetOtzOutcomesByCountyHandler implements IQueryHandler<GetOtzOutcom
             otzOutcomesByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            otzOutcomesByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await otzOutcomesByCounty
             .groupBy('[County], [Outcome]')
             .getRawMany();

@@ -33,6 +33,10 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler implements 
             proportionOfPLHIVWithAeWhoseRegimenWasStopped.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
+        if (query.agency) {
+            proportionOfPLHIVWithAeWhoseRegimenWasStopped.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await proportionOfPLHIVWithAeWhoseRegimenWasStopped
             .groupBy('f.AdverseEventActionTaken')
             .getRawOne();

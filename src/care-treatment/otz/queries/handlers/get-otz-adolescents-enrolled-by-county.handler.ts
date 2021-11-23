@@ -32,6 +32,10 @@ export class GetOtzAdolescentsEnrolledByCountyHandler implements IQueryHandler<G
             otzEnrollmentsCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            otzEnrollmentsCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await otzEnrollmentsCounty
             .groupBy('County')
             .getRawMany();

@@ -49,6 +49,10 @@ export class GetTreatmentOutcomesNetCohortHandler implements IQueryHandler<GetTr
             netCohort.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            netCohort.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await netCohort
             .groupBy('f.artOutcome')
             .getRawMany();

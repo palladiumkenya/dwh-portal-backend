@@ -38,6 +38,10 @@ export class GetRegimenDistributionBasedOnAgeBandsHandler implements IQueryHandl
             regimenDistributionBasedOnAgeBands.andWhere('f.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
+        if (query.agency) {
+            regimenDistributionBasedOnAgeBands.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         if (query.gender) {
             regimenDistributionBasedOnAgeBands.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
         }

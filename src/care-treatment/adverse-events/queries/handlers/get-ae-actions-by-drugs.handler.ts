@@ -37,6 +37,10 @@ export class GetAeActionsByDrugsHandler implements IQueryHandler<GetAeActionsByD
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            aeActionsByDrugs.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await aeActionsByDrugs
             .groupBy('[Severity], [AdverseEventCause], DATIM_AgeGroup')
             .getRawMany();

@@ -35,6 +35,10 @@ export class GetDsdStabilityStatusByAgeSexHandler implements IQueryHandler<GetDs
             dsdStabilityStatusByAgeSex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            dsdStabilityStatusByAgeSex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await dsdStabilityStatusByAgeSex
             .groupBy('f.DATIM_AgeGroup, f.Gender')
             .orderBy('f.DATIM_AgeGroup, f.Gender')

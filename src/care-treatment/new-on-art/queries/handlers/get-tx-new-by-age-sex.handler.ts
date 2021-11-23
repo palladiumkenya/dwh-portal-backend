@@ -40,6 +40,10 @@ export class GetTxNewByAgeSexHandler implements IQueryHandler<GetTxNewByAgeSexQu
             txNewByAgeSex.andWhere('f.StartART_Month = :month', { month: query.month });
         }
 
+        if (query.agency) {
+            txNewByAgeSex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         if(query.year) {
             const yearVal = new Date().getFullYear();
             if(query.year == yearVal && !query.month) {
