@@ -39,6 +39,10 @@ export class GetTimeToArtFacilitiesHandler implements IQueryHandler<GetTimeToArt
             timeToArtFacilities.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            timeToArtFacilities.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         if(query.year) {
             const yearVal = new Date().getFullYear();
             if(query.year == yearVal && !query.month) {

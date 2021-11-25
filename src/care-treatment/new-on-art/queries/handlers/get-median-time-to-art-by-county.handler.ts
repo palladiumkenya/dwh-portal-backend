@@ -64,6 +64,17 @@ export class GetMedianTimeToArtByCountyHandler implements IQueryHandler<GetMedia
                 .getRawMany();
         }
 
+        if (query.gender) {
+            medianTimeToARTCountySql = this.repository.createQueryBuilder('f')
+                .select(['County county, MedianTimeToART_CTAgency medianTime'])
+                .andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+
+            return await medianTimeToARTCountySql
+                .groupBy('County, MedianTimeToART_CTAgency')
+                .orderBy('f.MedianTimeToART_CTAgency', 'DESC')
+                .getRawMany();
+        }
+
 
         return await medianTimeToARTCountySql
             .groupBy('County, MedianTimeToART_County')

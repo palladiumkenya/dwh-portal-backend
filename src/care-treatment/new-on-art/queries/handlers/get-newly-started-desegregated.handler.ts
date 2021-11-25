@@ -54,6 +54,10 @@ export class GetNewlyStartedDesegregatedHandler implements IQueryHandler<GetNewl
             newlyStartedDesegregated.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            newlyStartedDesegregated.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await newlyStartedDesegregated
             .getRawOne();
     }
