@@ -40,6 +40,10 @@ export class GetCtTxCurrByAgeAndSexHandler implements IQueryHandler<GetCtTxCurrB
             txCurrByAgeAndSex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            txCurrByAgeAndSex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         const result = await txCurrByAgeAndSex
             .groupBy('[ageGroup], [Gender]')
             .orderBy('[ageGroup]')

@@ -670,6 +670,9 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetCtViralLoadCascadeActiveArtClientsQuery();
         if(county) {
@@ -698,6 +701,18 @@ export class CareTreatmentController {
 
         if (agency) {
             query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);

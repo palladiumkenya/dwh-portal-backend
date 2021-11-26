@@ -6,4 +6,7 @@ export class GetCtViralLoadCascadeActiveArtClientsQuery {
     agency?: string[];
     year?: number;
     month?: number;
+    project?: string[];
+    gender?: string[];
+    datimAgeGroup?: string[];
 }

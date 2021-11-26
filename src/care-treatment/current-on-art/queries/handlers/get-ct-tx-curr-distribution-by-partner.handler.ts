@@ -41,6 +41,10 @@ export class GetCtTxCurrDistributionByPartnerHandler implements IQueryHandler<Ge
             txCurrDistributionByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            txCurrDistributionByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await txCurrDistributionByPartner
             .groupBy('[CTPartner]')
             .orderBy('SUM([TXCURR_Total])', 'DESC')
