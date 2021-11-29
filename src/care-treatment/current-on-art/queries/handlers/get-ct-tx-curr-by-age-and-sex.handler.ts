@@ -3,6 +3,7 @@ import { GetCtTxCurrByAgeAndSexQuery } from '../impl/get-ct-tx-curr-by-age-and-s
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
+import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 
 @QueryHandler(GetCtTxCurrByAgeAndSexQuery)
 export class GetCtTxCurrByAgeAndSexHandler implements IQueryHandler<GetCtTxCurrByAgeAndSexQuery> {
@@ -14,7 +15,8 @@ export class GetCtTxCurrByAgeAndSexHandler implements IQueryHandler<GetCtTxCurrB
 
     async execute(query: GetCtTxCurrByAgeAndSexQuery): Promise<any> {
         const txCurrByAgeAndSex = this.repository.createQueryBuilder('f')
-            .select(['[ageGroup],[Gender],SUM([TXCURR_Total]) txCurr'])
+            .select(['f.[ageGroup],[Gender],SUM([TXCURR_Total]) txCurr'])
+            .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
             .where('f.[ageGroup] IS NOT NULL');
 
         if (query.county) {
@@ -44,9 +46,14 @@ export class GetCtTxCurrByAgeAndSexHandler implements IQueryHandler<GetCtTxCurrB
             txCurrByAgeAndSex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
         }
 
+        if (query.datimAgeGroup) {
+            txCurrByAgeAndSex
+                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         const result = await txCurrByAgeAndSex
-            .groupBy('[ageGroup], [Gender]')
-            .orderBy('[ageGroup]')
+            .groupBy('f.[ageGroup], [Gender]')
+            .orderBy('f.[ageGroup]')
             .getRawMany();
 
         const returnedVal = [];

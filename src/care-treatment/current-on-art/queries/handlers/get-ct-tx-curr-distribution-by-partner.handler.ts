@@ -3,6 +3,7 @@ import { GetCtTxCurrDistributionByPartnerQuery } from '../impl/get-ct-tx-curr-di
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
+import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 
 @QueryHandler(GetCtTxCurrDistributionByPartnerQuery)
 export class GetCtTxCurrDistributionByPartnerHandler implements IQueryHandler<GetCtTxCurrDistributionByPartnerQuery> {
@@ -15,6 +16,7 @@ export class GetCtTxCurrDistributionByPartnerHandler implements IQueryHandler<Ge
     async execute(query: GetCtTxCurrDistributionByPartnerQuery): Promise<any> {
         const txCurrDistributionByPartner = this.repository.createQueryBuilder('f')
             .select(['[CTPartner],SUM([TXCURR_Total]) txCurr'])
+            .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
             .where('f.[TXCURR_Total] IS NOT NULL');
 
         if (query.county) {
@@ -43,6 +45,11 @@ export class GetCtTxCurrDistributionByPartnerHandler implements IQueryHandler<Ge
 
         if (query.gender) {
             txCurrDistributionByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            txCurrDistributionByPartner
+                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await txCurrDistributionByPartner
