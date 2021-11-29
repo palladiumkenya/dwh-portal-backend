@@ -58,6 +58,10 @@ export class GetNewlyStartedDesegregatedHandler implements IQueryHandler<GetNewl
             newlyStartedDesegregated.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
         }
 
+        if (query.datimAgeGroup) {
+            newlyStartedDesegregated.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await newlyStartedDesegregated
             .getRawOne();
     }
