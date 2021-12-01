@@ -38,6 +38,14 @@ export class GetDsdStabilityStatusByPartnerHandler implements IQueryHandler<GetD
             dsdStabilityStatusByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            dsdStabilityStatusByPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            dsdStabilityStatusByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await dsdStabilityStatusByPartner
             .groupBy('CTPartner')
             .orderBy('percentMMD', 'DESC')

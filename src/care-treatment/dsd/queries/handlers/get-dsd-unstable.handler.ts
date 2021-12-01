@@ -38,6 +38,15 @@ export class GetDsdUnstableHandler implements IQueryHandler<GetDsdUnstableQuery>
             dsdUnstable.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            dsdUnstable.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        // lacking gender
+        /*if (query.Gender) {
+            dsdUnstable.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }*/
+
         return await dsdUnstable.getRawOne();
     }
 }

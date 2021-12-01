@@ -38,6 +38,14 @@ export class GetDsdCascadeHandler implements IQueryHandler<GetDsdCascadeQuery> {
             dsdCascade.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            dsdCascade.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            dsdCascade.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await dsdCascade.getRawOne();
     }
 }
