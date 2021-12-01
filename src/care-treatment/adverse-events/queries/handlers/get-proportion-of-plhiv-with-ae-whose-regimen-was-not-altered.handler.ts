@@ -37,6 +37,15 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler implemen
             proportionOfPLHIVWithAeWhoseRegimenNotAltered.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            proportionOfPLHIVWithAeWhoseRegimenNotAltered.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            // lacking gender
+            // proportionOfPLHIVWithAeWhoseRegimenNotAltered.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await proportionOfPLHIVWithAeWhoseRegimenNotAltered
             .groupBy('f.AdverseEventActionTaken')
             .getRawOne();

@@ -37,6 +37,15 @@ export class GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandl
             proportionOfPlHIVByCausativeDrugs.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            proportionOfPlHIVByCausativeDrugs.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            // lacking gender
+            // proportionOfPlHIVByCausativeDrugs.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await proportionOfPlHIVByCausativeDrugs
             .groupBy('f.AdverseEventCause')
             .orderBy('SUM(Num)', 'DESC')

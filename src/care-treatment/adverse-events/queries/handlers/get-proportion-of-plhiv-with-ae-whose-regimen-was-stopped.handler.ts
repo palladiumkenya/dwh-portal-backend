@@ -37,6 +37,15 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler implements 
             proportionOfPLHIVWithAeWhoseRegimenWasStopped.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            proportionOfPLHIVWithAeWhoseRegimenWasStopped.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            // lacking gender
+            // proportionOfPLHIVWithAeWhoseRegimenWasStopped.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await proportionOfPLHIVWithAeWhoseRegimenWasStopped
             .groupBy('f.AdverseEventActionTaken')
             .getRawOne();
