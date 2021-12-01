@@ -41,6 +41,15 @@ export class GetAeTypeBySeverityHandler implements IQueryHandler<GetAeTypeBySeve
             aeTypesBySeverity.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            aeTypesBySeverity.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            // lacking gender
+            // aeTypesBySeverity.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await aeTypesBySeverity
             .groupBy('Severity, AdverseEvent')
             .getRawMany();

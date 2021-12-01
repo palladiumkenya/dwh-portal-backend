@@ -42,6 +42,14 @@ export class GetNumberOfClientChildrenWithAeHandler implements IQueryHandler<Get
             noOfClientsChildrenWithAe.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            noOfClientsChildrenWithAe.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            noOfClientsChildrenWithAe.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await noOfClientsChildrenWithAe.getRawOne();
     }
 }

@@ -41,6 +41,14 @@ export class GetChildrenAdverseEventsHandler implements IQueryHandler<GetChildre
             childrenAEs.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            childrenAEs.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            childrenAEs.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await childrenAEs
             .groupBy('AgeGroup, Gender')
             .getRawMany();
