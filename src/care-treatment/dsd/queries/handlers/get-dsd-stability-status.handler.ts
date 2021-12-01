@@ -38,6 +38,14 @@ export class GetDsdStabilityStatusHandler implements IQueryHandler<GetDsdStabili
             dsdStabilityStatus.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            dsdStabilityStatus.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            dsdStabilityStatus.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await dsdStabilityStatus.getRawOne();
     }
 }

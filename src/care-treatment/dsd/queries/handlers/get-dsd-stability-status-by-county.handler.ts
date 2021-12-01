@@ -41,6 +41,14 @@ export class GetDsdStabilityStatusByCountyHandler implements IQueryHandler<GetDs
             dsdStabilityStatusByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            dsdStabilityStatusByCounty.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            dsdStabilityStatusByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         if (query.county) {
             return await dsdStabilityStatusByCounty
                 .groupBy('SubCounty')

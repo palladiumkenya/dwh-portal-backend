@@ -38,6 +38,14 @@ export class GetDsdAppointmentDurationByAgeHandler implements IQueryHandler<GetD
             dsdAppointmentDuration.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            dsdAppointmentDuration.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            dsdAppointmentDuration.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await dsdAppointmentDuration
             .groupBy('DATIM_AgeGroup')
             .orderBy('DATIM_AgeGroup')
