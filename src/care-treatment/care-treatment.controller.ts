@@ -191,6 +191,7 @@ import { GetCovidOverallMissedAppointmentsQuery } from './covid/queries/impl/get
 import { GetCovidPercentageWhoMissedAppointmentsByAgeQuery } from './covid/queries/impl/get-covid-percentage-who-missed-appointments-by-age.query';
 import { GetCovidPercentageWhoMissedAppointmentsByCountyQuery } from './covid/queries/impl/get-covid-percentage-who-missed-appointments-by-county.query';
 import { GetCovidPercentageWhoMissedAppointmentsByPartnerQuery } from './covid/queries/impl/get-covid-percentage-who-missed-appointments-by-partner.query';
+import { GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery } from './covid/queries/impl/get-cumulative-number-adult-plhiv-who-received-atleast-one-dose.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -10338,6 +10339,64 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetCovidPercentageWhoMissedAppointmentsByPartnerQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCumulativeNumberAdultPlhivWhoReceivedAtleastOneDose')
+    async getCumulativeNumberAdultPlhivWhoReceivedAtleastOneDose(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery();
 
         if(county) {
             query.county = county;
