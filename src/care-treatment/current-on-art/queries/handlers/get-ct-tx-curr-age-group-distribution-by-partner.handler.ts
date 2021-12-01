@@ -3,6 +3,7 @@ import { GetCtTxCurrAgeGroupDistributionByPartnerQuery } from '../impl/get-ct-tx
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
+import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 
 @QueryHandler(GetCtTxCurrAgeGroupDistributionByPartnerQuery)
 export class GetCtTxCurrAgeGroupDistributionByPartnerHandler implements IQueryHandler<GetCtTxCurrAgeGroupDistributionByPartnerQuery> {
@@ -14,8 +15,9 @@ export class GetCtTxCurrAgeGroupDistributionByPartnerHandler implements IQueryHa
 
     async execute(query: GetCtTxCurrAgeGroupDistributionByPartnerQuery): Promise<any> {
         const txCurrAgeGroupDistributionByPartner = this.repository.createQueryBuilder('f')
-            .select(['[CTPartner], [ageGroup], Gender, SUM([TXCURR_Total]) txCurr'])
-            .where('f.[CTPartner] IS NOT NULL AND ageGroup IS NOT NULL');
+            .select(['[CTPartner], f.[ageGroup], Gender, SUM([TXCURR_Total]) txCurr'])
+            .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
+            .where('f.[CTPartner] IS NOT NULL AND f.ageGroup IS NOT NULL');
 
         if (query.county) {
             txCurrAgeGroupDistributionByPartner
@@ -42,8 +44,18 @@ export class GetCtTxCurrAgeGroupDistributionByPartnerHandler implements IQueryHa
                 .andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            txCurrAgeGroupDistributionByPartner
+                .andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            txCurrAgeGroupDistributionByPartner
+                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await txCurrAgeGroupDistributionByPartner
-            .groupBy('[CTPartner], [ageGroup], Gender')
+            .groupBy('[CTPartner], f.[ageGroup], Gender')
             .orderBy('SUM([TXCURR_Total])', 'DESC')
             .getRawMany();
     }

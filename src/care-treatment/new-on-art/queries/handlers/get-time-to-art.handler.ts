@@ -39,6 +39,14 @@ export class GetTimeToArtHandler implements IQueryHandler<GetTimeToArtQuery> {
             timeToArt.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            timeToArt.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            timeToArt.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         timeToArt.andWhere('f.StartART_Year >= :startYear', { startYear: 2011 });
 
         return await timeToArt

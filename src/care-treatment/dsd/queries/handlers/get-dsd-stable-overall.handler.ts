@@ -38,6 +38,14 @@ export class GetDsdStableOverallHandler implements IQueryHandler<GetDsdStableOve
             dsdMmdStable.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            dsdMmdStable.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            dsdMmdStable.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await dsdMmdStable
             .groupBy('DATIM_AgeGroup')
             .getRawMany();

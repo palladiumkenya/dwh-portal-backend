@@ -37,6 +37,14 @@ export class GetDsdAppointmentDurationCategorizationByStabilityStatusHandler imp
             dsdAppointmentCategorization.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            dsdAppointmentCategorization.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            dsdAppointmentCategorization.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await dsdAppointmentCategorization
             .groupBy('[Stability], [AppointmentsCategory]')
             .orderBy('AppointmentsCategory, Stability')

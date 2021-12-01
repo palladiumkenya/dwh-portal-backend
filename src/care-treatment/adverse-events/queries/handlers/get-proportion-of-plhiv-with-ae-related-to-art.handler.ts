@@ -37,6 +37,15 @@ export class GetProportionOfPLHIVWithAeRelatedToArtHandler implements IQueryHand
             proportionOfPlHIVWithAeRelatedToArt.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            proportionOfPlHIVWithAeRelatedToArt.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            // lacking gender
+            // proportionOfPlHIVWithAeRelatedToArt.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await proportionOfPlHIVWithAeRelatedToArt
             .groupBy('f.AdverseEventCause')
             .orderBy('SUM(Num)', 'DESC')

@@ -41,6 +41,15 @@ export class GetReportedCausesOfAeHandler implements IQueryHandler<GetReportedCa
             reportedCausesOfAes.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            reportedCausesOfAes.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            // lacking gender
+            // reportedCausesOfAes.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await reportedCausesOfAes
             .groupBy('AdverseEventCause')
             .getRawMany();

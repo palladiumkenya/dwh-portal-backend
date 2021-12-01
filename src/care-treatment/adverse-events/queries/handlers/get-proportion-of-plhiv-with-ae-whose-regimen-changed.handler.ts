@@ -37,6 +37,15 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler implements IQu
             proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            // lacking gender
+            // proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await proportionOfPLHIVWithAeWhoseRegimenChanged
             .groupBy('f.AdverseEventActionTaken')
             .getRawOne();

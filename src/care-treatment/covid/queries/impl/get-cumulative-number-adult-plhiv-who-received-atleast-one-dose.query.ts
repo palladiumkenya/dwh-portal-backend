@@ -1,12 +1,12 @@
-export class GetCtTxCurrByAgeAndSexQuery {
+export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery {
     county?: string[];
     subCounty?: string[];
     facility?: string[];
     partner?: string[];
-    agency?: string[];
     year?: number;
     month?: number;
     project?: string[];
     gender?: string[];
     datimAgeGroup?: string[];
+    agency?: string[];
 }

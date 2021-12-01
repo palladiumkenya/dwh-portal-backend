@@ -41,6 +41,14 @@ export class GetReportedAesWithSeverityLevelsHandler implements IQueryHandler<Ge
             reportedAesWithSeverity.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            reportedAesWithSeverity.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            reportedAesWithSeverity.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await reportedAesWithSeverity
             .groupBy('[AdverseEvent], [Severity], AgeGroup')
             .orderBy('SUM([AdverseEvent_Total])')

@@ -41,6 +41,14 @@ export class GetNumberAeReportedInAdultsOver15Handler implements IQueryHandler<G
             noOfReportedAeinAdults.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            noOfReportedAeinAdults.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            noOfReportedAeinAdults.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await noOfReportedAeinAdults.getRawOne();
     }
 }
