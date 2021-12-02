@@ -16,7 +16,7 @@ export class GetCtTxCurrDistributionByCountyHandler implements IQueryHandler<Get
     async execute(query: GetCtTxCurrDistributionByCountyQuery): Promise<any> {
         let txCurrDistributionByCounty = this.repository.createQueryBuilder('f')
             .select(['[County],SUM([TXCURR_Total]) txCurr'])
-            .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
+            // .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
             .where('f.[TXCURR_Total] IS NOT NULL');
 
         if (query.county) {
@@ -52,8 +52,8 @@ export class GetCtTxCurrDistributionByCountyHandler implements IQueryHandler<Get
         }
 
         if (query.datimAgeGroup) {
-            txCurrDistributionByCounty
-                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            /*txCurrDistributionByCounty
+                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });*/
         }
 
         if (query.county) {
