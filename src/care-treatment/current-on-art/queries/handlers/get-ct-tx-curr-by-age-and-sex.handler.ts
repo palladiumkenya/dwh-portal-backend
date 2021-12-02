@@ -16,7 +16,7 @@ export class GetCtTxCurrByAgeAndSexHandler implements IQueryHandler<GetCtTxCurrB
     async execute(query: GetCtTxCurrByAgeAndSexQuery): Promise<any> {
         const txCurrByAgeAndSex = this.repository.createQueryBuilder('f')
             .select(['f.[ageGroup],[Gender],SUM([TXCURR_Total]) txCurr'])
-            .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
+            // .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
             .where('f.[ageGroup] IS NOT NULL');
 
         if (query.county) {
@@ -47,8 +47,8 @@ export class GetCtTxCurrByAgeAndSexHandler implements IQueryHandler<GetCtTxCurrB
         }
 
         if (query.datimAgeGroup) {
-            txCurrByAgeAndSex
-                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            /*txCurrByAgeAndSex
+                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });*/
         }
 
         const result = await txCurrByAgeAndSex
