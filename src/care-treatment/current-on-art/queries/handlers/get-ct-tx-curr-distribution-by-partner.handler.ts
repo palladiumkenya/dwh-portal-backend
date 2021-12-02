@@ -16,7 +16,7 @@ export class GetCtTxCurrDistributionByPartnerHandler implements IQueryHandler<Ge
     async execute(query: GetCtTxCurrDistributionByPartnerQuery): Promise<any> {
         const txCurrDistributionByPartner = this.repository.createQueryBuilder('f')
             .select(['[CTPartner],SUM([TXCURR_Total]) txCurr'])
-            .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
+            // .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
             .where('f.[TXCURR_Total] IS NOT NULL');
 
         if (query.county) {
@@ -48,8 +48,8 @@ export class GetCtTxCurrDistributionByPartnerHandler implements IQueryHandler<Ge
         }
 
         if (query.datimAgeGroup) {
-            txCurrDistributionByPartner
-                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            /*txCurrDistributionByPartner
+                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });*/
         }
 
         return await txCurrDistributionByPartner
