@@ -22,11 +22,11 @@ export class GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler imple
             .where('ageLV>=18 and ARTOutcome=\'V\' and (DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
 
         if (query.county) {
-            trendsOfPLHIVVaccination.andWhere('f.County IN (:...counties)', { counties: query.county });
+            trendsOfPLHIVVaccination.andWhere('g.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            trendsOfPLHIVVaccination.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            trendsOfPLHIVVaccination.andWhere('g.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
@@ -34,7 +34,11 @@ export class GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler imple
         }
 
         if (query.partner) {
-            trendsOfPLHIVVaccination.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            trendsOfPLHIVVaccination.andWhere('g.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+
+        if (query.agency) {
+            trendsOfPLHIVVaccination.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
         return await trendsOfPLHIVVaccination

@@ -17,14 +17,14 @@ export class GetCovidPartiallyVaccinatedHandler implements IQueryHandler<GetCovi
         const covidPartiallyVaccinated = this.repository.createQueryBuilder('f')
             .select(['Count (f.PatientID) PartiallyVaccinated'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode = g.MFLCode and f.PatientPK = g.PatientPK')
-            .where('g.ageLV >= 18 AND f.VaccinationStatus=\'Partially Vaccinated\' ');
+            .where('g.ageLV >= 18 AND g.ARTOutcome = \'V\' AND f.VaccinationStatus=\'Partially Vaccinated\' ');
 
         if (query.county) {
-            covidPartiallyVaccinated.andWhere('f.County IN (:...counties)', { counties: query.county });
+            covidPartiallyVaccinated.andWhere('g.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            covidPartiallyVaccinated.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            covidPartiallyVaccinated.andWhere('g.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
@@ -32,7 +32,11 @@ export class GetCovidPartiallyVaccinatedHandler implements IQueryHandler<GetCovi
         }
 
         if (query.partner) {
-            covidPartiallyVaccinated.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidPartiallyVaccinated.andWhere('g.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+
+        if (query.partner) {
+            covidPartiallyVaccinated.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
         return await covidPartiallyVaccinated.getRawOne();

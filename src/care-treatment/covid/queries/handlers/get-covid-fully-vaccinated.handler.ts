@@ -17,14 +17,14 @@ export class GetCovidFullyVaccinatedHandler implements IQueryHandler<GetCovidFul
         const covidFullyVaccinated = this.repository.createQueryBuilder('f')
             .select(['Count (f.PatientID) FullyVaccinated'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
-            .where('g.ageLV >= 18 AND f.VaccinationStatus=\'Fully Vaccinated\' ');
+            .where('g.ageLV >= 18 AND g.ARTOutcome = \'V\' AND f.VaccinationStatus=\'Fully Vaccinated\' ');
 
         if (query.county) {
-            covidFullyVaccinated.andWhere('f.County IN (:...counties)', { counties: query.county });
+            covidFullyVaccinated.andWhere('g.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            covidFullyVaccinated.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            covidFullyVaccinated.andWhere('g.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
@@ -32,7 +32,11 @@ export class GetCovidFullyVaccinatedHandler implements IQueryHandler<GetCovidFul
         }
 
         if (query.partner) {
-            covidFullyVaccinated.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidFullyVaccinated.andWhere('g.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+
+        if (query.agency) {
+            covidFullyVaccinated.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
         return await covidFullyVaccinated.getRawOne();
