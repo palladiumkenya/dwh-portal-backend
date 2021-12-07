@@ -19,14 +19,14 @@ export class GetCovidAdultPLHIVVaccinatedByCountyHandler implements IQueryHandle
             .select(['VaccinationStatus, County, Count (*) Num'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('g.ageLV >= 18');
+            .where('g.ageLV >= 18 AND g.ARTOutcome = \'V\'');
 
         if (query.county) {
-            adultPLHIVVaccinatedByCounty.andWhere('f.County IN (:...counties)', { counties: query.county });
+            adultPLHIVVaccinatedByCounty.andWhere('g.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            adultPLHIVVaccinatedByCounty.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            adultPLHIVVaccinatedByCounty.andWhere('g.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
@@ -34,7 +34,11 @@ export class GetCovidAdultPLHIVVaccinatedByCountyHandler implements IQueryHandle
         }
 
         if (query.partner) {
-            adultPLHIVVaccinatedByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            adultPLHIVVaccinatedByCounty.andWhere('g.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+
+        if (query.agency) {
+            adultPLHIVVaccinatedByCounty.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
         return await adultPLHIVVaccinatedByCounty
