@@ -22,11 +22,11 @@ export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler imple
             .where('ageLV>=18 and ARTOutcome=\'V\' and (DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
 
         if (query.county) {
-            cumulativeWhoReceivedOneDose.andWhere('f.County IN (:...counties)', { counties: query.county });
+            cumulativeWhoReceivedOneDose.andWhere('g.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            cumulativeWhoReceivedOneDose.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            cumulativeWhoReceivedOneDose.andWhere('g.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
@@ -34,7 +34,11 @@ export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler imple
         }
 
         if (query.partner) {
-            cumulativeWhoReceivedOneDose.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            cumulativeWhoReceivedOneDose.andWhere('g.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+
+        if (query.agency) {
+            cumulativeWhoReceivedOneDose.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
         return await cumulativeWhoReceivedOneDose

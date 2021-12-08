@@ -16,8 +16,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByAgeGroupHandler implements IQ
     async execute(query: GetCovidAdultPlhivCurrentOnTreatmentByAgeGroupQuery): Promise<any> {
         const covidAdultsCurrentOnTreatmentByAgeGroup = this.repository.createQueryBuilder('f')
             .select(['Count (*) Adults, AgeGroup'])
-            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.MFLCode=g.MFLCode and f.PatientPK=g.PatientPK')
-            .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
+            .innerJoin(DimAgeGroups, 'v', 'f.ageLV = v.Age')
             .where('f.ageLV >= 18 AND f.ARTOutcome=\'V\'');
 
         if (query.county) {
@@ -34,6 +33,10 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByAgeGroupHandler implements IQ
 
         if (query.partner) {
             covidAdultsCurrentOnTreatmentByAgeGroup.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+        }
+
+        if (query.agency) {
+            covidAdultsCurrentOnTreatmentByAgeGroup.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
 
