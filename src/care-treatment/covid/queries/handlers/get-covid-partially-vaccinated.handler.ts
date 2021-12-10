@@ -39,6 +39,10 @@ export class GetCovidPartiallyVaccinatedHandler implements IQueryHandler<GetCovi
             covidPartiallyVaccinated.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.agency) {
+            covidPartiallyVaccinated.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await covidPartiallyVaccinated.getRawOne();
     }
 }
