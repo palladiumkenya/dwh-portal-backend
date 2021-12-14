@@ -37,6 +37,14 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzBySexHandler implements IQueryHan
             vlUptakeAmongAlHivEnrolledInOtzBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlUptakeAmongAlHivEnrolledInOtzBySex.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlUptakeAmongAlHivEnrolledInOtzBySex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlUptakeAmongAlHivEnrolledInOtzBySex
             .groupBy('Gender')
             .getRawMany();

@@ -38,6 +38,14 @@ export class GetOtzTotalWithVlResultsHandler implements IQueryHandler<GetOtzTota
             totalWithVlResults.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            totalWithVlResults.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            totalWithVlResults.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await totalWithVlResults.getRawOne();
     }
 }

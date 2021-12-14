@@ -37,6 +37,14 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler implements I
             vlSuppressionOtzBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlSuppressionOtzBySex.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlSuppressionOtzBySex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlSuppressionOtzBySex
             .groupBy('[Gender], Last12MVLResult')
             .orderBy('[Gender]')

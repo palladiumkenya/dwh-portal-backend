@@ -40,6 +40,14 @@ export class GetOtzOutcomesAmongAlhivWithBaselineVlHandler implements IQueryHand
             baselineVl.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            baselineVl.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            baselineVl.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await baselineVl.getRawMany();
     }
 }

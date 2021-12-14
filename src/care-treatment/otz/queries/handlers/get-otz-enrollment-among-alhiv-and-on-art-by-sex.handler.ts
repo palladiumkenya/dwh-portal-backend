@@ -37,6 +37,14 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler implements IQueryHan
             otzEnrollmentsBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            otzEnrollmentsBySex.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            otzEnrollmentsBySex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await otzEnrollmentsBySex
             .groupBy('Gender')
             .getRawMany();

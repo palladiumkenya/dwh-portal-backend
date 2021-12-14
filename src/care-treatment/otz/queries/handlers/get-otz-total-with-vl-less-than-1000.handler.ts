@@ -39,6 +39,14 @@ export class GetOtzTotalWithVlLessThan1000Handler implements IQueryHandler<GetOt
             totalWithVLLessThan1000.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            totalWithVLLessThan1000.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            totalWithVLLessThan1000.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await totalWithVLLessThan1000.getRawOne();
     }
 }

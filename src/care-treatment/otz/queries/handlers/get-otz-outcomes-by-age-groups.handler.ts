@@ -37,6 +37,14 @@ export class GetOtzOutcomesByAgeGroupsHandler implements IQueryHandler<GetOtzOut
             otzOutcomesByAgeGroups.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            otzOutcomesByAgeGroups.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            otzOutcomesByAgeGroups.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await otzOutcomesByAgeGroups
             .groupBy('[AgeGroup], [Outcome]')
             .getRawMany();
