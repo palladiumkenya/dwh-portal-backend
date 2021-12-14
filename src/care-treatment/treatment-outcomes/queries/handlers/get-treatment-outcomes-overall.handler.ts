@@ -52,6 +52,14 @@ export class GetTreatmentOutcomesOverallHandler implements IQueryHandler<GetTrea
             treatmentOutcomes.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            treatmentOutcomes.andWhere('f.ageGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            treatmentOutcomes.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await treatmentOutcomes
             .groupBy('f.artOutcome')
             .getRawMany();
