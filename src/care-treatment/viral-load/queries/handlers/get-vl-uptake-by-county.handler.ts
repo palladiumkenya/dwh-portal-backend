@@ -38,6 +38,14 @@ export class GetVlUptakeByCountyHandler implements IQueryHandler<GetVlUptakeByCo
             vlUptakeByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlUptakeByCounty.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlUptakeByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlUptakeByCounty
             .groupBy('f.County')
             .orderBy('SUM(f.VLDone)', 'DESC')
