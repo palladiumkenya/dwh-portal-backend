@@ -37,6 +37,14 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingHandler
             proportionWhoCompletedTraining.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            proportionWhoCompletedTraining.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            proportionWhoCompletedTraining.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await proportionWhoCompletedTraining
             .groupBy('OTZ_Traning')
             .getRawMany();

@@ -37,6 +37,14 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByCountyHandler implements IQuery
             vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlUptakeAmongAlHivEnrolledInOtzByCounty
             .groupBy('County')
             .getRawMany();

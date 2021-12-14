@@ -37,6 +37,14 @@ export class GetOtzOutcomesByYearOfArtStartHandler implements IQueryHandler<GetO
             otzOutcomesByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            otzOutcomesByYearOfArtStart.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            otzOutcomesByYearOfArtStart.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await otzOutcomesByYearOfArtStart
             .groupBy('[OTZStart_Year], [Outcome]')
             .getRawMany();
