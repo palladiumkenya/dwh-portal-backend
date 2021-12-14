@@ -38,6 +38,14 @@ export class GetVlSuppressionByCountyHandler implements IQueryHandler<GetVlSuppr
             vlSuppressionByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlSuppressionByCounty.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlSuppressionByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlSuppressionByCounty
             .groupBy('f.County')
             .orderBy('SUM(f.VirallySuppressed)', 'DESC')

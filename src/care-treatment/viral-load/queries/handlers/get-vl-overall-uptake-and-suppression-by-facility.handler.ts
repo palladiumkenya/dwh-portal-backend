@@ -38,6 +38,14 @@ export class GetVlOverallUptakeAndSuppressionByFacilityHandler implements IQuery
             vlOverallUptakeAndSuppression.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlOverallUptakeAndSuppression.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlOverallUptakeAndSuppression.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlOverallUptakeAndSuppression
             .groupBy('f.FacilityName, f.SubCounty, f.County, f.CTPartner')
             .orderBy('f.FacilityName')

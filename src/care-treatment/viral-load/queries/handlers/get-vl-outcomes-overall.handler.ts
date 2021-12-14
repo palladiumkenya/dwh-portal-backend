@@ -38,6 +38,14 @@ export class GetVlOutcomesOverallHandler implements IQueryHandler<GetVlOutcomesO
             vlOutcomesOverall.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlOutcomesOverall.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlOutcomesOverall.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlOutcomesOverall
             .groupBy('f.Last12MVLResult')
             .getRawMany();

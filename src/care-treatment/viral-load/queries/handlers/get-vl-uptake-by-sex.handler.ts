@@ -38,6 +38,14 @@ export class GetVlUptakeBySexHandler implements IQueryHandler<GetVlUptakeBySexQu
             vlUptakeBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlUptakeBySex.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlUptakeBySex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlUptakeBySex
             .groupBy('f.Gender')
             .getRawMany();

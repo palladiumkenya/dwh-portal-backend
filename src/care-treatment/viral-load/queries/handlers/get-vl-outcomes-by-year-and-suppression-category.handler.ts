@@ -38,6 +38,14 @@ export class GetVlOutcomesByYearAndSuppressionCategoryHandler implements IQueryH
             vlSuppressionByYear.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlSuppressionByYear.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlSuppressionByYear.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlSuppressionByYear
             .groupBy('f.StartART_Year, f.Last12MVLResult')
             .orderBy('f.StartART_Year')

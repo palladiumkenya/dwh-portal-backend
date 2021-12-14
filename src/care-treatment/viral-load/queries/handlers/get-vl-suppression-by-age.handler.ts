@@ -39,6 +39,14 @@ export class GetVlSuppressionByAgeHandler implements IQueryHandler<GetVlSuppress
             vlSuppressionByAge.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlSuppressionByAge.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlSuppressionByAge.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlSuppressionByAge
             .groupBy('f.AgeGroup, f.Last12MVLResult')
             .orderBy('f.AgeGroup, f.Last12MVLResult')
