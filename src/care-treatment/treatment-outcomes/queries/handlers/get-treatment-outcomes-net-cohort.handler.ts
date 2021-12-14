@@ -53,6 +53,14 @@ export class GetTreatmentOutcomesNetCohortHandler implements IQueryHandler<GetTr
             netCohort.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            netCohort.andWhere('f.ageGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            netCohort.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await netCohort
             .groupBy('f.artOutcome')
             .getRawMany();
