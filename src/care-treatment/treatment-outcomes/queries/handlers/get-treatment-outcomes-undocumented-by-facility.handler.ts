@@ -48,6 +48,7 @@ export class GetTreatmentOutcomesUndocumentedByFacilityHandler implements IQuery
         }
 
         // if (query.datimAgeGroup) {
+        // lacking age group
         //     treatmentOutcomesUndocumentedByFacility.andWhere('DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
         // }
 

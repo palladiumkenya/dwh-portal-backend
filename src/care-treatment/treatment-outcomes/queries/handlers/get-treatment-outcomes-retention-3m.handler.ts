@@ -38,6 +38,16 @@ export class GetTreatmentOutcomesRetention3mHandler implements IQueryHandler<Get
             retention.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            // lacking age group
+            // retention.andWhere('f.ageGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            // lacking gender
+            // retention.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await retention
             .groupBy('f.StartARTYear')
             .orderBy('f.StartArtYear')
