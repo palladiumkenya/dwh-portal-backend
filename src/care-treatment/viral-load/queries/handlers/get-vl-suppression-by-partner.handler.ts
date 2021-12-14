@@ -38,6 +38,14 @@ export class GetVlSuppressionByPartnerHandler implements IQueryHandler<GetVlSupp
             vlSuppressionByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlSuppressionByPartner.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlSuppressionByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlSuppressionByPartner
             .groupBy('f.CTPartner')
             .orderBy('SUM(f.VirallySuppressed)', 'DESC')

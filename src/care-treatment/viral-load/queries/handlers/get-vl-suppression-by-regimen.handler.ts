@@ -40,6 +40,14 @@ export class GetVlSuppressionByRegimenHandler implements IQueryHandler<GetVlSupp
             vlSuppressionByRegimen.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlSuppressionByRegimen.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlSuppressionByRegimen.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlSuppressionByRegimen.groupBy('f.StartRegimen, f.Last12MVLResult').orderBy('f.StartRegimen').getRawMany();
     }
 }

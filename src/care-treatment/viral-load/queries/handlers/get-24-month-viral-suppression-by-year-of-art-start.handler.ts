@@ -38,6 +38,16 @@ export class Get24MonthViralSuppressionByYearOfArtStartHandler implements IQuery
             twentyFourMonthViralSupByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            // lacking age group
+            // sixMonthViralSupByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            // lacking gender
+            // sixMonthViralSupByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await twentyFourMonthViralSupByYearOfArtStart
             .groupBy('f.StartYear')
             .orderBy('StartYear')
