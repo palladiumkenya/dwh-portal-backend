@@ -37,6 +37,18 @@ export class GetCovidEverHadInfectionHandler implements IQueryHandler<GetCovidEv
             everHadCovidInfection.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            everHadCovidInfection.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            everHadCovidInfection.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            everHadCovidInfection.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await everHadCovidInfection.getRawOne();
     }
 }

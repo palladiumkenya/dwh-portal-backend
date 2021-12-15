@@ -37,6 +37,15 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentHandler implements IQueryHandle
             covidAdultsCurrentOnTreatment.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            covidAdultsCurrentOnTreatment.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            // lacking age group
+            // covidAdmissionByAge.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
 
         return await covidAdultsCurrentOnTreatment.getRawOne();
     }

@@ -37,6 +37,18 @@ export class GetCovidPercentageWhoMissedAppointmentsByPartnerHandler implements 
             covidPercentageWhoMissedAppointmentsByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            covidPercentageWhoMissedAppointmentsByPartner.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            covidPercentageWhoMissedAppointmentsByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            covidPercentageWhoMissedAppointmentsByPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await covidPercentageWhoMissedAppointmentsByPartner
             .groupBy('CTPartner')
             .getRawMany();

@@ -39,6 +39,14 @@ export class GetCovidFullyVaccinatedHandler implements IQueryHandler<GetCovidFul
             covidFullyVaccinated.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            covidFullyVaccinated.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            covidFullyVaccinated.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await covidFullyVaccinated.getRawOne();
     }
 }

@@ -41,6 +41,14 @@ export class GetCovidAdultPLHIVVaccinatedByCountyHandler implements IQueryHandle
             adultPLHIVVaccinatedByCounty.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            adultPLHIVVaccinatedByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            adultPLHIVVaccinatedByCounty.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await adultPLHIVVaccinatedByCounty
             .groupBy('f.County,VaccinationStatus')
             .orderBy('Count(*)', 'DESC')

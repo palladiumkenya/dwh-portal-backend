@@ -41,6 +41,14 @@ export class GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler imple
             trendsOfPLHIVVaccination.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            trendsOfPLHIVVaccination.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            trendsOfPLHIVVaccination.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await trendsOfPLHIVVaccination
             .groupBy('DATENAME(Month,DategivenFirstDose), DATENAME(YEAR,DategivenFirstDose), DATEPART(MONTH, DategivenFirstDose), VaccinationStatus')
             .orderBy('DATEPART(MONTH, DategivenFirstDose)')

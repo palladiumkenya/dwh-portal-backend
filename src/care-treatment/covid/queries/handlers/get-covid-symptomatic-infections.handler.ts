@@ -37,6 +37,18 @@ export class GetCovidSymptomaticInfectionsHandler implements IQueryHandler<GetCo
             covidSymptomaticInfections.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            covidSymptomaticInfections.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            covidSymptomaticInfections.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            covidSymptomaticInfections.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await covidSymptomaticInfections.getRawOne();
     }
 }

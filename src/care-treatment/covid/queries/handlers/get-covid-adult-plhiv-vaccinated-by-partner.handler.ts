@@ -41,6 +41,14 @@ export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandl
             adultPLHIVVaccinatedByPartner.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            adultPLHIVVaccinatedByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            adultPLHIVVaccinatedByPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await adultPLHIVVaccinatedByPartner
             .groupBy('f.CTPartner,VaccinationStatus')
             .getRawMany();
