@@ -39,6 +39,14 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByAgeGroupHandler implements IQ
             covidAdultsCurrentOnTreatmentByAgeGroup.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            covidAdultsCurrentOnTreatmentByAgeGroup.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            // lacking age group
+            // covidAdmissionByAge.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
 
         return await covidAdultsCurrentOnTreatmentByAgeGroup
             .groupBy('AgeGroup')

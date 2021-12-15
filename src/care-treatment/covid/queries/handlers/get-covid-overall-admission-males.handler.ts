@@ -37,6 +37,18 @@ export class GetCovidOverallAdmissionMalesHandler implements IQueryHandler<GetCo
             covidOverallAdmissionMales.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            covidOverallAdmissionMales.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            covidOverallAdmissionMales.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            covidOverallAdmissionMales.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await covidOverallAdmissionMales
             .groupBy('AdmissionStatus, Gender')
             .getRawMany();

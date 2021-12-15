@@ -37,6 +37,18 @@ export class GetCovidOverallMissedAppointmentsHandler implements IQueryHandler<G
             overallMissedAppointments.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            overallMissedAppointments.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            overallMissedAppointments.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            overallMissedAppointments.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await overallMissedAppointments
             .groupBy('MissedAppointmentDueToCOVID19')
             .getRawOne();

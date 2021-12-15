@@ -41,6 +41,14 @@ export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler imple
             cumulativeWhoReceivedOneDose.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            cumulativeWhoReceivedOneDose.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            cumulativeWhoReceivedOneDose.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await cumulativeWhoReceivedOneDose
             .groupBy('DATENAME(Month,DategivenFirstDose), DATENAME(YEAR,DategivenFirstDose), DATEPART(MONTH, DategivenFirstDose)')
             .orderBy('DATEPART(MONTH, DategivenFirstDose)')

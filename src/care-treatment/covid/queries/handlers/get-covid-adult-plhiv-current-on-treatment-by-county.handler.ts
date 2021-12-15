@@ -33,6 +33,19 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler implements IQue
             covidAdultsCurrentOnTreatmentByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            covidAdultsCurrentOnTreatmentByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            covidAdultsCurrentOnTreatmentByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            // lacking age group
+            // covidAdmissionByAge.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
 
         return await covidAdultsCurrentOnTreatmentByCounty
             .groupBy('County')
