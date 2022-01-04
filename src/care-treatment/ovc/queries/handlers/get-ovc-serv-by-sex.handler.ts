@@ -38,6 +38,14 @@ export class GetOvcServBySexHandler implements IQueryHandler<GetOvcServBySexQuer
             ovcServBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            ovcServBySex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            ovcServBySex.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await ovcServBySex
             .groupBy('Gender')
             .getRawMany();
