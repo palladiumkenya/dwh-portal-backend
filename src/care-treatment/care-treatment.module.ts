@@ -240,6 +240,8 @@ import { GetCovidPercentageWhoMissedAppointmentsByCountyHandler } from './covid/
 import { GetCovidPercentageWhoMissedAppointmentsByPartnerHandler } from './covid/queries/handlers/get-covid-percentage-who-missed-appointments-by-partner.handler';
 import { GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler } from './covid/queries/handlers/get-cumulative-number-adult-plhiv-who-received-atleast-one-dose.handler';
 import { GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler } from './covid/queries/handlers/get-covid-trends-of-adult-plhiv-vaccination-in-the-last-12-months.handler';
+import { GetOvcOverallCalhivHandler } from './ovc/queries/handlers/get-ovc-overall-calhiv.handler';
+import { GetOvcCalHIVByGenderHandler } from './ovc/queries/handlers/get-ovc-cal-hiv-by-gender.handler';
 
 
 @Module({
@@ -474,7 +476,9 @@ import { GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler } from '.
         GetCovidPercentageWhoMissedAppointmentsByCountyHandler,
         GetCovidPercentageWhoMissedAppointmentsByPartnerHandler,
         GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler,
-        GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler
+        GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler,
+        GetOvcOverallCalhivHandler,
+        GetOvcCalHIVByGenderHandler
     ],
     controllers: [CareTreatmentController]
 })
