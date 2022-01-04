@@ -38,6 +38,14 @@ export class GetOvcOverallOvcServHandler implements IQueryHandler<GetOvcOverallO
             overOvcServ.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            overOvcServ.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            overOvcServ.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await overOvcServ.getRawOne();
     }
 }
