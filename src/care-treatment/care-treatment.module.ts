@@ -242,6 +242,8 @@ import { GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler } from '.
 import { GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler } from './covid/queries/handlers/get-covid-trends-of-adult-plhiv-vaccination-in-the-last-12-months.handler';
 import { GetOvcOverallCalhivHandler } from './ovc/queries/handlers/get-ovc-overall-calhiv.handler';
 import { GetOvcCalHIVByGenderHandler } from './ovc/queries/handlers/get-ovc-cal-hiv-by-gender.handler';
+import { GetOvcDistributionOfCalHIVByAgeSexHandler } from './ovc/queries/handlers/get-ovc-distribution-of-calhiv-by-age-sex.handler';
+import { GetDistributionOfOvcClientsByAgeSexHandler } from './ovc/queries/handlers/get-distribution-of-ovc-clients-by-age-sex.handler';
 
 
 @Module({
@@ -478,7 +480,9 @@ import { GetOvcCalHIVByGenderHandler } from './ovc/queries/handlers/get-ovc-cal-
         GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler,
         GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler,
         GetOvcOverallCalhivHandler,
-        GetOvcCalHIVByGenderHandler
+        GetOvcCalHIVByGenderHandler,
+        GetOvcDistributionOfCalHIVByAgeSexHandler,
+        GetDistributionOfOvcClientsByAgeSexHandler
     ],
     controllers: [CareTreatmentController]
 })
