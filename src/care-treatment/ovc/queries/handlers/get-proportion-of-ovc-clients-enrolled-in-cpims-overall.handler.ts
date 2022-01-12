@@ -15,7 +15,7 @@ export class GetProportionOfOvcClientsEnrolledInCpimsOverallHandler implements I
 
     async execute(query: GetProportionOfOvcClientsEnrolledInCpimsOverallQuery): Promise<any> {
         const enrolledInCIPMS = this.repository.createQueryBuilder('f')
-            .select(['[EnrolledinCPIMS], COUNT(*) Enrollments'])
+            .select(['EnrolledinCPIMSCleaned EnrolledinCPIMS, Count (*) Enrollments'])
             .andWhere('f.OVCEnrollmentDate IS NOT NULL');
 
         if (query.county) {
@@ -38,8 +38,16 @@ export class GetProportionOfOvcClientsEnrolledInCpimsOverallHandler implements I
             enrolledInCIPMS.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            enrolledInCIPMS.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            enrolledInCIPMS.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await enrolledInCIPMS
-            .groupBy('EnrolledinCPIMS')
+            .groupBy('EnrolledinCPIMSCleaned')
             .getRawMany();
     }
 }
