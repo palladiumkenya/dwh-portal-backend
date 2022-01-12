@@ -16,7 +16,7 @@ export class GetOvcDistributionByCountyHandler implements IQueryHandler<GetOvcDi
     async execute(query: GetOvcDistributionByCountyQuery): Promise<any> {
         const overOvcServByCounty = this.repository.createQueryBuilder('f')
             .select(['COUNT(*) count, [County], COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS Percentage'])
-            .andWhere('f.OVCEnrollmentDate IS NOT NULL');
+            .andWhere('f.OVCEnrollmentDate IS NOT NULL and TXCurr=1');
 
         if (query.county) {
             overOvcServByCounty.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -36,6 +36,14 @@ export class GetOvcDistributionByCountyHandler implements IQueryHandler<GetOvcDi
 
         if (query.agency) {
             overOvcServByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            overOvcServByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            overOvcServByCounty.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await overOvcServByCounty

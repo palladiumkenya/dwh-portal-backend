@@ -16,7 +16,7 @@ export class GetOvcDistributionByPartnerHandler implements IQueryHandler<GetOvcD
     async execute(query: GetOvcDistributionByPartnerQuery): Promise<any> {
         const overOvcServByPartner = this.repository.createQueryBuilder('f')
             .select(['COUNT(*) count, [CTPartner] partner, COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS Percentage'])
-            .andWhere('f.OVCEnrollmentDate IS NOT NULL');
+            .andWhere('f.OVCEnrollmentDate IS NOT NULL and TXCurr=1');
 
         if (query.county) {
             overOvcServByPartner.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -36,6 +36,14 @@ export class GetOvcDistributionByPartnerHandler implements IQueryHandler<GetOvcD
 
         if (query.agency) {
             overOvcServByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            overOvcServByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            overOvcServByPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await overOvcServByPartner
