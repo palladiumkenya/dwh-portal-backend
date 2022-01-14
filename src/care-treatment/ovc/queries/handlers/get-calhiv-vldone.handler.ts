@@ -14,38 +14,38 @@ export class GetCalhivVldoneHandler implements IQueryHandler<GetCalhivVldoneQuer
     }
 
     async execute(query: GetCalhivVldoneQuery): Promise<any> {
-        const CALHIVVLSuppressed = this.repository.createQueryBuilder('f')
-            .select(['Count (*)CALHIVVLSuppressed'])
-            .andWhere('f.TXCurr=1 and VirallySuppressed=1');
+        const CALHIVVLDone = this.repository.createQueryBuilder('f')
+            .select(['Count (*)CALHIVVLDone'])
+            .andWhere('f.TXCurr=1 and VLDone=1');
 
         if (query.county) {
-            CALHIVVLSuppressed.andWhere('f.County IN (:...counties)', { counties: query.county });
+            CALHIVVLDone.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            CALHIVVLSuppressed.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            CALHIVVLDone.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
-            CALHIVVLSuppressed.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+            CALHIVVLDone.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
-            CALHIVVLSuppressed.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            CALHIVVLDone.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            CALHIVVLSuppressed.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            CALHIVVLDone.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
-            CALHIVVLSuppressed.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            CALHIVVLDone.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
-            CALHIVVLSuppressed.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            CALHIVVLDone.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
-        return await CALHIVVLSuppressed.getRawOne();
+        return await CALHIVVLDone.getRawOne();
     }
 }
