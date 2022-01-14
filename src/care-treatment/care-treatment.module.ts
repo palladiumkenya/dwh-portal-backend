@@ -257,6 +257,9 @@ import { GetCalhivEligibleVlHandler } from './ovc/queries/handlers/get-calhiv-el
 import { GetCalhivVirallySuppressedHandler } from './ovc/queries/handlers/get-calhiv-virally-suppressed.handler';
 import { GetCalhivVldoneHandler } from './ovc/queries/handlers/get-calhiv-vldone.handler';
 import { GetOvcDeadHandler } from './ovc/queries/handlers/get-ovc-dead.handler';
+import { GetOvcEligibleVlHandler } from './ovc/queries/handlers/get-ovc-eligible-vl.handler';
+import { GetOvcVirallySuppressedHandler } from './ovc/queries/handlers/get-ovc-virally-suppressed.handler';
+import { GetOvcVldoneHandler } from './ovc/queries/handlers/get-ovc-vldone.handler';
 
 
 @Module({
@@ -508,7 +511,10 @@ import { GetOvcDeadHandler } from './ovc/queries/handlers/get-ovc-dead.handler';
         GetOvcDeadHandler,
         GetCalhivEligibleVlHandler,
         GetCalhivVirallySuppressedHandler,
-        GetCalhivVldoneHandler
+        GetCalhivVldoneHandler,
+        GetOvcEligibleVlHandler,
+        GetOvcVirallySuppressedHandler,
+        GetOvcVldoneHandler
     ],
     controllers: [CareTreatmentController]
 })
