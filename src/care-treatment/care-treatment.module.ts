@@ -244,6 +244,12 @@ import { GetOvcOverallCalhivHandler } from './ovc/queries/handlers/get-ovc-overa
 import { GetOvcCalHIVByGenderHandler } from './ovc/queries/handlers/get-ovc-cal-hiv-by-gender.handler';
 import { GetOvcDistributionOfCalHIVByAgeSexHandler } from './ovc/queries/handlers/get-ovc-distribution-of-calhiv-by-age-sex.handler';
 import { GetDistributionOfOvcClientsByAgeSexHandler } from './ovc/queries/handlers/get-distribution-of-ovc-clients-by-age-sex.handler';
+import { GetCalhivOnArtHandler } from './ovc/queries/handlers/get-calhiv-on-art.handler';
+import { GetCalhivOnDtgHandler } from './ovc/queries/handlers/get-calhiv-on-dtg.handler';
+import { GetOvcOnArtHandler } from './ovc/queries/handlers/get-ovc-on-art.handler';
+import { GetOvcOnDtgHandler } from './ovc/queries/handlers/get-ovc-on-dtg.handler';
+import { GetCalhivOnMmdHandler } from './ovc/queries/handlers/get-calhiv-on-mmd.handler';
+import { GetOvcTotalOnMmdHandler } from './ovc/queries/handlers/get-ovc-total-on-mmd.handler';
 
 
 @Module({
@@ -482,7 +488,13 @@ import { GetDistributionOfOvcClientsByAgeSexHandler } from './ovc/queries/handle
         GetOvcOverallCalhivHandler,
         GetOvcCalHIVByGenderHandler,
         GetOvcDistributionOfCalHIVByAgeSexHandler,
-        GetDistributionOfOvcClientsByAgeSexHandler
+        GetDistributionOfOvcClientsByAgeSexHandler,
+        GetCalhivOnArtHandler,
+        GetCalhivOnDtgHandler,
+        GetOvcOnArtHandler,
+        GetOvcOnDtgHandler,
+        GetCalhivOnMmdHandler,
+        GetOvcTotalOnMmdHandler
     ],
     controllers: [CareTreatmentController]
 })
