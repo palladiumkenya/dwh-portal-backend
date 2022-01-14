@@ -250,6 +250,8 @@ import { GetOvcOnArtHandler } from './ovc/queries/handlers/get-ovc-on-art.handle
 import { GetOvcOnDtgHandler } from './ovc/queries/handlers/get-ovc-on-dtg.handler';
 import { GetCalhivOnMmdHandler } from './ovc/queries/handlers/get-calhiv-on-mmd.handler';
 import { GetOvcTotalOnMmdHandler } from './ovc/queries/handlers/get-ovc-total-on-mmd.handler';
+import { GetCalhivIitHandler } from './ovc/queries/handlers/get-calhiv-iit.handler';
+import { GetCalhivDeadHandler } from './ovc/queries/handlers/get-calhiv-dead.handler';
 
 
 @Module({
@@ -494,7 +496,9 @@ import { GetOvcTotalOnMmdHandler } from './ovc/queries/handlers/get-ovc-total-on
         GetOvcOnArtHandler,
         GetOvcOnDtgHandler,
         GetCalhivOnMmdHandler,
-        GetOvcTotalOnMmdHandler
+        GetOvcTotalOnMmdHandler,
+        GetCalhivIitHandler,
+        GetCalhivDeadHandler
     ],
     controllers: [CareTreatmentController]
 })
