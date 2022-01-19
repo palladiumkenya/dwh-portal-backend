@@ -260,6 +260,9 @@ import { GetOvcDeadHandler } from './ovc/queries/handlers/get-ovc-dead.handler';
 import { GetOvcEligibleVlHandler } from './ovc/queries/handlers/get-ovc-eligible-vl.handler';
 import { GetOvcVirallySuppressedHandler } from './ovc/queries/handlers/get-ovc-virally-suppressed.handler';
 import { GetOvcVldoneHandler } from './ovc/queries/handlers/get-ovc-vldone.handler';
+import { GetOTZCalhivOnArtQuery } from './otz/queries/impl/get-calhiv-on-art.query';
+import { GetOTZCalhivOnArtHandler } from './otz/queries/handlers/get-calhiv-on-art.handler';
+import { GetOtzCalhivVlEligibleHandler } from './otz/queries/handlers/get-otz-calhiv-vl-eligible.handler';
 
 
 @Module({
@@ -514,7 +517,9 @@ import { GetOvcVldoneHandler } from './ovc/queries/handlers/get-ovc-vldone.handl
         GetCalhivVldoneHandler,
         GetOvcEligibleVlHandler,
         GetOvcVirallySuppressedHandler,
-        GetOvcVldoneHandler
+        GetOvcVldoneHandler,
+        GetOTZCalhivOnArtHandler,
+        GetOtzCalhivVlEligibleHandler
     ],
     controllers: [CareTreatmentController]
 })
