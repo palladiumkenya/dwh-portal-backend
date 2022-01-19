@@ -16,8 +16,8 @@ export class GetOtzOutcomesAmongAlhivWithBaselineVlHandler implements IQueryHand
         const baselineVl = this.repository.createQueryBuilder('f')
             .select(['AlHivEnrolledInOTZ = COUNT(*),\n' +
             'AlHivWithBaselineVl = (SELECT COUNT(*) FROM [dbo].[FACT_Trans_OTZEnrollments] WHERE FirstVL IS NOT NULL AND OTZEnrollmentDate is not null),\n' +
-            'AlHivWithVlLessThan1000 = (SELECT COUNT(*) FROM [dbo].[FACT_Trans_OTZEnrollments] WHERE (CASE WHEN FirstVL = \'undetectable\' THEN 1 ELSE FirstVL END) < 1000  AND OTZEnrollmentDate is not null),\n' +
-            'AlHivWithVlGreaterThan1000 = (SELECT COUNT(*) FROM [dbo].[FACT_Trans_OTZEnrollments] WHERE (CASE WHEN FirstVL = \'undetectable\' THEN 1 ELSE FirstVL END) >= 1000 AND OTZEnrollmentDate is not null)\n'])
+            'AlHivWithVlLessThan1000 = (SELECT COUNT(*) FROM [dbo].[FACT_Trans_OTZEnrollments] WHERE (CASE WHEN FirstVL = \'undetectable\' THEN 1 ELSE CONVERT(decimal, FirstVL) END) < 1000  AND OTZEnrollmentDate is not null),\n' +
+            'AlHivWithVlGreaterThan1000 = (SELECT COUNT(*) FROM [dbo].[FACT_Trans_OTZEnrollments] WHERE (CASE WHEN FirstVL = \'undetectable\' THEN 1 ELSE CONVERT(decimal, FirstVL) END) >= 1000 AND OTZEnrollmentDate is not null)\n'])
             .andWhere('f.OTZEnrollmentDate IS NOT NULL');
 
         if (query.county) {
