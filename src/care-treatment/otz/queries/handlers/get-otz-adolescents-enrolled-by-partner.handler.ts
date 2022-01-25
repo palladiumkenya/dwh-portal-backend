@@ -36,6 +36,14 @@ export class GetOtzAdolescentsEnrolledByPartnerHandler implements IQueryHandler<
             otzEnrollmentsPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            otzEnrollmentsPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            otzEnrollmentsPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await otzEnrollmentsPartner
             .groupBy('CTPartner')
             .getRawMany();

@@ -240,6 +240,29 @@ import { GetCovidPercentageWhoMissedAppointmentsByCountyHandler } from './covid/
 import { GetCovidPercentageWhoMissedAppointmentsByPartnerHandler } from './covid/queries/handlers/get-covid-percentage-who-missed-appointments-by-partner.handler';
 import { GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler } from './covid/queries/handlers/get-cumulative-number-adult-plhiv-who-received-atleast-one-dose.handler';
 import { GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler } from './covid/queries/handlers/get-covid-trends-of-adult-plhiv-vaccination-in-the-last-12-months.handler';
+import { GetOvcOverallCalhivHandler } from './ovc/queries/handlers/get-ovc-overall-calhiv.handler';
+import { GetOvcCalHIVByGenderHandler } from './ovc/queries/handlers/get-ovc-cal-hiv-by-gender.handler';
+import { GetOvcDistributionOfCalHIVByAgeSexHandler } from './ovc/queries/handlers/get-ovc-distribution-of-calhiv-by-age-sex.handler';
+import { GetDistributionOfOvcClientsByAgeSexHandler } from './ovc/queries/handlers/get-distribution-of-ovc-clients-by-age-sex.handler';
+import { GetCalhivOnArtHandler } from './ovc/queries/handlers/get-calhiv-on-art.handler';
+import { GetCalhivOnDtgHandler } from './ovc/queries/handlers/get-calhiv-on-dtg.handler';
+import { GetOvcOnArtHandler } from './ovc/queries/handlers/get-ovc-on-art.handler';
+import { GetOvcOnDtgHandler } from './ovc/queries/handlers/get-ovc-on-dtg.handler';
+import { GetCalhivOnMmdHandler } from './ovc/queries/handlers/get-calhiv-on-mmd.handler';
+import { GetOvcTotalOnMmdHandler } from './ovc/queries/handlers/get-ovc-total-on-mmd.handler';
+import { GetCalhivIitHandler } from './ovc/queries/handlers/get-calhiv-iit.handler';
+import { GetCalhivDeadHandler } from './ovc/queries/handlers/get-calhiv-dead.handler';
+import { GetOvcIITHandler } from './ovc/queries/handlers/get-ovc-iit.handler';
+import { GetCalhivEligibleVlHandler } from './ovc/queries/handlers/get-calhiv-eligible-vl.handler';
+import { GetCalhivVirallySuppressedHandler } from './ovc/queries/handlers/get-calhiv-virally-suppressed.handler';
+import { GetCalhivVldoneHandler } from './ovc/queries/handlers/get-calhiv-vldone.handler';
+import { GetOvcDeadHandler } from './ovc/queries/handlers/get-ovc-dead.handler';
+import { GetOvcEligibleVlHandler } from './ovc/queries/handlers/get-ovc-eligible-vl.handler';
+import { GetOvcVirallySuppressedHandler } from './ovc/queries/handlers/get-ovc-virally-suppressed.handler';
+import { GetOvcVldoneHandler } from './ovc/queries/handlers/get-ovc-vldone.handler';
+import { GetOTZCalhivOnArtQuery } from './otz/queries/impl/get-calhiv-on-art.query';
+import { GetOTZCalhivOnArtHandler } from './otz/queries/handlers/get-calhiv-on-art.handler';
+import { GetOtzCalhivVlEligibleHandler } from './otz/queries/handlers/get-otz-calhiv-vl-eligible.handler';
 
 
 @Module({
@@ -474,7 +497,29 @@ import { GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler } from '.
         GetCovidPercentageWhoMissedAppointmentsByCountyHandler,
         GetCovidPercentageWhoMissedAppointmentsByPartnerHandler,
         GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler,
-        GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler
+        GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler,
+        GetOvcOverallCalhivHandler,
+        GetOvcCalHIVByGenderHandler,
+        GetOvcDistributionOfCalHIVByAgeSexHandler,
+        GetDistributionOfOvcClientsByAgeSexHandler,
+        GetCalhivOnArtHandler,
+        GetCalhivOnDtgHandler,
+        GetOvcOnArtHandler,
+        GetOvcOnDtgHandler,
+        GetCalhivOnMmdHandler,
+        GetOvcTotalOnMmdHandler,
+        GetCalhivIitHandler,
+        GetCalhivDeadHandler,
+        GetOvcIITHandler,
+        GetOvcDeadHandler,
+        GetCalhivEligibleVlHandler,
+        GetCalhivVirallySuppressedHandler,
+        GetCalhivVldoneHandler,
+        GetOvcEligibleVlHandler,
+        GetOvcVirallySuppressedHandler,
+        GetOvcVldoneHandler,
+        GetOTZCalhivOnArtHandler,
+        GetOtzCalhivVlEligibleHandler
     ],
     controllers: [CareTreatmentController]
 })

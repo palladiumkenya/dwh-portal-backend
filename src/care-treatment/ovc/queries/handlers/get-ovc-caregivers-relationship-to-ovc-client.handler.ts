@@ -15,9 +15,10 @@ export class GetOvcCaregiversRelationshipToOvcClientHandler implements IQueryHan
 
     async execute(query: GetOvcCaregiversRelationshipToOvcClientQuery): Promise<any> {
         const ovcCareGiversRelationships = this.repository.createQueryBuilder('f')
-            .select(['CASE WHEN [RelationshipToClient] IS NULL THEN \'Undocumented\' ELSE [RelationshipToClient] END AS [RelationshipToClient], ' +
+            .select(['case when RelationshipToClient IS NULL then \'Undocumented\' else RelationshipToClient end as RelationshipToClient, ' +
+            'case when RelationshipToClient IS NULL then \'Undocumented\' else RelationshipToClient end as RelationshipToClientCleaned, ' +
             'COUNT(*) relationships, COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS Percentage'])
-            .andWhere('f.OVCEnrollmentDate IS NOT NULL');
+            .andWhere('f.OVCEnrollmentDate IS NOT NULL and TXCurr=1');
 
         if (query.county) {
             ovcCareGiversRelationships.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -37,6 +38,14 @@ export class GetOvcCaregiversRelationshipToOvcClientHandler implements IQueryHan
 
         if (query.agency) {
             ovcCareGiversRelationships.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            ovcCareGiversRelationships.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            ovcCareGiversRelationships.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await ovcCareGiversRelationships

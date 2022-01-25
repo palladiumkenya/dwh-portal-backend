@@ -39,6 +39,14 @@ export class GetVlUptakeByAgeHandler implements IQueryHandler<GetVlUptakeByAgeQu
             vlUptakeByAge.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlUptakeByAge.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlUptakeByAge.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlUptakeByAge
             .groupBy('f.AgeGroup, f.Gender')
             .orderBy('f.AgeGroup, f.Gender')

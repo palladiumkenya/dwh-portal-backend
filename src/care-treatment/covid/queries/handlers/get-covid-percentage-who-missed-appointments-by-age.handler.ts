@@ -37,6 +37,18 @@ export class GetCovidPercentageWhoMissedAppointmentsByAgeHandler implements IQue
             covidPercentageWhoMissedAppointmentsByAge.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            covidPercentageWhoMissedAppointmentsByAge.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            covidPercentageWhoMissedAppointmentsByAge.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            covidPercentageWhoMissedAppointmentsByAge.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await covidPercentageWhoMissedAppointmentsByAge
             .groupBy('AgeGroup')
             .orderBy('AgeGroup')

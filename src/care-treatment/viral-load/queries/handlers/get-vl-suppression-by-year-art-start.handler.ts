@@ -39,6 +39,14 @@ export class GetVlSuppressionByYearArtStartHandler implements IQueryHandler<GetV
             vlSuppressionByYearArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlSuppressionByYearArtStart.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlSuppressionByYearArtStart.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlSuppressionByYearArtStart
             .groupBy('f.StartART_Year')
             .orderBy('f.StartART_Year')

@@ -84,6 +84,16 @@ export class GetVlMedianTimeToFirstVlByYearHandler implements IQueryHandler<GetV
                 .getRawMany();
         }
 
+        if (query.datimAgeGroup) {
+            // lacking age group
+            // sixMonthViralSupByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            // lacking gender
+            // sixMonthViralSupByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
         return await medianTimeToFirstVlSql
             .groupBy('StartYr, MedianTimeToFirstVL_year')
             .orderBy('f.StartYr')

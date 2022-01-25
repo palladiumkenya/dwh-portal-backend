@@ -38,6 +38,14 @@ export class GetVlUptakeByPartnerHandler implements IQueryHandler<GetVlUptakeByP
             vlUptakeByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            vlUptakeByPartner.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            vlUptakeByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await vlUptakeByPartner
             .groupBy('f.CTPartner')
             .orderBy('SUM(f.VLDone)', 'DESC')

@@ -36,6 +36,14 @@ export class GetOtzAdolescentsEnrolledByCountyHandler implements IQueryHandler<G
             otzEnrollmentsCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.datimAgeGroup) {
+            otzEnrollmentsCounty.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
+        if (query.gender) {
+            otzEnrollmentsCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
         return await otzEnrollmentsCounty
             .groupBy('County')
             .getRawMany();

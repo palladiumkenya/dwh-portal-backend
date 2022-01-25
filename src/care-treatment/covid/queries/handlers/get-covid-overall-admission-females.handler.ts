@@ -38,6 +38,18 @@ export class GetCovidOverallAdmissionFemalesHandler implements IQueryHandler<Get
             covidOverallAdmissionFemales.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            covidOverallAdmissionFemales.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            covidOverallAdmissionFemales.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            covidOverallAdmissionFemales.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await covidOverallAdmissionFemales
             .groupBy('AdmissionStatus, Gender')
             .getRawMany();

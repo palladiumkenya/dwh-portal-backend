@@ -37,6 +37,18 @@ export class GetCovidSeverityByGenderHandler implements IQueryHandler<GetCovidSe
             covidSeverityByGender.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
         }
 
+        if (query.agency) {
+            covidSeverityByGender.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            covidSeverityByGender.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            covidSeverityByGender.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await covidSeverityByGender
             .groupBy('Gender,PatientStatus')
             .getRawMany();

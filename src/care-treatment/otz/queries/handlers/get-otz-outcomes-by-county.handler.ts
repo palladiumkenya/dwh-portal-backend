@@ -37,6 +37,14 @@ export class GetOtzOutcomesByCountyHandler implements IQueryHandler<GetOtzOutcom
             otzOutcomesByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
+        if (query.gender) {
+            otzOutcomesByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+        }
+
+        if (query.datimAgeGroup) {
+            otzOutcomesByCounty.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        }
+
         return await otzOutcomesByCounty
             .groupBy('[County], [Outcome]')
             .getRawMany();
