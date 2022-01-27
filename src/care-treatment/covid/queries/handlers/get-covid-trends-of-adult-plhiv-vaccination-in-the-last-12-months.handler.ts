@@ -50,8 +50,8 @@ export class GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler imple
         }
 
         return await trendsOfPLHIVVaccination
-            .groupBy('DATENAME(Month,DategivenFirstDose), DATENAME(YEAR,DategivenFirstDose), DATEPART(MONTH, DategivenFirstDose), VaccinationStatus')
-            .orderBy('DATEPART(MONTH, DategivenFirstDose)')
+            .groupBy('DATENAME(Month,DategivenFirstDose), DATENAME(YEAR,DategivenFirstDose),  DATEPART(YEAR, DategivenFirstDose), DATEPART(MONTH, DategivenFirstDose), VaccinationStatus')
+            .orderBy(' DATEPART(YEAR, DategivenFirstDose), DATEPART(MONTH, DategivenFirstDose)')
             .getRawMany();
     }
 }
