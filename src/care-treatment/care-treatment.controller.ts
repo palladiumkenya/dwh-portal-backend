@@ -214,6 +214,7 @@ import { GetOvcEligibleVlQuery } from './ovc/queries/impl/get-ovc-eligible-vl.qu
 import { GetOvcVldoneQuery } from './ovc/queries/impl/get-ovc-vldone.query';
 import { GetOvcVirallySuppressedQuery } from './ovc/queries/impl/get-ovc-virally-suppressed.query';
 import { GetOTZCalhivOnArtQuery } from './otz/queries/impl/get-calhiv-on-art.query';
+import { GetCovidNumberScreenedQuery } from './covid/queries/impl/get-covid-number-screened.query';
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -11741,6 +11742,61 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
+    @Get('getCovidScreened')
+    async getCovidScreened(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidNumberScreenedQuery();
 
-    // getOTZCALHIVVLEligible
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
 }

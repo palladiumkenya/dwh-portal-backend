@@ -263,6 +263,7 @@ import { GetOvcVldoneHandler } from './ovc/queries/handlers/get-ovc-vldone.handl
 import { GetOTZCalhivOnArtQuery } from './otz/queries/impl/get-calhiv-on-art.query';
 import { GetOTZCalhivOnArtHandler } from './otz/queries/handlers/get-calhiv-on-art.handler';
 import { GetOtzCalhivVlEligibleHandler } from './otz/queries/handlers/get-otz-calhiv-vl-eligible.handler';
+import { GetCovidNumberScreenedHandler } from './covid/queries/handlers/get-covid-number-screened.handler';
 
 
 @Module({
@@ -519,7 +520,8 @@ import { GetOtzCalhivVlEligibleHandler } from './otz/queries/handlers/get-otz-ca
         GetOvcVirallySuppressedHandler,
         GetOvcVldoneHandler,
         GetOTZCalhivOnArtHandler,
-        GetOtzCalhivVlEligibleHandler
+        GetOtzCalhivVlEligibleHandler,
+        GetCovidNumberScreenedHandler
     ],
     controllers: [CareTreatmentController]
 })
