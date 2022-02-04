@@ -16,7 +16,7 @@ export class GetOvcServBySexHandler implements IQueryHandler<GetOvcServBySexQuer
     async execute(query: GetOvcServBySexQuery): Promise<any> {
         const ovcServBySex = this.repository.createQueryBuilder('f')
             .select(['COUNT(*) overallOvcServ, Gender'])
-            .andWhere('f.OVCEnrollmentDate IS NOT NULL');
+            .andWhere('f.OVCEnrollmentDate IS NOT NULL and TXCurr=1');
 
         if (query.county) {
             ovcServBySex.andWhere('f.County IN (:...counties)', { counties: query.county });

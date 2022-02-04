@@ -16,7 +16,7 @@ export class GetOvcOverallOvcServHandler implements IQueryHandler<GetOvcOverallO
     async execute(query: GetOvcOverallOvcServQuery): Promise<any> {
         const overOvcServ = this.repository.createQueryBuilder('f')
             .select(['COUNT(*) overallOvcServ'])
-            .andWhere('f.OVCEnrollmentDate IS NOT NULL');
+            .andWhere('f.OVCEnrollmentDate IS NOT NULL and TXCurr=1');
 
         if (query.county) {
             overOvcServ.andWhere('f.County IN (:...counties)', { counties: query.county });
