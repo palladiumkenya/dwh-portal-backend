@@ -43,7 +43,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentHandler implements IQueryHandle
 
         if (query.datimAgeGroup) {
             // lacking age group
-            // covidAdmissionByAge.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            // covidAdultsCurrentOnTreatment.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
 
