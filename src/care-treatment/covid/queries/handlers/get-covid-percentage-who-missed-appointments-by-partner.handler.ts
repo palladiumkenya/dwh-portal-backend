@@ -16,10 +16,10 @@ export class GetCovidPercentageWhoMissedAppointmentsByPartnerHandler implements 
 
     async execute(query: GetCovidPercentageWhoMissedAppointmentsByPartnerQuery): Promise<any> {
         const covidPercentageWhoMissedAppointmentsByPartner = this.repository.createQueryBuilder('f')
-            .select(['CTPartner, count (*)Num'])
+            .select(['f.CTPartner, count (*)Num'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode = g.MFLCode and f.PatientPK = g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('MissedAppointmentDueToCOVID19=\'Yes\' AND CTPartner IS NOT NULL');
+            .where('MissedAppointmentDueToCOVID19=\'Yes\' AND f.CTPartner IS NOT NULL');
 
         if (query.county) {
             covidPercentageWhoMissedAppointmentsByPartner.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -50,7 +50,7 @@ export class GetCovidPercentageWhoMissedAppointmentsByPartnerHandler implements 
         }
 
         return await covidPercentageWhoMissedAppointmentsByPartner
-            .groupBy('CTPartner')
+            .groupBy('f.CTPartner')
             .getRawMany();
     }
 }
