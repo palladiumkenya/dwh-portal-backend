@@ -42,8 +42,7 @@ export class GetCovidPLHIVCurrentOnArtHandler implements IQueryHandler<GetCovidP
         }
 
         if (query.datimAgeGroup) {
-            // lacking age group
-            // covidPLHIVCurrentOnART.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            covidPLHIVCurrentOnART.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
 

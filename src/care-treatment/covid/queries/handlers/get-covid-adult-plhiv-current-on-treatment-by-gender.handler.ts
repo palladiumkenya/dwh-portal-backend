@@ -15,7 +15,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByGenderHandler implements IQue
     async execute(query: GetCovidAdultPlhivCurrentOnTreatmentByGenderQuery): Promise<any> {
         const covidAdultsCurrentOnTreatmentByGender = this.repository.createQueryBuilder('f')
             .select(['Count (*) Adults, Gender'])
-            .where('f.ageLV >= 18 AND f.ARTOutcome=\'V\'');
+            .where('f.ageLV >= 15 AND f.ARTOutcome=\'V\'');
 
         if (query.county) {
             covidAdultsCurrentOnTreatmentByGender.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -42,8 +42,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByGenderHandler implements IQue
         }
 
         if (query.datimAgeGroup) {
-            // lacking age group
-            // covidAdmissionByAge.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            covidAdultsCurrentOnTreatmentByGender.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
 
