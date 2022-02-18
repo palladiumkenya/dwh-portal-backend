@@ -16,7 +16,7 @@ export class GetCovidSeverityByGenderHandler implements IQueryHandler<GetCovidSe
 
     async execute(query: GetCovidSeverityByGenderQuery): Promise<any> {
         const covidSeverityByGender = this.repository.createQueryBuilder('f')
-            .select(['Gender, PatientStatus, Count (*) Num'])
+            .select(['f.Gender, PatientStatus, Count (*) Num'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
             .where('ARTOutcome=\'V\'');
@@ -50,7 +50,7 @@ export class GetCovidSeverityByGenderHandler implements IQueryHandler<GetCovidSe
         }
 
         return await covidSeverityByGender
-            .groupBy('Gender,PatientStatus')
+            .groupBy('f.Gender,PatientStatus')
             .getRawMany();
     }
 }

@@ -17,10 +17,10 @@ export class GetCovidOverallAdmissionFemalesHandler implements IQueryHandler<Get
 
     async execute(query: GetCovidOverallAdmissionMalesQuery): Promise<any> {
         const covidOverallAdmissionFemales = this.repository.createQueryBuilder('f')
-            .select(['AdmissionStatus, gender, CASE WHEN AdmissionStatus=\'Yes\' THEN \'Admitted\' WHEN AdmissionStatus=\'No\'  THEN \'Not Admitted\' ELSE \'Unclassified\' END as Admission, count (*) Num'])
+            .select(['AdmissionStatus, f.Gender, CASE WHEN AdmissionStatus=\'Yes\' THEN \'Admitted\' WHEN AdmissionStatus=\'No\'  THEN \'Not Admitted\' ELSE \'Unclassified\' END as Admission, count (*) Num'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('PatientStatus=\'Symptomatic\' AND Gender =\'Female\'');
+            .where('PatientStatus=\'Symptomatic\' AND f.Gender =\'Female\'');
 
         if (query.county) {
             covidOverallAdmissionFemales.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -51,7 +51,7 @@ export class GetCovidOverallAdmissionFemalesHandler implements IQueryHandler<Get
         }
 
         return await covidOverallAdmissionFemales
-            .groupBy('AdmissionStatus, Gender')
+            .groupBy('AdmissionStatus, f.Gender')
             .getRawMany();
     }
 }

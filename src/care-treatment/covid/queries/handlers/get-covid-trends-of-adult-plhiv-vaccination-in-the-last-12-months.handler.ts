@@ -19,7 +19,7 @@ export class GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler imple
             .select(['DATENAME(Month,DategivenFirstDose) AS DategivenFirstDose,DATENAME(YEAR,DategivenFirstDose) AS YearFirstDose, count (*)Num, VaccinationStatus'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('ageLV>=18 and ARTOutcome=\'V\' and (DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
+            .where('ageLV>=15 and ARTOutcome=\'V\' and (DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
 
         if (query.county) {
             trendsOfPLHIVVaccination.andWhere('g.County IN (:...counties)', { counties: query.county });
