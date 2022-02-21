@@ -16,10 +16,10 @@ export class GetCovidPercentageWhoMissedAppointmentsByCountyHandler implements I
 
     async execute(query: GetCovidPercentageWhoMissedAppointmentsByCountyQuery): Promise<any> {
         const covidPercentageWhoMissedAppointmentsByCounty = this.repository.createQueryBuilder('f')
-            .select(['County, count (*)Num'])
+            .select(['f.County, count (*)Num'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode = g.MFLCode and f.PatientPK = g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('MissedAppointmentDueToCOVID19=\'Yes\' AND County IS NOT NULL');
+            .where('MissedAppointmentDueToCOVID19=\'Yes\' AND f.County IS NOT NULL');
 
         if (query.county) {
             covidPercentageWhoMissedAppointmentsByCounty.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -50,7 +50,7 @@ export class GetCovidPercentageWhoMissedAppointmentsByCountyHandler implements I
         }
 
         return await covidPercentageWhoMissedAppointmentsByCounty
-            .groupBy('County')
+            .groupBy('f.County')
             .getRawMany();
     }
 }
