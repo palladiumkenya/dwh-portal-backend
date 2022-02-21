@@ -9,15 +9,15 @@ import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 @QueryHandler(GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsQuery)
 export class GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler implements IQueryHandler<GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsQuery> {
     constructor(
-        @InjectRepository(FactTransCovidVaccines, 'mssql')
-        private readonly repository: Repository<FactTransCovidVaccines>
+        @InjectRepository(FactTransNewCohort, 'mssql')
+        private readonly repository: Repository<FactTransNewCohort>
     ) {
     }
 
     async execute(query: GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsQuery): Promise<any> {
-        const trendsOfPLHIVVaccination = this.repository.createQueryBuilder('f')
+        const trendsOfPLHIVVaccination = this.repository.createQueryBuilder('g')
             .select(['DATENAME(Month,f.DategivenFirstDose) AS DategivenFirstDose,DATENAME(YEAR,f.DategivenFirstDose) AS YearFirstDose, count (*)Num, f.VaccinationStatus'])
-            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
+            .leftJoin(FactTransCovidVaccines , 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
             .where('ageLV>=15 and ARTOutcome=\'V\' and (f.DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
 
