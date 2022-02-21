@@ -17,7 +17,7 @@ export class GetCovidAdultPLHIVVaccinatedByAgeHandler implements IQueryHandler<G
     async execute(query: GetCovidAdultPLHIVVaccinatedByAgeQuery): Promise<any> {
         const adultPLHIVVaccinatedByAge = this.repository.createQueryBuilder('f')
             .select(['f.VaccinationStatus, AgeGroup, Count (*) Num'])
-            .leftJoin(FactTransCovidVaccines, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
+            .leftJoin(FactTransCovidVaccines, 'g', 'f.PatientID = g.PatientID and g.SiteCode=f.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'f.ageLV = v.Age')
             .where('ageLV >= 15 AND ARTOutcome = \'V\'');
 
