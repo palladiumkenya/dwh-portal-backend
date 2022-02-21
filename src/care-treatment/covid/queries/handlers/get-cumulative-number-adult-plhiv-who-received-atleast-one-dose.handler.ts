@@ -16,10 +16,10 @@ export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler imple
 
     async execute(query: GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery): Promise<any> {
         const cumulativeWhoReceivedOneDose = this.repository.createQueryBuilder('f')
-            .select(['DATENAME(Month,DategivenFirstDose) AS DategivenFirstDose,DATENAME(YEAR,DategivenFirstDose) AS YearFirstDose, count (*)Num, sum(count (*)) OVER (ORDER BY DATEPART(YEAR, DategivenFirstDose), DATEPART(MONTH, DategivenFirstDose)) as cumulative'])
+            .select(['DATENAME(Month,f.DategivenFirstDose) AS DategivenFirstDose,DATENAME(YEAR,f.DategivenFirstDose) AS YearFirstDose, count (*)Num, sum(count (*)) OVER (ORDER BY DATEPART(YEAR, f.DategivenFirstDose), DATEPART(MONTH, f.DategivenFirstDose)) as cumulative'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('ageLV>=18 and ARTOutcome=\'V\' and (DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
+            .where('ageLV>=18 and ARTOutcome=\'V\' and (f.DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
 
         if (query.county) {
             cumulativeWhoReceivedOneDose.andWhere('g.County IN (:...counties)', { counties: query.county });
@@ -50,8 +50,8 @@ export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler imple
         }
 
         return await cumulativeWhoReceivedOneDose
-            .groupBy('DATENAME(Month,DategivenFirstDose), DATENAME(YEAR,DategivenFirstDose), DATEPART(YEAR, DategivenFirstDose), DATEPART(MONTH, DategivenFirstDose)')
-            .orderBy('DATEPART(YEAR, DategivenFirstDose), DATEPART(MONTH, DategivenFirstDose)')
+            .groupBy('DATENAME(Month,f.DategivenFirstDose), DATENAME(YEAR,f.DategivenFirstDose), DATEPART(YEAR, f.DategivenFirstDose), DATEPART(MONTH, f.DategivenFirstDose)')
+            .orderBy('DATEPART(YEAR, f.DategivenFirstDose), DATEPART(MONTH, f.DategivenFirstDose)')
             .getRawMany();
     }
 }

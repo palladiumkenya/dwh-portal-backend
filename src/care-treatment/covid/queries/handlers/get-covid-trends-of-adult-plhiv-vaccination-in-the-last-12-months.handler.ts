@@ -16,10 +16,10 @@ export class GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler imple
 
     async execute(query: GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsQuery): Promise<any> {
         const trendsOfPLHIVVaccination = this.repository.createQueryBuilder('f')
-            .select(['DATENAME(Month,DategivenFirstDose) AS DategivenFirstDose,DATENAME(YEAR,DategivenFirstDose) AS YearFirstDose, count (*)Num, VaccinationStatus'])
+            .select(['DATENAME(Month,f.DategivenFirstDose) AS DategivenFirstDose,DATENAME(YEAR,f.DategivenFirstDose) AS YearFirstDose, count (*)Num, f.VaccinationStatus'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('ageLV>=15 and ARTOutcome=\'V\' and (DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
+            .where('ageLV>=15 and ARTOutcome=\'V\' and (f.DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
 
         if (query.county) {
             trendsOfPLHIVVaccination.andWhere('g.County IN (:...counties)', { counties: query.county });
@@ -50,8 +50,8 @@ export class GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler imple
         }
 
         return await trendsOfPLHIVVaccination
-            .groupBy('DATENAME(Month,DategivenFirstDose), DATENAME(YEAR,DategivenFirstDose),  DATEPART(YEAR, DategivenFirstDose), DATEPART(MONTH, DategivenFirstDose), VaccinationStatus')
-            .orderBy(' DATEPART(YEAR, DategivenFirstDose), DATEPART(MONTH, DategivenFirstDose)')
+            .groupBy('DATENAME(Month,f.DategivenFirstDose), DATENAME(YEAR,f.DategivenFirstDose),  DATEPART(YEAR, f.DategivenFirstDose), DATEPART(MONTH, f.DategivenFirstDose), f.VaccinationStatus')
+            .orderBy('DATEPART(YEAR, f.DategivenFirstDose), DATEPART(MONTH, f.DategivenFirstDose)')
             .getRawMany();
     }
 }
