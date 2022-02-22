@@ -50,7 +50,7 @@ export class GetCovidAdultPLHIVVaccinatedByGenderHandler implements IQueryHandle
         }
 
         return await adultPLHIVVaccinatedByGender
-            .groupBy('f.gender,f.VaccinationStatus')
+            .groupBy('g.gender,g.VaccinationStatus')
             .getRawMany();
     }
 }
