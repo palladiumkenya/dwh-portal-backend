@@ -9,15 +9,15 @@ import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 @QueryHandler(GetCovidAdultPlhivVaccinatedByGenderQuery)
 export class GetCovidAdultPLHIVVaccinatedByGenderHandler implements IQueryHandler<GetCovidAdultPlhivVaccinatedByGenderQuery> {
     constructor(
-        @InjectRepository(FactTransCovidVaccines, 'mssql')
-        private readonly repository: Repository<FactTransCovidVaccines>
+        @InjectRepository(FactTransNewCohort, 'mssql')
+        private readonly repository: Repository<FactTransNewCohort>
     ) {
     }
 
     async execute(query: GetCovidAdultPlhivVaccinatedByGenderQuery): Promise<any> {
-        const adultPLHIVVaccinatedByGender = this.repository.createQueryBuilder('f')
-            .select(['f.VaccinationStatus, f.gender, Count (*) Num'])
-            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
+        const adultPLHIVVaccinatedByGender = this.repository.createQueryBuilder('g')
+            .select(['g.VaccinationStatus, g.gender, Count (*) Num'])
+            .leftJoin(FactTransCovidVaccines , 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
             .where('g.ageLV >= 15 AND g.ARTOutcome = \'V\'');
 
