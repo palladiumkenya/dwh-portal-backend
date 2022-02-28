@@ -16,7 +16,7 @@ export class GetCovidAdultPLHIVVaccinatedByCountyHandler implements IQueryHandle
 
     async execute(query: GetCovidAdultPlhivVaccinatedByCountyQuery): Promise<any> {
         const adultPLHIVVaccinatedByCounty = this.repository.createQueryBuilder('g')
-            .select(['g.VaccinationStatus, f.County, Count (*) Num'])
+            .select(['g.VaccinationStatus, g.County, Count (*) Num'])
             .leftJoin(FactTransCovidVaccines, 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
             .where('g.ageLV >= 15 AND g.ARTOutcome = \'V\'');
@@ -50,7 +50,7 @@ export class GetCovidAdultPLHIVVaccinatedByCountyHandler implements IQueryHandle
         }
 
         return await adultPLHIVVaccinatedByCounty
-            .groupBy('f.County,g.VaccinationStatus')
+            .groupBy('g.County,g.VaccinationStatus')
             .orderBy('Count(*)', 'DESC')
             .getRawMany();
     }
