@@ -16,7 +16,7 @@ export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandl
 
     async execute(query: GetCovidAdultPlhivVaccinatedByPartnerQuery): Promise<any> {
         const adultPLHIVVaccinatedByPartner = this.repository.createQueryBuilder('g')
-            .select(['g.VaccinationStatus, f.CTPartner, Count (*) Num'])
+            .select(['g.VaccinationStatus, g.CTPartner, Count (*) Num'])
             .leftJoin(FactTransCovidVaccines, 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
             .where('g.ageLV >= 15 AND g.ARTOutcome = \'V\'');
@@ -50,7 +50,7 @@ export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandl
         }
 
         return await adultPLHIVVaccinatedByPartner
-            .groupBy('f.CTPartner,g.VaccinationStatus')
+            .groupBy('g.CTPartner,g.VaccinationStatus')
             .getRawMany();
     }
 }
