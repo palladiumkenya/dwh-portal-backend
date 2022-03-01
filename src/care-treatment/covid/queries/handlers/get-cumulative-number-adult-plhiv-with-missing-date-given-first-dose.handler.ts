@@ -1,25 +1,27 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery } from '../impl/get-cumulative-number-adult-plhiv-who-received-atleast-one-dose.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines.model';
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
+import {
+    GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery
+} from "../impl/get-cumulative-number-adult-plhiv-with-missing-date-given-first-dose.query";
 
-@QueryHandler(GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery)
-export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler implements IQueryHandler<GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery> {
+@QueryHandler(GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery)
+export class GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler implements IQueryHandler<GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>
+        @InjectRepository(FactTransCovidVaccines, 'mssql')
+        private readonly repository: Repository<FactTransCovidVaccines>
     ) {
     }
 
-    async execute(query: GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery): Promise<any> {
-        const cumulativeWhoReceivedOneDose = this.repository.createQueryBuilder('g')
-            .select(['DATENAME(Month,g.DategivenFirstDose) AS DategivenFirstDose,DATENAME(YEAR,g.DategivenFirstDose) AS YearFirstDose, count (*)Num, sum(count (*)) OVER (ORDER BY DATEPART(YEAR, g.DategivenFirstDose), DATEPART(MONTH, g.DategivenFirstDose)) as cumulative'])
-            .leftJoin(FactTransCovidVaccines, 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
+    async execute(query: GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery): Promise<any> {
+        const cumulativeWhoReceivedOneDose = this.repository.createQueryBuilder('f')
+            .select(['COUNT(DISTINCT CONCAT(f.PatientID, \'-\', f.PatientPK,\'-\',f.SiteCode))Num'])
+            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('ageLV>=15 and ARTOutcome=\'V\' and (g.DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
+            .where('ageLV>=15 and ARTOutcome=\'V\' and f.DateGivenFirstDose =\'0001-01-01\' and f.VaccinationStatus in (\'Fully Vaccinated\',\'Partially Vaccinated\')');
 
         if (query.county) {
             cumulativeWhoReceivedOneDose.andWhere('g.County IN (:...counties)', { counties: query.county });
@@ -50,8 +52,6 @@ export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler imple
         }
 
         return await cumulativeWhoReceivedOneDose
-            .groupBy('DATENAME(Month,g.DategivenFirstDose), DATENAME(YEAR,g.DategivenFirstDose), DATEPART(YEAR, g.DategivenFirstDose), DATEPART(MONTH, g.DategivenFirstDose)')
-            .orderBy('DATEPART(YEAR, g.DategivenFirstDose), DATEPART(MONTH, g.DategivenFirstDose)')
-            .getRawMany();
+            .getRawOne();
     }
 }

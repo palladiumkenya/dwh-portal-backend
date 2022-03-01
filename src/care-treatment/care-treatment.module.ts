@@ -264,6 +264,9 @@ import { GetOTZCalhivOnArtQuery } from './otz/queries/impl/get-calhiv-on-art.que
 import { GetOTZCalhivOnArtHandler } from './otz/queries/handlers/get-calhiv-on-art.handler';
 import { GetOtzCalhivVlEligibleHandler } from './otz/queries/handlers/get-otz-calhiv-vl-eligible.handler';
 import { GetCovidNumberScreenedHandler } from './covid/queries/handlers/get-covid-number-screened.handler';
+import {
+    GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler
+} from "./covid/queries/handlers/get-cumulative-number-adult-plhiv-with-missing-date-given-first-dose.handler";
 
 
 @Module({
@@ -521,7 +524,8 @@ import { GetCovidNumberScreenedHandler } from './covid/queries/handlers/get-covi
         GetOvcVldoneHandler,
         GetOTZCalhivOnArtHandler,
         GetOtzCalhivVlEligibleHandler,
-        GetCovidNumberScreenedHandler
+        GetCovidNumberScreenedHandler,
+        GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler
     ],
     controllers: [CareTreatmentController]
 })
