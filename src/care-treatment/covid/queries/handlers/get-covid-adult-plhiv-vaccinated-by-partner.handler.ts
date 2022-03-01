@@ -9,15 +9,15 @@ import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 @QueryHandler(GetCovidAdultPlhivVaccinatedByPartnerQuery)
 export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandler<GetCovidAdultPlhivVaccinatedByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransCovidVaccines, 'mssql')
-        private readonly repository: Repository<FactTransCovidVaccines>
+        @InjectRepository(FactTransNewCohort, 'mssql')
+        private readonly repository: Repository<FactTransNewCohort>
     ) {
     }
 
     async execute(query: GetCovidAdultPlhivVaccinatedByPartnerQuery): Promise<any> {
-        const adultPLHIVVaccinatedByPartner = this.repository.createQueryBuilder('f')
-            .select(['VaccinationStatus, f.CTPartner, Count (*) Num'])
-            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
+        const adultPLHIVVaccinatedByPartner = this.repository.createQueryBuilder('g')
+            .select(['g.VaccinationStatus, g.CTPartner, Count (*) Num'])
+            .leftJoin(FactTransCovidVaccines, 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
             .where('g.ageLV >= 15 AND g.ARTOutcome = \'V\'');
 
@@ -50,7 +50,7 @@ export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandl
         }
 
         return await adultPLHIVVaccinatedByPartner
-            .groupBy('f.CTPartner,VaccinationStatus')
+            .groupBy('g.CTPartner,g.VaccinationStatus')
             .getRawMany();
     }
 }
