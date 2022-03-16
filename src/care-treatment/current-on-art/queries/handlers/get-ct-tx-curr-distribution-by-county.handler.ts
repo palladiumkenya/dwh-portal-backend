@@ -52,8 +52,8 @@ export class GetCtTxCurrDistributionByCountyHandler implements IQueryHandler<Get
         }
 
         if (query.datimAgeGroup) {
-            /*txCurrDistributionByCounty
-                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });*/
+            txCurrDistributionByCounty
+                .andWhere('f.ageGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.county) {

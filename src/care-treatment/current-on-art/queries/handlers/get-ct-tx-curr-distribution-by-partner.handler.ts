@@ -48,8 +48,8 @@ export class GetCtTxCurrDistributionByPartnerHandler implements IQueryHandler<Ge
         }
 
         if (query.datimAgeGroup) {
-            /*txCurrDistributionByPartner
-                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });*/
+            txCurrDistributionByPartner
+                .andWhere('f.ageGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await txCurrDistributionByPartner

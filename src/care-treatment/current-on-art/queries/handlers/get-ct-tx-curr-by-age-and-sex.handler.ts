@@ -47,8 +47,7 @@ export class GetCtTxCurrByAgeAndSexHandler implements IQueryHandler<GetCtTxCurrB
         }
 
         if (query.datimAgeGroup) {
-            /*txCurrByAgeAndSex
-                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });*/
+            txCurrByAgeAndSex.andWhere('f.ageGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         const result = await txCurrByAgeAndSex

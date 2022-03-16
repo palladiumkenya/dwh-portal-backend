@@ -742,7 +742,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(agegrp => agegrp.replace(" to ","-"));
         }
 
         return this.queryBus.execute(query);
@@ -757,6 +757,7 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('agency') agency,
+        @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetCtTxCurrByAgeAndSexQuery();
         if(county) {
@@ -777,6 +778,10 @@ export class CareTreatmentController {
 
         if (agency) {
             query.agency = agency;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup.map(agegrp => agegrp.replace(" to ","-"));
         }
 
         return this.queryBus.execute(query);
@@ -1346,7 +1351,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -1403,7 +1408,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -3391,7 +3396,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -3448,7 +3453,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
