@@ -54,8 +54,8 @@ export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHan
         }
 
         if (query.datimAgeGroup) {
-            /*txCurrAgeGroupDistributionByCounty
-                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });*/
+            txCurrAgeGroupDistributionByCounty
+                .andWhere('f.ageGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.county) {
