@@ -267,6 +267,9 @@ import { GetCovidNumberScreenedHandler } from './covid/queries/handlers/get-covi
 import {
     GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler
 } from "./covid/queries/handlers/get-cumulative-number-adult-plhiv-with-missing-date-given-first-dose.handler";
+import {
+    GetCovidAdmissionSymptomaticOverallHandler
+} from "./covid/queries/handlers/get-covid-admission-symptomatic-overall.handler";
 
 
 @Module({
@@ -525,7 +528,8 @@ import {
         GetOTZCalhivOnArtHandler,
         GetOtzCalhivVlEligibleHandler,
         GetCovidNumberScreenedHandler,
-        GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler
+        GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler,
+        GetCovidAdmissionSymptomaticOverallHandler
     ],
     controllers: [CareTreatmentController]
 })
