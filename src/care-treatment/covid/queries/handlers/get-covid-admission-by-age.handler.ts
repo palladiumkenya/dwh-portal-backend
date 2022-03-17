@@ -19,7 +19,7 @@ export class GetCovidAdmissionByAgeHandler implements IQueryHandler<GetCovidAdmi
             .select(['AgeGroup, count (*) Num'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('PatientStatus=\'Symptomatic\' and AdmissionStatus=\'Yes\'');
+            .where('PatientStatus=\'Yes\' and AdmissionStatus=\'Yes\'');
 
         if (query.county) {
             covidAdmissionByAge.andWhere('f.County IN (:...counties)', { counties: query.county });
