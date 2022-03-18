@@ -1,9 +1,10 @@
-import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetCtTxCurrAgeGroupDistributionByPartnerQuery } from '../impl/get-ct-tx-curr-age-group-distribution-by-partner.query';
-import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
-import { Repository } from 'typeorm';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
+import {IQueryHandler, QueryHandler} from '@nestjs/cqrs';
+import {
+    GetCtTxCurrAgeGroupDistributionByPartnerQuery
+} from '../impl/get-ct-tx-curr-age-group-distribution-by-partner.query';
+import {InjectRepository} from '@nestjs/typeorm';
+import {FactTransHmisStatsTxcurr} from '../../entities/fact-trans-hmis-stats-txcurr.model';
+import {Repository} from 'typeorm';
 
 @QueryHandler(GetCtTxCurrAgeGroupDistributionByPartnerQuery)
 export class GetCtTxCurrAgeGroupDistributionByPartnerHandler implements IQueryHandler<GetCtTxCurrAgeGroupDistributionByPartnerQuery> {
@@ -50,8 +51,8 @@ export class GetCtTxCurrAgeGroupDistributionByPartnerHandler implements IQueryHa
         }
 
         if (query.datimAgeGroup) {
-            /*txCurrAgeGroupDistributionByPartner
-                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });*/
+            txCurrAgeGroupDistributionByPartner
+                .andWhere('f.ageGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await txCurrAgeGroupDistributionByPartner

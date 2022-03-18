@@ -218,6 +218,9 @@ import { GetCovidNumberScreenedQuery } from './covid/queries/impl/get-covid-numb
 import {
     GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery
 } from "./covid/queries/impl/get-cumulative-number-adult-plhiv-with-missing-date-given-first-dose.query";
+import {
+    GetCovidAdmissionSymptomaticOverallQuery
+} from "./covid/queries/impl/get-covid-admission-symptomatic-overall.query";
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -739,7 +742,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(agegrp => agegrp.replace(" to ","-"));
         }
 
         return this.queryBus.execute(query);
@@ -754,6 +757,7 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('agency') agency,
+        @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetCtTxCurrByAgeAndSexQuery();
         if(county) {
@@ -774,6 +778,10 @@ export class CareTreatmentController {
 
         if (agency) {
             query.agency = agency;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup.map(agegrp => agegrp.replace(" to ","-"));
         }
 
         return this.queryBus.execute(query);
@@ -1343,7 +1351,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -1400,7 +1408,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -3388,7 +3396,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -3445,7 +3453,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -10481,6 +10489,64 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidAdmissionSymptomaticOverall')
+    async getCovidAdmissionSymptomaticOverall(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidAdmissionSymptomaticOverallQuery();
 
         if(county) {
             query.county = county;
