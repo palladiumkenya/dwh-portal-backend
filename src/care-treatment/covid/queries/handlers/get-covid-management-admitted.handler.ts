@@ -16,8 +16,7 @@ export class GetCovidManagementAdmittedHandler implements IQueryHandler<GetCovid
 
     async execute(query: GetCovidManagementAdmittedInHospitalQuery): Promise<any> {
         const covidManagementAdmitted = this.repository.createQueryBuilder('g')
-            .select([' Case When AdmissionUnit=\'\' Then \'Other\' ' +
-            'Else AdmissionUnit end as AdmissionUnit, count (*)Num'])
+            .select([' Case When AdmissionUnit=\'\' Then \'Other\' Else AdmissionUnit end as AdmissionUnit, count (*)Num'])
             .leftJoin(FactTransCovidVaccines, 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
             .where('PatientStatus=\'Yes\'');
