@@ -19,7 +19,7 @@ export class GetCovidSymptomaticInfectionsHandler implements IQueryHandler<GetCo
             .select(['count(*) Num'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('EverCOVID19Positive=\'Yes\' and PatientStatus=\'Symptomatic\'');
+            .where('EverCOVID19Positive=\'Yes\' and PatientStatus=\'Yes\'');
 
         if (query.county) {
             covidSymptomaticInfections.andWhere('f.County IN (:...counties)', { counties: query.county });

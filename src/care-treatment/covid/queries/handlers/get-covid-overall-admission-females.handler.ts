@@ -20,7 +20,7 @@ export class GetCovidOverallAdmissionFemalesHandler implements IQueryHandler<Get
             .select(['AdmissionStatus, CASE WHEN AdmissionStatus=\'Yes\' THEN \'Admitted\' WHEN AdmissionStatus=\'No\' THEN \'Not Admitted\' ELSE \'Unclassified\' END as Admission, count (*)Num'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('f.Gender =\'Female\'');
+            .where('f.Gender =\'Female\' and ARTOutcome=\'V\' and PatientStatus=\'Yes\'');
 
         if (query.county) {
             covidOverallAdmissionFemales.andWhere('f.County IN (:...counties)', { counties: query.county });
