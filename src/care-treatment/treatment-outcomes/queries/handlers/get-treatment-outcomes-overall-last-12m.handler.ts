@@ -54,7 +54,7 @@ export class GetTreatmentOutcomesOverallLast12mHandler implements IQueryHandler<
         }
 
         if (query.datimAgeGroup) {
-            treatmentOutcomes.andWhere('f.ageGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            treatmentOutcomes.andWhere('f.AgeGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
