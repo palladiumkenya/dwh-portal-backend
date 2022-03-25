@@ -221,6 +221,9 @@ import {
 import {
     GetCovidAdmissionSymptomaticOverallQuery
 } from "./covid/queries/impl/get-covid-admission-symptomatic-overall.query";
+import {
+    GetCovidManagementAdmittedInHospitalQuery
+} from "./covid/queries/impl/get-covid-management-admitted-in-hospital.query";
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -2397,7 +2400,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -2464,7 +2467,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -2531,7 +2534,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -2598,7 +2601,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -2665,7 +2668,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -2732,7 +2735,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -2799,7 +2802,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -2933,7 +2936,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -3000,7 +3003,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"))
         }
 
         return this.queryBus.execute(query);
@@ -3067,7 +3070,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"))
         }
 
         return this.queryBus.execute(query);
@@ -3134,7 +3137,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -3201,7 +3204,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
         }
 
         return this.queryBus.execute(query);
@@ -11883,6 +11886,64 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetCovidNumberScreenedQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCovidManagementAdmittedInHospital')
+    async getCovidManagementAdmittedInHospital(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCovidManagementAdmittedInHospitalQuery();
 
         if(county) {
             query.county = county;

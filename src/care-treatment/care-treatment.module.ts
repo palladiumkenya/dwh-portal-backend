@@ -270,6 +270,7 @@ import {
 import {
     GetCovidAdmissionSymptomaticOverallHandler
 } from "./covid/queries/handlers/get-covid-admission-symptomatic-overall.handler";
+import {GetCovidManagementAdmittedHandler} from "./covid/queries/handlers/get-covid-management-admitted.handler";
 
 
 @Module({
@@ -529,7 +530,8 @@ import {
         GetOtzCalhivVlEligibleHandler,
         GetCovidNumberScreenedHandler,
         GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler,
-        GetCovidAdmissionSymptomaticOverallHandler
+        GetCovidAdmissionSymptomaticOverallHandler,
+        GetCovidManagementAdmittedHandler
     ],
     controllers: [CareTreatmentController]
 })

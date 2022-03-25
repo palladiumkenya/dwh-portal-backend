@@ -9,17 +9,21 @@ import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 @QueryHandler(GetCovidSeverityByGenderQuery)
 export class GetCovidSeverityByGenderHandler implements IQueryHandler<GetCovidSeverityByGenderQuery> {
     constructor(
-        @InjectRepository(FactTransCovidVaccines, 'mssql')
-        private readonly repository: Repository<FactTransCovidVaccines>
+        @InjectRepository(FactTransNewCohort, 'mssql')
+        private readonly repository: Repository<FactTransNewCohort>
     ) {
     }
 
     async execute(query: GetCovidSeverityByGenderQuery): Promise<any> {
-        const covidSeverityByGender = this.repository.createQueryBuilder('f')
-            .select(['f.Gender, PatientStatus, Count (*) Num'])
-            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
+        const covidSeverityByGender = this.repository.createQueryBuilder('g')
+            .select(['PatientStatus, g.Gender, Case ' +
+            'When PatientStatus=\'Yes\' then \'Asymptomatic\' ' +
+            'When PatientStatus= \'No\' then \'Symptomatic\' ' +
+            'Else Null end as PatientStatusComputed, ' +
+            'count (*)Num'])
+            .leftJoin(FactTransCovidVaccines, 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('ARTOutcome=\'V\'');
+            .where('PatientStatus is not null');
 
         if (query.county) {
             covidSeverityByGender.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -50,7 +54,7 @@ export class GetCovidSeverityByGenderHandler implements IQueryHandler<GetCovidSe
         }
 
         return await covidSeverityByGender
-            .groupBy('f.Gender,PatientStatus')
+            .groupBy('g.Gender, PatientStatus')
             .getRawMany();
     }
 }

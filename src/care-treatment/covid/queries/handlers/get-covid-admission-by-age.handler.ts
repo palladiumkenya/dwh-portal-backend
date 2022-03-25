@@ -16,10 +16,10 @@ export class GetCovidAdmissionByAgeHandler implements IQueryHandler<GetCovidAdmi
 
     async execute(query: GetCovidAdmissionByAgeQuery): Promise<any> {
         const covidAdmissionByAge = this.repository.createQueryBuilder('f')
-            .select(['AgeGroup, count (*) Num'])
+            .select(['g.DATIM_AgeGroup, count (*) Num'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('PatientStatus=\'Yes\' and AdmissionStatus=\'Yes\'');
+            .where('ARTOutcome=\'V\' and PatientStatus=\'Yes\' and AdmissionStatus=\'Yes\'');
 
         if (query.county) {
             covidAdmissionByAge.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -50,7 +50,7 @@ export class GetCovidAdmissionByAgeHandler implements IQueryHandler<GetCovidAdmi
         }
 
         return await covidAdmissionByAge
-            .groupBy('AgeGroup')
+            .groupBy('g.DATIM_AgeGroup')
             .getRawMany();
     }
 }

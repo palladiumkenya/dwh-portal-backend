@@ -47,10 +47,9 @@ export class GetTreatmentOutcomesUndocumentedByFacilityHandler implements IQuery
             treatmentOutcomesUndocumentedByFacility.andWhere('Gender IN (:...gender)', { gender: query.gender });
         }
 
-        // if (query.datimAgeGroup) {
-        // lacking age group
-        //     treatmentOutcomesUndocumentedByFacility.andWhere('DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
-        // }
+        if (query.datimAgeGroup) {
+            treatmentOutcomesUndocumentedByFacility.andWhere('DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+        }
 
         if (query.populationType) {
             treatmentOutcomesUndocumentedByFacility.andWhere('PopulationType IN (:...populationType)', { populationType: query.populationType });
