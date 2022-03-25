@@ -43,7 +43,7 @@ describe('Get Trends Consistency uploads', () => {
 
     it('should get consistency uploads By County', async () => {
         const query = new GetTrendsConsistencyQuery('CT','2019,10');
-        query.county='Kisumu'
+        query.county=['Kisumu']
         const result = await queryBus.execute<GetTrendsConsistencyQuery, any>(query);
         expect(result.length).toBeGreaterThan(0);
         Logger.debug(result)
@@ -51,7 +51,7 @@ describe('Get Trends Consistency uploads', () => {
 
     it('should get consistency uploads By Agency', async () => {
         const query = new GetTrendsConsistencyQuery('CT','2019,10');
-        query.agency='CDC'
+        query.agency=['CDC']
         const result = await queryBus.execute<GetTrendsConsistencyQuery, any>(query)
         expect(result.length).toBeGreaterThan(0);
         Logger.debug(result)
@@ -59,7 +59,7 @@ describe('Get Trends Consistency uploads', () => {
 
     it('should get consistency uploads By Partner', async () => {
         const query = new GetTrendsConsistencyQuery('CT','2019,10');
-        query.partner='CHS Shinda';
+        query.partner=['CHS Shinda'];
         const result = await queryBus.execute<GetTrendsConsistencyQuery, any>(query);
         expect(result.length).toBeGreaterThan(0);
         Logger.debug(result)
