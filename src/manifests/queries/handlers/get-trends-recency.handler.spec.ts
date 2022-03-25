@@ -35,31 +35,31 @@ describe('Get Trends Recency Uploads', () => {
     });
 
     it('should get recency uploads', async () => {
-        const query = new GetTrendsRecencyQuery('CT','2019,10');
+        const query = new GetTrendsRecencyQuery('CT');
         const result = await queryBus.execute<GetTrendsRecencyQuery, any>(query);
         expect(result.length).toBeGreaterThan(0);
         Logger.debug(result)
     });
 
     it('should get recency uploads By County', async () => {
-        const query = new GetTrendsRecencyQuery('CT','2019,10');
-        query.county='Kisumu'
+        const query = new GetTrendsRecencyQuery('CT');
+        query.county=['Kisumu']
         const result = await queryBus.execute<GetTrendsRecencyQuery, any>(query);
         expect(result.length).toBeGreaterThan(0);
         Logger.debug(result)
     });
 
     it('should get recency uploads By Agency', async () => {
-        const query = new GetTrendsRecencyQuery('CT','2019,10');
-        query.agency='DOD'
+        const query = new GetTrendsRecencyQuery('CT');
+        query.agency=['DOD']
         const result = await queryBus.execute<GetTrendsRecencyQuery, any>(query);
         expect(result.length).toBeGreaterThan(0);
         Logger.debug(result)
     });
 
     it('should get recency uploads By Partner', async () => {
-        const query = new GetTrendsRecencyQuery('CT','2019,10');
-        query.partner='Afya Nyota ya Bonde';
+        const query = new GetTrendsRecencyQuery('CT');
+        query.partner=['Afya Nyota ya Bonde'];
         const result = await queryBus.execute<GetTrendsRecencyQuery, any>(query);
         expect(result.length).toBeGreaterThan(0);
         Logger.debug(result)
