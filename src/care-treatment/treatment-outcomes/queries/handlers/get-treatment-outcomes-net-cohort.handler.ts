@@ -54,7 +54,7 @@ export class GetTreatmentOutcomesNetCohortHandler implements IQueryHandler<GetTr
         }
 
         if (query.datimAgeGroup) {
-            netCohort.andWhere('f.ageGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            netCohort.andWhere('f.AgeGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
