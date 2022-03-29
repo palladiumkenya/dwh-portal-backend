@@ -19,6 +19,7 @@ export class GetCtSiteGpsHandler implements IQueryHandler<GetCtSiteGpsQuery> {
             .where('q.name IS NOT NULL')
             .andWhere('q.EMR IS NOT NULL')
             .andWhere("q.partner <> 'IRDO'")
+            .andWhere("emr in ('KenyaEMR', 'DREAMS', 'AMRS', 'ECare', 'IQCare-KeHMIS')") //this is to show the correct emrsites on map
             .andWhere("q.EMR <> ''");
 
         if (query.county) {
