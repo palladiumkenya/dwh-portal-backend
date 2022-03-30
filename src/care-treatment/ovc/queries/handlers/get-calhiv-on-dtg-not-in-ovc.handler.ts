@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
 
 @QueryHandler(GetCalhivOnDtgQuery)
-export class GetCalhivOnDtgHandler implements IQueryHandler<GetCalhivOnDtgQuery> {
+export class GetCalhivOnDtgNotInOvcHandler implements IQueryHandler<GetCalhivOnDtgQuery> {
     constructor(
         @InjectRepository(FactTransOvcEnrollments, 'mssql')
         private readonly repository: Repository<FactTransOtzOutcome>
@@ -16,7 +16,7 @@ export class GetCalhivOnDtgHandler implements IQueryHandler<GetCalhivOnDtgQuery>
     async execute(query: GetCalhivOnDtgQuery): Promise<any> {
         const CALHIVonDTG = this.repository.createQueryBuilder('f')
             .select(['Count (*)CALHIVonDTG'])
-            .andWhere('f.LastRegimen <>\'non DTG\' and TXCurr=1');
+            .andWhere('f.LastRegimen <>\'non DTG\' AND f.OVCEnrollmentDate IS NULL and TXCurr=1');
 
         if (query.county) {
             CALHIVonDTG.andWhere('f.County IN (:...counties)', { counties: query.county });
