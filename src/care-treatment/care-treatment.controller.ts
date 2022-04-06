@@ -224,6 +224,7 @@ import {
 import {
     GetCovidManagementAdmittedInHospitalQuery
 } from "./covid/queries/impl/get-covid-management-admitted-in-hospital.query";
+import {GetCalhivOnArtNotInOvcQuery} from "./ovc/queries/impl/get-calhiv-on-art-not-in-ovc.query";
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -10899,6 +10900,64 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetCalhivOnArtQuery();
+
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCALHIVOnArtNotInOvc')
+    async getCALHIVOnArtNotInOVC(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetCalhivOnArtNotInOvcQuery();
 
         if(county) {
             query.county = county;
