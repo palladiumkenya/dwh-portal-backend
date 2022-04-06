@@ -76,8 +76,8 @@ export class GetConsistencyByFacilityHandler implements IQueryHandler<GetConsist
             params.push(fromDate);
             params.push(toDate);
         } else {
-            const fromDate = moment().startOf('month').format("YYYY-MM-DD");
-            const toDate = moment().startOf('month').endOf('month').format("YYYY-MM-DD");
+            const fromDate = moment().startOf('month').subtract(1, 'month').format("YYYY-MM-DD");
+            const toDate = moment().startOf('month').subtract(1, 'month').endOf('month').format("YYYY-MM-DD");
             params.push(fromDate);
             params.push(toDate);
         }
