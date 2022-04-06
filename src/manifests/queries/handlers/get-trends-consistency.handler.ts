@@ -26,10 +26,10 @@ export class GetTrendsConsistencyHandler implements IQueryHandler<GetTrendsConsi
             startDate = moment(query.startDate, 'YYYY-MM-DD');
         }
         consistencyResult = [];
-        let numberOfMonths = Math.ceil(endDate.diff(startDate, 'months', true));
+        const numberOfMonths = Math.ceil(endDate.diff(startDate, 'months', true));
         for (let i = 0; i < numberOfMonths; i++) {
-            let queryDate = startDate.clone().add(i, 'month').format('YYYY-MM-DD');
-            let params = [queryDate, query.docket];
+            const queryDate = startDate.clone().add(i, 'month').format('YYYY-MM-DD');
+            const params = [queryDate, query.docket];
             const consistencySql = 'call generate_consistency_uploads(?,?)';
             const results = await this.repository.query(consistencySql, params);
             if (results && results[0].length > 0) {
