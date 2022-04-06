@@ -55,8 +55,8 @@ export class GetOverallReportingByFacilityHandler implements IQueryHandler<GetOv
             params.push(year);
             params.push(month);
         } else {
-            const month = moment().startOf('month').format("MM");
-            const year = moment().startOf('month').format("YYYY");
+            const month = moment().startOf('month').subtract(1, 'month').format("MM");
+            const year = moment().startOf('month').subtract(1, 'month').format("YYYY");
             params.push(year);
             params.push(month);
         }
