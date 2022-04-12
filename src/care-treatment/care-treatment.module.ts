@@ -272,6 +272,9 @@ import {
 } from "./covid/queries/handlers/get-covid-admission-symptomatic-overall.handler";
 import {GetCovidManagementAdmittedHandler} from "./covid/queries/handlers/get-covid-management-admitted.handler";
 import {GetCalhivOnArtNotInOvcHandler} from "./ovc/queries/handlers/get-calhiv-on-art-not-in-ovc.handler";
+import {
+    GetVlOverallUptakeAndSuppressionBySexVlDoneHandler
+} from "./viral-load/queries/handlers/get-vl-overall-uptake-and-suppression-by-sex-vl-done.handler";
 
 
 @Module({
@@ -385,6 +388,7 @@ import {GetCalhivOnArtNotInOvcHandler} from "./ovc/queries/handlers/get-calhiv-o
         GetCtTxCurrAgeGroupDistributionByPartnerHandler,
         GetVlOverallUptakeAndSuppressionHandler,
         GetVlOverallUptakeAndSuppressionBySexHandler,
+        GetVlOverallUptakeAndSuppressionBySexVlDoneHandler,
         GetVlUptakeBySexHandler,
         GetVlUptakeByAgeHandler,
         GetVlUptakeByCountyHandler,
@@ -533,7 +537,7 @@ import {GetCalhivOnArtNotInOvcHandler} from "./ovc/queries/handlers/get-calhiv-o
         GetCovidNumberScreenedHandler,
         GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler,
         GetCovidAdmissionSymptomaticOverallHandler,
-        GetCovidManagementAdmittedHandler
+        GetCovidManagementAdmittedHandler,
     ],
     controllers: [CareTreatmentController]
 })
