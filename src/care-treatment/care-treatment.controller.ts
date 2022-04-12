@@ -226,8 +226,8 @@ import {
 } from "./covid/queries/impl/get-covid-management-admitted-in-hospital.query";
 import {GetCalhivOnArtNotInOvcQuery} from "./ovc/queries/impl/get-calhiv-on-art-not-in-ovc.query";
 import {
-    GetVlOverallUptakeAndSuppressionBySexVlDoneQuery
-} from "./viral-load/queries/impl/get-vl-overall-uptake-and-suppression-by-sex-vl-done.query";
+    GetVlOverallUptakeAndSuppressionLdlQuery
+} from "./viral-load/queries/impl/get-vl-overall-uptake-and-suppression-ldl.query";
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -3580,8 +3580,8 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-    @Get('vlOverallUptakeAndSuppressionBySexVlDone')
-    async getVlOverallUptakeAndSuppressionBySexVlDone(
+    @Get('vlOverallUptakeAndSuppressionLdl')
+    async getVlOverallUptakeAndSuppressionLdl(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -3593,7 +3593,7 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
-        const query = new GetVlOverallUptakeAndSuppressionBySexVlDoneQuery();
+        const query = new GetVlOverallUptakeAndSuppressionLdlQuery();
         if(county) {
             query.county = county;
         }
