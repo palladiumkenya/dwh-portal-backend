@@ -1,4 +1,4 @@
-export class GetVlOverallUptakeAndSuppressionBySexVlDoneQuery {
+export class GetVlOverallUptakeAndSuppressionLdlQuery {
     county?: string[];
     subCounty?: string[];
     facility?: string[];
