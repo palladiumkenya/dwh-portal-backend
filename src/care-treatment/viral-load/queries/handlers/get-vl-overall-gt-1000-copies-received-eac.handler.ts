@@ -18,9 +18,9 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler implements IQueryHandler
         const vlOverallUptakeGt1000 = this.repository.createQueryBuilder('c')
             .select(['EACVisitDate_1, EACVisitDate_2, EACVisitDate_3, CASE WHEN ISNUMERIC(LastVL)=1 AND CAST(Replace(LastVL,\',\',\'\')AS FLOAT) >=1000.00 THEN \'>1000 Copies\' ELSE NULL END AS Last12MVLResult'])
             .leftJoin("( SELECT * FROM ( SELECT SiteCode, PatientID, PatientPk, val,\n" +
-                "\t\t\t\tCASE\n" +
-                "\t\t\t\t\t\tWHEN cols = 'EAC_VisitDate' THEN\n" +
-                "\t\t\t\t\t\t'EACVisitDate_' \n" +
+                "CASE\n" +
+                "\t\t\tWHEN cols = 'EAC_VisitDate' THEN\n" +
+                "\t\t\t'EACVisitDate_' \n" +
                 "\t\t\t\t\t\tWHEN cols = 'SessionNumber' THEN\n" +
                 "\t\t\t\t\t\t'SessionNumber_' \n" +
                 "\t\t\t\t\t\tWHEN cols = 'EACRecievedVL' THEN\n" +
