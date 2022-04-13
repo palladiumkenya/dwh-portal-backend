@@ -44,31 +44,31 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler implements IQueryHandler
             .where('ARTOutcome=\'V\' and DATEDIFF(MONTH,lastVLDate,GETDATE())<= 14 and Last12MVLResult is not null')
 
         if (query.county) {
-            vlOverallUptakeGt1000.andWhere('f.County IN (:...counties)', {counties: query.county});
+            vlOverallUptakeGt1000.andWhere('c.County IN (:...counties)', {counties: query.county});
         }
 
         if (query.subCounty) {
-            vlOverallUptakeGt1000.andWhere('f.SubCounty IN (:...subCounties)', {subCounties: query.subCounty});
+            vlOverallUptakeGt1000.andWhere('c.SubCounty IN (:...subCounties)', {subCounties: query.subCounty});
         }
 
         if (query.facility) {
-            vlOverallUptakeGt1000.andWhere('f.FacilityName IN (:...facilities)', {facilities: query.facility});
+            vlOverallUptakeGt1000.andWhere('c.FacilityName IN (:...facilities)', {facilities: query.facility});
         }
 
         if (query.partner) {
-            vlOverallUptakeGt1000.andWhere('f.CTPartner IN (:...partners)', {partners: query.partner});
+            vlOverallUptakeGt1000.andWhere('c.CTPartner IN (:...partners)', {partners: query.partner});
         }
 
         if (query.agency) {
-            vlOverallUptakeGt1000.andWhere('f.CTAgency IN (:...agencies)', {agencies: query.agency});
+            vlOverallUptakeGt1000.andWhere('c.CTAgency IN (:...agencies)', {agencies: query.agency});
         }
 
         if (query.datimAgeGroup) {
-            vlOverallUptakeGt1000.andWhere('f.AgeGroup IN (:...ageGroups)', {ageGroups: query.datimAgeGroup});
+            vlOverallUptakeGt1000.andWhere('c.AgeGroup IN (:...ageGroups)', {ageGroups: query.datimAgeGroup});
         }
 
         if (query.gender) {
-            vlOverallUptakeGt1000.andWhere('f.Gender IN (:...genders)', {genders: query.gender});
+            vlOverallUptakeGt1000.andWhere('c.Gender IN (:...genders)', {genders: query.gender});
         }
 
         const originalQuery = vlOverallUptakeGt1000.getQuery
