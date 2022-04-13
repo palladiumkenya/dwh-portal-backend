@@ -15,15 +15,33 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler implements IQueryHandler
     }
 
     async execute(query: GetVlOverallUptakeGt1000CopiesReceivedEacQuery): Promise<any> {
-        const vlOverallUptakeGt1000 = this.repository.createQueryBuilder('f')
-            .select(['LastVL, lastVLDate, CASE WHEN ISNUMERIC(LastVL)=1 THEN CASE ' +
-            'WHEN CAST(Replace(LastVL,\',\',\'\')AS FLOAT) <=50.90 THEN \'<50 Copies\' ' +
-            'WHEN CAST(Replace(LastVL,\',\',\'\') AS FLOAT) between 51.00 and 399.00 THEN \'51-399\' ' +
-            'WHEN CAST(Replace(LastVL,\',\',\'\')AS FLOAT) between 400.00 and 999.00 THEN \'400-999\' ' +
-            'WHEN CAST(Replace(LastVL,\',\',\'\')AS FLOAT) >=1000 THEN \'>1000 Copies\' ' +
-            'END WHEN LastVL IN (\'undetectable\',\'NOT DETECTED\',\'0 copies/ml\',\'LDL\',\'ND\',\'Target Not Detected\',\' Not detected\',\'Target Not Detected.\',\'Less than Low Detectable Level\') THEN \'<50 Copies\' ' +
-            'ELSE NULL END AS [Last12MVLResult]'])
-            .where('ARTOutcome=\'V\' and DATEDIFF(MONTH,lastVLDate,GETDATE())<= 14')
+        const vlOverallUptakeGt1000 = this.repository.createQueryBuilder('c')
+            .select(['EACVisitDate_1, EACVisitDate_2, EACVisitDate_3, CASE WHEN ISNUMERIC(LastVL)=1 AND CAST(Replace(LastVL,\',\',\'\')AS FLOAT) >=1000.00 THEN \'>1000 Copies\' ELSE NULL END AS Last12MVLResult'])
+            .leftJoin("( SELECT * FROM ( SELECT SiteCode, PatientID, PatientPk, val,\n" +
+                "\t\t\t\tCASE\n" +
+                "\t\t\t\t\t\tWHEN cols = 'EAC_VisitDate' THEN\n" +
+                "\t\t\t\t\t\t'EACVisitDate_' \n" +
+                "\t\t\t\t\t\tWHEN cols = 'SessionNumber' THEN\n" +
+                "\t\t\t\t\t\t'SessionNumber_' \n" +
+                "\t\t\t\t\t\tWHEN cols = 'EACRecievedVL' THEN\n" +
+                "\t\t\t\t\t\t'EACReceivedVL_' \n" +
+                "\t\t\t\t\tEND + CAST ( DENSE_RANK ( ) OVER ( partition BY PatientID, SiteCode, PatientPK ORDER BY VisitDate ASC ) AS VARCHAR ) AS NUM \n" +
+                "\t\t\tFROM ( SELECT\n" +
+                "\t\t\t\t\tSiteCode,\n" +
+                "\t\t\t\t\tPatientID,\n" +
+                "\t\t\t\t\tPatientPk,\n" +
+                "\t\t\t\t\tVisitDate,\n" +
+                "\t\t\t\t\tCONVERT ( VARCHAR ( 255 ), CAST ( VisitDate AS DATE ) ) AS EAC_VisitDate,\n" +
+                "\t\t\t\t\tCONVERT ( VARCHAR ( 255 ), [SessionNumber] ) AS [SessionNumber],\n" +
+                "\t\t\t\t\tCONVERT ( VARCHAR ( 255 ), [EACRecievedVL] ) AS [EACRecievedVL] \n" +
+                "\t\t\t\tFROM\n" +
+                "\t\t\t\t\tPortalDev.dbo.FACT_Trans_EnhancedAdherenceCounselling \n" +
+                "\t\t\t\tWHERE YEAR ( VisitDate ) > 1900 \n" +
+                "\t\t\t\t) AS Source UNPIVOT ( val FOR cols IN ( EAC_VisitDate, SessionNumber, EACRecievedVL ) ) AS unpiv \n" +
+                "\t\t\t) src PIVOT ( MAX ( val ) FOR NUM IN ( EACVisitDate_1, SessionNumber_1, EACReceivedVL_1, EACVisitDate_2, SessionNumber_2, EACReceivedVL_2, EACVisitDate_3, SessionNumber_3, EACReceivedVL_3 ) ) piv \n" +
+                "\t\t)",'H', 'H.PatientPK= c.PatientPK AND H.PatientID= c.PatientID AND H.SiteCode= c.MFLCode')
+
+            .where('ARTOutcome=\'V\' and DATEDIFF(MONTH,lastVLDate,GETDATE())<= 14 and Last12MVLResult is not null')
 
         if (query.county) {
             vlOverallUptakeGt1000.andWhere('f.County IN (:...counties)', {counties: query.county});
