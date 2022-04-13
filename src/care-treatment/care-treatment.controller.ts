@@ -234,6 +234,9 @@ import {
 import {
     GetVlOverallUptakeGt1000CopiesQuery
 } from "./viral-load/queries/impl/get-vl-overall-uptake-gt-1000-copies.query";
+import {
+    GetVlOverallUptakeGt1000CopiesReceivedEacQuery
+} from "./viral-load/queries/impl/get-vl-overall-uptake-gt-1000-copies-received-eac.query";
 
 @Controller('care-treatment')
 export class CareTreatmentController {
@@ -3714,6 +3717,63 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup
     ): Promise<any> {
         const query = new GetVlOverallUptakeGt1000CopiesQuery();
+        if(county) {
+            query.county = county;
+        }
+
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if(facility) {
+            query.facility = facility;
+        }
+
+        if(partner) {
+            query.partner = partner;
+        }
+
+        if(year) {
+            query.year = year;
+        }
+
+        if(month) {
+            query.month = month;
+        }
+
+        if(agency) {
+            query.agency = agency;
+        }
+
+        if(project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getVlOverallUptakeGt1000CopiesReceivedEac')
+    async getVlOverallUptakeGt1000CopiesReceivedEac(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup
+    ): Promise<any> {
+        const query = new GetVlOverallUptakeGt1000CopiesReceivedEacQuery();
         if(county) {
             query.county = county;
         }

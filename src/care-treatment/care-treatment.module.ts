@@ -279,6 +279,9 @@ import {
 import {GetCovidManagementAdmittedHandler} from "./covid/queries/handlers/get-covid-management-admitted.handler";
 import {GetCalhivOnArtNotInOvcHandler} from "./ovc/queries/handlers/get-calhiv-on-art-not-in-ovc.handler";
 import {GetVlOverallGt1000CopiesHandler} from "./viral-load/queries/handlers/get-vl-overall-gt-1000-copies.handler";
+import {
+    GetVlOverallGt1000CopiesReceivedEacHandler
+} from "./viral-load/queries/handlers/get-vl-overall-gt-1000-copies-received-eac.handler";
 
 
 @Module({
@@ -404,6 +407,7 @@ import {GetVlOverallGt1000CopiesHandler} from "./viral-load/queries/handlers/get
         GetVlSuppressionByAgeHandler,
         GetVlSuppressionByRegimenHandler,
         GetVlOverallGt1000CopiesHandler,
+        GetVlOverallGt1000CopiesReceivedEacHandler,
         GetVlSuppressionByYearHandler,
         GetVlSuppressionByYearArtStartHandler,
         GetVlSuppressionByCountyHandler,
