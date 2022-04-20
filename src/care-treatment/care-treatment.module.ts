@@ -282,6 +282,9 @@ import { GetVlOverallGt1000CopiesHandler } from "./viral-load/queries/handlers/g
 import { GetVlOverallGt1000CopiesReceivedEacHandler } from "./viral-load/queries/handlers/get-vl-overall-gt-1000-copies-received-eac.handler";
 import { GetVlOverallUptakeReceivedFollowTestsAllHandler } from "./viral-load/queries/handlers/get-vl-overall-uptake-received-follow-tests-all.handler";
 import { GetVlOverallUptakeReceivedFollowTestsHandler } from "./viral-load/queries/handlers/get-vl-overall-uptake-received-follow-tests.handler";
+import {
+    GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegimentHandler
+} from "./viral-load/queries/handlers/get-vl-overall-number-with-follow-vl-tests-at-gt1000-copies-second-line-regiment.handler";
 
 
 @Module({
@@ -462,6 +465,7 @@ import { GetVlOverallUptakeReceivedFollowTestsHandler } from "./viral-load/queri
         GetVlUptakeAmongAlhivEnrolledInOtzByAgeHandler,
         GetVlUptakeAmongAlhivEnrolledInOtzByCountyHandler,
         GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler,
+        GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegimentHandler,
         GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingHandler,
         GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyHandler,
         GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartnerHandler,
