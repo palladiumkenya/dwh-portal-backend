@@ -1,7 +1,7 @@
 name: deploy to production
 on:
   push:
-    branches: [ production ]
+    branches: [ cicd ]
 jobs:
 
   build:
