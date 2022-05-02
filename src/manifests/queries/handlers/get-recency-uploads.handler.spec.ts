@@ -45,7 +45,7 @@ describe('Get Tile Recency Uploads', () => {
 
     it('should get recency uploads By County', async () => {
         const query = new GetRecencyUploadsQuery('CT','2019,10');
-        query.county='Kisumu'
+        query.county=['Kisumu']
         const result = await queryBus.execute<GetRecencyUploadsQuery, any>(query);
         expect(result.docket).toBe(query.docket);
         expect(result.recency).toBeGreaterThan(0);
@@ -54,7 +54,7 @@ describe('Get Tile Recency Uploads', () => {
 
     it('should get recency uploads By Agency', async () => {
         const query = new GetRecencyUploadsQuery('CT','2019,10');
-        query.agency='DOD'
+        query.agency=['DOD']
         const result = await queryBus.execute<GetRecencyUploadsQuery, any>(query);
         expect(result.docket).toBe(query.docket);
         expect(result.recency).toBeGreaterThan(0);
@@ -63,7 +63,7 @@ describe('Get Tile Recency Uploads', () => {
 
     it('should get recency uploads By Partner', async () => {
         const query = new GetRecencyUploadsQuery('CT','2019,10');
-        query.partner='Afya Nyota ya Bonde';
+        query.partner=['Afya Nyota ya Bonde'];
         const result = await queryBus.execute<GetRecencyUploadsQuery, RecencyUploadsTileDto>(query);
         expect(result.docket).toBe(query.docket);
         expect(result.recency).toBeGreaterThan(0);

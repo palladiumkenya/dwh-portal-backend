@@ -54,7 +54,7 @@ export class GetTreatmentOutcomesByCountyHandler implements IQueryHandler<GetTre
         }
 
         if (query.datimAgeGroup) {
-            treatmentOutcomes.andWhere('f.ageGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            treatmentOutcomes.andWhere('f.AgeGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

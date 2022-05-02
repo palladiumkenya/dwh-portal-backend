@@ -44,7 +44,7 @@ describe('Get Tile Expected uploads', () => {
 
     it('should get overall uploads By County', async () => {
         const query = new GetExpectedUploadsQuery('PKV');
-        query.county='Kisumu'
+        query.county=['Kisumu']
         const result = await queryBus.execute<GetExpectedUploadsQuery, any>(query);
         expect(result.length).toBeGreaterThan(0);
         Logger.debug(result)
@@ -52,7 +52,7 @@ describe('Get Tile Expected uploads', () => {
 
     it('should get overall uploads By Agency', async () => {
         const query = new GetExpectedUploadsQuery('PKV');
-        query.agency='DOD'
+        query.agency=['DOD']
         const result = await queryBus.execute<GetExpectedUploadsQuery, any>(query);
         expect(result.length).toBeGreaterThan(0);
         Logger.debug(result)
@@ -60,7 +60,7 @@ describe('Get Tile Expected uploads', () => {
 
     it('should get overall uploads By Partner', async () => {
         const query = new GetExpectedUploadsQuery('PKV');
-        query.partner='WRP-South Rift';
+        query.partner=['WRP-South Rift'];
         const result = await queryBus.execute<GetExpectedUploadsQuery, ExpectedUploadsTileDto>(query);
         expect(result.docket).toBe(query.docket);
         expect(result.expected).toBeGreaterThan(0);

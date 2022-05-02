@@ -113,6 +113,12 @@ import { GetVlMedianTimeToFirstVlByYearHandler } from './viral-load/queries/hand
 import { GetVlMedianTimeToFirstVlByCountyHandler } from './viral-load/queries/handlers/get-vl-median-time-to-first-vl-by-county.handler';
 import { GetVlMedianTimeToFirstVlByPartnerHandler } from './viral-load/queries/handlers/get-vl-median-time-to-first-vl-by-partner.handler';
 import { GetVlOutcomesHvlByFacilityHandler } from './viral-load/queries/handlers/get-vl-outcomes-hvl-by-facility.handler';
+import {
+    GetVlOverallUptakeAndSuppressionLdlHandler
+} from "./viral-load/queries/handlers/get-vl-overall-uptake-and-suppression-ldl.handler";
+import {
+    GetVlOverallUptakeAndSuppressionReferedLessIntenseHandler
+} from "./viral-load/queries/handlers/get-vl-overall-uptake-and-suppression-refered-less-intense.handler";
 
 import { FactTransAdverseEvents } from './adverse-events/entities/fact-trans-adverse-events.model';
 import { FactTransAeActionDrug } from './adverse-events/entities/fact-trans-ae-action-drug.model';
@@ -245,17 +251,17 @@ import { GetOvcCalHIVByGenderHandler } from './ovc/queries/handlers/get-ovc-cal-
 import { GetOvcDistributionOfCalHIVByAgeSexHandler } from './ovc/queries/handlers/get-ovc-distribution-of-calhiv-by-age-sex.handler';
 import { GetDistributionOfOvcClientsByAgeSexHandler } from './ovc/queries/handlers/get-distribution-of-ovc-clients-by-age-sex.handler';
 import { GetCalhivOnArtHandler } from './ovc/queries/handlers/get-calhiv-on-art.handler';
-import { GetCalhivOnDtgHandler } from './ovc/queries/handlers/get-calhiv-on-dtg.handler';
+import { GetCalhivOnDtgNotInOvcHandler } from './ovc/queries/handlers/get-calhiv-on-dtg-not-in-ovc.handler';
 import { GetOvcOnArtHandler } from './ovc/queries/handlers/get-ovc-on-art.handler';
 import { GetOvcOnDtgHandler } from './ovc/queries/handlers/get-ovc-on-dtg.handler';
-import { GetCalhivOnMmdHandler } from './ovc/queries/handlers/get-calhiv-on-mmd.handler';
+import { GetCalhivOnMmdNotInOvcHandler } from './ovc/queries/handlers/get-calhiv-on-mmd-not-in-ovc.handler';
 import { GetOvcTotalOnMmdHandler } from './ovc/queries/handlers/get-ovc-total-on-mmd.handler';
 import { GetCalhivIitHandler } from './ovc/queries/handlers/get-calhiv-iit.handler';
 import { GetCalhivDeadHandler } from './ovc/queries/handlers/get-calhiv-dead.handler';
 import { GetOvcIITHandler } from './ovc/queries/handlers/get-ovc-iit.handler';
-import { GetCalhivEligibleVlHandler } from './ovc/queries/handlers/get-calhiv-eligible-vl.handler';
-import { GetCalhivVirallySuppressedHandler } from './ovc/queries/handlers/get-calhiv-virally-suppressed.handler';
-import { GetCalhivVldoneHandler } from './ovc/queries/handlers/get-calhiv-vldone.handler';
+import { GetCalhivEligibleVlNotInOvcHandler } from './ovc/queries/handlers/get-calhiv-eligible-vl-not-in-ovc.handler';
+import { GetCalhivVirallySuppressedNotInOvcHandler } from './ovc/queries/handlers/get-calhiv-virally-suppressed-not-in-ovc.handler';
+import { GetCalhivVldoneNotInOvcHandler } from './ovc/queries/handlers/get-calhiv-vldone-not-in-ovc.handler';
 import { GetOvcDeadHandler } from './ovc/queries/handlers/get-ovc-dead.handler';
 import { GetOvcEligibleVlHandler } from './ovc/queries/handlers/get-ovc-eligible-vl.handler';
 import { GetOvcVirallySuppressedHandler } from './ovc/queries/handlers/get-ovc-virally-suppressed.handler';
@@ -270,6 +276,15 @@ import {
 import {
     GetCovidAdmissionSymptomaticOverallHandler
 } from "./covid/queries/handlers/get-covid-admission-symptomatic-overall.handler";
+import { GetCovidManagementAdmittedHandler } from "./covid/queries/handlers/get-covid-management-admitted.handler";
+import { GetCalhivOnArtNotInOvcHandler } from "./ovc/queries/handlers/get-calhiv-on-art-not-in-ovc.handler";
+import { GetVlOverallGt1000CopiesHandler } from "./viral-load/queries/handlers/get-vl-overall-gt-1000-copies.handler";
+import { GetVlOverallGt1000CopiesReceivedEacHandler } from "./viral-load/queries/handlers/get-vl-overall-gt-1000-copies-received-eac.handler";
+import { GetVlOverallUptakeReceivedFollowTestsAllHandler } from "./viral-load/queries/handlers/get-vl-overall-uptake-received-follow-tests-all.handler";
+import { GetVlOverallUptakeReceivedFollowTestsHandler } from "./viral-load/queries/handlers/get-vl-overall-uptake-received-follow-tests.handler";
+import {
+    GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegimentHandler
+} from "./viral-load/queries/handlers/get-vl-overall-number-with-follow-vl-tests-at-gt1000-copies-second-line-regiment.handler";
 
 
 @Module({
@@ -383,6 +398,8 @@ import {
         GetCtTxCurrAgeGroupDistributionByPartnerHandler,
         GetVlOverallUptakeAndSuppressionHandler,
         GetVlOverallUptakeAndSuppressionBySexHandler,
+        GetVlOverallUptakeAndSuppressionLdlHandler,
+        GetVlOverallUptakeAndSuppressionReferedLessIntenseHandler,
         GetVlUptakeBySexHandler,
         GetVlUptakeByAgeHandler,
         GetVlUptakeByCountyHandler,
@@ -392,6 +409,10 @@ import {
         GetVlOutcomesHvlByFacilityHandler,
         GetVlSuppressionByAgeHandler,
         GetVlSuppressionByRegimenHandler,
+        GetVlOverallGt1000CopiesHandler,
+        GetVlOverallGt1000CopiesReceivedEacHandler,
+        GetVlOverallUptakeReceivedFollowTestsAllHandler,
+        GetVlOverallUptakeReceivedFollowTestsHandler,
         GetVlSuppressionByYearHandler,
         GetVlSuppressionByYearArtStartHandler,
         GetVlSuppressionByCountyHandler,
@@ -444,6 +465,7 @@ import {
         GetVlUptakeAmongAlhivEnrolledInOtzByAgeHandler,
         GetVlUptakeAmongAlhivEnrolledInOtzByCountyHandler,
         GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler,
+        GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegimentHandler,
         GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingHandler,
         GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyHandler,
         GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartnerHandler,
@@ -510,18 +532,19 @@ import {
         GetOvcDistributionOfCalHIVByAgeSexHandler,
         GetDistributionOfOvcClientsByAgeSexHandler,
         GetCalhivOnArtHandler,
-        GetCalhivOnDtgHandler,
+        GetCalhivOnArtNotInOvcHandler,
+        GetCalhivOnDtgNotInOvcHandler,
         GetOvcOnArtHandler,
         GetOvcOnDtgHandler,
-        GetCalhivOnMmdHandler,
+        GetCalhivOnMmdNotInOvcHandler,
         GetOvcTotalOnMmdHandler,
         GetCalhivIitHandler,
         GetCalhivDeadHandler,
         GetOvcIITHandler,
         GetOvcDeadHandler,
-        GetCalhivEligibleVlHandler,
-        GetCalhivVirallySuppressedHandler,
-        GetCalhivVldoneHandler,
+        GetCalhivEligibleVlNotInOvcHandler,
+        GetCalhivVirallySuppressedNotInOvcHandler,
+        GetCalhivVldoneNotInOvcHandler,
         GetOvcEligibleVlHandler,
         GetOvcVirallySuppressedHandler,
         GetOvcVldoneHandler,
@@ -529,7 +552,8 @@ import {
         GetOtzCalhivVlEligibleHandler,
         GetCovidNumberScreenedHandler,
         GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler,
-        GetCovidAdmissionSymptomaticOverallHandler
+        GetCovidAdmissionSymptomaticOverallHandler,
+        GetCovidManagementAdmittedHandler,
     ],
     controllers: [CareTreatmentController]
 })
