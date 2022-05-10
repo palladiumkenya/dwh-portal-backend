@@ -48,7 +48,7 @@ export class GetVlOutcomesHvlByFacilityHandler implements IQueryHandler<GetVlOut
         }
 
         if (query.datimAgeGroup) {
-            vlOutcomeHvlByFacility.andWhere('DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+            vlOutcomeHvlByFacility.andWhere('AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
         }
 
         // if (query.populationType) {
