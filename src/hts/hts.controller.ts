@@ -930,7 +930,7 @@ export class HtsController {
 
     @Get('linkageBySex')
     async getLinkageBySex(
-       @Query('facility') facility,
+        @Query('facility') facility,
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('partner') partner,
