@@ -4,53 +4,54 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
 
-
 @QueryHandler(GetLinkageNumberNotLinkedByFacilityQuery)
-export class GetLinkageNumberNotLinkedByFacilityHandler implements IQueryHandler<GetLinkageNumberNotLinkedByFacilityQuery> {
+export class GetLinkageNumberNotLinkedByFacilityHandler
+    implements IQueryHandler<GetLinkageNumberNotLinkedByFacilityQuery> {
     constructor(
         @InjectRepository(FactHtsUptake)
-        private readonly repository: Repository<FactHtsUptake>
-    ) {
+        private readonly repository: Repository<FactHtsUptake>,
+    ) {}
 
-    }
-
-    async execute(query: GetLinkageNumberNotLinkedByFacilityQuery): Promise<any> {
+    async execute(
+        query: GetLinkageNumberNotLinkedByFacilityQuery,
+    ): Promise<any> {
         const params = [];
-        
-        let linkageNumberNotLinkedByFacilitySql = 'SELECT ' +
+
+        let linkageNumberNotLinkedByFacilitySql =
+            'SELECT ' +
             'MFLCode mfl, FacilityName facility, County county, subcounty subCounty, CTPartner partner, Sum(Positive) positive, Sum(Linked) linked ' +
             'FROM fact_htsuptake WHERE MFLCode > 0 AND Positive > 0 ';
 
-        if(query.county) {
+        if (query.county) {
             linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and County IN (?)`;
             params.push(query.county);
         }
 
-        if(query.subCounty) {
+        if (query.subCounty) {
             linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and subcounty IN (?)`;
             params.push(query.subCounty);
         }
 
-        if(query.facility) {
+        if (query.facility) {
             linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and FacilityName IN (?)`;
             params.push(query.facility);
         }
 
-        if(query.partner) {
+        if (query.partner) {
             linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and CTPartner IN (?)`;
             params.push(query.partner);
         }
 
-        if(query.year) {
-            if(query.year == (new Date()).getFullYear()) {
-                linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and  (YEAR >= YEAR(DATE_SUB(NOW(), INTERVAL 11 MONTH)))`;
-            } else {
+        if (query.year) {
+            // if (query.year == new Date().getFullYear()) {
+            //     linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and  (YEAR >= YEAR(DATE_SUB(NOW(), INTERVAL 11 MONTH)))`;
+            // } else {
                 linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and year=?`;
-            }
+            // }
             params.push(query.year);
         }
 
-        if(query.month) {
+        if (query.month) {
             linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and month=?`;
             params.push(query.month);
         }
@@ -59,6 +60,9 @@ export class GetLinkageNumberNotLinkedByFacilityHandler implements IQueryHandler
 
         linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} ORDER BY FacilityName`;
 
-        return  await this.repository.query(linkageNumberNotLinkedByFacilitySql, params);
+        return await this.repository.query(
+            linkageNumberNotLinkedByFacilitySql,
+            params,
+        );
     }
 }
