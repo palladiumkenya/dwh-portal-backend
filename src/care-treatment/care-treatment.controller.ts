@@ -247,9 +247,7 @@ import {
 
 @Controller('care-treatment')
 export class CareTreatmentController {
-    constructor(private readonly queryBus: QueryBus) {
-
-    }
+    constructor(private readonly queryBus: QueryBus) {}
 
     @Get('counties')
     async getCounties(
@@ -258,25 +256,25 @@ export class CareTreatmentController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('agency') agency,
-        @Query('project') project
+        @Query('project') project,
     ): Promise<any> {
         const query = new GetCtCountyQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
-        if(project) {
+        if (project) {
             query.project = project;
         }
         return this.queryBus.execute(query);
@@ -289,25 +287,25 @@ export class CareTreatmentController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('agency') agency,
-        @Query('project') project
+        @Query('project') project,
     ): Promise<any> {
         const query = new GetCtSubCountyQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
-        if(project) {
+        if (project) {
             query.project = project;
         }
         return this.queryBus.execute(query);
@@ -320,25 +318,25 @@ export class CareTreatmentController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('agency') agency,
-        @Query('project') project
+        @Query('project') project,
     ): Promise<any> {
         const query = new GetCtFacilitiesQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
-        if(project) {
+        if (project) {
             query.project = project;
         }
         return this.queryBus.execute(query);
@@ -356,25 +354,25 @@ export class CareTreatmentController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('agency') agency,
-        @Query('project') project
+        @Query('project') project,
     ): Promise<any> {
         const query = new GetCtSiteGpsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
-        if(project) {
+        if (project) {
             query.project = project;
         }
         return this.queryBus.execute(query);
@@ -387,25 +385,25 @@ export class CareTreatmentController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('agency') agency,
-        @Query('project') project
+        @Query('project') project,
     ): Promise<any> {
         const query = new GetCtPartnersQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
-        if(project) {
+        if (project) {
             query.project = project;
         }
         return this.queryBus.execute(query);
@@ -418,25 +416,25 @@ export class CareTreatmentController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('agency') agency,
-        @Query('project') project
+        @Query('project') project,
     ): Promise<any> {
         const query = new GetCtAgenciesQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
-        if(project) {
+        if (project) {
             query.project = project;
         }
         return this.queryBus.execute(query);
@@ -449,25 +447,25 @@ export class CareTreatmentController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('agency') agency,
-        @Query('project') project
+        @Query('project') project,
     ): Promise<any> {
         const query = new GetCtProjectsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
-        if(project) {
+        if (project) {
             query.project = project;
         }
         return this.queryBus.execute(query);
@@ -478,22 +476,22 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
-        @Query('partner') partner
+        @Query('partner') partner,
     ): Promise<any> {
         const query = new GetActiveArtQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
@@ -505,22 +503,22 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
-        @Query('partner') partner
+        @Query('partner') partner,
     ): Promise<any> {
         const query = new GetActiveArtChildrenQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
@@ -532,22 +530,22 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
-        @Query('partner') partner
+        @Query('partner') partner,
     ): Promise<any> {
         const query = new GetActiveArtAdultsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
@@ -559,22 +557,22 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
-        @Query('partner') partner
+        @Query('partner') partner,
     ): Promise<any> {
         const query = new GetActiveArtAdolescentsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
@@ -586,22 +584,22 @@ export class CareTreatmentController {
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
-        @Query('partner') partner
+        @Query('partner') partner,
     ): Promise<any> {
         const query = new GetActiveArtByGenderQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
@@ -618,15 +616,15 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetCtTxNewQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -634,11 +632,11 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -655,15 +653,15 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetCtStabilityStatusAmongActivePatientsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -671,11 +669,11 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -691,23 +689,23 @@ export class CareTreatmentController {
         @Query('month') month,
     ): Promise<any> {
         const query = new GetCtViralLoadSuppressionPercentageQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -725,18 +723,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCtViralLoadCascadeActiveArtClientsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -744,11 +742,11 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -756,7 +754,7 @@ export class CareTreatmentController {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -765,7 +763,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(agegrp => agegrp.replace(" to ","-"));
+            query.datimAgeGroup = datimAgeGroup.map(agegrp =>
+                agegrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -780,18 +780,19 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('agency') agency,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCtTxCurrByAgeAndSexQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -804,7 +805,13 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(agegrp => agegrp.replace(" to ","-"));
+            query.datimAgeGroup = datimAgeGroup.map(agegrp =>
+                agegrp.replace(' to ', '-'),
+            );
+        }
+
+        if (gender) {
+            query.gender = gender;
         }
 
         return this.queryBus.execute(query);
@@ -821,18 +828,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCtTxCurrBySexQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -840,19 +847,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -878,38 +885,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTxNewTrendsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -935,38 +942,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTxNewByAgeSexQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -992,38 +999,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTxNewBySexQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1049,38 +1056,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetMedianTimeToArtByYearQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1106,38 +1113,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetMedianTimeToArtByCountyQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1163,38 +1170,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetMedianTimeToArtByPartnerQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1220,38 +1227,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTimeToArtQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1277,38 +1284,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTimeToArtFacilitiesQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1334,18 +1341,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCtTxCurrDistributionByCountyQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1353,19 +1360,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1374,7 +1381,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -1391,18 +1400,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCtTxCurrDistributionByPartnerQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1410,19 +1419,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1431,7 +1440,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -1448,18 +1459,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdCascadeQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1467,19 +1478,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1505,18 +1516,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdUnstableQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1524,19 +1535,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1562,18 +1573,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdMmdStableQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1581,19 +1592,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1619,18 +1630,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdStableOverallQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1638,19 +1649,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1676,18 +1687,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdStabilityStatusQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1695,19 +1706,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1733,18 +1744,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdStabilityStatusByAgeSexQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1752,19 +1763,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1790,18 +1801,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdStabilityStatusByCountyQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1809,19 +1820,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1847,18 +1858,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdStabilityStatusByPartnerQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1866,19 +1877,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1904,18 +1915,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdMmdUptakeOverallQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1923,19 +1934,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -1961,18 +1972,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdMmdUptakeOverallBySexQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1980,19 +1991,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2018,18 +2029,18 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationBySexQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -2037,19 +2048,19 @@ export class CareTreatmentController {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2075,30 +2086,30 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationByAgeQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2132,30 +2143,30 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationByCountyQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2189,30 +2200,30 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationByPartnerQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2246,30 +2257,30 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationCategorizationByStabilityStatusQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2305,38 +2316,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesOverallQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2372,38 +2383,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesNetCohortQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2420,7 +2431,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -2439,38 +2452,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesOverallLast12mQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2487,7 +2500,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -2506,38 +2521,38 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesBySexQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2554,7 +2569,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -2573,38 +2590,38 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesByAgeQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2621,7 +2638,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -2640,38 +2659,38 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesByYearQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2688,7 +2707,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -2707,38 +2728,38 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesByFacilityQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2755,7 +2776,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -2774,38 +2797,38 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesByCountyQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2822,7 +2845,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -2841,38 +2866,38 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesByPartnerQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2908,38 +2933,38 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesByPopulationTypeQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -2956,7 +2981,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -2975,46 +3002,46 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesRetention3mQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3023,7 +3050,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"))
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -3042,46 +3071,46 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesRetention6mQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3090,7 +3119,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"))
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -3109,46 +3140,46 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesRetention12mQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3157,7 +3188,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -3176,46 +3209,46 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesRetention24mQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(fromDate) {
+        if (fromDate) {
             query.fromDate = fromDate;
         }
 
-        if(toDate) {
+        if (toDate) {
             query.toDate = toDate;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3224,7 +3257,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -3243,31 +3278,31 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy 
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetTreatmentOutcomesUndocumentedByFacilityQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3298,8 +3333,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-    
-
     @Get('missingDiagnosisDateByFacility')
     async missingDiagnosisDateByFacility(
         @Query('county') county,
@@ -3313,31 +3346,31 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy 
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetMissingDiagnosisDateByFacilityQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3379,30 +3412,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCtTxCurrAgeGroupDistributionByCountyQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3419,7 +3452,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -3436,30 +3471,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCtTxCurrAgeGroupDistributionByPartnerQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3476,7 +3511,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp => ageGrp.replace(" to ", "-"));
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
@@ -3493,38 +3530,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlOverallUptakeAndSuppressionQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3550,38 +3587,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlOverallUptakeAndSuppressionBySexQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3607,38 +3644,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlOverallUptakeAndSuppressionLdlQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3664,38 +3701,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlOverallUptakeAndSuppressionReferredLessIntenseQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3721,38 +3758,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlOverallUptakeGt1000CopiesQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3778,38 +3815,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlOverallNumberWithFollowTestsAtGt1000CopiesSecondlineRegimentQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3835,38 +3872,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlOverallUptakeGt1000CopiesReceivedEacQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3892,38 +3929,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlOverallUptakeReceivedFollowTestsAllQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -3949,38 +3986,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlOverallUptakeReceivedFollowTestsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4006,38 +4043,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlUptakeBySexQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4063,38 +4100,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlUptakeByAgeQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4120,38 +4157,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlUptakeByCountyQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4177,38 +4214,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlUptakeByPartnerQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4234,38 +4271,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlOutcomesOverallQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4291,38 +4328,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlOutcomesBySexQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4348,38 +4385,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlSuppressionByAgeQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4405,38 +4442,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlSuppressionByRegimenQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4462,38 +4499,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlSuppressionByYearQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4519,38 +4556,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlSuppressionByYearArtStartQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4576,38 +4613,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlOutcomesByYearAndSuppressionCategoryQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4635,31 +4672,31 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy 
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetVlOutcomesHvlByFacilityQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4701,38 +4738,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlSuppressionByCountyQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4758,38 +4795,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlSuppressionByPartnerQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4815,38 +4852,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlOverallUptakeAndSuppressionByFacilityQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4872,38 +4909,38 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlMedianTimeToFirstVlByYearQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -4926,30 +4963,40 @@ export class CareTreatmentController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlMedianTimeToFirstVlByCountyQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -4963,30 +5010,40 @@ export class CareTreatmentController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlMedianTimeToFirstVlByPartnerQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -5003,30 +5060,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetChildrenAdverseEventsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5060,30 +5117,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetAdultsAdverseEventsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5117,30 +5174,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetAdverseEventsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5174,30 +5231,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetAdverseEventsClientsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5220,7 +5277,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getAeSeverityGrading')
     async getAeSeverityGrading(
         @Query('county') county,
@@ -5232,30 +5288,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetAeSeverityGradingQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5289,30 +5345,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetAeActionsBySeverityQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5346,30 +5402,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetReportedCausesOfAeQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5403,30 +5459,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetReportedAesWithSeverityLevelsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5460,30 +5516,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetAeActionsByDrugsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5517,30 +5573,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetAeActionsByDrugsNewQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5574,30 +5630,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetNumberAeReportedInAdultsOver15Query();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5631,30 +5687,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetNumberAeReportedInChildrenOver15Query();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5688,30 +5744,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetNumberOfClientWithAeQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5745,30 +5801,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetNumberOfClientChildrenWithAeQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5802,30 +5858,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetAeTypeBySeverityQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5859,30 +5915,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5916,30 +5972,30 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetProportionOfPLHIVWithAeRelatedToArtQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -5973,23 +6029,23 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetNewlyStartedDesegregatedQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
@@ -6001,11 +6057,11 @@ export class CareTreatmentController {
             query.month = month;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6033,31 +6089,31 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy 
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetArtOptimizationOverviewQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6101,31 +6157,31 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy 
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetArtOptimizationCurrentByAgeSexQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6169,31 +6225,31 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy 
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetArtOptimizationCurrentByRegimenQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6237,31 +6293,31 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy 
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetArtOptimizationCurrentByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6305,31 +6361,31 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy 
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetArtOptimizationCurrentByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6373,31 +6429,31 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy 
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetArtOptimizationNewByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6441,31 +6497,31 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy 
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetArtOptimizationNewByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6509,31 +6565,31 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy 
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetArtOptimizationNewByYearQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6577,30 +6633,30 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6636,30 +6692,30 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6695,30 +6751,30 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6754,30 +6810,30 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new Get6MonthViralSuppressionByYearOfArtStartQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6813,30 +6869,30 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new Get12MonthViralSuppressionByYearOfArtStartQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6872,30 +6928,30 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new Get24MonthViralSuppressionByYearOfArtStartQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6931,31 +6987,31 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy 
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetRegimenDistributionBasedOnWeightBandsQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -6999,31 +7055,31 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
         @Query('populationType') populationType,
-        @Query('latestPregnancy') latestPregnancy 
+        @Query('latestPregnancy') latestPregnancy,
     ): Promise<any> {
         const query = new GetRegimenDistributionBasedOnAgeBandsQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7065,31 +7121,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzEnrollmentAmongAlhivAndOnArtBySexQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7123,31 +7179,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzEnrolledAdolescentsByAgeQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7181,31 +7237,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzEnrollmentAmongAlhivAndOnArtByAgeQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7239,31 +7295,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzAdolescentsEnrolledByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7297,31 +7353,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzEnrollmentAmongAlhivAndOnArtByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7355,31 +7411,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzAdolescentsEnrolledByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7413,31 +7469,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzEnrollmentAmongAlhivAndOnArtByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7459,7 +7515,6 @@ export class CareTreatmentController {
 
         return this.queryBus.execute(query);
     }
-
 
     @Get('getVlUptakeAmongAlHivEnrolledInOtzBySex')
     async getVlUptakeAmongAlHivEnrolledInOtzBySex(
@@ -7472,31 +7527,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlUptakeAmongAlhivEnrolledInOtzBySexQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7518,8 +7573,6 @@ export class CareTreatmentController {
 
         return this.queryBus.execute(query);
     }
-
-
 
     @Get('getVlUptakeAmongAlHivEnrolledInOtzByAge')
     async getVlUptakeAmongAlHivEnrolledInOtzByAge(
@@ -7532,31 +7585,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlUptakeAmongAlhivEnrolledInOtzByAgeQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7579,7 +7632,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getVlUptakeAmongAlHivEnrolledInOtzByCounty')
     async getVlUptakeAmongAlHivEnrolledInOtzByCounty(
         @Query('county') county,
@@ -7591,31 +7643,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlUptakeAmongAlhivEnrolledInOtzByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7649,31 +7701,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetVlUptakeAmongAlhivEnrolledInOtzByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7696,7 +7748,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getProportionOfAlHivWhoCompletedTraining')
     async getProportionOfAlHivWhoCompletedTraining(
         @Query('county') county,
@@ -7708,31 +7759,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7766,31 +7817,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7813,7 +7864,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getProportionOfAlHivWhoCompletedTrainingByPartner')
     async getProportionOfAlHivWhoCompletedTrainingByPartner(
         @Query('county') county,
@@ -7825,31 +7875,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7883,31 +7933,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzOutcomesAmongAlhivWithBaselineVlQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -7930,7 +7980,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getOtzOutcomesAmongAlHivWithReSuppression')
     async getOtzOutcomesAmongAlHivWithReSuppression(
         @Query('county') county,
@@ -7942,31 +7991,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzOutcomesAmongAlhivWithReSuppressionQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8000,31 +8049,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzOutcomesAmongAlhivWithSustainedSuppressionQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8058,31 +8107,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzOutcomesByGenderQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8116,31 +8165,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzOutcomesByPopulationTypeQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8163,7 +8212,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getOtzOutcomesByYearOfArtStart')
     async getOtzOutcomesByYearOfArtStart(
         @Query('county') county,
@@ -8175,31 +8223,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzOutcomesByYearOfArtStartQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8233,31 +8281,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzOutcomesByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8280,7 +8328,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getOtzOutcomesByPartner')
     async getOtzOutcomesByPartner(
         @Query('county') county,
@@ -8292,31 +8339,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzOutcomesByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8350,31 +8397,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzAdolescentsQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8408,31 +8455,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzEnrolledQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8466,31 +8513,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzTotalWithVlResultsQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8524,31 +8571,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzTotalWithVlLessThan1000Query();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8582,31 +8629,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcOverallOvcServQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8640,31 +8687,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcServBySexQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8698,31 +8745,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcCaregiversRelationshipToOvcClientQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8756,31 +8803,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetProportionOfOvcClientsEnrolledInCpimsOverallQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8814,31 +8861,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetProportionOfOvcClientsEnrolledInCpimsByGenderQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8872,31 +8919,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcDistributionByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8930,31 +8977,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcDistributionByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -8977,7 +9024,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getOvcClientsExitReasons')
     async getOvcClientsExitReasons(
         @Query('county') county,
@@ -8989,31 +9035,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcClientsExitReasonsQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9047,31 +9093,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcViralSuppressionAmongOvcPatientsOverallQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9093,7 +9139,6 @@ export class CareTreatmentController {
 
         return this.queryBus.execute(query);
     }
-
 
     @Get('getOvcViralSuppressionAmongOvcPatientsByGender')
     async getOvcViralSuppressionAmongOvcPatientsByGender(
@@ -9106,31 +9151,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcViralSuppressionAmongOvcPatientsGenderQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9152,7 +9197,6 @@ export class CareTreatmentController {
 
         return this.queryBus.execute(query);
     }
-
 
     @Get('getProportionOfOtzTrainingBySex')
     async getProportionOfOtzTrainingBySex(
@@ -9165,31 +9209,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9212,7 +9256,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getOtzOutcomesByAgeGroup')
     async getOtzOutcomesByAgeGroup(
         @Query('county') county,
@@ -9224,31 +9267,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzOutcomesByAgeGroupsQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9282,31 +9325,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9340,31 +9383,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9387,7 +9430,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getOtzVlSuppressionByCounty')
     async getOtzVlSuppressionByCounty(
         @Query('county') county,
@@ -9399,31 +9441,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9457,31 +9499,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9515,31 +9557,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidAdultPLHIVCurrentOnTreatmentQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9573,31 +9615,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidPartiallyVaccinatedQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9631,31 +9673,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidFullyVaccinatedQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9689,31 +9731,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidAdultPLHIVVaccinatedByAgeQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9747,31 +9789,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidAdultPlhivVaccinatedByGenderQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9805,31 +9847,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidAdultPlhivVaccinatedByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9863,31 +9905,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidAdultPlhivVaccinatedByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9921,31 +9963,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidAdultPlhivCurrentOnTreatmentByGenderQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -9979,31 +10021,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidAdultPlhivCurrentOnTreatmentByAgeGroupQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10037,31 +10079,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidAdultPlhivCurrentOnTreatmentByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10095,31 +10137,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidAdultPlhivCurrentOnTreatmentByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10153,31 +10195,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidPlhivCurrentOnArtQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10211,31 +10253,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidSeverityByGenderQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10269,31 +10311,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidOverallAdmissionQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10316,7 +10358,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getCovidOverallAdmissionMales')
     async getCovidOverallAdmissionMales(
         @Query('county') county,
@@ -10328,31 +10369,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidOverallAdmissionMalesQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10386,31 +10427,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidOverallAdmissionFemalesQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10444,31 +10485,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidAdmissionByAgeQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10502,31 +10543,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidEverHadInfectionQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10560,31 +10601,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidSymptomaticInfectionsQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10618,31 +10659,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidOverallMissedAppointmentsQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10676,31 +10717,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidPercentageWhoMissedAppointmentsByAgeQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10734,31 +10775,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidPercentageWhoMissedAppointmentsByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10792,31 +10833,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidPercentageWhoMissedAppointmentsByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10850,31 +10891,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10908,31 +10949,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -10966,31 +11007,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidAdmissionSymptomaticOverallQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11024,31 +11065,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11071,7 +11112,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getOverallCalHIV')
     async getOverallCalHIV(
         @Query('county') county,
@@ -11083,31 +11123,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcOverallCalHivQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11141,31 +11181,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcCalHIVByGenderQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11199,31 +11239,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcDistributionOfCalhivByAgeSexQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11257,31 +11297,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDistributionOfOvcClientsByAgeSexQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11315,31 +11355,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCalhivOnArtQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11373,31 +11413,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCalhivOnArtNotInOvcQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11431,31 +11471,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCalhivOnDtgQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11489,31 +11529,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcOnArtQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11547,31 +11587,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcOnDtgQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11605,31 +11645,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCalhivOnMmdQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11663,31 +11703,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcTotalOnMmdQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11721,31 +11761,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCalhivIitQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11779,31 +11819,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCalhivDeadQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11837,31 +11877,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcIITQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11895,31 +11935,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcDeadQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -11953,31 +11993,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCalhivEligibleVlQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -12011,31 +12051,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCalhivVldoneQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -12069,31 +12109,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCalhivVirallySuppressedQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -12116,7 +12156,6 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getOVCEligibleVL')
     async getOVCEligibleVL(
         @Query('county') county,
@@ -12128,31 +12167,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcEligibleVlQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -12186,31 +12225,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcVldoneQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -12244,31 +12283,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOvcVirallySuppressedQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -12302,31 +12341,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOTZCalhivOnArtQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -12360,31 +12399,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidNumberScreenedQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
@@ -12418,31 +12457,31 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCovidManagementAdmittedInHospitalQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
