@@ -47,6 +47,12 @@ export class GetCtTxCurrBySexHandler implements IQueryHandler<GetCtTxCurrBySexQu
                 .andWhere('f.ageGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
+        if (query.gender) {
+            txCurrBySex.andWhere('f.Gender IN (:...genders)', {
+                genders: query.gender,
+            });
+        }
+
         return await txCurrBySex
             .groupBy('[Gender]')
             .orderBy('[Gender]')

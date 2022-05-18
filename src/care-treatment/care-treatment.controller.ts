@@ -780,6 +780,7 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('agency') agency,
+        @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCtTxCurrByAgeAndSexQuery();
@@ -807,6 +808,10 @@ export class CareTreatmentController {
             query.datimAgeGroup = datimAgeGroup.map(agegrp =>
                 agegrp.replace(' to ', '-'),
             );
+        }
+
+        if (gender) {
+            query.gender = gender;
         }
 
         return this.queryBus.execute(query);
