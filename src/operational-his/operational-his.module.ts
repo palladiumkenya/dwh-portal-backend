@@ -18,6 +18,9 @@ import {GetTimeToArtFacilitiesHandler} from './new-on-art/queries/handlers/get-t
 
 import {GetNewlyStartedArtHandler} from "./khis/queries/handlers/get-newly-started-art.handler";
 import {GetNewlyStartedArtTrendsHandler} from "./khis/queries/handlers/get-newly-started-art-trends.handler";
+import {GetCurrentOnArtHandler} from "./khis/queries/handlers/get-current-on-art.handler";
+import {FactHtsDhis2} from "./khis/entities/fact-hts-dhis2.model";
+import {GetHtsPositivesTrendsHandler} from "./khis/queries/handlers/get-hts-positives-trends.handler";
 
 @Module({
     imports: [
@@ -28,7 +31,8 @@ import {GetNewlyStartedArtTrendsHandler} from "./khis/queries/handlers/get-newly
                 FactTransNewlyStarted,
                 FactCTTimeToArt,
                 FactTransNewCohort,
-                FactCtDhis2
+                FactCtDhis2,
+                FactHtsDhis2
             ],
             'mssql'
         )
@@ -41,7 +45,9 @@ import {GetNewlyStartedArtTrendsHandler} from "./khis/queries/handlers/get-newly
         GetTimeToArtFacilitiesHandler,
 
         GetNewlyStartedArtHandler,
-        GetNewlyStartedArtTrendsHandler
+        GetNewlyStartedArtTrendsHandler,
+        GetCurrentOnArtHandler,
+        GetHtsPositivesTrendsHandler
     ],
     controllers: [OperationalHisController]
 })
