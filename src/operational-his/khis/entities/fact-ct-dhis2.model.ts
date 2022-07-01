@@ -79,4 +79,34 @@ export class FactCtDhis2 {
 
     @Column('int')
     Start_ART_25_Plus_F: number;
+
+    @Column('int')
+    On_ART_Under_1: number;
+
+    @Column('int')
+    On_ART_1_9: number;
+
+    @Column('int')
+    On_ART_10_14_M: number;
+
+    @Column('int')
+    On_ART_10_14_F: number;
+
+    @Column('int')
+    On_ART_15_19_M: number;
+
+    @Column('int')
+    On_ART_15_19_F: number;
+
+    @Column('int')
+    On_ART_20_24_M: number;
+
+    @Column('int')
+    On_ART_20_24_F: number;
+
+    @Column('int')
+    On_ART_25_Plus_M: number;
+
+    @Column('int')
+    On_ART_25_Plus_F: number;
 }
