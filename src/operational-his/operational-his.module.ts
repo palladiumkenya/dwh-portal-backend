@@ -21,6 +21,8 @@ import {GetNewlyStartedArtTrendsHandler} from "./khis/queries/handlers/get-newly
 import {GetCurrentOnArtHandler} from "./khis/queries/handlers/get-current-on-art.handler";
 import {FactHtsDhis2} from "./khis/entities/fact-hts-dhis2.model";
 import {GetHtsPositivesTrendsHandler} from "./khis/queries/handlers/get-hts-positives-trends.handler";
+import {GetCurrentOnArtByCountyHandler} from "./khis/queries/handlers/get-current-on-art-by-county.handler";
+import {GetCurrentOnArtByPartnerHandler} from "./khis/queries/handlers/get-current-on-art-by-partner.handler";
 
 @Module({
     imports: [
@@ -47,7 +49,9 @@ import {GetHtsPositivesTrendsHandler} from "./khis/queries/handlers/get-hts-posi
         GetNewlyStartedArtHandler,
         GetNewlyStartedArtTrendsHandler,
         GetCurrentOnArtHandler,
-        GetHtsPositivesTrendsHandler
+        GetHtsPositivesTrendsHandler,
+        GetCurrentOnArtByCountyHandler,
+        GetCurrentOnArtByPartnerHandler
     ],
     controllers: [OperationalHisController]
 })
