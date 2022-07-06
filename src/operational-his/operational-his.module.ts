@@ -5,17 +5,11 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 
 import {OperationalHisController} from './operational-his.controller';
 
-import {FactTransNewCohort} from './new-on-art/entities/fact-trans-new-cohort.model';
-import {FactTransNewlyStarted} from './new-on-art/entities/fact-trans-newly-started.model';
-import {FactCTTimeToArt} from './new-on-art/entities/fact-ct-time-to-art-grp.model';
+
 import {FactCtDhis2} from "./khis/entities/fact-ct-dhis2.model";
 
-import {GetTxNewTrendsHandler} from './new-on-art/queries/handlers/get-tx-new-trends.handler';
-import {GetTxNewByAgeSexHandler} from './new-on-art/queries/handlers/get-tx-new-by-age-sex.handler';
-import {GetTxNewBySexHandler} from './new-on-art/queries/handlers/get-tx-new-by-sex.handler';
-import {GetTimeToArtHandler} from './new-on-art/queries/handlers/get-time-to-art.handler';
-import {GetTimeToArtFacilitiesHandler} from './new-on-art/queries/handlers/get-time-to-art-facilities.handler';
 
+import {GetTxNewBySexHandler} from './khis/queries/handlers/get-tx-new-by-sex.handler';
 import {GetNewlyStartedArtHandler} from "./khis/queries/handlers/get-newly-started-art.handler";
 import {GetNewlyStartedArtTrendsHandler} from "./khis/queries/handlers/get-newly-started-art-trends.handler";
 import {GetCurrentOnArtHandler} from "./khis/queries/handlers/get-current-on-art.handler";
@@ -23,6 +17,9 @@ import {FactHtsDhis2} from "./khis/entities/fact-hts-dhis2.model";
 import {GetHtsPositivesTrendsHandler} from "./khis/queries/handlers/get-hts-positives-trends.handler";
 import {GetCurrentOnArtByCountyHandler} from "./khis/queries/handlers/get-current-on-art-by-county.handler";
 import {GetCurrentOnArtByPartnerHandler} from "./khis/queries/handlers/get-current-on-art-by-partner.handler";
+import {GetTxCurrBySexHandler} from "./khis/queries/handlers/get-tx-curr-by-sex.handler";
+import {FactTransHmisStatsTxcurr} from "../care-treatment/current-on-art/entities/fact-trans-hmis-stats-txcurr.model";
+import {FactTransNewlyStarted} from "../care-treatment/new-on-art/entities/fact-trans-newly-started.model";
 
 @Module({
     imports: [
@@ -30,9 +27,8 @@ import {GetCurrentOnArtByPartnerHandler} from "./khis/queries/handlers/get-curre
         ConfigurationModule,
         TypeOrmModule.forFeature(
             [
+                FactTransHmisStatsTxcurr,
                 FactTransNewlyStarted,
-                FactCTTimeToArt,
-                FactTransNewCohort,
                 FactCtDhis2,
                 FactHtsDhis2
             ],
@@ -40,18 +36,14 @@ import {GetCurrentOnArtByPartnerHandler} from "./khis/queries/handlers/get-curre
         )
     ],
     providers: [
-        GetTxNewTrendsHandler,
-        GetTxNewByAgeSexHandler,
-        GetTxNewBySexHandler,
-        GetTimeToArtHandler,
-        GetTimeToArtFacilitiesHandler,
-
         GetNewlyStartedArtHandler,
         GetNewlyStartedArtTrendsHandler,
         GetCurrentOnArtHandler,
         GetHtsPositivesTrendsHandler,
         GetCurrentOnArtByCountyHandler,
-        GetCurrentOnArtByPartnerHandler
+        GetCurrentOnArtByPartnerHandler,
+        GetTxCurrBySexHandler,
+        GetTxNewBySexHandler
     ],
     controllers: [OperationalHisController]
 })

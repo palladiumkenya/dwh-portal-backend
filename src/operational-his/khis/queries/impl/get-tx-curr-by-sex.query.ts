@@ -1,4 +1,4 @@
-export class GetMedianTimeToArtByYearQuery {
+export class GetTxCurrBySexQuery {
     county?: string[];
     subCounty?: string[];
     facility?: string[];
