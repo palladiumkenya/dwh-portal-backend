@@ -10,6 +10,8 @@ import {GetCurrentOnArtByCountyQuery} from "./khis/queries/impl/get-current-on-a
 import {GetCurrentOnArtByPartnerQuery} from "./khis/queries/impl/get-current-on-art-by-partner.query";
 import {GetTxCurrBySexQuery} from "./khis/queries/impl/get-tx-curr-by-sex.query";
 import { GetTxNewBySexQuery } from './khis/queries/impl/get-tx-new-by-sex.query';
+import {GetTxNewBySexDwhQuery} from "./khis/queries/impl/get-tx-new-by-sex-dwh.query";
+import {GetTxCurrBySexDwhQuery} from "./khis/queries/impl/get-tx-curr-by-sex-dwh.query";
 
 @Controller('operational-his')
 export class OperationalHisController {
@@ -361,8 +363,65 @@ export class OperationalHisController {
         return this.queryBus.execute(query);
     }
 
+    @Get('getTxCurrBySexDWH')
+    async getTxCurrBySexDWH(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetTxCurrBySexDwhQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
     @Get('getTxCurrBySex')
-    async getTxCurrBySex(
+    async getTxCurrBySexKHIS(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -432,6 +491,63 @@ export class OperationalHisController {
         @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTxNewBySexQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getTxNewBySexDWH')
+    async getTxNewlyBySexKHIS(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetTxNewBySexDwhQuery();
         if (county) {
             query.county = county;
         }

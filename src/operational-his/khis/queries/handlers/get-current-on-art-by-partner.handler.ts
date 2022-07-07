@@ -17,7 +17,6 @@ export class GetCurrentOnArtByPartnerHandler implements IQueryHandler<GetCurrent
         const currOnArt = this.repository.createQueryBuilder('f')
             .select('sum(CurrentOnART_Total) OnART, g.partner')
             .leftJoin(AllEmrSites, 'g', 'CAST(g.facilityId as int) = CAST(f.SiteCode as int)')
-            .where('ReportMonth_Year = 202205')
 
 
         if (query.county) {
@@ -35,9 +34,19 @@ export class GetCurrentOnArtByPartnerHandler implements IQueryHandler<GetCurrent
                 .andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
+        if (query.agency) {
+            currOnArt
+                .andWhere('g.agency IN (:...agencies)', { agencies: query.agency });
+        }
+
         if (query.partner) {
             currOnArt
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('g.partner IN (:...partners)', { partners: query.partner });
+        }
+
+        if (query.year) {
+            currOnArt
+                .andWhere('ReportMonth_Year = :year', { year: query.year.toString() + query.month.toString()  });
         }
 
         currOnArt.groupBy('g.partner').orderBy('OnART', 'DESC');

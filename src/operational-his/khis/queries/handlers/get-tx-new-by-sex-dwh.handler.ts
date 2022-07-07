@@ -5,20 +5,21 @@ import {
 } from '../../../../care-treatment/current-on-art/entities/fact-trans-hmis-stats-txcurr.model';
 import {Repository} from 'typeorm';
 import {FactCtDhis2} from "../../entities/fact-ct-dhis2.model";
-import {GetTxNewBySexQuery} from "../impl/get-tx-new-by-sex.query";
 import {FactTransNewlyStarted} from "../../../../care-treatment/new-on-art/entities/fact-trans-newly-started.model";
+import {GetTxNewBySexDwhQuery} from "../impl/get-tx-new-by-sex-dwh.query";
 
-@QueryHandler(GetTxNewBySexQuery)
-export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
+@QueryHandler(GetTxNewBySexDwhQuery)
+export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQuery> {
     constructor(
-        @InjectRepository(FactCtDhis2, 'mssql')
-        private readonly repository: Repository<FactCtDhis2>
+        @InjectRepository(FactTransNewlyStarted, 'mssql')
+        private readonly repository: Repository<FactTransNewlyStarted>
     ) {
     }
 
-    async execute(query: GetTxNewBySexQuery): Promise<any> {
+    async execute(query: GetTxNewBySexDwhQuery): Promise<any> {
         const txNewBySex = this.repository.createQueryBuilder('a')
-            .select('a.FacilityName,a.County,a.SubCounty,SiteCode,isnull(SUM ( StartedART_Total ),0 ) KHIStxNew,isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM (Start_ART_15_19_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_20_24_M ), 0 ) KHISMale,isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 ) KHISFemale,isnull( SUM ( Start_ART_Under_1 ), 0 ) + isnull( SUM ( Start_ART_1_9 ), 0 ) "No gender"')
+            .select('a.FacilityName,a.County,a.SubCounty,MFLCode,CTAgency, CTPartner,' +
+                'SUM ( CASE WHEN Gender = \'Male\' THEN StartedART ELSE 0 END ) DWHmale,SUM ( CASE WHEN Gender = \'Female\' THEN StartedART ELSE 0 END ) DWHFemale,SUM ( a.StartedART ) DWHtxNew')
 
         if (query.county) {
             txNewBySex
@@ -36,11 +37,11 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
         }
 
         if (query.partner) {
-            txNewBySex.andWhere('a.partner IN (:...partners)', {partners: query.partner});
+            txNewBySex.andWhere('a.CTPartner IN (:...partners)', {partners: query.partner});
         }
 
         if (query.agency) {
-            txNewBySex.andWhere('a.agency IN (:...agencies)', {agencies: query.agency});
+            txNewBySex.andWhere('a.CTAgency IN (:...agencies)', {agencies: query.agency});
         }
 
         if (query.datimAgeGroup) {
@@ -54,13 +55,8 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
             });
         }
 
-        if (query.year) {
-            txNewBySex
-                .andWhere('ReportMonth_Year = :year', { year: query.year.toString() + query.month.toString()  });
-        }
-
         return await txNewBySex
-            .groupBy('a.FacilityName, a.County, a.SubCounty, SiteCode')
+            .groupBy('a.FacilityName, a.County, a.SubCounty, MFLCode,CTAgency, CTPartner')
             .orderBy('a.FacilityName')
             .getRawMany();
     }

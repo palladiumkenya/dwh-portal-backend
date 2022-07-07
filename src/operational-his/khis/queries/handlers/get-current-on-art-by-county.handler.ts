@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {GetCurrentOnArtByCountyQuery} from "../impl/get-current-on-art-by-county.query";
 import {FactCtDhis2} from "../../entities/fact-ct-dhis2.model";
+import {AllEmrSites} from "../../../../care-treatment/common/entities/all-emr-sites.model";
 
 @QueryHandler(GetCurrentOnArtByCountyQuery)
 export class GetCurrentOnArtByCountyHandler implements IQueryHandler<GetCurrentOnArtByCountyQuery> {
@@ -14,8 +15,8 @@ export class GetCurrentOnArtByCountyHandler implements IQueryHandler<GetCurrentO
 
     async execute(query: GetCurrentOnArtByCountyQuery): Promise<any> {
         const currOnArt = this.repository.createQueryBuilder('f')
-            .select('sum(CurrentOnART_Total) OnART, County')
-            .where('ReportMonth_Year = 202205')
+            .select('sum(CurrentOnART_Total) OnART, f.County')
+            .leftJoin(AllEmrSites, 'g', 'g.facilityId  = f.SiteCode  COLLATE Latin1_General_CI_AS');
 
 
         if (query.county) {
@@ -32,13 +33,22 @@ export class GetCurrentOnArtByCountyHandler implements IQueryHandler<GetCurrentO
             currOnArt
                 .andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
-
         if (query.partner) {
             currOnArt
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('g.partner IN (:...partners)', { partners: query.partner });
         }
 
-        currOnArt.groupBy('County').orderBy('OnART', 'DESC');
+        if (query.agency) {
+            currOnArt
+                .andWhere('g.agency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.year) {
+            currOnArt
+                .andWhere('ReportMonth_Year = :year', { year: query.year.toString() + query.month.toString()  });
+        }
+
+        currOnArt.groupBy('f.County').orderBy('OnART', 'DESC');
 
         return await currOnArt.getRawMany();
     }

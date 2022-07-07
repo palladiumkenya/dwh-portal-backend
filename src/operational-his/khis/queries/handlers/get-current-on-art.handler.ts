@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {FactCtDhis2} from "../../entities/fact-ct-dhis2.model";
 import {GetCurrentOnArtQuery} from "../impl/get-current-on-art.query";
+import {AllEmrSites} from "../../../../care-treatment/common/entities/all-emr-sites.model";
 
 @QueryHandler(GetCurrentOnArtQuery)
 export class GetCurrentOnArtHandler implements IQueryHandler<GetCurrentOnArtQuery> {
@@ -15,7 +16,7 @@ export class GetCurrentOnArtHandler implements IQueryHandler<GetCurrentOnArtQuer
     async execute(query: GetCurrentOnArtQuery): Promise<any> {
         const currentOnArt = this.repository.createQueryBuilder('f')
             .select('sum(CurrentOnART_Total) CurrentOnART_Total, sum(On_ART_Under_1) On_ART_Under_1, sum(On_ART_1_9) On_ART_1_9, sum(On_ART_10_14_M) On_ART_10_14_M, sum(On_ART_10_14_F) On_ART_10_14_F, sum(On_ART_15_19_M) On_ART_15_19_M, sum(On_ART_15_19_F) On_ART_15_19_F, sum(On_ART_20_24_M) On_ART_20_24_M, sum(On_ART_20_24_F) On_ART_20_24_F, sum(On_ART_25_Plus_M) On_ART_25_Plus_M, sum(On_ART_25_Plus_F) On_ART_25_Plus_F')
-            .where("f.ReportMonth_Year=202205");
+            .leftJoin(AllEmrSites, 'g', 'g.facilityId  = f.SiteCode  COLLATE Latin1_General_CI_AS');
 
         if (query.county) {
             currentOnArt
@@ -34,7 +35,17 @@ export class GetCurrentOnArtHandler implements IQueryHandler<GetCurrentOnArtQuer
 
         if (query.partner) {
             currentOnArt
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('g.partner IN (:...partners)', { partners: query.partner });
+        }
+
+        if (query.agency) {
+            currentOnArt
+                .andWhere('g.agency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.year) {
+            currentOnArt
+                .andWhere('ReportMonth_Year = :year', { year: query.year.toString() + query.month.toString()  });
         }
 
         return await currentOnArt.getRawOne();

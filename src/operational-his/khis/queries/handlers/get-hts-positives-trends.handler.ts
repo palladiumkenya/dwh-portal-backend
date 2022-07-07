@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {GetHtsPositivesTrendsQuery} from "../impl/get-hts-positives-trends.query";
 import {FactHtsDhis2} from "../../entities/fact-hts-dhis2.model";
+import {AllEmrSites} from "../../../../care-treatment/common/entities/all-emr-sites.model";
 
 @QueryHandler(GetHtsPositivesTrendsQuery)
 export class GetHtsPositivesTrendsHandler implements IQueryHandler<GetHtsPositivesTrendsQuery> {
@@ -15,6 +16,7 @@ export class GetHtsPositivesTrendsHandler implements IQueryHandler<GetHtsPositiv
     async execute(query: GetHtsPositivesTrendsQuery): Promise<any> {
         const htsPositives = this.repository.createQueryBuilder('f')
             .select('sum(Tested_Total) tested, sum(Positive_Total) positive, ReportMonth_Year')
+            .leftJoin(AllEmrSites, 'g', 'g.facilityId  = f.SiteCode')
 
 
         if (query.county) {
@@ -32,9 +34,19 @@ export class GetHtsPositivesTrendsHandler implements IQueryHandler<GetHtsPositiv
                 .andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
+        if (query.agency) {
+            htsPositives
+                .andWhere('g.agency IN (:...agencies)', { agencies: query.agency });
+        }
+
         if (query.partner) {
             htsPositives
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('g.partner IN (:...partners)', { partners: query.partner });
+        }
+
+        if (query.year) {
+            htsPositives
+                .andWhere('ReportMonth_Year = :year', { year: query.year.toString() + query.month.toString()  });
         }
 
         htsPositives.groupBy('ReportMonth_Year').orderBy('ReportMonth_Year', 'DESC');
