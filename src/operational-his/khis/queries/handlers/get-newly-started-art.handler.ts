@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {FactCtDhis2} from "../../entities/fact-ct-dhis2.model";
 import {GetNewlyStartedArtQuery} from "../impl/get-newly-started-art.query";
+import {AllEmrSites} from "../../../../care-treatment/common/entities/all-emr-sites.model";
 
 @QueryHandler(GetNewlyStartedArtQuery)
 export class GetNewlyStartedArtHandler implements IQueryHandler<GetNewlyStartedArtQuery> {
@@ -24,7 +25,7 @@ export class GetNewlyStartedArtHandler implements IQueryHandler<GetNewlyStartedA
                 'SUM ( Start_ART_10_14_F ) AS Start_ART_10_14_F,' +
                 'SUM( Start_ART_10_14_M ) AS Start_ART_10_14_M,' +
                 'SUM(Start_ART_1_9) AS Start_ART_1_9')
-            .where("f.ReportMonth_Year=202205");
+            .leftJoin(AllEmrSites, 'g', 'g.facilityId  = f.SiteCode  COLLATE Latin1_General_CI_AS');
 
         if (query.county) {
             newlyStartArt
@@ -41,9 +42,19 @@ export class GetNewlyStartedArtHandler implements IQueryHandler<GetNewlyStartedA
                 .andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
+        if (query.agency) {
+            newlyStartArt
+                .andWhere('g.agency IN (:...agencies)', { agencies: query.agency });
+        }
+
         if (query.partner) {
             newlyStartArt
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('g.partner IN (:...partners)', { partners: query.partner });
+        }
+
+        if (query.year) {
+            newlyStartArt
+                .andWhere('ReportMonth_Year = :year', { year: query.year.toString() + query.month.toString()  });
         }
 
         return await newlyStartArt.getRawOne();

@@ -20,6 +20,8 @@ import {GetCurrentOnArtByPartnerHandler} from "./khis/queries/handlers/get-curre
 import {GetTxCurrBySexHandler} from "./khis/queries/handlers/get-tx-curr-by-sex.handler";
 import {FactTransHmisStatsTxcurr} from "../care-treatment/current-on-art/entities/fact-trans-hmis-stats-txcurr.model";
 import {FactTransNewlyStarted} from "../care-treatment/new-on-art/entities/fact-trans-newly-started.model";
+import {GetTxNewBySexDwhHandler} from "./khis/queries/handlers/get-tx-new-by-sex-dwh.handler";
+import {GetTxCurrBySexDwhHandler} from "./khis/queries/handlers/get-tx-curr-by-sex-dwh.handler";
 
 @Module({
     imports: [
@@ -43,7 +45,9 @@ import {FactTransNewlyStarted} from "../care-treatment/new-on-art/entities/fact-
         GetCurrentOnArtByCountyHandler,
         GetCurrentOnArtByPartnerHandler,
         GetTxCurrBySexHandler,
-        GetTxNewBySexHandler
+        GetTxNewBySexHandler,
+        GetTxNewBySexDwhHandler,
+        GetTxCurrBySexDwhHandler
     ],
     controllers: [OperationalHisController]
 })
