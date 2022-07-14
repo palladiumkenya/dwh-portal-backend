@@ -16,7 +16,6 @@ export class GetHtsPositivesTrendsHandler implements IQueryHandler<GetHtsPositiv
     async execute(query: GetHtsPositivesTrendsQuery): Promise<any> {
         const htsPositives = this.repository.createQueryBuilder('f')
             .select('sum(Tested_Total) tested, sum(Positive_Total) positive, ReportMonth_Year')
-            .leftJoin(AllEmrSites, 'g', 'g.facilityId  = f.SiteCode')
 
 
         if (query.county) {
@@ -36,12 +35,12 @@ export class GetHtsPositivesTrendsHandler implements IQueryHandler<GetHtsPositiv
 
         if (query.agency) {
             htsPositives
-                .andWhere('g.agency IN (:...agencies)', { agencies: query.agency });
+                .andWhere('Agency IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.partner) {
             htsPositives
-                .andWhere('g.partner IN (:...partners)', { partners: query.partner });
+                .andWhere('SDP IN (:...partners)', { partners: query.partner });
         }
 
         if (query.year) {

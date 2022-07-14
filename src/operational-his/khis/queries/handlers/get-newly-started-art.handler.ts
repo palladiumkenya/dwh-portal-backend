@@ -25,7 +25,6 @@ export class GetNewlyStartedArtHandler implements IQueryHandler<GetNewlyStartedA
                 'SUM ( Start_ART_10_14_F ) AS Start_ART_10_14_F,' +
                 'SUM( Start_ART_10_14_M ) AS Start_ART_10_14_M,' +
                 'SUM(Start_ART_1_9) AS Start_ART_1_9')
-            .leftJoin(AllEmrSites, 'g', 'g.facilityId  = f.SiteCode  COLLATE Latin1_General_CI_AS');
 
         if (query.county) {
             newlyStartArt
@@ -44,12 +43,12 @@ export class GetNewlyStartedArtHandler implements IQueryHandler<GetNewlyStartedA
 
         if (query.agency) {
             newlyStartArt
-                .andWhere('g.agency IN (:...agencies)', { agencies: query.agency });
+                .andWhere('Agency IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.partner) {
             newlyStartArt
-                .andWhere('g.partner IN (:...partners)', { partners: query.partner });
+                .andWhere('SDP IN (:...partners)', { partners: query.partner });
         }
 
         if (query.year) {
