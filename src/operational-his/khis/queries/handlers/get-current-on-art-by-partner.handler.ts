@@ -15,8 +15,7 @@ export class GetCurrentOnArtByPartnerHandler implements IQueryHandler<GetCurrent
 
     async execute(query: GetCurrentOnArtByPartnerQuery): Promise<any> {
         const currOnArt = this.repository.createQueryBuilder('f')
-            .select('sum(CurrentOnART_Total) OnART, g.partner')
-            .leftJoin(AllEmrSites, 'g', 'CAST(g.facilityId as int) = CAST(f.SiteCode as int)')
+            .select('sum(CurrentOnART_Total) OnART, SDP as partner')
 
 
         if (query.county) {
@@ -36,12 +35,12 @@ export class GetCurrentOnArtByPartnerHandler implements IQueryHandler<GetCurrent
 
         if (query.agency) {
             currOnArt
-                .andWhere('g.agency IN (:...agencies)', { agencies: query.agency });
+                .andWhere('Agency IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.partner) {
             currOnArt
-                .andWhere('g.partner IN (:...partners)', { partners: query.partner });
+                .andWhere('SDP IN (:...partners)', { partners: query.partner });
         }
 
         if (query.year) {
@@ -49,7 +48,7 @@ export class GetCurrentOnArtByPartnerHandler implements IQueryHandler<GetCurrent
                 .andWhere('ReportMonth_Year = :year', { year: query.year.toString() + query.month.toString()  });
         }
 
-        currOnArt.groupBy('g.partner').orderBy('OnART', 'DESC');
+        currOnArt.groupBy('partner').orderBy('OnART', 'DESC');
 
         return await currOnArt.getRawMany();
     }

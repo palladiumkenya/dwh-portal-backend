@@ -1,12 +1,8 @@
 import {IQueryHandler, QueryHandler} from '@nestjs/cqrs';
 import {InjectRepository} from '@nestjs/typeorm';
-import {
-    FactTransHmisStatsTxcurr
-} from '../../../../care-treatment/current-on-art/entities/fact-trans-hmis-stats-txcurr.model';
 import {Repository} from 'typeorm';
 import {FactCtDhis2} from "../../entities/fact-ct-dhis2.model";
 import {GetTxNewBySexQuery} from "../impl/get-tx-new-by-sex.query";
-import {FactTransNewlyStarted} from "../../../../care-treatment/new-on-art/entities/fact-trans-newly-started.model";
 
 @QueryHandler(GetTxNewBySexQuery)
 export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
@@ -36,11 +32,11 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
         }
 
         if (query.partner) {
-            txNewBySex.andWhere('a.partner IN (:...partners)', {partners: query.partner});
+            txNewBySex.andWhere('a.SDP IN (:...partners)', {partners: query.partner});
         }
 
         if (query.agency) {
-            txNewBySex.andWhere('a.agency IN (:...agencies)', {agencies: query.agency});
+            txNewBySex.andWhere('a.Agency IN (:...agencies)', {agencies: query.agency});
         }
 
         if (query.datimAgeGroup) {

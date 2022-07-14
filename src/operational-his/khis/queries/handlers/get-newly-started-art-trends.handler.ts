@@ -16,7 +16,6 @@ export class GetNewlyStartedArtTrendsHandler implements IQueryHandler<GetNewlySt
     async execute(query: GetNewlyStartedArtTrendsQuery): Promise<any> {
         const newlyStartArt = this.repository.createQueryBuilder('f')
             .select('SUM(StartedART_Total) AS StartedART_Total, ReportMonth_Year')
-            .leftJoin(AllEmrSites, 'g', 'g.facilityId  = f.SiteCode  COLLATE Latin1_General_CI_AS');
 
 
         if (query.county) {
@@ -36,12 +35,12 @@ export class GetNewlyStartedArtTrendsHandler implements IQueryHandler<GetNewlySt
 
         if (query.partner) {
             newlyStartArt
-                .andWhere('g.partner IN (:...partners)', { partners: query.partner });
+                .andWhere('SDP IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
             newlyStartArt
-                .andWhere('g.agency IN (:...agencies)', { agencies: query.agency });
+                .andWhere('Agency IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.year) {

@@ -21,6 +21,12 @@ export class FactHtsDhis2 {
     SubCounty: string;
 
     @Column('text')
+    SDP: string;
+
+    @Column('text')
+    Agency: string;
+
+    @Column('text')
     Ward: string;
 
     @Column('text')

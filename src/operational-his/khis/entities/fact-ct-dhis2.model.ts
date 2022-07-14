@@ -26,6 +26,12 @@ export class FactCtDhis2 {
     @Column('text')
     ReportMonth_Year: string;
 
+    @Column('text')
+    SDP: string;
+
+    @Column('text')
+    Agency: string;
+
     @Column('int')
     Enrolled_Total: number;
 

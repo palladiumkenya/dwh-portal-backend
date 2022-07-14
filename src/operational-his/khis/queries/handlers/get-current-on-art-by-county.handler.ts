@@ -16,7 +16,6 @@ export class GetCurrentOnArtByCountyHandler implements IQueryHandler<GetCurrentO
     async execute(query: GetCurrentOnArtByCountyQuery): Promise<any> {
         const currOnArt = this.repository.createQueryBuilder('f')
             .select('sum(CurrentOnART_Total) OnART, f.County')
-            .leftJoin(AllEmrSites, 'g', 'g.facilityId  = f.SiteCode  COLLATE Latin1_General_CI_AS');
 
 
         if (query.county) {
@@ -35,12 +34,12 @@ export class GetCurrentOnArtByCountyHandler implements IQueryHandler<GetCurrentO
         }
         if (query.partner) {
             currOnArt
-                .andWhere('g.partner IN (:...partners)', { partners: query.partner });
+                .andWhere('SDP IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
             currOnArt
-                .andWhere('g.agency IN (:...agencies)', { agencies: query.agency });
+                .andWhere('Agency IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.year) {

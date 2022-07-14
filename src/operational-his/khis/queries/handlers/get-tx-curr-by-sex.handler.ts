@@ -20,7 +20,6 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
                 'isnull(SUM ( CurrentOnART_Total ), 0) KHIStxCurr, isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHISMale,' +
                 'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 ) KHISFemale,' +
                 'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender"')
-            .leftJoin(AllEmrSites, 'g', 'CAST(g.facilityId as int) = CAST(a.SiteCode as int)')
 
 
         if (query.county) {
@@ -40,12 +39,12 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
 
         if (query.agency) {
             txCurrBySex
-                .andWhere('g.agency IN (:...agencies)', { agencies: query.agency });
+                .andWhere('Agency IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.partner) {
             txCurrBySex
-                .andWhere('g.partner IN (:...partners)', { partners: query.partner });
+                .andWhere('SDP IN (:...partners)', { partners: query.partner });
         }
 
         if (query.datimAgeGroup) {
