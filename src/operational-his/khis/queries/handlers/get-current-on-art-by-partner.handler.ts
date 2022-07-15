@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {FactCtDhis2} from "../../entities/fact-ct-dhis2.model";
 import {GetCurrentOnArtByPartnerQuery} from "../impl/get-current-on-art-by-partner.query";
-import {AllEmrSites} from "../../../../care-treatment/common/entities/all-emr-sites.model";
 
 @QueryHandler(GetCurrentOnArtByPartnerQuery)
 export class GetCurrentOnArtByPartnerHandler implements IQueryHandler<GetCurrentOnArtByPartnerQuery> {
@@ -15,7 +14,7 @@ export class GetCurrentOnArtByPartnerHandler implements IQueryHandler<GetCurrent
 
     async execute(query: GetCurrentOnArtByPartnerQuery): Promise<any> {
         const currOnArt = this.repository.createQueryBuilder('f')
-            .select('sum(CurrentOnART_Total) OnART, SDP as partner')
+            .select('sum(CurrentOnART_Total) OnART, SDP')
 
 
         if (query.county) {
@@ -48,7 +47,7 @@ export class GetCurrentOnArtByPartnerHandler implements IQueryHandler<GetCurrent
                 .andWhere('ReportMonth_Year = :year', { year: query.year.toString() + query.month.toString()  });
         }
 
-        currOnArt.groupBy('partner').orderBy('OnART', 'DESC');
+        currOnArt.groupBy('SDP').orderBy('OnART', 'DESC');
 
         return await currOnArt.getRawMany();
     }
