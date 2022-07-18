@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { OperationalHisController } from './care-treatment.controller';
+import { OperationalHisController } from './operational-his.controller';
 
-describe('CareTreatment Controller', () => {
+describe('Operational and His Controller', () => {
   let controller: OperationalHisController;
 
   beforeEach(async () => {
