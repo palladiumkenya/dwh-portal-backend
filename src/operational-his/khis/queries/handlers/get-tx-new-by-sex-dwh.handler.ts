@@ -56,15 +56,15 @@ export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQu
         }
 
         if(query.month) {
-            txNewBySex.andWhere('f.StartART_Month = :month', { month: query.month });
+            txNewBySex.andWhere('a.StartART_Month = :month', { month: query.month });
         }
 
         if(query.year) {
             const yearVal = new Date().getFullYear();
             if(query.year == yearVal && !query.month) {
-                txNewBySex.andWhere('f.Start_Year >= :startYear', { startYear: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).getFullYear() });
+                txNewBySex.andWhere('a.Start_Year >= :startYear', { startYear: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).getFullYear() });
             } else {
-                txNewBySex.andWhere('f.Start_Year = :startYear', { startYear: query.year });
+                txNewBySex.andWhere('a.Start_Year = :startYear', { startYear: query.year });
             }
         }
 
