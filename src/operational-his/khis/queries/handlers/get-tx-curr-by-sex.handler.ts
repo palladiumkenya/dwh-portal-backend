@@ -61,7 +61,7 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
         if (query.year) {
             txCurrBySex
                 .andWhere('ReportMonth_Year = :year', { year: query.year.toString() + query.month.toString()  });
-            // txCurrBySex.andWhere('Start_Year = :year', { year: query.year })
+            
         }
         if (query.month) {
             // txCurrBySex.andWhere('StartART_Month = :month', { month: query.month })
