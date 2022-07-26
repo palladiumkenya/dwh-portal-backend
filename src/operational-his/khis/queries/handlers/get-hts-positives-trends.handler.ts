@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {GetHtsPositivesTrendsQuery} from "../impl/get-hts-positives-trends.query";
 import {FactHtsDhis2} from "../../entities/fact-hts-dhis2.model";
-import {AllEmrSites} from "../../../../care-treatment/common/entities/all-emr-sites.model";
 
 @QueryHandler(GetHtsPositivesTrendsQuery)
 export class GetHtsPositivesTrendsHandler implements IQueryHandler<GetHtsPositivesTrendsQuery> {

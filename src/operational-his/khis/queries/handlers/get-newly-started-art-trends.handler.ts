@@ -14,9 +14,30 @@ export class GetNewlyStartedArtTrendsHandler implements IQueryHandler<GetNewlySt
     }
 
     async execute(query: GetNewlyStartedArtTrendsQuery): Promise<any> {
-        const newlyStartArt = this.repository.createQueryBuilder('f')
+        let newlyStartArt = this.repository.createQueryBuilder('f')
             .select('SUM(StartedART_Total) AS StartedART_Total, ReportMonth_Year')
 
+        if (
+            query.gender &&
+            query.gender.includes('Female') &&
+            query.gender.includes('Male')
+        ) {
+            // No action
+        } else if (query.gender && query.gender.includes('Female')) {
+            newlyStartArt = this.repository
+                .createQueryBuilder('f')
+                .select(
+                    'isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 )  StartedART_Total,' +
+                        'ReportMonth_Year',
+                );
+        } else if (query.gender && query.gender.includes('Male')) {
+            newlyStartArt = this.repository
+                .createQueryBuilder('f')
+                .select(
+                    'isnull( SUM ( Start_ART_20_24_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM ( Start_ART_15_19_M ), 0 )  StartedART_Total,' +
+                        'ReportMonth_Year',
+                );
+        }
 
         if (query.county) {
             newlyStartArt
