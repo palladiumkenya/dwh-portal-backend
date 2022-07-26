@@ -13,9 +13,28 @@ export class GetCurrentOnArtByPartnerHandler implements IQueryHandler<GetCurrent
     }
 
     async execute(query: GetCurrentOnArtByPartnerQuery): Promise<any> {
-        const currOnArt = this.repository.createQueryBuilder('f')
+        let currOnArt = this.repository.createQueryBuilder('f')
             .select('sum(CurrentOnART_Total) OnART, SDP')
 
+        if (
+            query.gender &&
+            query.gender.includes('Female') &&
+            query.gender.includes('Male')
+        ) {
+            // No action
+        } else if (query.gender && query.gender.includes('Female')) {
+            currOnArt = this.repository
+                .createQueryBuilder('f')
+                .select(
+                    'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 ) OnART, f.SDP',
+                );
+        } else if (query.gender && query.gender.includes('Male')) {
+            currOnArt = this.repository
+                .createQueryBuilder('f')
+                .select(
+                    'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) OnART, f.SDP',
+                );
+        }
 
         if (query.county) {
             currOnArt

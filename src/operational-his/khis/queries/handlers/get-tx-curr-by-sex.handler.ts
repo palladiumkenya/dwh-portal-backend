@@ -15,13 +15,41 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
     }
 
     async execute(query: GetTxCurrBySexQuery): Promise<any> {
-        const txCurrBySex = this.repository.createQueryBuilder('a')
+        let txCurrBySex = this.repository.createQueryBuilder('a')
             .select('a.FacilityName, a.County, a.SubCounty, SiteCode,' +
-                'isnull(SUM ( CurrentOnART_Total ), 0) KHIStxCurr, isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHISMale,' +
+                'isnull(SUM ( CurrentOnART_Total ), 0) KHIStxCurr,'+
+                'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHISMale,' +
                 'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 ) KHISFemale,' +
                 'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender"')
 
-
+        if (
+            query.gender &&
+            query.gender.includes('Female') &&
+            query.gender.includes('Male')
+        ) {
+            // No action
+        } else if (query.gender && query.gender.includes('Female')) {
+            txCurrBySex = this.repository
+                .createQueryBuilder('a')
+                .select(
+                    'a.FacilityName,a.County,a.SubCounty,SiteCode,' +
+                        'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 )  KHIStxCurr,' +
+                        'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 ) KHISFemale,' +
+                        'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender"' +
+                        ',0 KHISMale',
+                );
+        } else if (query.gender && query.gender.includes('Male')) {
+            txCurrBySex = this.repository
+                .createQueryBuilder('a')
+                .select(
+                    'a.FacilityName,a.County,a.SubCounty,SiteCode,' +
+                        'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHIStxCurr,' +
+                        'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHISMale,' +
+                        'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender"' +
+                        ',0 KHISFemale',
+                );
+        }
+        
         if (query.county) {
             txCurrBySex
                 .andWhere('a.County IN (:...counties)', { counties: query.county });
@@ -52,11 +80,6 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
                 .andWhere('a.ageGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
-        if (query.gender) {
-            txCurrBySex.andWhere('a.Gender IN (:...genders)', {
-                genders: query.gender,
-            });
-        }
 
         if (query.year) {
             txCurrBySex

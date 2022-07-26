@@ -13,9 +13,41 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
     }
 
     async execute(query: GetTxNewBySexQuery): Promise<any> {
-        const txNewBySex = this.repository.createQueryBuilder('a')
-            .select('a.FacilityName,a.County,a.SubCounty,SiteCode,isnull(SUM ( StartedART_Total ),0 ) KHIStxNew,isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM (Start_ART_15_19_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_20_24_M ), 0 ) KHISMale,isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 ) KHISFemale,isnull( SUM ( Start_ART_Under_1 ), 0 ) + isnull( SUM ( Start_ART_1_9 ), 0 ) "No gender"')
+        let txNewBySex = this.repository.createQueryBuilder('a')
+            .select('a.FacilityName,a.County,a.SubCounty,SiteCode,isnull(SUM ( StartedART_Total ),0 ) KHIStxNew,'+
+            'isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM (Start_ART_15_19_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_20_24_M ), 0 ) KHISMale,'+
+            'isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 ) KHISFemale,'+
+            'isnull( SUM ( Start_ART_Under_1 ), 0 ) + isnull( SUM ( Start_ART_1_9 ), 0 ) "No gender"')
 
+
+        if (
+            query.gender &&
+            query.gender.includes('Female') &&
+            query.gender.includes('Male')
+        ) {
+            // No action
+        } else if (query.gender && query.gender.includes('Female')) {
+            txNewBySex = this.repository
+                .createQueryBuilder('a')
+                .select(
+                    'a.FacilityName,a.County,a.SubCounty,SiteCode,' +
+                        'isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 )  KHIStxNew,' +
+                        'isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 ) KHISFemale,' +
+                        'isnull( SUM ( Start_ART_Under_1 ), 0 ) + isnull( SUM ( Start_ART_1_9 ), 0 ) "No gender"' +
+                        ',0 KHISMale',
+                );
+        } else if (query.gender && query.gender.includes('Male')) {
+            txNewBySex = this.repository
+                .createQueryBuilder('a')
+                .select(
+                    'a.FacilityName,a.County,a.SubCounty,SiteCode,' +
+                    'isnull( SUM ( Start_ART_20_24_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM ( Start_ART_15_19_M ), 0 )  KHIStxNew,' +
+                    'isnull( SUM ( Start_ART_20_24_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM ( Start_ART_15_19_M ), 0 ) KHISMale,' +
+                    'isnull( SUM ( Start_ART_Under_1 ), 0 ) + isnull( SUM ( Start_ART_1_9 ), 0 ) "No gender",' +
+                    '0 KHISFemale',
+                );
+        }
+        
         if (query.county) {
             txNewBySex
                 .andWhere('a.County IN (:...counties)', {counties: query.county});
@@ -42,12 +74,6 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
         if (query.datimAgeGroup) {
             txNewBySex
                 .andWhere('a.ageGroupCleaned IN (:...ageGroups)', {ageGroups: query.datimAgeGroup});
-        }
-
-        if (query.gender) {
-            txNewBySex.andWhere('a.Gender IN (:...genders)', {
-                genders: query.gender,
-            });
         }
 
         if (query.year) {
