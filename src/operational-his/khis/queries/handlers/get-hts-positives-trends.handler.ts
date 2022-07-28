@@ -34,7 +34,7 @@ export class GetHtsPositivesTrendsHandler implements IQueryHandler<GetHtsPositiv
 
         if (query.agency) {
             htsPositives
-                .andWhere('Agency IN (:...agencies)', { agencies: query.agency });
+                .andWhere('[SDP Agency] IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.partner) {
