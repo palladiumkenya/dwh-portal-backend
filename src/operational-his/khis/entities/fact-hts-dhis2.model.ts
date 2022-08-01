@@ -24,7 +24,7 @@ export class FactHtsDhis2 {
     SDP: string;
 
     @Column('text')
-    Agency: string;
+    "SDP Agency": string;
 
     @Column('text')
     Ward: string;

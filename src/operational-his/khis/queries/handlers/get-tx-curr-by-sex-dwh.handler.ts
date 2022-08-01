@@ -42,8 +42,10 @@ export class GetTxCurrBySexDwhHandler implements IQueryHandler<GetTxCurrBySexDwh
         }
 
         if (query.datimAgeGroup) {
-            txCurrBySex
-                .andWhere('a.ageGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            txCurrBySex.andWhere(
+                'EXISTS (SELECT 1 FROM Dim_AgeGroups WHERE a.ageGroup = Dim_AgeGroups.AgeGroup and MOH_AgeGroup IN (:...ageGroups))',
+                { ageGroups: query.datimAgeGroup },
+            );
         }
 
         if (query.gender) {
