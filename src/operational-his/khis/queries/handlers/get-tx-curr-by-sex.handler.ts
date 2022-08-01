@@ -75,12 +75,6 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
                 .andWhere('SDP IN (:...partners)', { partners: query.partner });
         }
 
-        if (query.datimAgeGroup) {
-            txCurrBySex
-                .andWhere('a.ageGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
-        }
-
-
         if (query.year) {
             txCurrBySex
                 .andWhere('ReportMonth_Year = :year', { year: query.year.toString() + query.month.toString()  });

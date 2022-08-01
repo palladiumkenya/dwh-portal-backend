@@ -15,7 +15,13 @@ export class GetNewlyStartedArtTrendsHandler implements IQueryHandler<GetNewlySt
 
     async execute(query: GetNewlyStartedArtTrendsQuery): Promise<any> {
         let newlyStartArt = this.repository.createQueryBuilder('f')
-            .select('SUM(StartedART_Total) AS StartedART_Total, ReportMonth_Year')
+            .select('SUM(StartedART_Total) AS StartedART_Total, ReportMonth_Year,' +
+            'SUM ( Start_ART_Under_1 ) AS Start_ART_Under_1,' +
+                    'SUM ( Start_ART_25_Plus_F ) + SUM ( Start_ART_25_Plus_M ) Start_ART_25_Plus,' +
+                    'SUM ( Start_ART_20_24_F ) + SUM ( Start_ART_20_24_M ) Start_ART_20_24,' +
+                    'SUM ( Start_ART_15_19_F ) + SUM ( Start_ART_15_19_M ) Start_ART_15_19,' +
+                    'SUM ( Start_ART_10_14_F ) + SUM ( Start_ART_10_14_M ) Start_ART_10_14,' +
+                    'SUM(Start_ART_1_9) Start_ART_1_9')
 
         if (
             query.gender &&
@@ -28,14 +34,22 @@ export class GetNewlyStartedArtTrendsHandler implements IQueryHandler<GetNewlySt
                 .createQueryBuilder('f')
                 .select(
                     'isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 )  StartedART_Total,' +
-                        'ReportMonth_Year',
+                        'ReportMonth_Year, 0 Start_ART_Under_1, SUM ( Start_ART_25_Plus_F ) Start_ART_25_Plus,' +
+                    'SUM ( Start_ART_20_24_F ) Start_ART_20_24,' +
+                    'SUM ( Start_ART_15_19_F ) Start_ART_15_19,' +
+                    'SUM ( Start_ART_10_14_F ) Start_ART_10_14,' +
+                    '0 Start_ART_1_9',
                 );
         } else if (query.gender && query.gender.includes('Male')) {
             newlyStartArt = this.repository
                 .createQueryBuilder('f')
                 .select(
                     'isnull( SUM ( Start_ART_20_24_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM ( Start_ART_15_19_M ), 0 )  StartedART_Total,' +
-                        'ReportMonth_Year',
+                        'ReportMonth_Year, 0 Start_ART_Under_1, SUM ( Start_ART_25_Plus_M ) Start_ART_25_Plus,' +
+                    'SUM ( Start_ART_20_24_M ) Start_ART_20_24,' +
+                    'SUM ( Start_ART_15_19_M ) Start_ART_15_19,' +
+                    'SUM ( Start_ART_10_14_M ) Start_ART_10_14,' +
+                    '0 Start_ART_1_9',
                 );
         }
 

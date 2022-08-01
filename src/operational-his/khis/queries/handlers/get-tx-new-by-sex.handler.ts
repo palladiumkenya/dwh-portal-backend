@@ -71,11 +71,6 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
             txNewBySex.andWhere('a.Agency IN (:...agencies)', {agencies: query.agency});
         }
 
-        if (query.datimAgeGroup) {
-            txNewBySex
-                .andWhere('a.ageGroupCleaned IN (:...ageGroups)', {ageGroups: query.datimAgeGroup});
-        }
-
         if (query.year) {
             txNewBySex
                 .andWhere('ReportMonth_Year = :year', { year: query.year.toString() + query.month.toString()  });
