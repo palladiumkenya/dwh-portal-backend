@@ -15,12 +15,17 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
     }
 
     async execute(query: GetTxCurrBySexQuery): Promise<any> {
-        let txCurrBySex = this.repository.createQueryBuilder('a')
-            .select('a.FacilityName, a.County, a.SubCounty, SiteCode,' +
-                'isnull(SUM ( CurrentOnART_Total ), 0) KHIStxCurr,'+
-                'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHISMale,' +
-                'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 ) KHISFemale,' +
-                'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender"')
+        let txCurrBySex = this.repository
+            .createQueryBuilder('a')
+            .select(
+                'a.FacilityName, a.County, a.SubCounty, SiteCode,' +
+                    'isnull(SUM ( CurrentOnART_Total ), 0) KHIStxCurr,' +
+                    'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHISMale,' +
+                    'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 ) KHISFemale,' +
+                    'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender",' +
+                    'isnull( SUM ( On_ART_20_24_F ), 0 ) OnART20_24_F, isnull( SUM ( On_ART_20_24_M ), 0 ) OnART20_24_M, isnull( SUM ( On_ART_25_Plus_F ), 0 ) OnART25_Plus_F, isnull( SUM ( On_ART_25_Plus_M ), 0 ) OnART25_Plus_M,' +
+                    'isnull( SUM ( On_ART_10_14_F ), 0 ) OnART10_14_F, isnull( SUM ( On_ART_10_14_M ), 0 ) OnART10_14_M, isnull( SUM ( On_ART_15_19_F ), 0 ) OnART15_19_F, isnull( SUM ( On_ART_15_19_M ), 0 ) OnART15_19_M, isnull(sum(On_ART_1_9), 0) OnART1_9, isnull(sum(On_ART_Under_1), 0) OnARTUnder_1',
+            );
 
         if (
             query.gender &&
@@ -36,7 +41,9 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
                         'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 )  KHIStxCurr,' +
                         'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 ) KHISFemale,' +
                         'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender"' +
-                        ',0 KHISMale',
+                        ',0 KHISMale,'+
+                        'isnull( SUM ( On_ART_20_24_F ), 0 ) OnART20_24_F, 0 OnART20_24_M, isnull( SUM ( On_ART_25_Plus_F ), 0 ) OnART25_Plus_F, 0 OnART25_Plus_M,' +
+                        'isnull( SUM ( On_ART_10_14_F ), 0 ) OnART10_14_F, 0 OnART10_14_M, isnull( SUM ( On_ART_15_19_F ), 0 ) OnART15_19_F, 0 OnART15_19_M, 0 OnART1_9, 0 OnARTUnder_1',
                 );
         } else if (query.gender && query.gender.includes('Male')) {
             txCurrBySex = this.repository
@@ -46,7 +53,9 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
                         'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHIStxCurr,' +
                         'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHISMale,' +
                         'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender"' +
-                        ',0 KHISFemale',
+                        ',0 KHISFemale,' +
+                        '0 OnART20_24_F, isnull( SUM ( On_ART_20_24_M ), 0 ) OnART20_24_M, 0 OnART25_Plus_F, isnull( SUM ( On_ART_25_Plus_M ), 0 ) OnART25_Plus_M,' +
+                        '0 OnART10_14_F, isnull( SUM ( On_ART_10_14_M ), 0 ) OnART10_14_M, 0 OnART15_19_F, isnull( SUM ( On_ART_15_19_M ), 0 ) OnART15_19_M, 0 OnART1_9, 0 OnARTUnder_1',
                 );
         }
         
