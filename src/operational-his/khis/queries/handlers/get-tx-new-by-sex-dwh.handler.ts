@@ -45,9 +45,8 @@ export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQu
         }
 
         if (query.datimAgeGroup) {
-            txNewBySex
-                .andWhere(
-                'EXISTS (SELECT 1 FROM Dim_AgeGroups WHERE a.ageGroup = Dim_AgeGroups.AgeGroup and MOH_AgeGroup IN (:...ageGroups))',
+            txNewBySex.andWhere(
+                'EXISTS (SELECT 1 FROM Dim_AgeGroups WHERE a.AgeGroup = Dim_AgeGroups.DATIM_AgeGroup and MOH_AgeGroup IN (:...ageGroups))',
                 { ageGroups: query.datimAgeGroup },
             );
         }

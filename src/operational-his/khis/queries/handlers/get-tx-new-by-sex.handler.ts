@@ -13,11 +13,16 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
     }
 
     async execute(query: GetTxNewBySexQuery): Promise<any> {
-        let txNewBySex = this.repository.createQueryBuilder('a')
-            .select('a.FacilityName,a.County,a.SubCounty,SiteCode,isnull(SUM ( StartedART_Total ),0 ) KHIStxNew,'+
-            'isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM (Start_ART_15_19_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_20_24_M ), 0 ) KHISMale,'+
-            'isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 ) KHISFemale,'+
-            'isnull( SUM ( Start_ART_Under_1 ), 0 ) + isnull( SUM ( Start_ART_1_9 ), 0 ) "No gender"')
+        let txNewBySex = this.repository
+            .createQueryBuilder('a')
+            .select(
+                'a.FacilityName,a.County,a.SubCounty,SiteCode,isnull(SUM ( StartedART_Total ),0 ) KHIStxNew,' +
+                    'isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM (Start_ART_15_19_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_20_24_M ), 0 ) KHISMale,' +
+                    'isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 ) KHISFemale,' +
+                    'isnull( SUM ( Start_ART_Under_1 ), 0 ) + isnull( SUM ( Start_ART_1_9 ), 0 ) "No gender",' +
+                    'isnull( SUM ( Start_ART_10_14_M ), 0 ) StartART10_14_M, isnull( SUM (Start_ART_15_19_M ), 0 ) StartART15_19_M, isnull( SUM ( Start_ART_25_Plus_M ), 0 ) StartART25_Plus_M, isnull( SUM ( Start_ART_20_24_M ), 0 ) StartART20_24_M,' +
+                    'isnull( SUM ( Start_ART_20_24_F ), 0 ) StartART20_24_F, isnull( SUM (Start_ART_25_Plus_F ), 0 ) StartART25_Plus_F, isnull( SUM ( Start_ART_10_14_F ), 0 ) StartART10_14_F, isnull( SUM ( Start_ART_15_19_F ), 0 ) StartART15_19_F, isnull( SUM ( Start_ART_Under_1 ), 0 ) StartARTUnder_1, isnull( SUM ( Start_ART_1_9 ), 0 ) StartART1_9',
+            );
 
 
         if (
@@ -34,17 +39,21 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
                         'isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 )  KHIStxNew,' +
                         'isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 ) KHISFemale,' +
                         'isnull( SUM ( Start_ART_Under_1 ), 0 ) + isnull( SUM ( Start_ART_1_9 ), 0 ) "No gender"' +
-                        ',0 KHISMale',
+                        ',0 KHISMale, 0 StartARTUnder_1, 0 StartART1_9,' +
+                        '0 StartART10_14_M, 0 StartART15_19_M, 0 StartART25_Plus_M, 0 StartART20_24_M,' +
+                        'isnull( SUM ( Start_ART_20_24_F ), 0 ) StartART20_24_F, isnull( SUM (Start_ART_25_Plus_F ), 0 ) StartART25_Plus_F, isnull( SUM ( Start_ART_10_14_F ), 0 ) StartART10_14_F, isnull( SUM ( Start_ART_15_19_F ), 0 ) StartART15_19_F',
                 );
         } else if (query.gender && query.gender.includes('Male')) {
             txNewBySex = this.repository
                 .createQueryBuilder('a')
                 .select(
                     'a.FacilityName,a.County,a.SubCounty,SiteCode,' +
-                    'isnull( SUM ( Start_ART_20_24_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM ( Start_ART_15_19_M ), 0 )  KHIStxNew,' +
-                    'isnull( SUM ( Start_ART_20_24_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM ( Start_ART_15_19_M ), 0 ) KHISMale,' +
-                    'isnull( SUM ( Start_ART_Under_1 ), 0 ) + isnull( SUM ( Start_ART_1_9 ), 0 ) "No gender",' +
-                    '0 KHISFemale',
+                        'isnull( SUM ( Start_ART_20_24_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM ( Start_ART_15_19_M ), 0 )  KHIStxNew,' +
+                        'isnull( SUM ( Start_ART_20_24_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM ( Start_ART_15_19_M ), 0 ) KHISMale,' +
+                        'isnull( SUM ( Start_ART_Under_1 ), 0 ) + isnull( SUM ( Start_ART_1_9 ), 0 ) "No gender",' +
+                        '0 KHISFemale, 0 StartARTUnder_1, 0 StartART1_9,' +
+                        'isnull( SUM ( Start_ART_10_14_M ), 0 ) StartART10_14_M, isnull( SUM (Start_ART_15_19_M ), 0 ) StartART15_19_M, isnull( SUM ( Start_ART_25_Plus_M ), 0 ) StartART25_Plus_M, isnull( SUM ( Start_ART_20_24_M ), 0 ) StartART20_24_M,' +
+                        '0 StartART20_24_F, 0 StartART25_Plus_F, 0 StartART10_14_F, 0 StartART15_19_F',
                 );
         }
         
