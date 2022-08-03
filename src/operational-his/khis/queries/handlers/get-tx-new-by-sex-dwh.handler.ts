@@ -45,14 +45,29 @@ export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQu
         }
 
         if (query.datimAgeGroup) {
-            txNewBySex
-                .andWhere('a.ageGroupCleaned IN (:...ageGroups)', {ageGroups: query.datimAgeGroup});
+            txNewBySex.andWhere(
+                'EXISTS (SELECT 1 FROM Dim_AgeGroups WHERE a.AgeGroup = Dim_AgeGroups.DATIM_AgeGroup and MOH_AgeGroup IN (:...ageGroups))',
+                { ageGroups: query.datimAgeGroup },
+            );
         }
 
         if (query.gender) {
             txNewBySex.andWhere('a.Gender IN (:...genders)', {
                 genders: query.gender,
             });
+        }
+
+        if(query.month) {
+            txNewBySex.andWhere('a.StartART_Month = :month', { month: query.month });
+        }
+
+        if(query.year) {
+            const yearVal = new Date().getFullYear();
+            if(query.year == yearVal && !query.month) {
+                txNewBySex.andWhere('a.Start_Year >= :startYear', { startYear: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).getFullYear() });
+            } else {
+                txNewBySex.andWhere('a.Start_Year = :startYear', { startYear: query.year });
+            }
         }
 
         return await txNewBySex

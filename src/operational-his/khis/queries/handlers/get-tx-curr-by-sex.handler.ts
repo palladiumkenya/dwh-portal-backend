@@ -15,13 +15,50 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
     }
 
     async execute(query: GetTxCurrBySexQuery): Promise<any> {
-        const txCurrBySex = this.repository.createQueryBuilder('a')
-            .select('a.FacilityName, a.County, a.SubCounty, SiteCode,' +
-                'isnull(SUM ( CurrentOnART_Total ), 0) KHIStxCurr, isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHISMale,' +
-                'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 ) KHISFemale,' +
-                'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender"')
+        let txCurrBySex = this.repository
+            .createQueryBuilder('a')
+            .select(
+                'a.FacilityName, a.County, a.SubCounty, SiteCode,' +
+                    'isnull(SUM ( CurrentOnART_Total ), 0) KHIStxCurr,' +
+                    'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHISMale,' +
+                    'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 ) KHISFemale,' +
+                    'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender",' +
+                    'isnull( SUM ( On_ART_20_24_F ), 0 ) OnART20_24_F, isnull( SUM ( On_ART_20_24_M ), 0 ) OnART20_24_M, isnull( SUM ( On_ART_25_Plus_F ), 0 ) OnART25_Plus_F, isnull( SUM ( On_ART_25_Plus_M ), 0 ) OnART25_Plus_M,' +
+                    'isnull( SUM ( On_ART_10_14_F ), 0 ) OnART10_14_F, isnull( SUM ( On_ART_10_14_M ), 0 ) OnART10_14_M, isnull( SUM ( On_ART_15_19_F ), 0 ) OnART15_19_F, isnull( SUM ( On_ART_15_19_M ), 0 ) OnART15_19_M, isnull(sum(On_ART_1_9), 0) OnART1_9, isnull(sum(On_ART_Under_1), 0) OnARTUnder_1',
+            );
 
-
+        if (
+            query.gender &&
+            query.gender.includes('Female') &&
+            query.gender.includes('Male')
+        ) {
+            // No action
+        } else if (query.gender && query.gender.includes('Female')) {
+            txCurrBySex = this.repository
+                .createQueryBuilder('a')
+                .select(
+                    'a.FacilityName,a.County,a.SubCounty,SiteCode,' +
+                        'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 )  KHIStxCurr,' +
+                        'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 ) KHISFemale,' +
+                        'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender"' +
+                        ',0 KHISMale,'+
+                        'isnull( SUM ( On_ART_20_24_F ), 0 ) OnART20_24_F, 0 OnART20_24_M, isnull( SUM ( On_ART_25_Plus_F ), 0 ) OnART25_Plus_F, 0 OnART25_Plus_M,' +
+                        'isnull( SUM ( On_ART_10_14_F ), 0 ) OnART10_14_F, 0 OnART10_14_M, isnull( SUM ( On_ART_15_19_F ), 0 ) OnART15_19_F, 0 OnART15_19_M, 0 OnART1_9, 0 OnARTUnder_1',
+                );
+        } else if (query.gender && query.gender.includes('Male')) {
+            txCurrBySex = this.repository
+                .createQueryBuilder('a')
+                .select(
+                    'a.FacilityName,a.County,a.SubCounty,SiteCode,' +
+                        'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHIStxCurr,' +
+                        'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHISMale,' +
+                        'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender"' +
+                        ',0 KHISFemale,' +
+                        '0 OnART20_24_F, isnull( SUM ( On_ART_20_24_M ), 0 ) OnART20_24_M, 0 OnART25_Plus_F, isnull( SUM ( On_ART_25_Plus_M ), 0 ) OnART25_Plus_M,' +
+                        '0 OnART10_14_F, isnull( SUM ( On_ART_10_14_M ), 0 ) OnART10_14_M, 0 OnART15_19_F, isnull( SUM ( On_ART_15_19_M ), 0 ) OnART15_19_M, 0 OnART1_9, 0 OnARTUnder_1',
+                );
+        }
+        
         if (query.county) {
             txCurrBySex
                 .andWhere('a.County IN (:...counties)', { counties: query.county });
@@ -47,21 +84,10 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
                 .andWhere('SDP IN (:...partners)', { partners: query.partner });
         }
 
-        if (query.datimAgeGroup) {
-            txCurrBySex
-                .andWhere('a.ageGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
-        }
-
-        if (query.gender) {
-            txCurrBySex.andWhere('a.Gender IN (:...genders)', {
-                genders: query.gender,
-            });
-        }
-
         if (query.year) {
             txCurrBySex
                 .andWhere('ReportMonth_Year = :year', { year: query.year.toString() + query.month.toString()  });
-            // txCurrBySex.andWhere('Start_Year = :year', { year: query.year })
+            
         }
         if (query.month) {
             // txCurrBySex.andWhere('StartART_Month = :month', { month: query.month })

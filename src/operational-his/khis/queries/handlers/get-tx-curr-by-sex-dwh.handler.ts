@@ -2,7 +2,6 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../../../care-treatment/current-on-art/entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
-import {AllEmrSites} from "../../../../care-treatment/common/entities/all-emr-sites.model";
 import {GetTxCurrBySexDwhQuery} from "../impl/get-tx-curr-by-sex-dwh.query";
 
 @QueryHandler(GetTxCurrBySexDwhQuery)
@@ -43,8 +42,10 @@ export class GetTxCurrBySexDwhHandler implements IQueryHandler<GetTxCurrBySexDwh
         }
 
         if (query.datimAgeGroup) {
-            txCurrBySex
-                .andWhere('a.ageGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            txCurrBySex.andWhere(
+                'EXISTS (SELECT 1 FROM Dim_AgeGroups WHERE a.ageGroup = Dim_AgeGroups.AgeGroup and MOH_AgeGroup IN (:...ageGroups))',
+                { ageGroups: query.datimAgeGroup },
+            );
         }
 
         if (query.gender) {
