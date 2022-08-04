@@ -85,13 +85,16 @@ export class GetVlMedianTimeToFirstVlByYearHandler implements IQueryHandler<GetV
         }
 
         if (query.datimAgeGroup) {
-            // lacking age group
-            // sixMonthViralSupByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            medianTimeToFirstVlSql.andWhere(
+                'f.DATIM_AgeGroup IN (:...ageGroups)',
+                { ageGroups: query.datimAgeGroup },
+            );
         }
 
         if (query.gender) {
-            // lacking gender
-            // sixMonthViralSupByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            medianTimeToFirstVlSql.andWhere('f.Gender IN (:...genders)', {
+                genders: query.gender,
+            });
         }
 
         return await medianTimeToFirstVlSql

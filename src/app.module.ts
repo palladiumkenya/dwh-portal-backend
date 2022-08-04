@@ -9,6 +9,7 @@ import { CommonModule } from './common/common.module';
 import { ManifestsModule } from './manifests/manifests.module';
 import { HtsModule } from './hts/hts.module';
 import { CareTreatmentModule } from './care-treatment/care-treatment.module';
+import { OperationalHisModule } from './operational-his/operational-his.module';
 
 @Module({
     imports: [
@@ -69,7 +70,8 @@ import { CareTreatmentModule } from './care-treatment/care-treatment.module';
         CommonModule,
         ManifestsModule,
         HtsModule,
-        CareTreatmentModule
+        CareTreatmentModule,
+        OperationalHisModule
     ],
     controllers: [AppController],
     providers: [AppService],
