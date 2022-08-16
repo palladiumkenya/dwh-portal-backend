@@ -4,7 +4,6 @@ import {
     FactTransHmisStatsTxcurr
 } from '../../../../care-treatment/current-on-art/entities/fact-trans-hmis-stats-txcurr.model';
 import {Repository} from 'typeorm';
-import {FactCtDhis2} from "../../entities/fact-ct-dhis2.model";
 import {FactTransNewlyStarted} from "../../../../care-treatment/new-on-art/entities/fact-trans-newly-started.model";
 import {GetTxNewBySexDwhQuery} from "../impl/get-tx-new-by-sex-dwh.query";
 
