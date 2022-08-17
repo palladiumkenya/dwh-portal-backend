@@ -14,9 +14,34 @@ export class GetCurrentOnArtByCountyHandler implements IQueryHandler<GetCurrentO
     }
 
     async execute(query: GetCurrentOnArtByCountyQuery): Promise<any> {
-        const currOnArt = this.repository.createQueryBuilder('f')
-            .select('sum(CurrentOnART_Total) OnART, f.County')
+        let currOnArt = this.repository
+            .createQueryBuilder('f')
+            .select(
+                'sum(CurrentOnART_Total) OnART, isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) OnART20_24, isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) OnART25_Plus,' +
+                    'isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_10_14_M ), 0 ) OnART10_14, isnull( SUM ( On_ART_15_19_F ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) OnART15_19, isnull(sum(On_ART_1_9), 0) OnART1_9, isnull(sum(On_ART_Under_1), 0) OnARTUnder_1, f.County',
+            );
 
+        if (
+            query.gender &&
+            query.gender.includes('Female') &&
+            query.gender.includes('Male')
+        ) {
+            // No action
+        } else if (query.gender && query.gender.includes('Female')) {
+            currOnArt = this.repository
+                .createQueryBuilder('f')
+                .select(
+                    'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 ) OnART, f.County,' +
+                        'isnull( SUM ( On_ART_20_24_F ), 0 ) OnART20_24, isnull( SUM ( On_ART_25_Plus_F ), 0 ) OnART25_Plus, isnull( SUM ( On_ART_10_14_F ), 0 ) OnART10_14, isnull( SUM ( On_ART_15_19_F ), 0 ) OnART15_19, isnull(sum(On_ART_1_9), 0) OnART1_9, isnull(sum(On_ART_Under_1), 0) OnARTUnder_1',
+                );
+        } else if (query.gender && query.gender.includes('Male')) {
+            currOnArt = this.repository
+                .createQueryBuilder('f')
+                .select(
+                    'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) OnART, f.County,' +
+                        'isnull( SUM ( On_ART_20_24_M ), 0 ) OnART20_24, isnull( SUM ( On_ART_25_Plus_M ), 0 ) OnART25_Plus, isnull( SUM ( On_ART_10_14_M ), 0 ) OnART10_14, isnull( SUM ( On_ART_15_19_M ), 0 ) OnART15_19, isnull(sum(On_ART_1_9), 0) OnART1_9, isnull(sum(On_ART_Under_1), 0) OnARTUnder_1',
+                );
+        }
 
         if (query.county) {
             currOnArt

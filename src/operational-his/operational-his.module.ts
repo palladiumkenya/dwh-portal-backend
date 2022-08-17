@@ -22,6 +22,7 @@ import {FactTransHmisStatsTxcurr} from "../care-treatment/current-on-art/entitie
 import {FactTransNewlyStarted} from "../care-treatment/new-on-art/entities/fact-trans-newly-started.model";
 import {GetTxNewBySexDwhHandler} from "./khis/queries/handlers/get-tx-new-by-sex-dwh.handler";
 import {GetTxCurrBySexDwhHandler} from "./khis/queries/handlers/get-tx-curr-by-sex-dwh.handler";
+import { GetCtTxCurrAgeGroupDistributionByCountyHandler } from './khis/queries/handlers/get-ct-tx-curr-age-group-distribution-by-county.handler';
 
 @Module({
     imports: [
@@ -32,10 +33,10 @@ import {GetTxCurrBySexDwhHandler} from "./khis/queries/handlers/get-tx-curr-by-s
                 FactTransHmisStatsTxcurr,
                 FactTransNewlyStarted,
                 FactCtDhis2,
-                FactHtsDhis2
+                FactHtsDhis2,
             ],
-            'mssql'
-        )
+            'mssql',
+        ),
     ],
     providers: [
         GetNewlyStartedArtHandler,
@@ -47,9 +48,9 @@ import {GetTxCurrBySexDwhHandler} from "./khis/queries/handlers/get-tx-curr-by-s
         GetTxCurrBySexHandler,
         GetTxNewBySexHandler,
         GetTxNewBySexDwhHandler,
-        GetTxCurrBySexDwhHandler
+        GetTxCurrBySexDwhHandler,
+        GetCtTxCurrAgeGroupDistributionByCountyHandler,
     ],
-    controllers: [OperationalHisController]
+    controllers: [OperationalHisController],
 })
-export class OperationalHisModule {
-}
+export class OperationalHisModule {}

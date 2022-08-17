@@ -4,7 +4,6 @@ import {
     FactTransHmisStatsTxcurr
 } from '../../../../care-treatment/current-on-art/entities/fact-trans-hmis-stats-txcurr.model';
 import {Repository} from 'typeorm';
-import {FactCtDhis2} from "../../entities/fact-ct-dhis2.model";
 import {FactTransNewlyStarted} from "../../../../care-treatment/new-on-art/entities/fact-trans-newly-started.model";
 import {GetTxNewBySexDwhQuery} from "../impl/get-tx-new-by-sex-dwh.query";
 
@@ -45,8 +44,10 @@ export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQu
         }
 
         if (query.datimAgeGroup) {
-            txNewBySex
-                .andWhere('a.ageGroupCleaned IN (:...ageGroups)', {ageGroups: query.datimAgeGroup});
+            txNewBySex.andWhere(
+                'EXISTS (SELECT 1 FROM Dim_AgeGroups WHERE a.AgeGroup = Dim_AgeGroups.DATIM_AgeGroup and MOH_AgeGroup IN (:...ageGroups))',
+                { ageGroups: query.datimAgeGroup },
+            );
         }
 
         if (query.gender) {

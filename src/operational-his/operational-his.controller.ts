@@ -1,7 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
-
 import {GetNewlyStartedArtQuery} from "./khis/queries/impl/get-newly-started-art.query";
 import {GetNewlyStartedArtTrendsQuery} from "./khis/queries/impl/get-newly-started-art-trends.query";
 import {GetCurrentOnArtQuery} from "./khis/queries/impl/get-current-on-art.query";
@@ -12,12 +11,11 @@ import {GetTxCurrBySexQuery} from "./khis/queries/impl/get-tx-curr-by-sex.query"
 import { GetTxNewBySexQuery } from './khis/queries/impl/get-tx-new-by-sex.query';
 import {GetTxNewBySexDwhQuery} from "./khis/queries/impl/get-tx-new-by-sex-dwh.query";
 import {GetTxCurrBySexDwhQuery} from "./khis/queries/impl/get-tx-curr-by-sex-dwh.query";
+import { GetCtTxCurrAgeGroupDistributionByCountyQuery } from './khis/queries/impl/get-ct-tx-curr-age-group-distribution-by-county.query';
 
 @Controller('operational-his')
 export class OperationalHisController {
     constructor(private readonly queryBus: QueryBus) {}
-
-
 
     @Get('txNewKHIS')
     async getTxNewKHIS(
@@ -75,7 +73,6 @@ export class OperationalHisController {
 
         return this.queryBus.execute(query);
     }
-
 
     @Get('txNewTrendsKHIS')
     async getTxNewTrendsKHIS(
@@ -305,6 +302,64 @@ export class OperationalHisController {
         return this.queryBus.execute(query);
     }
 
+    @Get('getTxCurrDWHCounty')
+    async getTxCurrDWHByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetCtTxCurrAgeGroupDistributionByCountyQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
+                ageGrp.replace(' to ', '-'),
+            );
+        }
+
+        return this.queryBus.execute(query);
+    }
 
     @Get('getTxCurrKHISPartner')
     async getTxCurrKHISByPartner(
@@ -590,7 +645,5 @@ export class OperationalHisController {
 
         return this.queryBus.execute(query);
     }
-
-
 
 }
