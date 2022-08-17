@@ -1,7 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
-
 import {GetNewlyStartedArtQuery} from "./khis/queries/impl/get-newly-started-art.query";
 import {GetNewlyStartedArtTrendsQuery} from "./khis/queries/impl/get-newly-started-art-trends.query";
 import {GetCurrentOnArtQuery} from "./khis/queries/impl/get-current-on-art.query";
@@ -17,8 +16,6 @@ import { GetCtTxCurrAgeGroupDistributionByCountyQuery } from './khis/queries/imp
 @Controller('operational-his')
 export class OperationalHisController {
     constructor(private readonly queryBus: QueryBus) {}
-
-
 
     @Get('txNewKHIS')
     async getTxNewKHIS(
@@ -76,7 +73,6 @@ export class OperationalHisController {
 
         return this.queryBus.execute(query);
     }
-
 
     @Get('txNewTrendsKHIS')
     async getTxNewTrendsKHIS(
@@ -365,7 +361,6 @@ export class OperationalHisController {
         return this.queryBus.execute(query);
     }
 
-
     @Get('getTxCurrKHISPartner')
     async getTxCurrKHISByPartner(
         @Query('county') county,
@@ -650,7 +645,5 @@ export class OperationalHisController {
 
         return this.queryBus.execute(query);
     }
-
-
 
 }
