@@ -20,7 +20,7 @@ export class GetCovidAdmissionSymptomaticOverallHandler implements IQueryHandler
             .select(['AdmissionStatus, CASE WHEN AdmissionStatus=\'Yes\' THEN \'Admitted\' WHEN AdmissionStatus=\'No\' THEN \'Not Admitted\' ELSE \'Unclassified\' END as Admission, count (*)Num'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('ARTOutcome=\'V\' and PatientStatus=\'Yes\'');
+            .where('ARTOutcome=\'V\' and PatientStatus in (\'Yes\',\'Symptomatic\')');
 
         if (query.county) {
             covidAdmissionSymptomaticOverall.andWhere('f.County IN (:...counties)', { counties: query.county });
