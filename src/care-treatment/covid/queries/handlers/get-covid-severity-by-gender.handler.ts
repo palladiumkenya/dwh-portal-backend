@@ -17,13 +17,13 @@ export class GetCovidSeverityByGenderHandler implements IQueryHandler<GetCovidSe
     async execute(query: GetCovidSeverityByGenderQuery): Promise<any> {
         const covidSeverityByGender = this.repository.createQueryBuilder('g')
             .select(['PatientStatus, g.Gender, Case ' +
-            'When PatientStatus=\'Yes\' then \'Asymptomatic\' ' +
-            'When PatientStatus= \'No\' then \'Symptomatic\' ' +
+            'When PatientStatus=\'No\' then \'Asymptomatic\' ' +
+            'When PatientStatus= \'Yes\' then \'Symptomatic\' ' +
             'Else Null end as PatientStatusComputed, ' +
             'count (*)Num'])
             .leftJoin(FactTransCovidVaccines, 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
-            .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('PatientStatus is not null');
+            // .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
+            .where('PatientStatus is not null and ARTOutcome = \'V\'');
 
         if (query.county) {
             covidSeverityByGender.andWhere('f.County IN (:...counties)', { counties: query.county });

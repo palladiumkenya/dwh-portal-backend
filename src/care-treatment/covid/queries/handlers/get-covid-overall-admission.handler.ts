@@ -15,11 +15,18 @@ export class GetCovidOverallAdmissionHandler implements IQueryHandler<GetCovidOv
     }
 
     async execute(query: GetCovidOverallAdmissionQuery): Promise<any> {
-        const covidOverallAdmission = this.repository.createQueryBuilder('f')
-            .select(['AdmissionStatus, CASE WHEN AdmissionStatus=\'Yes\' THEN \'Admitted\' WHEN AdmissionStatus=\'No\' THEN \'Not Admitted\' ELSE \'Unclassified\' END as Admission, count (*)Num'])
-            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
+        const covidOverallAdmission = this.repository
+            .createQueryBuilder('f')
+            .select([
+                "AdmissionStatus, CASE WHEN AdmissionStatus='Yes' THEN 'Admitted' WHEN AdmissionStatus='No' THEN 'Not Admitted' ELSE 'Unclassified' END as Admission, count (*)Num",
+            ])
+            .leftJoin(
+                FactTransNewCohort,
+                'g',
+                'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK',
+            )
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('ARTOutcome=\'V\' and PatientStatus=\'Yes\'');
+            .where("ARTOutcome='V' and PatientStatus in ('Yes','Symptomatic')");
 
         if (query.county) {
             covidOverallAdmission.andWhere('f.County IN (:...counties)', { counties: query.county });

@@ -15,11 +15,18 @@ export class GetCovidSymptomaticInfectionsHandler implements IQueryHandler<GetCo
     }
 
     async execute(query: GetCovidSymptomaticInfectionsQuery): Promise<any> {
-        const covidSymptomaticInfections = this.repository.createQueryBuilder('f')
+        const covidSymptomaticInfections = this.repository
+            .createQueryBuilder('f')
             .select(['count(*) Num'])
-            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
+            .leftJoin(
+                FactTransNewCohort,
+                'g',
+                'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK',
+            )
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('EverCOVID19Positive=\'Yes\' and PatientStatus=\'Yes\'');
+            .where(
+                "EverCOVID19Positive='Yes' and PatientStatus in ('Yes','Symptomatic')",
+            );
 
         if (query.county) {
             covidSymptomaticInfections.andWhere('f.County IN (:...counties)', { counties: query.county });
