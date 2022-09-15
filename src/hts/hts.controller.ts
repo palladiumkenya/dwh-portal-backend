@@ -45,12 +45,11 @@ import { GetPnsChildrenCascadeQuery } from './pns/queries/impl/get-pns-children-
 import { GetPnsChildrenByYearQuery } from './pns/queries/impl/get-pns-children-by-year.query';
 import { GetPnsIndexQuery } from './pns/queries/impl/get-pns-index.query';
 import { GetPnsKnowledgeHivStatusCascadeQuery } from './pns/queries/impl/get-pns-knowledge-hiv-status-cascade.query';
+import { GetNewOnPrepQuery } from './prep/queries/impl/get-new-on-prep.query';
 
 @Controller('hts')
 export class HtsController {
-    constructor(private readonly queryBus: QueryBus) {
-
-    }
+    constructor(private readonly queryBus: QueryBus) {}
 
     @Get('sites')
     async getHtsSites(): Promise<any> {
@@ -64,25 +63,25 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('agency') agency,
-        @Query('project') project
+        @Query('project') project,
     ): Promise<any> {
         const query = new GetHtsCountiesQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
-        if(project) {
+        if (project) {
             query.project = project;
         }
         return this.queryBus.execute(query);
@@ -95,25 +94,25 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('agency') agency,
-        @Query('project') project
+        @Query('project') project,
     ): Promise<any> {
         const query = new GetHtsSubCountiesQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
-        if(project) {
+        if (project) {
             query.project = project;
         }
         return this.queryBus.execute(query);
@@ -126,25 +125,25 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('agency') agency,
-        @Query('project') project
+        @Query('project') project,
     ): Promise<any> {
         const query = new GetHtsFacilitiesQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
-        if(project) {
+        if (project) {
             query.project = project;
         }
         return this.queryBus.execute(query);
@@ -157,25 +156,25 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('agency') agency,
-        @Query('project') project
+        @Query('project') project,
     ): Promise<any> {
         const query = new GetHtsPartnersQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
-        if(project) {
+        if (project) {
             query.project = project;
         }
         return this.queryBus.execute(query);
@@ -188,25 +187,25 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('agency') agency,
-        @Query('project') project
+        @Query('project') project,
     ): Promise<any> {
         const query = new GetHtsAgenciesQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
-        if(project) {
+        if (project) {
             query.project = project;
         }
         return this.queryBus.execute(query);
@@ -219,25 +218,25 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('agency') agency,
-        @Query('project') project
+        @Query('project') project,
     ): Promise<any> {
         const query = new GetHtsProjectsQuery();
-        if(county) {
+        if (county) {
             query.county = county;
         }
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
-        if(project) {
+        if (project) {
             query.project = project;
         }
         return this.queryBus.execute(query);
@@ -250,31 +249,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetNumberTestedPositivityQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -288,31 +287,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetUptakeByPositivityQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -326,31 +325,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetUptakeBySexQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -364,31 +363,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetUptakeByAgeSexQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -402,31 +401,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetUptakeByAgeSexPositivityQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -440,31 +439,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetUptakeByPopulationTypeQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -478,31 +477,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetUptakeByTestingStrategyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -516,31 +515,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetUptakeByEntryPointQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -554,31 +553,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetUptakeByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -592,31 +591,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetUptakeByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -630,31 +629,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetUptakeByTestedasQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -668,31 +667,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetUptakeByClientSelfTestedQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -706,31 +705,31 @@ export class HtsController {
         @Query('subCounty') subCounty,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetLinkageNumberPositiveQuery();
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -744,31 +743,31 @@ export class HtsController {
         @Query('subCounty') subCounty,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetLinkageNumberPositiveByTypeQuery();
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -782,31 +781,31 @@ export class HtsController {
         @Query('subCounty') subCounty,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetUptakeByMonthsSinceLastTestQuery();
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -820,31 +819,31 @@ export class HtsController {
         @Query('subCounty') subCounty,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetUptakeByTbScreeningQuery();
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -858,31 +857,31 @@ export class HtsController {
         @Query('subCounty') subCounty,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetUptakeByTbScreenedQuery();
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -891,39 +890,38 @@ export class HtsController {
 
     @Get('linkageByAgeSex')
     async getLinkageByAgeSex(
-       @Query('facility') facility,
+        @Query('facility') facility,
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetLinkageByAgeSexQuery();
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
-
 
         return this.queryBus.execute(query);
     }
@@ -935,34 +933,33 @@ export class HtsController {
         @Query('subCounty') subCounty,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetLinkageBySexQuery();
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
-
 
         return this.queryBus.execute(query);
     }
@@ -978,27 +975,27 @@ export class HtsController {
     ): Promise<any> {
         const query = new GetLinkageByPopulationTypeQuery();
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -1012,31 +1009,31 @@ export class HtsController {
         @Query('subCounty') subCounty,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetLinkageByCountyQuery();
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.county = subCounty;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -1050,31 +1047,31 @@ export class HtsController {
         @Query('subCounty') subCounty,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetLinkageByPartnerQuery();
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.county = subCounty;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -1088,31 +1085,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetLinkageByEntryPointQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1126,31 +1123,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetLinkageByStrategyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1164,31 +1161,31 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('partner') partner,
-        @Query('facility') facility
+        @Query('facility') facility,
     ): Promise<any> {
         const query = new GetLinkageNumberNotLinkedByFacilityQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
@@ -1202,37 +1199,37 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetPnsSexualContactsCascadeQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
         return this.queryBus.execute(query);
     }
-    
+
     @Get('pnsChildrenCascade')
     async GetPnsChildrenCascade(
         @Query('county') county,
@@ -1240,31 +1237,31 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetPnsChildrenCascadeQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -1278,31 +1275,31 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetPnsSexualContactsByAgeSexQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -1316,31 +1313,31 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetPnsSexualContactsByCountyQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -1354,31 +1351,31 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetPnsSexualContactsByPartnerQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -1392,31 +1389,31 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetPnsSexualContactsByYearQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -1430,31 +1427,31 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetPnsChildrenByYearQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -1468,31 +1465,31 @@ export class HtsController {
         @Query('facility') facility,
         @Query('partner') partner,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetPnsIndexQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
         }
 
@@ -1508,40 +1505,98 @@ export class HtsController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('year') year,
-        @Query('month') month
+        @Query('month') month,
     ): Promise<any> {
         const query = new GetPnsKnowledgeHivStatusCascadeQuery();
 
-        if(county) {
+        if (county) {
             query.county = county;
         }
 
-        if(subCounty) {
+        if (subCounty) {
             query.subCounty = subCounty;
         }
 
-        if(facility) {
+        if (facility) {
             query.facility = facility;
         }
 
-        if(partner) {
+        if (partner) {
             query.partner = partner;
         }
 
-        if(agency) {
+        if (agency) {
             query.agency = agency;
         }
 
-        if(project) {
+        if (project) {
             query.project = project;
         }
 
-        if(year) {
+        if (year) {
             query.year = year;
         }
 
-        if(month) {
+        if (month) {
             query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getNewOnPrep')
+    async GetNewOnPrep(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetNewOnPrepQuery();
+
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);

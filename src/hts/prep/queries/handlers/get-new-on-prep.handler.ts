@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetNewOnPrepQuery } from '../impl/get-new-on-prep.query';
-import { FactPrep } from '../../entities/fact-prep.entity';
+import { FactPrep } from '../../entities/fact-prep.model';
 
 @QueryHandler(GetNewOnPrepQuery)
 export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {

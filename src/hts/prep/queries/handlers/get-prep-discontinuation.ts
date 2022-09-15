@@ -1,7 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactPrep } from '../../entities/fact-prep.entity';
+import { FactPrep } from '../../entities/fact-prep.model';
 import { GetPrepDiscontinuationQuery } from './../impl/get-prep-discontinuation.query';
 
 @QueryHandler(GetPrepDiscontinuationQuery)
