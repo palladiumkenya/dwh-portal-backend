@@ -65,10 +65,11 @@ import { GetPnsIndexHandler } from './pns/queries/handlers/get-pns-index.handler
 import { GetPnsKnowledgeHivStatusCascadeHandler } from './pns/queries/handlers/get-pns-knowledge-hiv-status-cascade.handler';
 
 import { GetNewOnPrepHandler } from './prep/queries/handlers/get-new-on-prep.handler';
+import { GetPrepDiscontinuationHandler } from './prep/queries/handlers/get-prep-discontinuation';
 
 @Module({
     imports: [
-        CqrsModule,
+    CqrsModule,
         ConfigurationModule,
         TypeOrmModule.forFeature(
             [
@@ -141,6 +142,7 @@ import { GetNewOnPrepHandler } from './prep/queries/handlers/get-new-on-prep.han
         GetPnsKnowledgeHivStatusCascadeHandler,
 
         GetNewOnPrepHandler,
+        GetPrepDiscontinuationHandler,
     ],
     controllers: [HtsController],
 })

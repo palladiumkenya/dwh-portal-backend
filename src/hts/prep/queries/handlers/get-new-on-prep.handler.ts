@@ -76,7 +76,7 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
         }
 
         return await medianTimeToARTPartnerSql
-            .groupBy('Sitecode, FacilityName, County, SubCounty, CTPartner, CTAgency, DATENAME (Month,VisitMonth) As VisitMonth, VisitYear')
+            .groupBy('Sitecode, FacilityName, County, SubCounty, CTPartner, CTAgency, VisitMonth, VisitYear')
             .getRawMany();
     }
 }
