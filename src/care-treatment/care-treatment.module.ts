@@ -285,11 +285,16 @@ import { GetVlOverallUptakeReceivedFollowTestsHandler } from "./viral-load/queri
 import {
     GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegimentHandler
 } from "./viral-load/queries/handlers/get-vl-overall-number-with-follow-vl-tests-at-gt1000-copies-second-line-regiment.handler";
+import { FactNUPI } from './current-on-art/entities/fact-nupi.model';
+import { GetCtTxCurrVerifiedHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-verified.handler';
+import { GetCtTxCurrVerifiedByCountyHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-verified-by-county.handler';
+import { GetCtTxCurrVerifiedByPartnerHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-verified-by-parnter.handler';
+import { GetCtTxCurrVerifiedBySexHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-verified-by-sex.handler';
 
 
 @Module({
     imports: [
-        CqrsModule,
+    CqrsModule,
         ConfigurationModule,
         TypeOrmModule.forFeature(
             [
@@ -328,7 +333,8 @@ import {
                 FactTransOvcEnrollments,
                 FactTransCohortRetention,
                 FactTransCovidVaccines,
-                DimAgeGroups
+                DimAgeGroups,
+                FactNUPI
             ],
             'mssql'
         )
@@ -554,6 +560,10 @@ import {
         GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler,
         GetCovidAdmissionSymptomaticOverallHandler,
         GetCovidManagementAdmittedHandler,
+        GetCtTxCurrVerifiedHandler,
+        GetCtTxCurrVerifiedByCountyHandler,
+        GetCtTxCurrVerifiedByPartnerHandler,
+        GetCtTxCurrVerifiedBySexHandler,
     ],
     controllers: [CareTreatmentController]
 })

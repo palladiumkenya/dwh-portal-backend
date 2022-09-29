@@ -17,6 +17,7 @@ import { FactHtsuptake } from './pns/entities/fact-htsuptake.entity';
 import { FactPNSSexualPartner } from './pns/entities/fact-pns-sexual-partner.entity';
 import { FactPNSChildren } from './pns/entities/fact-pns-children.entity';
 import { FactPNSKnowledgeHivStatus } from './pns/entities/fact-pns-knowledge-hiv-status.entity';
+import { FactPrep } from './prep/entities/fact-prep.model';
 
 import { GetHtsCountiesHandler } from './common/queries/handlers/get-hts-counties.handler';
 import { GetHtsSubCountiesHandler } from './common/queries/handlers/get-hts-sub-counties.handler';
@@ -63,25 +64,36 @@ import { GetPnsChildrenByYearHandler } from './pns/queries/handlers/get-pns-chil
 import { GetPnsIndexHandler } from './pns/queries/handlers/get-pns-index.handler';
 import { GetPnsKnowledgeHivStatusCascadeHandler } from './pns/queries/handlers/get-pns-knowledge-hiv-status-cascade.handler';
 
+import { GetNewOnPrepHandler } from './prep/queries/handlers/get-new-on-prep.handler';
+import { GetPrepDiscontinuationHandler } from './prep/queries/handlers/get-prep-discontinuation';
+
 @Module({
     imports: [
-        CqrsModule,
+    CqrsModule,
         ConfigurationModule,
-        TypeOrmModule.forFeature([
-            FactHtsUptake,
-            FactHtsUptakeAgeGender,
-            FactHtsPopulationType,
-            FactHtsTeststrategy,
-            FactHtsEntryPoint,
-            FactHtsClientTestedAs,
-            FactHtsClientSelfTested,
-            FactHtsMonthsLastTest,
-            FactHtsTBScreening,
-            FactPNSSexualPartner,
-            FactPNSChildren,
-            FactHtsuptake,
-            FactPNSKnowledgeHivStatus,
-        ])
+        TypeOrmModule.forFeature(
+            [
+                FactHtsUptake,
+                FactHtsUptakeAgeGender,
+                FactHtsPopulationType,
+                FactHtsTeststrategy,
+                FactHtsEntryPoint,
+                FactHtsClientTestedAs,
+                FactHtsClientSelfTested,
+                FactHtsMonthsLastTest,
+                FactHtsTBScreening,
+                FactPNSSexualPartner,
+                FactPNSChildren,
+                FactHtsuptake,
+                FactPNSKnowledgeHivStatus,
+            ],
+        ),
+        TypeOrmModule.forFeature(
+            [
+                FactPrep,
+            ],
+            'mssql',
+        ),
     ],
     providers: [
         GetHtsCountiesHandler,
@@ -128,8 +140,10 @@ import { GetPnsKnowledgeHivStatusCascadeHandler } from './pns/queries/handlers/g
         GetPnsChildrenByYearHandler,
         GetPnsIndexHandler,
         GetPnsKnowledgeHivStatusCascadeHandler,
-    ],
-    controllers: [HtsController]
-})
 
+        GetNewOnPrepHandler,
+        GetPrepDiscontinuationHandler,
+    ],
+    controllers: [HtsController],
+})
 export class HtsModule {}
