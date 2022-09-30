@@ -15,7 +15,7 @@ export class GetCtTxCurrVerifiedByPartnerHandler
     async execute(query: GetCtTxCurrVerifiedByPartnerQuery): Promise<any> {
         const txCurrByPartner = this.repository
             .createQueryBuilder('f')
-            .select(['County, sum (NumNUPI) NumNupi'])
+            .select(['CTPartner, sum (NumNUPI) NumNupi'])
             .where('f.[Gender] IS NOT NULL');
 
         if (query.county) {
@@ -61,7 +61,7 @@ export class GetCtTxCurrVerifiedByPartnerHandler
         }
 
         return await txCurrByPartner
-            .groupBy('County')
+            .groupBy('CTPartner')
             .orderBy('NumNupi', 'DESC')
             .getRawMany();
     }
