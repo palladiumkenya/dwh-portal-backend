@@ -17,9 +17,7 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
             .select([
                 'Sitecode, FacilityName, County, SubCounty, CTPartner, CTAgency, VisitMonth, VisitYear, Count (distinct (concat(PrepNumber,PatientPk,SiteCode))) As StartedPrep',
             ])
-            .where(
-                'PrepEnrollmentDate is not null and  VisitDate <> PrepEnrollmentDate',
-            );
+            .where('DATEDIFF(month, PrepEnrollmentDate, GETDATE()) = 2');
 
         if (query.county) {
             medianTimeToARTPartnerSql.andWhere(

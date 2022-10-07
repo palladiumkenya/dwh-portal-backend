@@ -66,34 +66,28 @@ import { GetPnsKnowledgeHivStatusCascadeHandler } from './pns/queries/handlers/g
 
 import { GetNewOnPrepHandler } from './prep/queries/handlers/get-new-on-prep.handler';
 import { GetPrepDiscontinuationHandler } from './prep/queries/handlers/get-prep-discontinuation';
+import { GetPrepDiscontinuationReasonHandler } from './prep/queries/handlers/get-prep-discontinuation-reason';
 
 @Module({
     imports: [
-    CqrsModule,
+        CqrsModule,
         ConfigurationModule,
-        TypeOrmModule.forFeature(
-            [
-                FactHtsUptake,
-                FactHtsUptakeAgeGender,
-                FactHtsPopulationType,
-                FactHtsTeststrategy,
-                FactHtsEntryPoint,
-                FactHtsClientTestedAs,
-                FactHtsClientSelfTested,
-                FactHtsMonthsLastTest,
-                FactHtsTBScreening,
-                FactPNSSexualPartner,
-                FactPNSChildren,
-                FactHtsuptake,
-                FactPNSKnowledgeHivStatus,
-            ],
-        ),
-        TypeOrmModule.forFeature(
-            [
-                FactPrep,
-            ],
-            'mssql',
-        ),
+        TypeOrmModule.forFeature([
+            FactHtsUptake,
+            FactHtsUptakeAgeGender,
+            FactHtsPopulationType,
+            FactHtsTeststrategy,
+            FactHtsEntryPoint,
+            FactHtsClientTestedAs,
+            FactHtsClientSelfTested,
+            FactHtsMonthsLastTest,
+            FactHtsTBScreening,
+            FactPNSSexualPartner,
+            FactPNSChildren,
+            FactHtsuptake,
+            FactPNSKnowledgeHivStatus,
+        ]),
+        TypeOrmModule.forFeature([FactPrep], 'mssql'),
     ],
     providers: [
         GetHtsCountiesHandler,
@@ -143,6 +137,7 @@ import { GetPrepDiscontinuationHandler } from './prep/queries/handlers/get-prep-
 
         GetNewOnPrepHandler,
         GetPrepDiscontinuationHandler,
+        GetPrepDiscontinuationReasonHandler,
     ],
     controllers: [HtsController],
 })
