@@ -820,6 +820,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetLinkageNumberPositiveQuery();
 
@@ -847,6 +849,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -858,6 +868,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetLinkageNumberPositiveByTypeQuery();
 
@@ -883,6 +895,14 @@ export class HtsController {
 
         if (month) {
             query.month = month;
+        }
+
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
         }
 
         return this.queryBus.execute(query);
@@ -1040,6 +1060,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetLinkageByAgeSexQuery();
 
@@ -1067,6 +1089,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1078,6 +1108,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetLinkageBySexQuery();
 
@@ -1103,6 +1135,14 @@ export class HtsController {
 
         if (month) {
             query.month = month;
+        }
+
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
         }
 
         return this.queryBus.execute(query);
@@ -1154,6 +1194,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetLinkageByCountyQuery();
 
@@ -1181,6 +1223,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1192,6 +1242,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetLinkageByPartnerQuery();
 
@@ -1219,6 +1271,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1230,6 +1290,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetLinkageByEntryPointQuery();
 
@@ -1257,6 +1319,14 @@ export class HtsController {
             query.facility = facility;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1268,6 +1338,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetLinkageByStrategyQuery();
 
@@ -1293,6 +1365,14 @@ export class HtsController {
 
         if (facility) {
             query.facility = facility;
+        }
+
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
         }
 
         return this.queryBus.execute(query);

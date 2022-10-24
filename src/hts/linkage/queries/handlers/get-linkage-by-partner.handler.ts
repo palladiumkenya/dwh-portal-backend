@@ -41,14 +41,24 @@ export class GetLinkageByPartnerHandler implements IQueryHandler<GetLinkageByPar
             params.push(query.partner);
         }
 
-        if(query.year) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and year=?`;
-            params.push(query.year);
+        // if(query.year) {
+        //     linkageByPartnerSql = `${linkageByPartnerSql} and year=?`;
+        //     params.push(query.year);
+        // }
+
+        // if(query.month) {
+        //     linkageByPartnerSql = `${linkageByPartnerSql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        if (query.fromDate) {
+            linkageByPartnerSql = `${linkageByPartnerSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if(query.month) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and month=?`;
-            params.push(query.month);
+        if (query.toDate) {
+            linkageByPartnerSql = `${linkageByPartnerSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         linkageByPartnerSql = `${linkageByPartnerSql} GROUP BY CTPartner ORDER BY SUM(Positive) DESC`;
