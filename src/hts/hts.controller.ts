@@ -1424,6 +1424,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsSexualContactsCascadeQuery();
 
@@ -1451,6 +1453,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1462,6 +1472,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsChildrenCascadeQuery();
 
@@ -1489,6 +1501,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1500,6 +1520,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsSexualContactsByAgeSexQuery();
 
@@ -1527,6 +1549,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1538,6 +1568,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsSexualContactsByCountyQuery();
 
@@ -1565,6 +1597,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1576,6 +1616,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsSexualContactsByPartnerQuery();
 
@@ -1603,6 +1645,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1614,6 +1664,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsSexualContactsByYearQuery();
 
@@ -1641,6 +1693,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1652,6 +1712,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsChildrenByYearQuery();
 
@@ -1679,6 +1741,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1690,6 +1760,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsIndexQuery();
 
@@ -1717,6 +1789,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1730,6 +1810,8 @@ export class HtsController {
         @Query('project') project,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsKnowledgeHivStatusCascadeQuery();
 
@@ -1763,6 +1845,14 @@ export class HtsController {
 
         if (month) {
             query.month = month;
+        }
+
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
         }
 
         return this.queryBus.execute(query);
