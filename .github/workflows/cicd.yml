@@ -18,12 +18,12 @@ jobs:
         script: |
           git config --global --add safe.directory /apps/github-workflows/dwh-portal-backend      
           cd /apps/github-workflows/dwh-portal-backend
-          git pull origin production
+          sudo git pull origin dev
           git status
           sudo cp /apps/nodeApps/dwh-portal-backend/.env.production /apps/github-workflows/dwh-portal-backend
           sudo cp /apps/nodeApps/dwh-portal-backend/Dockerfile /apps/github-workflows/dwh-portal-backend
           sudo cp -r /apps/nodeApps/dwh-portal-backend/secrets /apps/github-workflows/dwh-portal-backend
-          docker build -t cicdapplication/dwhportalbackend:latest .
-          docker stop dwhportalbackend
-          docker rm dwhportalbackend
-          docker run -p 8082:7000 -d --name=dwhportalbackend --restart always cicdapplication/dwhportalbackend:latest
+          sudo docker build -t cicdapplication/dwhportalbackend:latest .
+          sudo docker stop dwhportalbackend
+          sudo docker rm dwhportalbackend
+          sudo docker run -p 8082:7000 -d --name=dwhportalbackend --restart always cicdapplication/dwhportalbackend:latest
