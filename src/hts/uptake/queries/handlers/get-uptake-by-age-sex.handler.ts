@@ -37,14 +37,24 @@ export class GetUptakeByAgeSexHandler implements IQueryHandler<GetUptakeByAgeSex
             params.push(query.partner);
         }
 
-        if(query.month) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and month=?`;
-            params.push(query.month);
+        // if(query.month) {
+        //     uptakeByAgeSexSql = `${uptakeByAgeSexSql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        // if(query.year) {
+        //     uptakeByAgeSexSql = `${uptakeByAgeSexSql} and year=?`;
+        //     params.push(query.year);
+        // }
+
+        if (query.fromDate) {
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if(query.year) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and year=?`;
-            params.push(query.year);
+        if (query.toDate) {
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         uptakeByAgeSexSql = `${uptakeByAgeSexSql} GROUP BY DATIM_AgeGroup, Gender`;

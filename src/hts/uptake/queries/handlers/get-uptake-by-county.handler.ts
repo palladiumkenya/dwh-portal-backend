@@ -53,14 +53,24 @@ export class GetUptakeByCountyHandler implements IQueryHandler<GetUptakeByCounty
             params.push(query.partner);
         }
 
-        if(query.month) {
-            uptakeByCountySql = `${uptakeByCountySql} and month=?`;
-            params.push(query.month);
+        // if(query.month) {
+        //     uptakeByCountySql = `${uptakeByCountySql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        // if(query.year) {
+        //     uptakeByCountySql = `${uptakeByCountySql} and year=?`;
+        //     params.push(query.year);
+        // }
+
+        if (query.fromDate) {
+            uptakeByCountySql = `${uptakeByCountySql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if(query.year) {
-            uptakeByCountySql = `${uptakeByCountySql} and year=?`;
-            params.push(query.year);
+        if (query.toDate) {
+            uptakeByCountySql = `${uptakeByCountySql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         if(query.county) {

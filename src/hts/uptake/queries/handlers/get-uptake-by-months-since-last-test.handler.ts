@@ -40,14 +40,24 @@ export class GetUptakeByMonthsSinceLastTestHandler implements IQueryHandler<GetU
             params.push(query.partner);
         }
 
-        if(query.month) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and month=?`;
-            params.push(query.month);
+        // if(query.month) {
+        //     uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        // if(query.year) {
+        //     uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and year=?`;
+        //     params.push(query.year);
+        // }
+
+        if (query.fromDate) {
+            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if(query.year) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and year=?`;
-            params.push(query.year);
+        if (query.toDate) {
+            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} GROUP BY MonthLastTest`;
