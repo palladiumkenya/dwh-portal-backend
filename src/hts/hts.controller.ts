@@ -49,6 +49,7 @@ import { GetNewOnPrepQuery } from './prep/queries/impl/get-new-on-prep.query';
 import { GetPrepDiscontinuationHandler } from './prep/queries/handlers/get-prep-discontinuation';
 import { GetPrepDiscontinuationQuery } from './prep/queries/impl/get-prep-discontinuation.query';
 import { GetPrepDiscontinuationReasonQuery } from './prep/queries/impl/get-prep-discontinuation-reason.query';
+import { from } from 'rxjs';
 
 @Controller('hts')
 export class HtsController {
@@ -253,6 +254,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetNumberTestedPositivityQuery();
 
@@ -280,6 +283,14 @@ export class HtsController {
             query.facility = facility;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -291,6 +302,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetUptakeByPositivityQuery();
 
@@ -318,6 +331,14 @@ export class HtsController {
             query.facility = facility;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -329,6 +350,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetUptakeBySexQuery();
 
@@ -356,6 +379,14 @@ export class HtsController {
             query.facility = facility;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -367,6 +398,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetUptakeByAgeSexQuery();
 
@@ -394,6 +427,14 @@ export class HtsController {
             query.facility = facility;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -405,6 +446,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetUptakeByAgeSexPositivityQuery();
 
@@ -430,6 +473,14 @@ export class HtsController {
 
         if (facility) {
             query.facility = facility;
+        }
+
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
         }
 
         return this.queryBus.execute(query);
@@ -481,6 +532,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetUptakeByTestingStrategyQuery();
 
@@ -508,6 +561,14 @@ export class HtsController {
             query.facility = facility;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -519,6 +580,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetUptakeByEntryPointQuery();
 
@@ -546,6 +609,14 @@ export class HtsController {
             query.facility = facility;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -557,6 +628,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetUptakeByCountyQuery();
 
@@ -584,6 +657,14 @@ export class HtsController {
             query.facility = facility;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -595,6 +676,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetUptakeByPartnerQuery();
 
@@ -622,6 +705,14 @@ export class HtsController {
             query.facility = facility;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -633,6 +724,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetUptakeByTestedasQuery();
 
@@ -660,6 +753,14 @@ export class HtsController {
             query.facility = facility;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -671,6 +772,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetUptakeByClientSelfTestedQuery();
 
@@ -698,6 +801,14 @@ export class HtsController {
             query.facility = facility;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -709,6 +820,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetLinkageNumberPositiveQuery();
 
@@ -736,6 +849,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -747,6 +868,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetLinkageNumberPositiveByTypeQuery();
 
@@ -774,6 +897,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -785,6 +916,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetUptakeByMonthsSinceLastTestQuery();
 
@@ -812,6 +945,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -823,6 +964,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetUptakeByTbScreeningQuery();
 
@@ -850,6 +993,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -861,6 +1012,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetUptakeByTbScreenedQuery();
 
@@ -888,6 +1041,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -899,6 +1060,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetLinkageByAgeSexQuery();
 
@@ -926,6 +1089,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -937,6 +1108,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetLinkageBySexQuery();
 
@@ -962,6 +1135,14 @@ export class HtsController {
 
         if (month) {
             query.month = month;
+        }
+
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
         }
 
         return this.queryBus.execute(query);
@@ -1013,6 +1194,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetLinkageByCountyQuery();
 
@@ -1040,6 +1223,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1051,6 +1242,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('toDate') toDate,
+        @Query('fromDate') fromDate,
     ): Promise<any> {
         const query = new GetLinkageByPartnerQuery();
 
@@ -1078,6 +1271,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1089,6 +1290,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetLinkageByEntryPointQuery();
 
@@ -1116,6 +1319,14 @@ export class HtsController {
             query.facility = facility;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1127,6 +1338,8 @@ export class HtsController {
         @Query('month') month,
         @Query('partner') partner,
         @Query('facility') facility,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetLinkageByStrategyQuery();
 
@@ -1152,6 +1365,14 @@ export class HtsController {
 
         if (facility) {
             query.facility = facility;
+        }
+
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
         }
 
         return this.queryBus.execute(query);
@@ -1203,6 +1424,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsSexualContactsCascadeQuery();
 
@@ -1230,6 +1453,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1241,6 +1472,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsChildrenCascadeQuery();
 
@@ -1268,6 +1501,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1279,6 +1520,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsSexualContactsByAgeSexQuery();
 
@@ -1306,6 +1549,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1317,6 +1568,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsSexualContactsByCountyQuery();
 
@@ -1344,6 +1597,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1355,6 +1616,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsSexualContactsByPartnerQuery();
 
@@ -1382,6 +1645,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1393,6 +1664,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsSexualContactsByYearQuery();
 
@@ -1420,6 +1693,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1431,6 +1712,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsChildrenByYearQuery();
 
@@ -1458,6 +1741,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1469,6 +1760,8 @@ export class HtsController {
         @Query('partner') partner,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsIndexQuery();
 
@@ -1496,6 +1789,14 @@ export class HtsController {
             query.month = month;
         }
 
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
+        }
+
         return this.queryBus.execute(query);
     }
 
@@ -1509,6 +1810,8 @@ export class HtsController {
         @Query('project') project,
         @Query('year') year,
         @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
     ): Promise<any> {
         const query = new GetPnsKnowledgeHivStatusCascadeQuery();
 
@@ -1542,6 +1845,14 @@ export class HtsController {
 
         if (month) {
             query.month = month;
+        }
+
+        if (fromDate) {
+            query.fromDate = fromDate;
+        }
+
+        if (toDate) {
+            query.toDate = toDate;
         }
 
         return this.queryBus.execute(query);

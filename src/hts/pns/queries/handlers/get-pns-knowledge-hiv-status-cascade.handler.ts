@@ -42,12 +42,30 @@ export class GetPnsKnowledgeHivStatusCascadeHandler implements IQueryHandler<Get
             pnsKnowledgeHivStatusCascade.andWhere('q.project IN (:...project)', { project: query.project });
         }
 
-        if(query.month) {
-            pnsKnowledgeHivStatusCascade.andWhere('q.month = :month', { month: query.month });
+        // if(query.month) {
+        //     pnsKnowledgeHivStatusCascade.andWhere('q.month = :month', { month: query.month });
+        // }
+
+        // if(query.year) {
+        //     pnsKnowledgeHivStatusCascade.andWhere('q.year = :year', { year: query.year});
+        // }
+
+        if (query.fromDate) {
+            pnsKnowledgeHivStatusCascade.andWhere(
+                `CONCAT(year, LPAD(month, 2, '0'))>= :fromDate`,
+                {
+                    fromDate: query.fromDate,
+                },
+            );
         }
 
-        if(query.year) {
-            pnsKnowledgeHivStatusCascade.andWhere('q.year = :year', { year: query.year});
+        if (query.toDate) {
+            pnsKnowledgeHivStatusCascade.andWhere(
+                `CONCAT(year, LPAD(month, 2, '0'))<= :toDate`,
+                {
+                    toDate: query.toDate,
+                },
+            );
         }
 
         return await pnsKnowledgeHivStatusCascade.getRawOne();

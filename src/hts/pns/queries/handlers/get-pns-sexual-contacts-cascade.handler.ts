@@ -34,12 +34,30 @@ export class GetPnsSexualContactsCascadeHandler implements IQueryHandler<GetPnsS
             pnsSexualContactsCascade.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
-        if(query.month) {
-            pnsSexualContactsCascade.andWhere('q.month = :month', { month: query.month });
+        // if(query.month) {
+        //     pnsSexualContactsCascade.andWhere('q.month = :month', { month: query.month });
+        // }
+
+        // if(query.year) {
+        //     pnsSexualContactsCascade.andWhere('q.year = :year', { year: query.year});
+        // }
+
+        if (query.fromDate) {
+            pnsSexualContactsCascade.andWhere(
+                `CONCAT(year, LPAD(month, 2, '0'))>= :fromDate`,
+                {
+                    fromDate: query.fromDate,
+                },
+            );
         }
 
-        if(query.year) {
-            pnsSexualContactsCascade.andWhere('q.year = :year', { year: query.year});
+        if (query.toDate) {
+            pnsSexualContactsCascade.andWhere(
+                `CONCAT(year, LPAD(month, 2, '0'))<= :toDate`,
+                {
+                    toDate: query.toDate,
+                },
+            );
         }
 
         return await pnsSexualContactsCascade.getRawOne();

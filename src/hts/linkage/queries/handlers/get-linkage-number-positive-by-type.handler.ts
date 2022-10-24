@@ -42,18 +42,28 @@ export class GetLinkageNumberPositiveByTypeHandler implements IQueryHandler<GetL
             params.push(query.partner);
         }
 
-        if(query.year) {
-            if(query.year == (new Date()).getFullYear()) {
-                linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and  (YEAR >= YEAR(DATE_SUB(NOW(), INTERVAL 11 MONTH)))`;
-            } else {
-                linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and year=?`;
-            }
-            params.push(query.year);
+        // if(query.year) {
+        //     if(query.year == (new Date()).getFullYear()) {
+        //         linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and  (YEAR >= YEAR(DATE_SUB(NOW(), INTERVAL 11 MONTH)))`;
+        //     } else {
+        //         linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and year=?`;
+        //     }
+        //     params.push(query.year);
+        // }
+
+        // if(query.month) {
+        //     linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        if (query.fromDate) {
+            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if(query.month) {
-            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and month=?`;
-            params.push(query.month);
+        if (query.toDate) {
+            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} GROUP BY TestedBefore, year, month`;

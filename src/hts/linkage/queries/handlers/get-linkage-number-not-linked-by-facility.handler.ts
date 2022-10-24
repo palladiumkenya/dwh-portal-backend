@@ -42,18 +42,28 @@ export class GetLinkageNumberNotLinkedByFacilityHandler
             params.push(query.partner);
         }
 
-        if (query.year) {
-            // if (query.year == new Date().getFullYear()) {
-            //     linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and  (YEAR >= YEAR(DATE_SUB(NOW(), INTERVAL 11 MONTH)))`;
-            // } else {
-                linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and year=?`;
-            // }
-            params.push(query.year);
+        // if (query.year) {
+        //     // if (query.year == new Date().getFullYear()) {
+        //     //     linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and  (YEAR >= YEAR(DATE_SUB(NOW(), INTERVAL 11 MONTH)))`;
+        //     // } else {
+        //         linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and year=?`;
+        //     // }
+        //     params.push(query.year);
+        // }
+
+        // if (query.month) {
+        //     linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        if (query.fromDate) {
+            linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if (query.month) {
-            linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and month=?`;
-            params.push(query.month);
+        if (query.toDate) {
+            linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} GROUP BY MFLCode, FacilityName, County, subcounty, CTPartner`;

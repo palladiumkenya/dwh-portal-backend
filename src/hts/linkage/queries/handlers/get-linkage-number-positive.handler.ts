@@ -41,16 +41,26 @@ export class GetLinkageNumberPositiveHandler implements IQueryHandler<GetLinkage
             params.push(query.partner);
         }
 
-        if (query.year) {
+        // if (query.year) {
 
-            linkageNumberPositiveSql = `${linkageNumberPositiveSql} and year=?`;
-            params.push(query.year);
+        //     linkageNumberPositiveSql = `${linkageNumberPositiveSql} and year=?`;
+        //     params.push(query.year);
 
+        // }
+
+        // if (query.month) {
+        //     linkageNumberPositiveSql = `${linkageNumberPositiveSql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        if (query.fromDate) {
+            linkageNumberPositiveSql = `${linkageNumberPositiveSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if (query.month) {
-            linkageNumberPositiveSql = `${linkageNumberPositiveSql} and month=?`;
-            params.push(query.month);
+        if (query.toDate) {
+            linkageNumberPositiveSql = `${linkageNumberPositiveSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         linkageNumberPositiveSql = `${linkageNumberPositiveSql} GROUP BY year, month ORDER BY year, month`;

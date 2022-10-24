@@ -41,14 +41,24 @@ export class GetLinkageByAgeSexHandler implements IQueryHandler<GetLinkageByAgeS
             params.push(query.partner);
         }
 
-        if(query.year) {
-            linkageByAgeSexSql = `${linkageByAgeSexSql} and year=?`;
-            params.push(query.year);
+        // if(query.year) {
+        //     linkageByAgeSexSql = `${linkageByAgeSexSql} and year=?`;
+        //     params.push(query.year);
+        // }
+
+        // if(query.month) {
+        //     linkageByAgeSexSql = `${linkageByAgeSexSql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        if (query.fromDate) {
+            linkageByAgeSexSql = `${linkageByAgeSexSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if(query.month) {
-            linkageByAgeSexSql = `${linkageByAgeSexSql} and month=?`;
-            params.push(query.month);
+        if (query.toDate) {
+            linkageByAgeSexSql = `${linkageByAgeSexSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         linkageByAgeSexSql = `${linkageByAgeSexSql} GROUP BY DATIM_AgeGroup, Gender`;

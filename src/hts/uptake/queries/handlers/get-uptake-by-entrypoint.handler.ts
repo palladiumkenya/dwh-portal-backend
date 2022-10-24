@@ -42,14 +42,24 @@ export class GetUptakeByEntrypointHandler implements IQueryHandler<GetUptakeByEn
             params.push(query.partner);
         }
 
-        if(query.month) {
-            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and month=?`;
-            params.push(query.month);
+        // if(query.month) {
+        //     uptakeByEntryPointSql = `${uptakeByEntryPointSql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        // if(query.year) {
+        //     uptakeByEntryPointSql = `${uptakeByEntryPointSql} and year=?`;
+        //     params.push(query.year);
+        // }
+
+        if (query.fromDate) {
+            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if(query.year) {
-            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and year=?`;
-            params.push(query.year);
+        if (query.toDate) {
+            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         uptakeByEntryPointSql = `${uptakeByEntryPointSql} GROUP BY EntryPoint ORDER BY SUM(\`Tested\`) DESC`;

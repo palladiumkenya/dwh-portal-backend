@@ -5,4 +5,6 @@ export class GetUptakeByTestingStrategyQuery {
     partner?: string[];
     year?: number;
     month?: number;
+    toDate?: string;
+    fromDate?: string;
 }

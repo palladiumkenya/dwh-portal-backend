@@ -42,15 +42,25 @@ export class GetUptakeByPartnerHandler implements IQueryHandler<GetUptakeByPartn
             params.push(query.partner);
         }
 
-        if(query.month) {
-            uptakeByPartnerSql = `${uptakeByPartnerSql} and month=?`;
-            params.push(query.month);
+        if (query.fromDate) {
+            uptakeByPartnerSql = `${uptakeByPartnerSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if(query.year) {
-            uptakeByPartnerSql = `${uptakeByPartnerSql} and year=?`;
-            params.push(query.year);
+        if (query.toDate) {
+            uptakeByPartnerSql = `${uptakeByPartnerSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
+
+        // if(query.month) {
+        //     uptakeByPartnerSql = `${uptakeByPartnerSql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        // if(query.year) {
+        //     uptakeByPartnerSql = `${uptakeByPartnerSql} and year=?`;
+        //     params.push(query.year);
+        // }
 
         uptakeByPartnerSql = `${uptakeByPartnerSql} GROUP BY CTPartner ORDER BY SUM(\`Tested\`) DESC`;
 

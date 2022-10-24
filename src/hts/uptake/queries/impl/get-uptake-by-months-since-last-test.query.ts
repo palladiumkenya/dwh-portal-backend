@@ -5,4 +5,6 @@ export class GetUptakeByMonthsSinceLastTestQuery {
     partner?: string[];
     year?: number;
     month?: number;
+    fromDate?: string;
+    toDate?: string;
 }
