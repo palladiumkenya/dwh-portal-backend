@@ -34,12 +34,24 @@ export class GetPnsIndexHandler implements IQueryHandler<GetPnsIndexQuery> {
             pnsIndex.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
-        if(query.month) {
-            pnsIndex.andWhere('q.month = :month', { month: query.month });
+        // if(query.month) {
+        //     pnsIndex.andWhere('q.month = :month', { month: query.month });
+        // }
+
+        // if(query.year) {
+        //     pnsIndex.andWhere('q.year = :year', { year: query.year});
+        // }
+
+        if (query.fromDate) {
+            pnsIndex.andWhere(`CONCAT(year, LPAD(month, 2, '0'))>= :fromDate`, {
+                fromDate: query.fromDate,
+            });
         }
 
-        if(query.year) {
-            pnsIndex.andWhere('q.year = :year', { year: query.year});
+        if (query.toDate) {
+            pnsIndex.andWhere(`CONCAT(year, LPAD(month, 2, '0'))<= :toDate`, {
+                toDate: query.toDate,
+            });
         }
 
         return await pnsIndex.getRawOne();

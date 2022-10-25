@@ -36,14 +36,24 @@ export class GetUptakeByTbScreenedHandler implements IQueryHandler<GetUptakeByTb
             params.push(query.partner);
         }
 
-        if(query.month) {
-            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and month=?`;
-            params.push(query.month);
+        // if(query.month) {
+        //     uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        // if(query.year) {
+        //     uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and year=?`;
+        //     params.push(query.year);
+        // }
+
+        if (query.fromDate) {
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if(query.year) {
-            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and year=?`;
-            params.push(query.year);
+        if (query.toDate) {
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} GROUP BY TBSCreening_grp`;

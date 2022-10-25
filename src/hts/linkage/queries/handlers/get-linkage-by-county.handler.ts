@@ -41,14 +41,24 @@ export class GetLinkageByCountyHandler implements IQueryHandler<GetLinkageByCoun
             params.push(query.partner);
         }
 
-        if(query.year) {
-            linkageByCountySql = `${linkageByCountySql} and year=?`;
-            params.push(query.year);
+        // if(query.year) {
+        //     linkageByCountySql = `${linkageByCountySql} and year=?`;
+        //     params.push(query.year);
+        // }
+
+        // if(query.month) {
+        //     linkageByCountySql = `${linkageByCountySql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        if (query.fromDate) {
+            linkageByCountySql = `${linkageByCountySql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if(query.month) {
-            linkageByCountySql = `${linkageByCountySql} and month=?`;
-            params.push(query.month);
+        if (query.toDate) {
+            linkageByCountySql = `${linkageByCountySql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         linkageByCountySql = `${linkageByCountySql} GROUP BY County ORDER BY SUM(Positive) DESC`;

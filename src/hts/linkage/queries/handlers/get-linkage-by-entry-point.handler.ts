@@ -41,14 +41,24 @@ export class GetLinkageByEntryPointHandler implements IQueryHandler<GetLinkageBy
             params.push(query.partner);
         }
 
-        if(query.year) {
-            linkageByEntryPointSql = `${linkageByEntryPointSql} and year=?`;
-            params.push(query.year);
+        // if(query.year) {
+        //     linkageByEntryPointSql = `${linkageByEntryPointSql} and year=?`;
+        //     params.push(query.year);
+        // }
+
+        // if(query.month) {
+        //     linkageByEntryPointSql = `${linkageByEntryPointSql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        if (query.fromDate) {
+            linkageByEntryPointSql = `${linkageByEntryPointSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if(query.month) {
-            linkageByEntryPointSql = `${linkageByEntryPointSql} and month=?`;
-            params.push(query.month);
+        if (query.toDate) {
+            linkageByEntryPointSql = `${linkageByEntryPointSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         linkageByEntryPointSql = `${linkageByEntryPointSql} GROUP BY EntryPoint ORDER BY SUM(\`positive\`) DESC`;

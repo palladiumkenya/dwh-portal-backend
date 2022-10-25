@@ -36,12 +36,30 @@ export class GetPnsSexualContactsByAgeSexHandler implements IQueryHandler<GetPns
             pnsSexualContactsByAgeSex.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
-        if(query.month) {
-            pnsSexualContactsByAgeSex.andWhere('q.month = :month', { month: query.month });
+        // if(query.month) {
+        //     pnsSexualContactsByAgeSex.andWhere('q.month = :month', { month: query.month });
+        // }
+
+        // if(query.year) {
+        //     pnsSexualContactsByAgeSex.andWhere('q.year = :year', { year: query.year});
+        // }
+
+        if (query.fromDate) {
+            pnsSexualContactsByAgeSex.andWhere(
+                `CONCAT(year, LPAD(month, 2, '0'))>= :fromDate`,
+                {
+                    fromDate: query.fromDate,
+                },
+            );
         }
 
-        if(query.year) {
-            pnsSexualContactsByAgeSex.andWhere('q.year = :year', { year: query.year});
+        if (query.toDate) {
+            pnsSexualContactsByAgeSex.andWhere(
+                `CONCAT(year, LPAD(month, 2, '0'))<= :toDate`,
+                {
+                    toDate: query.toDate,
+                },
+            );
         }
 
         return await pnsSexualContactsByAgeSex

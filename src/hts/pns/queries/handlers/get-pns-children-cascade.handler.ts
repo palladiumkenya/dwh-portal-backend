@@ -34,12 +34,20 @@ export class GetPnsChildrenCascadeHandler implements IQueryHandler<GetPnsChildre
             pnsChildrenCascade.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
         }
 
-        if(query.month) {
-            pnsChildrenCascade.andWhere('q.month = :month', { month: query.month });
+        // if(query.month) {
+        //     pnsChildrenCascade.andWhere('q.month = :month', { month: query.month });
+        // }
+
+        // if(query.year) {
+        //     pnsChildrenCascade.andWhere('q.year = :year', { year: query.year});
+        // }
+
+        if (query.fromDate) {
+            pnsChildrenCascade.andWhere( `CONCAT(year, LPAD(month, 2, '0'))>= :fromDate`, {fromDate: query.fromDate});
         }
 
-        if(query.year) {
-            pnsChildrenCascade.andWhere('q.year = :year', { year: query.year});
+        if (query.toDate) {
+            pnsChildrenCascade.andWhere(`CONCAT(year, LPAD(month, 2, '0'))<= :toDate`, { toDate: query.toDate });
         }
 
         return await pnsChildrenCascade.getRawOne();

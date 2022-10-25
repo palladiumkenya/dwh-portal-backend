@@ -49,6 +49,16 @@ export class GetUptakeByAgeSexPositivityHandler implements IQueryHandler<GetUpta
             params.push(query.year);
         }
 
+        if (query.fromDate) {
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
+        }
+
+        if (query.toDate) {
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
+        }
+
         uptakeByAgeSexSql = `${uptakeByAgeSexSql} GROUP BY DATIM_AgeGroup`;
         return  await this.repository.query(uptakeByAgeSexSql, params);
     }

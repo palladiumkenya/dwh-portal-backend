@@ -5,4 +5,6 @@ export class GetUptakeByAgeSexQuery {
     partner?: string[];
     year?: number;
     month?: number;
+    fromDate?: string;
+    toDate?: string;
 }

@@ -42,14 +42,24 @@ export class GetUptakeByClientSelfTestedHandler implements IQueryHandler<GetUpta
             params.push(query.partner);
         }
 
-        if(query.month) {
-            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and month=?`;
-            params.push(query.month);
+        // if(query.month) {
+        //     uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        // if(query.year) {
+        //     uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and year=?`;
+        //     params.push(query.year);
+        // }
+
+        if (query.fromDate) {
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if(query.year) {
-            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and year=?`;
-            params.push(query.year);
+        if (query.toDate) {
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} GROUP BY ClientSelfTested`;

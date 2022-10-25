@@ -1,0 +1,29 @@
+name: deploy to dev
+on:
+  push:
+    branches: [ dev ]
+jobs:
+
+  build:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote connection
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DATA_HOST }}
+        username: ${{ secrets.DATA_USERNAME }}
+        key: ${{ secrets.DATA_SECRET_KEY }}
+        port: ${{ secrets.DATA_PORT }}
+        script: |
+          git config --global --add safe.directory /apps/github-workflows/dwh-portal-backend      
+          cd /apps/github-workflows/dwh-portal-backend
+          sudo git pull origin dev
+          git status
+          sudo cp /apps/nodeApps/dwh-portal-backend/.env.production /apps/github-workflows/dwh-portal-backend
+          sudo cp /apps/nodeApps/dwh-portal-backend/Dockerfile /apps/github-workflows/dwh-portal-backend
+          sudo cp -r /apps/nodeApps/dwh-portal-backend/secrets /apps/github-workflows/dwh-portal-backend
+          sudo docker build -t cicdapplication/dwhportalbackend:latest .
+          sudo docker stop dwhportalbackend
+          sudo docker rm dwhportalbackend
+          sudo docker run -p 8082:7000 -d --name=dwhportalbackend --restart always cicdapplication/dwhportalbackend:latest

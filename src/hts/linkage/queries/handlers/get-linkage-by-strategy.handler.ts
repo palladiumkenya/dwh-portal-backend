@@ -55,14 +55,24 @@ export class GetLinkageByStrategyHandler implements IQueryHandler<GetLinkageBySt
             params.push(query.partner);
         }
 
-        if(query.month) {
-            linkageByStrategySql = `${linkageByStrategySql} and month=?`;
-            params.push(query.month);
+        // if(query.month) {
+        //     linkageByStrategySql = `${linkageByStrategySql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        // if(query.year) {
+        //     linkageByStrategySql = `${linkageByStrategySql} and year=?`;
+        //     params.push(query.year);
+        // }
+
+        if (query.fromDate) {
+            linkageByStrategySql = `${linkageByStrategySql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
+            params.push(query.fromDate);
         }
 
-        if(query.year) {
-            linkageByStrategySql = `${linkageByStrategySql} and year=?`;
-            params.push(query.year);
+        if (query.toDate) {
+            linkageByStrategySql = `${linkageByStrategySql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
+            params.push(query.toDate);
         }
 
         linkageByStrategySql = `${linkageByStrategySql} GROUP BY TestStrategy ORDER BY SUM(\`positive\`) DESC`;
