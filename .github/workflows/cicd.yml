@@ -16,13 +16,16 @@ jobs:
         key: ${{ secrets.DATA_SECRET_KEY }}
         port: ${{ secrets.DATA_PORT }}
         script: |
-          git config --global --add safe.directory /apps/github-workflows/dwh-portal-backend      
-          cd /apps/github-workflows/dwh-portal-backend
-          sudo git pull origin dev
+          cd /apps/githubworkflows/
+          sudo rm -rf dwh-portal-backend
+          sudo mkdir dwh-portal-backend
+          sudo chown -R cicd:cicd /apps/githubworkflows/dwh-portal-backend
+          git config --global --add safe.directory /apps/githubworkflows/dwh-portal-backend      
+          git clone -b dev https://github.com/palladiumkenya/dwh-portal-backend.git .
           git status
-          sudo cp /apps/nodeApps/dwh-portal-backend/.env.production /apps/github-workflows/dwh-portal-backend
-          sudo cp /apps/nodeApps/dwh-portal-backend/Dockerfile /apps/github-workflows/dwh-portal-backend
-          sudo cp -r /apps/nodeApps/dwh-portal-backend/secrets /apps/github-workflows/dwh-portal-backend
+          sudo cp /apps/nodeApps/dwh-portal-backend/.env.production /apps/githubworkflows/dwh-portal-backend
+          sudo cp /apps/nodeApps/dwh-portal-backend/Dockerfile /apps/githubworkflows/dwh-portal-backend
+          sudo cp -r /apps/nodeApps/dwh-portal-backend/secrets /apps/githubworkflows/dwh-portal-backend
           sudo docker build -t cicdapplication/dwhportalbackend:latest .
           sudo docker stop dwhportalbackend
           sudo docker rm dwhportalbackend
