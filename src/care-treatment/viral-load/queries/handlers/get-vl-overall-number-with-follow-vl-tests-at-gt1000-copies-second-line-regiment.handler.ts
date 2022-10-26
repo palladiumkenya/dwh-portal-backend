@@ -89,7 +89,7 @@ export class GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegiment
         
         if (query.datimAgeGroup) {
             vlOverallNumberFollowSecondlineRegiment.andWhere(
-                'cohort.AgeGroup IN (:...ageGroups)',
+                'cohort.DATIM_AgeGroup IN (:...ageGroups)',
                 { ageGroups: query.datimAgeGroup },
             );
         }
