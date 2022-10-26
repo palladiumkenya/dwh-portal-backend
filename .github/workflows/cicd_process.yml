@@ -16,13 +16,18 @@ jobs:
         key: ${{ secrets.CICD_SECRET }}
         port: ${{ secrets.PORT }}
         script: |
+          cd /apps/github-workflows/
+          sudo rm -rf dwh-portal-backend
+          sudo mkdir dwh-portal-backend
+          sudo chown -R cicd:cicd /apps/github-workflows/dwh-portal-backend
           git config --global --add safe.directory /apps/github-workflows/dwh-portal-backend      
           cd /apps/github-workflows/dwh-portal-backend
-          git pull origin production
+          git clone -b production https://github.com/palladiumkenya/dwh-portal-backend.git .
           git status
           sudo cp /apps/dockerApps/dwh-portal-backend/.env.production /apps/github-workflows/dwh-portal-backend
           sudo cp /apps/dockerApps/dwh-portal-backend/Dockerfile /apps/github-workflows/dwh-portal-backend
           sudo cp -r /apps/dockerApps/dwh-portal-backend/secrets /apps/github-workflows/dwh-portal-backend
+          sudo chown -R cicd:cicd /apps/github-workflows/dwh-portal-backend
           docker build -t cicdapplication/dwhportalbackend:latest .
           docker stop dwhportalbackend
           docker rm dwhportalbackend
