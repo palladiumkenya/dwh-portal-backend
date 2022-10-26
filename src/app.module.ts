@@ -10,6 +10,7 @@ import { ManifestsModule } from './manifests/manifests.module';
 import { HtsModule } from './hts/hts.module';
 import { CareTreatmentModule } from './care-treatment/care-treatment.module';
 import { OperationalHisModule } from './operational-his/operational-his.module';
+import { SelfServiceModule } from './self-service/self-service.module';
 
 @Module({
     imports: [
@@ -71,7 +72,8 @@ import { OperationalHisModule } from './operational-his/operational-his.module';
         ManifestsModule,
         HtsModule,
         CareTreatmentModule,
-        OperationalHisModule
+        OperationalHisModule,
+        SelfServiceModule,
     ],
     controllers: [AppController],
     providers: [AppService],

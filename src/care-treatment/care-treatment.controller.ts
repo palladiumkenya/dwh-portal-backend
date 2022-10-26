@@ -241,10 +241,15 @@ import {
     GetVlOverallUptakeReceivedFollowTestsAllQuery
 } from "./viral-load/queries/impl/get-vl-overall-uptake-received-follow-tests-all.query";
 import { GetVlOverallUptakeReceivedFollowTestsQuery } from './viral-load/queries/impl/get-vl-overall-uptake-received-follow-tests.query';
-import {
-    GetVlOverallNumberWithFollowTestsAtGt1000CopiesSecondlineRegimentQuery
-} from "./viral-load/queries/impl/get-vl-overall-number-with-follow-tests-at-gt1000-copies-secondline-regiment.query";
+import { GetVlOverallNumberWithFollowTestsAtGt1000CopiesSecondlineRegimentQuery } from "./viral-load/queries/impl/get-vl-overall-number-with-follow-tests-at-gt1000-copies-secondline-regiment.query";
+import { GetCtTxCurrVerifiedByAgeAndSexQuery }from './current-on-art/queries/impl/get-ct-tx-curr-verified-age-group-sex.query';
+import { GetCtTxCurrVerifiedQuery } from './current-on-art/queries/impl/get-ct-tx-curr-verified.query';
+import { GetCtTxCurrVerifiedByCountyQuery } from './current-on-art/queries/impl/get-ct-tx-curr-verified-county.query';
+import { GetCtTxCurrVerifiedByPartnerQuery } from './current-on-art/queries/impl/get-ct-tx-curr-verified-partner.query';
+import { GetOtzEnrollmentTrendQuery } from './otz/queries/impl/get-otz-enrollment-trend.query';
+import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexQuery } from './otz/queries/impl/get-otz-enrollment-among-alhiv-and-on-art-by-age-sex.query';
 
+    
 @Controller('care-treatment')
 export class CareTreatmentController {
     constructor(private readonly queryBus: QueryBus) {}
@@ -831,6 +836,234 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCtTxCurrBySexQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('txCurrByAgeSexVerified')
+    async getTxCurrByAgeSexVerified(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetCtTxCurrVerifiedByAgeAndSexQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('txCurrVerified')
+    async getTxCurrVerified(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetCtTxCurrVerifiedQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('txCurrByCountyVerified')
+    async getTxCurrByCountyVerified(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetCtTxCurrVerifiedByCountyQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('txCurrByPartnerVerified')
+    async getTxCurrByPartnerVerified(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetCtTxCurrVerifiedByPartnerQuery();
         if (county) {
             query.county = county;
         }
@@ -8038,6 +8271,64 @@ export class CareTreatmentController {
         return this.queryBus.execute(query);
     }
 
+    @Get('getOtzEnrollmentAmongAlhivAndOnArtByAgeSex')
+    async getOtzEnrollmentAmongAlhivAndOnArtByAgeSex(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexQuery();
+
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
     @Get('getOtzOutcomesAmongAlHivWithSustainedSuppression')
     async getOtzOutcomesAmongAlHivWithSustainedSuppression(
         @Query('county') county,
@@ -9502,6 +9793,64 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerQuery();
+
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getOtzEnrollmentTrend')
+    async getOtzEnrollmentTrend(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetOtzEnrollmentTrendQuery();
 
         if (county) {
             query.county = county;
