@@ -248,6 +248,9 @@ import { GetCtTxCurrVerifiedByCountyQuery } from './current-on-art/queries/impl/
 import { GetCtTxCurrVerifiedByPartnerQuery } from './current-on-art/queries/impl/get-ct-tx-curr-verified-partner.query';
 import { GetOtzEnrollmentTrendQuery } from './otz/queries/impl/get-otz-enrollment-trend.query';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexQuery } from './otz/queries/impl/get-otz-enrollment-among-alhiv-and-on-art-by-age-sex.query';
+import { GetOtzNotEnrolledByPartnerHandler } from './otz/queries/handlers/get-otz-not-enrolled-by-partner.handler';
+import { GetOtzNotEnrolledByPartnerQuery } from './otz/queries/impl/get-otz-not-enrolled-by-partner.query';
+import { GetOtzNotEnrolledByCountyQuery } from './otz/queries/impl/get-otz-not-enrolled-by-county.query';
 
     
 @Controller('care-treatment')
@@ -12693,6 +12696,122 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOTZCalhivOnArtQuery();
+
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getOTZNotEnrolledByPartner')
+    async getOTZNotEnrolledByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetOtzNotEnrolledByPartnerQuery();
+
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getOtzNotEnrolledByCounty')
+    async getOTZNotEnrolledByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetOtzNotEnrolledByCountyQuery();
 
         if (county) {
             query.county = county;

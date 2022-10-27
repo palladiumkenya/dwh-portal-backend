@@ -292,6 +292,8 @@ import { GetCtTxCurrVerifiedByPartnerHandler } from './current-on-art/queries/ha
 import { GetCtTxCurrVerifiedBySexHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-verified-by-sex.handler';
 import { GetOtzEnrollmentTrentHandler } from './otz/queries/handlers/get-otz-enrollment-trend.handler';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-age-sex.handler';
+import { GetOtzNotEnrolledByPartnerHandler } from './otz/queries/handlers/get-otz-not-enrolled-by-partner.handler';
+import { GetOtzNotEnrolledByCountyHandler } from './otz/queries/handlers/get-otz-not-enrolled-by-county.handler';
 
 
 @Module({
@@ -491,6 +493,8 @@ import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexHandler } from './otz/queries
         GetOtzTotalWithVlLessThan1000Handler,
         GetOtzEnrollmentTrentHandler,
         GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexHandler,
+        GetOtzNotEnrolledByPartnerHandler,
+        GetOtzNotEnrolledByCountyHandler,
         GetOvcOverallOvcServHandler,
         GetOvcServBySexHandler,
         GetOvcCaregiversRelationshipToOvcClientHandler,

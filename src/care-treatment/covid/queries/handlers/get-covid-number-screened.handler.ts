@@ -17,7 +17,7 @@ export class GetCovidNumberScreenedHandler implements IQueryHandler<GetCovidNumb
         const numberScreened = this.repository.createQueryBuilder('f')
             .select(['count (*)Screened'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
-            .where('ageLV>=15 and ARTOutcome=\'V\'and f.VaccinationStatus in (\'Fully Vaccinated\',\'Not Vaccinated\',\'Partially Vaccinated\')');
+            .where('ageLV>=12 and ARTOutcome=\'V\'and f.VaccinationStatus in (\'Fully Vaccinated\',\'Not Vaccinated\',\'Partially Vaccinated\')');
 
         if (query.county) {
             numberScreened.andWhere('f.County IN (:...counties)', { counties: query.county });

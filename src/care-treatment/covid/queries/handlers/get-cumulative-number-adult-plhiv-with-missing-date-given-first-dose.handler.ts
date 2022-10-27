@@ -21,7 +21,7 @@ export class GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler i
             .select(['COUNT(DISTINCT CONCAT(f.PatientID, \'-\', f.PatientPK,\'-\',f.SiteCode))Num'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('ageLV>=15 and ARTOutcome=\'V\' and f.DateGivenFirstDose =\'0001-01-01\' and f.VaccinationStatus in (\'Fully Vaccinated\',\'Partially Vaccinated\')');
+            .where('ageLV>=12 and ARTOutcome=\'V\' and f.DateGivenFirstDose =\'0001-01-01\' and f.VaccinationStatus in (\'Fully Vaccinated\',\'Partially Vaccinated\')');
 
         if (query.county) {
             cumulativeWithMissingDate.andWhere('g.County IN (:...counties)', { counties: query.county });

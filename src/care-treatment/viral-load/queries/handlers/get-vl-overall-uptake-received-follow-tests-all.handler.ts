@@ -90,7 +90,7 @@ export class GetVlOverallUptakeReceivedFollowTestsAllHandler implements IQueryHa
         
         if (query.datimAgeGroup) {
             vlOverallUptakeReceivedFollowAll.andWhere(
-                'cohort.AgeGroup IN (:...ageGroups)',
+                'cohort.DATIM_AgeGroup IN (:...ageGroups)',
                 { ageGroups: query.datimAgeGroup },
             );
         }
