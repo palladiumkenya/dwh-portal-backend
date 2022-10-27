@@ -10124,7 +10124,9 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+            query.datimAgeGroup = datimAgeGroup.map(agegrp =>
+                agegrp.replace(' to ', '-'),
+            );
         }
 
         return this.queryBus.execute(query);
