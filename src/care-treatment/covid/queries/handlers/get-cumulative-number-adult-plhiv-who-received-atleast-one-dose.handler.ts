@@ -19,7 +19,7 @@ export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler imple
             .select(['DATENAME(Month,g.DategivenFirstDose) AS DategivenFirstDose,DATENAME(YEAR,g.DategivenFirstDose) AS YearFirstDose, count (*)Num, sum(count (*)) OVER (ORDER BY DATEPART(YEAR, g.DategivenFirstDose), DATEPART(MONTH, g.DategivenFirstDose)) as cumulative'])
             .leftJoin(FactTransCovidVaccines, 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('ageLV>=15 and ARTOutcome=\'V\' and (g.DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
+            .where('ageLV>=12 and ARTOutcome=\'V\' and (g.DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
 
         if (query.county) {
             cumulativeWhoReceivedOneDose.andWhere('g.County IN (:...counties)', { counties: query.county });

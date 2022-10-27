@@ -16,10 +16,10 @@ export class GetCovidAdultPLHIVVaccinatedByGenderHandler implements IQueryHandle
 
     async execute(query: GetCovidAdultPlhivVaccinatedByGenderQuery): Promise<any> {
         const adultPLHIVVaccinatedByGender = this.repository.createQueryBuilder('g')
-            .select(['g.VaccinationStatus, g.gender, Count (*) Num'])
+            .select(['f.VaccinationStatus, g.gender, Count (*) Num'])
             .leftJoin(FactTransCovidVaccines , 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('g.ageLV >= 15 AND g.ARTOutcome = \'V\'');
+            .where('g.ageLV >= 12 AND g.ARTOutcome = \'V\'');
 
         if (query.county) {
             adultPLHIVVaccinatedByGender.andWhere('g.County IN (:...counties)', { counties: query.county });
@@ -50,7 +50,7 @@ export class GetCovidAdultPLHIVVaccinatedByGenderHandler implements IQueryHandle
         }
 
         return await adultPLHIVVaccinatedByGender
-            .groupBy('g.gender,g.VaccinationStatus')
+            .groupBy('g.gender,f.VaccinationStatus')
             .getRawMany();
     }
 }

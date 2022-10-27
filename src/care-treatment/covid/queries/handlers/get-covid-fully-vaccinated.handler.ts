@@ -17,7 +17,7 @@ export class GetCovidFullyVaccinatedHandler implements IQueryHandler<GetCovidFul
         const covidFullyVaccinated = this.repository.createQueryBuilder('f')
             .select(['Count (f.PatientID) FullyVaccinated'])
             .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
-            .where('g.ageLV >= 15 AND g.ARTOutcome = \'V\' AND f.VaccinationStatus=\'Fully Vaccinated\' ');
+            .where('g.ageLV >= 12 AND g.ARTOutcome = \'V\' AND f.VaccinationStatus=\'Fully Vaccinated\' ');
 
         if (query.county) {
             covidFullyVaccinated.andWhere('g.County IN (:...counties)', { counties: query.county });
