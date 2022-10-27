@@ -46,7 +46,10 @@ export class GetCovidAdultPLHIVVaccinatedByAgeHandler implements IQueryHandler<G
         }
 
         if (query.datimAgeGroup) {
-            adultPLHIVVaccinatedByAge.andWhere('g.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            adultPLHIVVaccinatedByAge.andWhere(
+                'AgeGroup IN (:...ageGroups)',
+                { ageGroups: query.datimAgeGroup },
+            );
         }
 
         return await adultPLHIVVaccinatedByAge
