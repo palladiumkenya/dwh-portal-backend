@@ -295,6 +295,7 @@ import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexHandler } from './otz/queries
 import { GetOtzNotEnrolledByPartnerHandler } from './otz/queries/handlers/get-otz-not-enrolled-by-partner.handler';
 import { GetOtzNotEnrolledByCountyHandler } from './otz/queries/handlers/get-otz-not-enrolled-by-county.handler';
 import { GetAlhivWithReSuppressionHandler } from './otz/queries/handlers/get-alhiv-with-re-suppression.handler';
+import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-age.handler';
 
 
 @Module({
@@ -494,6 +495,7 @@ import { GetAlhivWithReSuppressionHandler } from './otz/queries/handlers/get-alh
         GetOtzTotalWithVlLessThan1000Handler,
         GetOtzEnrollmentTrentHandler,
         GetAlhivWithReSuppressionHandler,
+        GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeHandler,
         GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexHandler,
         GetOtzNotEnrolledByPartnerHandler,
         GetOtzNotEnrolledByCountyHandler,
