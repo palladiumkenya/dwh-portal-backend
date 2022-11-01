@@ -14,7 +14,7 @@ export class GetOtzOutcomesByPartnerHandler implements IQueryHandler<GetOtzOutco
 
     async execute(query: GetOtzOutcomesByPartnerQuery): Promise<any> {
         const otzOutcomesByPartner = this.repository.createQueryBuilder('f')
-            .select(['[CTPartner] partner, CASE WHEN [Outcome] IS NULL THEN \'Active\' ELSE [Outcome] END AS Outcome, SUM([Total_OutCome]) outcomesByPartner'])
+            .select(['[CTPartner] partner, CASE WHEN [Outcome] IS NULL THEN \'Active\' WHEN [Outcome] = \'Dead\' THEN \'Died\'  ELSE [Outcome] END AS Outcome, SUM([Total_OutCome]) outcomesByPartner'])
             .andWhere('f.MFLCode IS NOT NULL');
 
         if (query.county) {
@@ -46,7 +46,7 @@ export class GetOtzOutcomesByPartnerHandler implements IQueryHandler<GetOtzOutco
         }
 
         return await otzOutcomesByPartner
-            .groupBy('[CTPartner], [Outcome]')
+            .groupBy(`[CTPartner], CASE WHEN [Outcome] IS NULL THEN 'Active' WHEN [Outcome] = 'Dead' THEN 'Died' ELSE [Outcome] END`)
             .getRawMany();
     }
 }
