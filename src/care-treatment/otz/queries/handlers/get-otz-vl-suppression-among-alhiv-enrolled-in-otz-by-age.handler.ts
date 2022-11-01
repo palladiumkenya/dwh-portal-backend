@@ -13,9 +13,14 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeHandler implements I
     }
 
     async execute(query: GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeQuery): Promise<any> {
-        const vlSuppressionOtzByAge = this.repository.createQueryBuilder('f')
-            .select(['[DATIM_AgeGroup] ageGroup, Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression'])
-            .andWhere('f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL');
+        const vlSuppressionOtzByAge = this.repository
+            .createQueryBuilder('f')
+            .select([
+                '[DATIM_AgeGroup] ageGroup, Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
+            ])
+            .andWhere(
+                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL and OTZEnrollmentDate is not Null',
+            );
 
         if (query.county) {
             vlSuppressionOtzByAge.andWhere('f.County IN (:...counties)', { counties: query.county });

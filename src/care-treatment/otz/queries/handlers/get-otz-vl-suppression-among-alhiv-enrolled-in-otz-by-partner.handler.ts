@@ -13,9 +13,14 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler implemen
     }
 
     async execute(query: GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerQuery): Promise<any> {
-        const vlSuppressionOtzByPartner = this.repository.createQueryBuilder('f')
-            .select(['[CTPartner], Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression'])
-            .andWhere('f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL');
+        const vlSuppressionOtzByPartner = this.repository
+            .createQueryBuilder('f')
+            .select([
+                '[CTPartner], Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
+            ])
+            .andWhere(
+                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL  AND OTZEnrollmentDate IS NOT NULL',
+            );
 
         if (query.county) {
             vlSuppressionOtzByPartner.andWhere('f.County IN (:...counties)', { counties: query.county });
