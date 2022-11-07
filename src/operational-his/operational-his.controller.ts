@@ -12,6 +12,11 @@ import { GetTxNewBySexQuery } from './khis/queries/impl/get-tx-new-by-sex.query'
 import {GetTxNewBySexDwhQuery} from "./khis/queries/impl/get-tx-new-by-sex-dwh.query";
 import {GetTxCurrBySexDwhQuery} from "./khis/queries/impl/get-tx-curr-by-sex-dwh.query";
 import { GetCtTxCurrAgeGroupDistributionByCountyQuery } from './khis/queries/impl/get-ct-tx-curr-age-group-distribution-by-county.query';
+import { GetClosedTicketsQuery } from './help-desk/queries/impl/get-closed-tickets.query';
+import { GetOpenIssuesByTypeQuery } from './help-desk/queries/impl/get-open-issues-by-type.query';
+import { GetCreatedTicketsQuery } from './help-desk/queries/impl/get-created-tickets.query';
+import { GetTicketsByCategoryQuery } from './help-desk/queries/impl/get-tickets-by-category.query';
+import { GetOpenTicketsQuery } from './help-desk/queries/impl/get-open-tickets.query';
 
 @Controller('operational-his')
 export class OperationalHisController {
@@ -646,4 +651,238 @@ export class OperationalHisController {
         return this.queryBus.execute(query);
     }
 
+    @Get('getClosedTickets')
+    async getClosedTickets(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+    ): Promise<any> {
+        const query = new GetClosedTicketsQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getOpenIssuesByType')
+    async getOpenIssuesByType(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+    ): Promise<any> {
+        const query = new GetOpenIssuesByTypeQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getCreatedTickets')
+    async getCreatedTickets(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+    ): Promise<any> {
+        const query = new GetCreatedTicketsQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getTicketsByCategory')
+    async getTicketsByCategory(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+    ): Promise<any> {
+        const query = new GetTicketsByCategoryQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getOpenTickets')
+    async getOpenTickets(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+    ): Promise<any> {
+        const query = new GetOpenTicketsQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        return this.queryBus.execute(query);
+    }
 }

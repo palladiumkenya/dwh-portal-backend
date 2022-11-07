@@ -23,6 +23,11 @@ import {FactTransNewlyStarted} from "../care-treatment/new-on-art/entities/fact-
 import {GetTxNewBySexDwhHandler} from "./khis/queries/handlers/get-tx-new-by-sex-dwh.handler";
 import {GetTxCurrBySexDwhHandler} from "./khis/queries/handlers/get-tx-curr-by-sex-dwh.handler";
 import { GetCtTxCurrAgeGroupDistributionByCountyHandler } from './khis/queries/handlers/get-ct-tx-curr-age-group-distribution-by-county.handler';
+import { GetClosedTicketsHandler } from './help-desk/queries/handlers/get-closed-tickets.handler';
+import { GetOpenIssuesByTypeHandler } from './help-desk/queries/handlers/get-open-issues-by-type.handler';
+import { GetCreatedTicketsHandler } from './help-desk/queries/handlers/get-created-tickets.handler';
+import { GetTicketsByCategoryHandler } from './help-desk/queries/handlers/get-tickets-by-category.handler';
+import { GetOpenTicketsHandler } from './help-desk/queries/handlers/get-open-tickets.handler';
 
 @Module({
     imports: [
@@ -50,6 +55,11 @@ import { GetCtTxCurrAgeGroupDistributionByCountyHandler } from './khis/queries/h
         GetTxNewBySexDwhHandler,
         GetTxCurrBySexDwhHandler,
         GetCtTxCurrAgeGroupDistributionByCountyHandler,
+        GetClosedTicketsHandler,
+        GetOpenIssuesByTypeHandler,
+        GetCreatedTicketsHandler,
+        GetTicketsByCategoryHandler,
+        GetOpenTicketsHandler,
     ],
     controllers: [OperationalHisController],
 })
