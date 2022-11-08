@@ -1,38 +1,26 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetOpenIssuesByTypeQuery } from '../impl/get-open-issues-by-type.query';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { GetTicketsBySDPQuery } from '../impl/get-tickets-by-sdp.query';
 import * as fs from 'fs';
 import * as _ from 'lodash';
 
-@QueryHandler(GetOpenIssuesByTypeQuery)
-export class GetOpenIssuesByTypeHandler
-    implements IQueryHandler<GetOpenIssuesByTypeQuery> {
+@QueryHandler(GetTicketsBySDPQuery)
+export class GetTicketsBySDPHandler
+    implements IQueryHandler<GetTicketsBySDPQuery> {
     constructor() {}
 
-    async execute(query: GetOpenIssuesByTypeQuery): Promise<any> {
+    async execute(query: GetTicketsBySDPQuery): Promise<any> {
         try {
             let data = fs.readFileSync('ticket_export.json', 'utf8');
 
-            var result = _.chain(
-                JSON.parse(data).tickets.filter(a => a.status === 'open'),
-            )
-                .groupBy('category')
-                .mapValues(ageArr =>
-                    _.groupBy(
-                        ageArr,
-                        ageObj => ageObj.CustomAttributes.issue_type,
-                    ),
-                )
+            var result = _.chain(JSON.parse(data).tickets)
+                .groupBy('CustomAttributes.service_delivery_patner')
+                .mapValues(ageArr => _.groupBy(ageArr, ageObj => ageObj.status))
                 .toPairs()
                 .map(currentItem => {
                     return {
-                        category: currentItem[0],
-                        support: currentItem[1]?.Support?.length ?? 0,
-                        enhancement: currentItem[1]?.Enhancement?.length ?? 0,
-                        bug: currentItem[1]?.Bug?.length ?? 0,
-                        training: currentItem[1]?.Training?.length ?? 0,
-                        unclassified: currentItem[1]?.undefined?.length ?? 0,
+                        sdp: currentItem[0],
+                        closed: currentItem[1]?.closed?.length ?? 0,
+                        open: currentItem[1]?.open?.length ?? 0,
                     };
                 })
                 .value();

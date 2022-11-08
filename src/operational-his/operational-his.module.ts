@@ -28,6 +28,8 @@ import { GetOpenIssuesByTypeHandler } from './help-desk/queries/handlers/get-ope
 import { GetCreatedTicketsHandler } from './help-desk/queries/handlers/get-created-tickets.handler';
 import { GetTicketsByCategoryHandler } from './help-desk/queries/handlers/get-tickets-by-category.handler';
 import { GetOpenTicketsHandler } from './help-desk/queries/handlers/get-open-tickets.handler';
+import { GetTicketsBySDPHandler } from './help-desk/queries/handlers/get-tickets-by-sdp.handler';
+import { GetOpenIssuesByTypeAndSDPHandler } from './help-desk/queries/handlers/get-open-issues-by-type-and-sdp.handler';
 
 @Module({
     imports: [
@@ -60,6 +62,8 @@ import { GetOpenTicketsHandler } from './help-desk/queries/handlers/get-open-tic
         GetCreatedTicketsHandler,
         GetTicketsByCategoryHandler,
         GetOpenTicketsHandler,
+        GetTicketsBySDPHandler,
+        GetOpenIssuesByTypeAndSDPHandler,
     ],
     controllers: [OperationalHisController],
 })

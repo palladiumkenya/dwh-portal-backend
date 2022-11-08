@@ -1,23 +1,21 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetOpenIssuesByTypeQuery } from '../impl/get-open-issues-by-type.query';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import * as fs from 'fs';
 import * as _ from 'lodash';
+import { GetOpenIssuesByTypeAndSDPQuery } from './../impl/get-open-issues-by-type-and-sdp.query';
 
-@QueryHandler(GetOpenIssuesByTypeQuery)
-export class GetOpenIssuesByTypeHandler
-    implements IQueryHandler<GetOpenIssuesByTypeQuery> {
+@QueryHandler(GetOpenIssuesByTypeAndSDPQuery)
+export class GetOpenIssuesByTypeAndSDPHandler
+    implements IQueryHandler<GetOpenIssuesByTypeAndSDPQuery> {
     constructor() {}
 
-    async execute(query: GetOpenIssuesByTypeQuery): Promise<any> {
+    async execute(query: GetOpenIssuesByTypeAndSDPQuery): Promise<any> {
         try {
             let data = fs.readFileSync('ticket_export.json', 'utf8');
 
             var result = _.chain(
                 JSON.parse(data).tickets.filter(a => a.status === 'open'),
             )
-                .groupBy('category')
+                .groupBy('CustomAttributes.service_delivery_patner')
                 .mapValues(ageArr =>
                     _.groupBy(
                         ageArr,
@@ -27,7 +25,7 @@ export class GetOpenIssuesByTypeHandler
                 .toPairs()
                 .map(currentItem => {
                     return {
-                        category: currentItem[0],
+                        sdp: currentItem[0],
                         support: currentItem[1]?.Support?.length ?? 0,
                         enhancement: currentItem[1]?.Enhancement?.length ?? 0,
                         bug: currentItem[1]?.Bug?.length ?? 0,
