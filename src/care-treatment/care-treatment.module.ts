@@ -299,11 +299,13 @@ import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeHandler } from './otz
 import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-sex.handler';
 import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-partner.handler';
 import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-county.handler';
+import { GetCtTxCurrVerifiedByFacilityHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-verified-by-facility.handler';
+import { GetCtTxCurrByFacilityHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-by-facility.handler';
 
 
 @Module({
     imports: [
-    CqrsModule,
+        CqrsModule,
         ConfigurationModule,
         TypeOrmModule.forFeature(
             [
@@ -343,10 +345,10 @@ import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler } from './
                 FactTransCohortRetention,
                 FactTransCovidVaccines,
                 DimAgeGroups,
-                FactNUPI
+                FactNUPI,
             ],
-            'mssql'
-        )
+            'mssql',
+        ),
     ],
     providers: [
         GetCtCountyHandler,
@@ -582,7 +584,10 @@ import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler } from './
         GetCtTxCurrVerifiedByCountyHandler,
         GetCtTxCurrVerifiedByPartnerHandler,
         GetCtTxCurrVerifiedBySexHandler,
+        GetCtTxCurrVerifiedByFacilityHandler,
+        GetCtTxCurrByFacilityHandler,
+
     ],
-    controllers: [CareTreatmentController]
+    controllers: [CareTreatmentController],
 })
 export class CareTreatmentModule {}
