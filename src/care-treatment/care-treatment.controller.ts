@@ -258,6 +258,7 @@ import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyQuery } from './ot
 import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerQuery } from './otz/queries/impl/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-partner.query';
 import { GetCtTxCurrVerifiedByFacilityQuery } from './current-on-art/queries/impl/get-ct-tx-curr-verified-by-facility.query';
 import { GetCtTxCurrByFacilityQuery } from './current-on-art/queries/impl/get-ct-tx-curr-by-facility.query';
+import { GetNupiDatasetQuery } from './current-on-art/queries/impl/get-nupi-dataset.query';
 
     
 @Controller('care-treatment')
@@ -1131,6 +1132,63 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCtTxCurrVerifiedByFacilityQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('nupiDataset')
+    async getNupiDateset(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetNupiDatasetQuery();
         if (county) {
             query.county = county;
         }

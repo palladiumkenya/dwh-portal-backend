@@ -301,6 +301,7 @@ import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerHandler } from '.
 import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-county.handler';
 import { GetCtTxCurrVerifiedByFacilityHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-verified-by-facility.handler';
 import { GetCtTxCurrByFacilityHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-by-facility.handler';
+import { GetNupiDatasetHandler } from './current-on-art/queries/handlers/get-nupi-dataset.handler';
 
 
 @Module({
@@ -586,6 +587,7 @@ import { GetCtTxCurrByFacilityHandler } from './current-on-art/queries/handlers/
         GetCtTxCurrVerifiedBySexHandler,
         GetCtTxCurrVerifiedByFacilityHandler,
         GetCtTxCurrByFacilityHandler,
+        GetNupiDatasetHandler,
 
     ],
     controllers: [CareTreatmentController],
