@@ -203,7 +203,6 @@ export class GetNupiDatasetHandler
                     County,
                     LatestDateUploaded,
                     khis_reporting_month as 'KHIS TXCurr Latest Reporting Month',
-                    LatestDateUploaded,
                     sum(With_ccc_MoH + missing_ccc_from_MoH) as '# Total Verified Central Registry',
                     sum(missing_ccc_from_MoH) As '# without CCC No. Central Registry',
                     sum(With_ccc_MoH) As '# with CCC No. Central Registry',
