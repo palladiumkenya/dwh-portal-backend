@@ -15,7 +15,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByPartnerHandler implements IQu
     async execute(query: GetCovidAdultPlhivCurrentOnTreatmentByPartnerQuery): Promise<any> {
         const covidAdultsCurrentOnTreatmentByPartner = this.repository.createQueryBuilder('f')
             .select(['Count (*) Adults, CTPartner'])
-            .where('f.ageLV >= 18 AND f.ARTOutcome=\'V\'');
+            .where('f.ageLV >= 12 AND f.ARTOutcome=\'V\'');
 
         if (query.county) {
             covidAdultsCurrentOnTreatmentByPartner.andWhere('f.County IN (:...counties)', { counties: query.county });

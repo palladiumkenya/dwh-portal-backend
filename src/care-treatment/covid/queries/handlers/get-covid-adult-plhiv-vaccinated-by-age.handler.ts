@@ -19,7 +19,7 @@ export class GetCovidAdultPLHIVVaccinatedByAgeHandler implements IQueryHandler<G
             .select(['f.VaccinationStatus, AgeGroup, Count (*) Num'])
             .leftJoin(FactTransCovidVaccines, 'g', 'f.PatientID = g.PatientID and g.SiteCode=f.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'f.ageLV = v.Age')
-            .where('ageLV >= 15 AND ARTOutcome = \'V\'');
+            .where('ageLV >= 12 AND ARTOutcome = \'V\'');
 
         if (query.county) {
             adultPLHIVVaccinatedByAge.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -46,7 +46,10 @@ export class GetCovidAdultPLHIVVaccinatedByAgeHandler implements IQueryHandler<G
         }
 
         if (query.datimAgeGroup) {
-            adultPLHIVVaccinatedByAge.andWhere('g.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            adultPLHIVVaccinatedByAge.andWhere(
+                'AgeGroup IN (:...ageGroups)',
+                { ageGroups: query.datimAgeGroup },
+            );
         }
 
         return await adultPLHIVVaccinatedByAge

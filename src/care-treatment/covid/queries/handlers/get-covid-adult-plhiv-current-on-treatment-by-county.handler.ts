@@ -15,7 +15,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler implements IQue
     async execute(query: GetCovidAdultPlhivCurrentOnTreatmentByCountyQuery): Promise<any> {
         const covidAdultsCurrentOnTreatmentByCounty = this.repository.createQueryBuilder('f')
             .select(['Count (*) Adults, County'])
-            .where('f.ageLV >= 18 AND f.ARTOutcome=\'V\'');
+            .where('f.ageLV >= 12 AND f.ARTOutcome=\'V\'');
 
         if (query.county) {
             covidAdultsCurrentOnTreatmentByCounty.andWhere('f.County IN (:...counties)', { counties: query.county });

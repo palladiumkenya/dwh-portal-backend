@@ -17,7 +17,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByAgeGroupHandler implements IQ
         const covidAdultsCurrentOnTreatmentByAgeGroup = this.repository.createQueryBuilder('f')
             .select(['Count (*) Adults, AgeGroup'])
             .innerJoin(DimAgeGroups, 'v', 'f.ageLV = v.Age')
-            .where('f.ageLV >= 18 AND f.ARTOutcome=\'V\'');
+            .where('f.ageLV >= 12 AND f.ARTOutcome=\'V\'');
 
         if (query.county) {
             covidAdultsCurrentOnTreatmentByAgeGroup.andWhere('f.County IN (:...counties)', { counties: query.county });

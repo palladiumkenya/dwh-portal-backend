@@ -19,7 +19,7 @@ export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandl
             .select(['g.VaccinationStatus, g.CTPartner, Count (*) Num'])
             .leftJoin(FactTransCovidVaccines, 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
             .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('g.ageLV >= 15 AND g.ARTOutcome = \'V\'');
+            .where('g.ageLV >= 12 AND g.ARTOutcome = \'V\'');
 
         if (query.county) {
             adultPLHIVVaccinatedByPartner.andWhere('g.County IN (:...counties)', { counties: query.county });
