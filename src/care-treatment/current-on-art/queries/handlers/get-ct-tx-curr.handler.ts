@@ -1,39 +1,24 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GetCtTxCurrVerifiedQuery } from '../impl/get-ct-tx-curr-verified.query';
-import { FactNUPI } from '../../entities/fact-nupi.model';
+import { GetCtTxCurrQuery } from '../impl/get-ct-tx-curr.query';
+import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
+import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 
-@QueryHandler(GetCtTxCurrVerifiedQuery)
-export class GetCtTxCurrVerifiedHandler
-    implements IQueryHandler<GetCtTxCurrVerifiedQuery> {
+@QueryHandler(GetCtTxCurrQuery)
+export class GetCtTxCurrHandler implements IQueryHandler<GetCtTxCurrQuery> {
     constructor(
-        @InjectRepository(FactNUPI, 'mssql')
-        private readonly repository: Repository<FactNUPI>,
+        @InjectRepository(FactTransNewCohort, 'mssql')
+        private readonly repository: Repository<FactTransNewCohort>,
     ) {}
 
-    async execute(query: GetCtTxCurrVerifiedQuery): Promise<any> {
-        let txCurr = this.repository
+    async execute(query: GetCtTxCurrQuery): Promise<any> {
+        const txCurr = this.repository
             .createQueryBuilder('f')
-            .select(['sum (NumNUPI) NumNupi'])
-            .where('f.[Gender] IS NOT NULL');
-
-        if (query.datimAgePopulations) {
-            if (
-                query.datimAgePopulations.includes('>18') &&
-                query.datimAgePopulations.includes('<18')
-            ) {
-            } else if (query.datimAgePopulations.includes('>18'))
-                txCurr = this.repository
-                    .createQueryBuilder('f')
-                    .select(['sum (Adults) NumNupi'])
-                    .where('f.[Gender] IS NOT NULL');
-            else if (query.datimAgePopulations.includes('<18'))
-                txCurr = this.repository
-                    .createQueryBuilder('f')
-                    .select(['sum (Children) NumNupi'])
-                    .where('f.[Gender] IS NOT NULL');
-        }
+            .select(['Count(*) TXCURR'])
+            .where(
+                "f.[Gender] IS NOT NULL and ARTOutcome ='V' AND ageLV BETWEEN 0 and 120",
+            );
 
         if (query.county) {
             txCurr.andWhere('f.County IN (:...counties)', {
@@ -69,6 +54,17 @@ export class GetCtTxCurrVerifiedHandler
             txCurr.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', {
                 ageGroups: query.datimAgeGroup,
             });
+        }
+
+        if (query.datimAgePopulations) {
+            if (
+                query.datimAgePopulations.includes('>18') &&
+                query.datimAgePopulations.includes('<18')
+            ) {
+            } else if (query.datimAgePopulations.includes('>18'))
+                txCurr.andWhere('f.ageLV >= 18');
+            else if (query.datimAgePopulations.includes('<18'))
+                txCurr.andWhere('f.ageLV < 18');
         }
 
         if (query.gender) {

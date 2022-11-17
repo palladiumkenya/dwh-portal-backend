@@ -8,5 +8,6 @@ export class GetCtTxCurrDistributionByCountyQuery {
     project?: string[];
     gender?: string[];
     datimAgeGroup?: string[];
+    datimAgePopulations?: string[];
     agency?: string[];
 }

@@ -1,4 +1,4 @@
-export class GetCtTxCurrVerifiedQuery {
+export class GetCtTxCurrQuery {
     county?: string[];
     subCounty?: string[];
     facility?: string[];

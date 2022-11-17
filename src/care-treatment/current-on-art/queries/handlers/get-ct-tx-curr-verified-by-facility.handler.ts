@@ -13,12 +13,33 @@ export class GetCtTxCurrVerifiedByFacilityHandler
     ) {}
 
     async execute(query: GetCtTxCurrVerifiedByFacilityQuery): Promise<any> {
-        const txCurrByPartner = this.repository
+        let txCurrByPartner = this.repository
             .createQueryBuilder('f')
             .select([
                 'FacilityName,CTPartner, County, Subcounty,CTAgency, MFLCode, sum (NumNUPI) NumNupi',
             ])
             .where('f.[Gender] IS NOT NULL');
+
+        if (query.datimAgePopulations) {
+            if (
+                query.datimAgePopulations.includes('>18') &&
+                query.datimAgePopulations.includes('<18')
+            ) {
+            } else if (query.datimAgePopulations.includes('>18'))
+                txCurrByPartner = this.repository
+                    .createQueryBuilder('f')
+                    .select([
+                        'FacilityName,CTPartner, County, Subcounty,CTAgency, MFLCode, sum (Adults) NumNupi',
+                    ])
+                    .where('f.[Gender] IS NOT NULL');
+            else if (query.datimAgePopulations.includes('<18'))
+                txCurrByPartner = this.repository
+                    .createQueryBuilder('f')
+                    .select([
+                        'FacilityName,CTPartner, County, Subcounty,CTAgency, MFLCode, sum (Children) NumNupi',
+                    ])
+                    .where('f.[Gender] IS NOT NULL');
+        }
 
         if (query.county) {
             txCurrByPartner.andWhere('f.County IN (:...counties)', {
