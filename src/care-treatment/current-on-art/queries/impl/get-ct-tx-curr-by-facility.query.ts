@@ -9,4 +9,5 @@ export class GetCtTxCurrByFacilityQuery {
     project?: string[];
     gender?: string[];
     datimAgeGroup?: string[];
+    datimAgePopulations?: string[];
 }

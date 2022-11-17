@@ -13,10 +13,29 @@ export class GetCtTxCurrVerifiedBySexHandler
     ) {}
 
     async execute(query: GetCtTxCurrVerifiedByAgeAndSexQuery): Promise<any> {
-        const txCurrBySex = this.repository
+        let txCurrBySex = this.repository
             .createQueryBuilder('f')
             .select(['Gender, DATIM_AgeGroup, sum (NumNUPI) NumNupi'])
-            .where('f.[Gender] IS NOT NULL');
+            .where('f.[Gender] IS NOT NULL and DATIM_AgeGroup is not NULL');
+
+        if (query.datimAgePopulations) {
+            if (
+                query.datimAgePopulations.includes('>18') &&
+                query.datimAgePopulations.includes('<18')
+            ) {
+            } else if (query.datimAgePopulations.includes('>18'))
+                txCurrBySex = this.repository
+                    .createQueryBuilder('f')
+                    .select(['Gender, DATIM_AgeGroup, sum (Adults) NumNupi'])
+                    .where('f.[Gender] IS NOT NULL and DATIM_AgeGroup is not NULL');
+            else if (query.datimAgePopulations.includes('<18'))
+                txCurrBySex = this.repository
+                    .createQueryBuilder('f')
+                    .select(['Gender, DATIM_AgeGroup, sum (Children) NumNupi'])
+                    .where(
+                        'f.[Gender] IS NOT NULL and DATIM_AgeGroup is not NULL',
+                    );
+        }
 
         if (query.county) {
             txCurrBySex.andWhere('f.County IN (:...counties)', {

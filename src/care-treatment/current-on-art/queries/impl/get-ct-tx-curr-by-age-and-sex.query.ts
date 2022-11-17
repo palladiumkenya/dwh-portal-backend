@@ -9,4 +9,5 @@ export class GetCtTxCurrByAgeAndSexQuery {
     project?: string[];
     gender?: string[];
     datimAgeGroup?: string[];
+    datimAgePopulations?: string[];
 }

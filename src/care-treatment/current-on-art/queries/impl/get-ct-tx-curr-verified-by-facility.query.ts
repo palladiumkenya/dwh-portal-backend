@@ -9,4 +9,5 @@ export class GetCtTxCurrVerifiedByFacilityQuery {
     project?: string[];
     gender?: string[];
     datimAgeGroup?: string[];
+    datimAgePopulations?: string[];
 }
