@@ -306,7 +306,6 @@ export class GetNupiDatasetHandler
                 sum (NUPIVerified) As '# MOH Central Registry Verified',
                 coalesce(round(cast(sum(NUPIVerified) as float) / cast(sum(TXCurr_khis) as float), 2), 0) as '% MOH Central Registry verified of KHIS TXCurr',
                 sum (nupi_NotVerified) As '# MOH UPI for non-art clients',
-                coalesce(round(cast(sum(nupi_NotVerified) as float) / cast(sum(TXCurr_khis) as float), 2), 0) as '% MOH UPI for non-art clients of KHIS TXCurr',
                 sum (count_patients_nupi_sent_to_dwh) As '# DWH verified & Matched',
                 round(cast(sum(count_patients_nupi_sent_to_dwh) as float) / cast(sum(TXCurr_khis) as float), 2) as '% DWH verified of KHIS TXCurr',
                 sum(count_children_patients_nupi_sent_to_dwh) As '# Children DWH verified & Matched',
