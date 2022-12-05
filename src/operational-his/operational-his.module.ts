@@ -30,11 +30,15 @@ import { GetTicketsByCategoryHandler } from './help-desk/queries/handlers/get-ti
 import { GetOpenTicketsHandler } from './help-desk/queries/handlers/get-open-tickets.handler';
 import { GetTicketsBySDPHandler } from './help-desk/queries/handlers/get-tickets-by-sdp.handler';
 import { GetOpenIssuesByTypeAndSDPHandler } from './help-desk/queries/handlers/get-open-issues-by-type-and-sdp.handler';
+import { GetDWHHTSPOSPositiveHandler } from './khis/queries/handlers/get-dwh-htspos.handler';
+import { FactHtsUptakeAgeGender } from 'src/hts/uptake/entities/fact-htsuptake-agegender.entity';
+import { GetKhisHTSPOSHandler } from './khis/queries/handlers/get-khis-htspos.handler';
 
 @Module({
     imports: [
         CqrsModule,
         ConfigurationModule,
+        TypeOrmModule.forFeature([FactHtsUptakeAgeGender]),
         TypeOrmModule.forFeature(
             [
                 FactTransHmisStatsTxcurr,
@@ -64,6 +68,8 @@ import { GetOpenIssuesByTypeAndSDPHandler } from './help-desk/queries/handlers/g
         GetOpenTicketsHandler,
         GetTicketsBySDPHandler,
         GetOpenIssuesByTypeAndSDPHandler,
+        GetDWHHTSPOSPositiveHandler,
+        GetKhisHTSPOSHandler,
     ],
     controllers: [OperationalHisController],
 })

@@ -19,6 +19,8 @@ import { GetTicketsByCategoryQuery } from './help-desk/queries/impl/get-tickets-
 import { GetOpenTicketsQuery } from './help-desk/queries/impl/get-open-tickets.query';
 import { GetTicketsBySDPQuery } from './help-desk/queries/impl/get-tickets-by-sdp.query';
 import { GetOpenIssuesByTypeAndSDPQuery } from './help-desk/queries/impl/get-open-issues-by-type-and-sdp.query';
+import { GetDWHHTSPOSPositiveQuery } from './khis/queries/impl/get-dwh-htspos-positive.query';
+import { GetKhisHTSPOSQuery } from './khis/queries/impl/get-khis-htspos.query';
 
 @Controller('operational-his')
 export class OperationalHisController {
@@ -610,6 +612,120 @@ export class OperationalHisController {
         @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetTxNewBySexDwhQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getDWHHTSPOSPositive')
+    async getDWHHTSPOSPositive(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetDWHHTSPOSPositiveQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getKHISHTSPOSPositive')
+    async getKHISHTSPOSPositive(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetKhisHTSPOSQuery();
         if (county) {
             query.county = county;
         }
