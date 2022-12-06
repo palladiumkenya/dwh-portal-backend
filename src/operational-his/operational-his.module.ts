@@ -33,6 +33,14 @@ import { GetOpenIssuesByTypeAndSDPHandler } from './help-desk/queries/handlers/g
 import { GetDWHHTSPOSPositiveHandler } from './khis/queries/handlers/get-dwh-htspos.handler';
 import { FactHtsUptakeAgeGender } from 'src/hts/uptake/entities/fact-htsuptake-agegender.entity';
 import { GetKhisHTSPOSHandler } from './khis/queries/handlers/get-khis-htspos.handler';
+import { GetKhisHTSPOSByCountyHandler } from './khis/queries/handlers/get-khis-htspos-by-county.handler';
+import { GetKhisHTSPOSByPartnerHandler } from './khis/queries/handlers/get-khis-htspos-by-partner.handler';
+import { GetKhisHTSPOSByFacilityHandler } from './khis/queries/handlers/get-khis-htspos-by-facility.handler';
+import { GetDWHHTSPOSByAgeHandler } from './khis/queries/handlers/get-dwh-htspos-by-age.handler';
+import { GetDWHHTSPOSByCountyHandler } from './khis/queries/handlers/get-dwh-htspos-by-county.handler';
+import { GetDWHHTSPOSByFacilityHandler } from './khis/queries/handlers/get-dwh-htspos-by-facility.handler';
+import { GetDWHHTSPOSByGenderHandler } from './khis/queries/handlers/get-dwh-htspos-by-gender.handler';
+import { GetDWHHTSPOSByPartnerHandler } from './khis/queries/handlers/get-dwh-htspos-by-partner.handler';
 
 @Module({
     imports: [
@@ -70,6 +78,14 @@ import { GetKhisHTSPOSHandler } from './khis/queries/handlers/get-khis-htspos.ha
         GetOpenIssuesByTypeAndSDPHandler,
         GetDWHHTSPOSPositiveHandler,
         GetKhisHTSPOSHandler,
+        GetKhisHTSPOSByCountyHandler,
+        GetKhisHTSPOSByPartnerHandler,
+        GetKhisHTSPOSByFacilityHandler,
+        GetDWHHTSPOSByAgeHandler,
+        GetDWHHTSPOSByCountyHandler,
+        GetDWHHTSPOSByFacilityHandler,
+        GetDWHHTSPOSByGenderHandler,
+        GetDWHHTSPOSByPartnerHandler,
     ],
     controllers: [OperationalHisController],
 })
