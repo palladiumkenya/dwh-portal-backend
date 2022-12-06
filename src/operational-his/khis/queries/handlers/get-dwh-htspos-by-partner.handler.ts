@@ -3,25 +3,21 @@ import { GetDWHHTSPOSPositiveQuery } from '../impl/get-dwh-htspos-positive.query
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FactHtsUptakeAgeGender } from '../../../../hts/uptake/entities/fact-htsuptake-agegender.entity';
+import { GetDWHHTSPOSByPartnerQuery } from './../impl/get-dwh-htspos-by-partner.query';
 
-@QueryHandler(GetDWHHTSPOSPositiveQuery)
-export class GetDWHHTSPOSPositiveHandler
-    implements IQueryHandler<GetDWHHTSPOSPositiveQuery> {
+@QueryHandler(GetDWHHTSPOSByPartnerQuery)
+export class GetDWHHTSPOSByPartnerHandler
+    implements IQueryHandler<GetDWHHTSPOSByPartnerQuery> {
     constructor(
         @InjectRepository(FactHtsUptakeAgeGender)
         private readonly repository: Repository<FactHtsUptakeAgeGender>,
     ) {}
 
-    async execute(query: GetDWHHTSPOSPositiveQuery): Promise<any> {
+    async execute(query: GetDWHHTSPOSByPartnerQuery): Promise<any> {
         const params = [];
-        let uptakeBySexSql =
-            'SELECT SUM(Tested) tested, ' +
-            'SUM(Positive) positive, ' +
-            'SUM( CASE WHEN DATIM_AgeGroup IN ( \'Under 5\', \'5 to 9\', \'10 to 14\' ) THEN Positive ELSE 0 END ) AS children, ' +
-            'SUM( CASE WHEN DATIM_AgeGroup IN ( \'10 to 14\', \'15 to 19\' ) THEN Positive ELSE 0 END ) AS adolescent, ' +
-            'SUM( CASE WHEN DATIM_AgeGroup IN ( \'15 to 19\', \'20 to 24\', \'25 to 29\', \'30 to 34\', \'35 to 39\', \'40 to 44\', \'45 to 49\', \'50 to 54\', \'55 to 59\', \'60 to 64\', \'65+\' ) THEN Positive ELSE 0  END ) AS adult,' +
-            '((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity ' +
-            'FROM fact_hts_agegender a WHERE Tested IS NOT NULL ';
+        let uptakeBySexSql = `SELECT 
+            CTPartner, SUM(Positive) positive
+            FROM fact_hts_agegender a WHERE Tested IS NOT NULL `;
 
         if (query.county) {
             uptakeBySexSql = `${uptakeBySexSql} and County IN (?)`;
@@ -55,7 +51,7 @@ export class GetDWHHTSPOSPositiveHandler
 
         if (query.datimAgeGroup) {
             uptakeBySexSql = `${uptakeBySexSql} and EXISTS (SELECT 1 FROM dimagegroups WHERE a.DATIM_AgeGroup = dimagegroups.DATIM_AgeGroup and MOH_AgeGroup IN (?))`;
-                params.push(query.datimAgeGroup);
+            params.push(query.datimAgeGroup);
         }
 
         // if (query.fromDate) {
@@ -68,7 +64,7 @@ export class GetDWHHTSPOSPositiveHandler
         //     params.push(query.toDate);
         // }
 
-        uptakeBySexSql = `${uptakeBySexSql}`;
+        uptakeBySexSql = `${uptakeBySexSql} GROUP BY CTPartner`;
         return await this.repository.query(uptakeBySexSql, params);
     }
 }
