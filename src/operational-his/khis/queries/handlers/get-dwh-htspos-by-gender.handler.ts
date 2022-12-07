@@ -15,6 +15,7 @@ export class GetDWHHTSPOSByGenderHandler
     async execute(query: GetDWHHTSPOSByGenderQuery): Promise<any> {
         const params = [];
         let uptakeBySexSql = `SELECT 
+            SUM(Tested) tested,
             Gender, SUM(Positive) positive
             FROM fact_hts_agegender a WHERE Tested IS NOT NULL `;
 

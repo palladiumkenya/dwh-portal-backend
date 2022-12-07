@@ -41,10 +41,14 @@ import { GetDWHHTSPOSByCountyHandler } from './khis/queries/handlers/get-dwh-hts
 import { GetDWHHTSPOSByFacilityHandler } from './khis/queries/handlers/get-dwh-htspos-by-facility.handler';
 import { GetDWHHTSPOSByGenderHandler } from './khis/queries/handlers/get-dwh-htspos-by-gender.handler';
 import { GetDWHHTSPOSByPartnerHandler } from './khis/queries/handlers/get-dwh-htspos-by-partner.handler';
+import { GetKhisHTSTESTByCountyHandler } from './khis/queries/handlers/get-khis-htstest-by-county.handler';
+import { GetKhisHTSTESTByPartnerHandler } from './khis/queries/handlers/get-khis-htstest-by-partner.handler';
+import { GetKhisHTSTESTByFacilityHandler } from './khis/queries/handlers/get-khis-htstest-by-facility.handler';
+import { GetKhisHTSTESTHandler } from './khis/queries/handlers/get-khis-htstest.handler';
 
 @Module({
     imports: [
-        CqrsModule,
+    CqrsModule,
         ConfigurationModule,
         TypeOrmModule.forFeature([FactHtsUptakeAgeGender]),
         TypeOrmModule.forFeature(
@@ -86,6 +90,10 @@ import { GetDWHHTSPOSByPartnerHandler } from './khis/queries/handlers/get-dwh-ht
         GetDWHHTSPOSByFacilityHandler,
         GetDWHHTSPOSByGenderHandler,
         GetDWHHTSPOSByPartnerHandler,
+        GetKhisHTSTESTByCountyHandler,
+        GetKhisHTSTESTByPartnerHandler,
+        GetKhisHTSTESTByFacilityHandler,
+        GetKhisHTSTESTHandler,
     ],
     controllers: [OperationalHisController],
 })
