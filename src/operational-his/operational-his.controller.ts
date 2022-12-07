@@ -29,6 +29,10 @@ import { GetDWHHTSPOSByCountyQuery } from './khis/queries/impl/get-dwh-htspos-by
 import { GetDWHHTSPOSByFacilityQuery } from './khis/queries/impl/get-dwh-htspos-by-facility.query';
 import { GetDWHHTSPOSByGenderQuery } from './khis/queries/impl/get-dwh-htspos-by-gender.query';
 import { GetDWHHTSPOSByPartnerQuery } from './khis/queries/impl/get-dwh-htspos-by-partner.query';
+import { GetKhisHTSTESTQuery } from './khis/queries/impl/get-khis-htstest.query';
+import { GetKhisHTSTESTByCountyQuery } from './khis/queries/impl/get-khis-htstest-by-county.query';
+import { GetKhisHTSTESTByPartnerQuery } from './khis/queries/impl/get-khis-htstest-by-partner.query';
+import { GetKhisHTSTESTByFacilityQuery } from './khis/queries/impl/get-khis-htstest-by-facility.query';
 
 @Controller('operational-his')
 export class OperationalHisController {
@@ -1190,6 +1194,234 @@ export class OperationalHisController {
         @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetKhisHTSPOSByFacilityQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getKHISHTSTEST')
+    async getKHISHTSTEST(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetKhisHTSTESTQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getKHISHTSTESTByCounty')
+    async getKHISHTSTESTByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetKhisHTSTESTByCountyQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getKHISHTSTESTByPartner')
+    async getKHISHTSTESTByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetKhisHTSTESTByPartnerQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getKHISHTSTESTByFacility')
+    async getKHISHTSTESTByFacility(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetKhisHTSTESTByFacilityQuery();
         if (county) {
             query.county = county;
         }

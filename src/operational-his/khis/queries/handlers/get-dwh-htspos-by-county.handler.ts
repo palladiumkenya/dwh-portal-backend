@@ -15,7 +15,7 @@ export class GetDWHHTSPOSByCountyHandler
     async execute(query: GetDWHHTSPOSByCountyQuery): Promise<any> {
         const params = [];
         let uptakeBySexSql = `SELECT 
-            County, SUM(Positive) positive
+            County, SUM(Positive) positive, SUM(Tested) tested
             FROM fact_hts_agegender a WHERE Tested IS NOT NULL `;
 
         if (query.county) {

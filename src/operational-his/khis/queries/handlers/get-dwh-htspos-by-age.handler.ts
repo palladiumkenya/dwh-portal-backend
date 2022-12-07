@@ -15,7 +15,7 @@ export class GetDWHHTSPOSByAgeHandler
     async execute(query: GetDWHHTSPOSByAgeQuery): Promise<any> {
         const params = [];
         let uptakeBySexSql = `SELECT 
-            DATIM_AgeGroup ageGroup, SUM(Positive) positive
+            DATIM_AgeGroup ageGroup, SUM(Positive) positive, SUM(Tested) tested
             FROM fact_hts_agegender a WHERE Tested IS NOT NULL `;
 
         if (query.county) {

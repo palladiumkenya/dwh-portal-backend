@@ -15,7 +15,7 @@ export class GetDWHHTSPOSByFacilityHandler
     async execute(query: GetDWHHTSPOSByFacilityQuery): Promise<any> {
         const params = [];
         let uptakeBySexSql = `SELECT
-            FacilityName, County, SubCounty, Mflcode, CTPartner, sum(Positive) positive
+            FacilityName, County, SubCounty, Mflcode, CTPartner, SUM(Tested) tested, sum(Positive) positive
             FROM fact_hts_agegender a WHERE Tested IS NOT NULL `;
 
         if (query.county) {

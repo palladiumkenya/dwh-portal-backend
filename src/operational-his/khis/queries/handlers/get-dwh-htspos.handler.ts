@@ -17,9 +17,12 @@ export class GetDWHHTSPOSPositiveHandler
         let uptakeBySexSql =
             'SELECT SUM(Tested) tested, ' +
             'SUM(Positive) positive, ' +
-            'SUM( CASE WHEN DATIM_AgeGroup IN ( \'Under 5\', \'5 to 9\', \'10 to 14\' ) THEN Positive ELSE 0 END ) AS children, ' +
-            'SUM( CASE WHEN DATIM_AgeGroup IN ( \'10 to 14\', \'15 to 19\' ) THEN Positive ELSE 0 END ) AS adolescent, ' +
-            'SUM( CASE WHEN DATIM_AgeGroup IN ( \'15 to 19\', \'20 to 24\', \'25 to 29\', \'30 to 34\', \'35 to 39\', \'40 to 44\', \'45 to 49\', \'50 to 54\', \'55 to 59\', \'60 to 64\', \'65+\' ) THEN Positive ELSE 0  END ) AS adult,' +
+            "SUM( CASE WHEN DATIM_AgeGroup IN ( 'Under 5', '5 to 9', '10 to 14' ) THEN Positive ELSE 0 END ) AS children, " +
+            "SUM( CASE WHEN DATIM_AgeGroup IN ( 'Under 5', '5 to 9', '10 to 14' ) THEN Tested ELSE 0 END ) AS childrenTested, " +
+            "SUM( CASE WHEN DATIM_AgeGroup IN ( '10 to 14', '15 to 19' ) THEN Positive ELSE 0 END ) AS adolescent, " +
+            "SUM( CASE WHEN DATIM_AgeGroup IN ( '10 to 14', '15 to 19' ) THEN Tested ELSE 0 END ) AS adolescentTested, " +
+            "SUM( CASE WHEN DATIM_AgeGroup IN ( '15 to 19', '20 to 24', '25 to 29', '30 to 34', '35 to 39', '40 to 44', '45 to 49', '50 to 54', '55 to 59', '60 to 64', '65+' ) THEN Positive ELSE 0  END ) AS adult," +
+            "SUM( CASE WHEN DATIM_AgeGroup IN ( '15 to 19', '20 to 24', '25 to 29', '30 to 34', '35 to 39', '40 to 44', '45 to 49', '50 to 54', '55 to 59', '60 to 64', '65+' ) THEN Tested ELSE 0  END ) AS adultTested," +
             '((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity ' +
             'FROM fact_hts_agegender a WHERE Tested IS NOT NULL ';
 

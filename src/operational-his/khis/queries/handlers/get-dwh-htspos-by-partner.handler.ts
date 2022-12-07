@@ -16,6 +16,7 @@ export class GetDWHHTSPOSByPartnerHandler
     async execute(query: GetDWHHTSPOSByPartnerQuery): Promise<any> {
         const params = [];
         let uptakeBySexSql = `SELECT 
+            SUM(Tested) tested,
             CTPartner, SUM(Positive) positive
             FROM fact_hts_agegender a WHERE Tested IS NOT NULL `;
 
