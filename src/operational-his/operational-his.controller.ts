@@ -33,6 +33,7 @@ import { GetKhisHTSTESTQuery } from './khis/queries/impl/get-khis-htstest.query'
 import { GetKhisHTSTESTByCountyQuery } from './khis/queries/impl/get-khis-htstest-by-county.query';
 import { GetKhisHTSTESTByPartnerQuery } from './khis/queries/impl/get-khis-htstest-by-partner.query';
 import { GetKhisHTSTESTByFacilityQuery } from './khis/queries/impl/get-khis-htstest-by-facility.query';
+import { GetDWHHTSTestTrendsQuery } from './khis/queries/impl/get-dwh-htstest-trends.query';
 
 @Controller('operational-his')
 export class OperationalHisController {
@@ -909,6 +910,63 @@ export class OperationalHisController {
         @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetDWHHTSPOSByFacilityQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getDWHHTSTestTrends')
+    async getDWHHTSTestTrends(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetDWHHTSTestTrendsQuery();
         if (county) {
             query.county = county;
         }

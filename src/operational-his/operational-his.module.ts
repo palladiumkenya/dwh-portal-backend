@@ -45,10 +45,11 @@ import { GetKhisHTSTESTByCountyHandler } from './khis/queries/handlers/get-khis-
 import { GetKhisHTSTESTByPartnerHandler } from './khis/queries/handlers/get-khis-htstest-by-partner.handler';
 import { GetKhisHTSTESTByFacilityHandler } from './khis/queries/handlers/get-khis-htstest-by-facility.handler';
 import { GetKhisHTSTESTHandler } from './khis/queries/handlers/get-khis-htstest.handler';
+import { GetDWHHTSTestTrendsHandler } from './khis/queries/handlers/get-dwh-htstest-trends.handler';
 
 @Module({
     imports: [
-    CqrsModule,
+        CqrsModule,
         ConfigurationModule,
         TypeOrmModule.forFeature([FactHtsUptakeAgeGender]),
         TypeOrmModule.forFeature(
@@ -94,6 +95,7 @@ import { GetKhisHTSTESTHandler } from './khis/queries/handlers/get-khis-htstest.
         GetKhisHTSTESTByPartnerHandler,
         GetKhisHTSTESTByFacilityHandler,
         GetKhisHTSTESTHandler,
+        GetDWHHTSTestTrendsHandler,
     ],
     controllers: [OperationalHisController],
 })
