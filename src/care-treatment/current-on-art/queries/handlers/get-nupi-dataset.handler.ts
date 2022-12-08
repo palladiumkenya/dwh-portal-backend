@@ -15,14 +15,35 @@ export class GetNupiDatasetHandler
     async execute(query: GetNupiDatasetQuery): Promise<any> {
         const params = [];
         const nupiDataset = 
-            `with facilities_list as (
+            `with get_latest_month as (
+                -- get ordered KHIS list for each facility
+                select 
+                    SiteCode,
+                    FacilityName,
+                    ReportMonth_Year,
+                    row_number() over (partition by SiteCode order by ReportMonth_Year desc) as rank
+                from PortalDev.dbo.FACT_CT_DHIS2_NUPI
+            ),
+            latest_facility_names as (
+            -- select the latest FacilityName from KHIS
+                select 
+                    distinct khis.SiteCode,
+                    get_latest_month.FacilityName,
+                    rank
+                from PortalDev.dbo.FACT_CT_DHIS2_NUPI as khis
+                inner join get_latest_month on khis.SiteCode = get_latest_month.SiteCode
+                where rank = 1
+            ),
+            facilities_list as (
+            -- get the latest SiteCode & Facilityname
                 select
                     distinct
-                    cast (SiteCode as nvarchar) As MFLCode ,
-                    FacilityName  AS FacilityName,
+                    cast (khis.SiteCode as nvarchar) As MFLCode ,
+                    latest_facility_names.FacilityName AS FacilityName,
                     County 
-                from PortalDev.dbo.FACT_CT_DHIS2_NUPI
-            where  (select max(cast(ReportMonth_Year as int)) from PortalDev.dbo.FACT_CT_DHIS2_NUPI)  - cast(ReportMonth_Year as int) <= 6  and CurrentOnART_Total is not null and SiteCode is not null
+                from PortalDev.dbo.FACT_CT_DHIS2_NUPI as khis
+                left join latest_facility_names on latest_facility_names.SiteCode = khis.SiteCode
+            where  (select max(cast(ReportMonth_Year as int)) from PortalDev.dbo.FACT_CT_DHIS2_NUPI)  - cast(khis.ReportMonth_Year as int) <= 6  and CurrentOnART_Total is not null and khis.SiteCode is not null
             ),
             --In NUPI dataset not in KHIS 
             InNupi_not_in_khis As (
@@ -30,12 +51,13 @@ export class GetNupiDatasetHandler
                 cast (origin_facility_kmfl_code as nvarchar) AS origin_facility_kmfl_code
             from tmp_and_adhoc.dbo.nupi_dataset
             Except
-            Select
-                Sitecode collate Latin1_General_CI_AS
+            Select 
+            Sitecode collate Latin1_General_CI_AS
             from All_Staging_2016_2.dbo.FACT_CT_DHIS2
             ),
+
             Nupi_not_khis_facility_list AS (
-            Select
+            Select 
                 cast (origin_facility_kmfl_code as nvarchar) As origin_facility_kmfl_code,
                 facility,
                 county
@@ -43,29 +65,34 @@ export class GetNupiDatasetHandler
             where origin_facility_kmfl_code in (Select origin_facility_kmfl_code from InNupi_not_in_khis)
             ),
             Fullfacility_list AS (
-            Select
-                cast (MFLCode collate Latin1_General_CI_AS As nvarchar) As MFLCode,
-                FacilityName  collate Latin1_General_CI_AS AS FacilityName,
+            -- union of list from KHIS & nupi dataset
+                Select 
+                    cast (MFLCode collate Latin1_General_CI_AS As nvarchar) As MFLCode,
+                    FacilityName  collate Latin1_General_CI_AS AS FacilityName,
                 County collate Latin1_General_CI_AS AS County
-            from facilities_list
-            Union
-            Select
-                cast (origin_facility_kmfl_code AS nvarchar) As MFLCode,
-                facility   collate Latin1_General_CI_AS As FacilityName ,
+                from facilities_list
+                Union
+                Select 
+                    cast (origin_facility_kmfl_code AS nvarchar) As MFLCode,
+                    facility   collate Latin1_General_CI_AS As FacilityName ,
                 county  collate Latin1_General_CI_AS AS County
-            from Nupi_not_khis_facility_list
+                from Nupi_not_khis_facility_list
             ),
             EnrichedFullfacilitylist As (
-            Select
-                Fullfacility_list.MFLCode,
-                Fullfacility_list.FacilityName,
-                Fullfacility_list.County,
-                coalesce (EMRs.SDP, Allsites.SDIP) As SDIP
-            from Fullfacility_list
-            left join HIS_Implementation.dbo.All_EMRSites  EMRs on EMRs.MFL_Code=Fullfacility_list.MFLCode
-            left  join HIS_Implementation.dbo.EMRandNonEMRSites Allsites on Allsites.MFLCode=EMRs.MFL_Code
+            -- get the full facilities list with enriched columns
+                Select 
+                    Fullfacility_list.MFLCode,
+                    Fullfacility_list.FacilityName,
+                    Fullfacility_list.County,
+                    Allsites.FacilityType,
+                    EMRs.EMR,
+                    coalesce(EMRs.SDP, Allsites.SDIP) As SDIP,
+                    coalesce(EMRs.[SDP Agency], Allsites.Agency) as Agency
+                from  HIS_Implementation.dbo.EMRandNonEMRSites as Allsites
+                left join HIS_Implementation.dbo.All_EMRSites  EMRs on EMRs.MFL_Code=Allsites.MFLCode
+                left  join Fullfacility_list on Fullfacility_list.MFLCode = Allsites.MFLCode
             ),
-            --Pick Only the EMR Sites--
+            --Pick Only the EMR Sites
             EMRSites as (
                 select
                     distinct
@@ -91,13 +118,13 @@ export class GetNupiDatasetHandler
             --
             khis as (
                 select distinct
-                    cast (khis.SiteCode as nvarchar) As SiteCode,
+            cast (khis.SiteCode as nvarchar) As SiteCode,
                     latest_reporting_month.reporting_month,
                     sum(CurrentOnART_Total) as TXCurr_khis
                 from PortalDev.dbo.FACT_CT_DHIS2_NUPI as khis
                 inner join latest_reporting_month on latest_reporting_month.SiteCode = khis.SiteCode
                     and khis.ReportMonth_Year = latest_reporting_month.reporting_month
-                where CurrentOnART_Total is not null
+            where CurrentOnART_Total is not null
                 group by
                     khis.SiteCode,
                     latest_reporting_month.reporting_month
@@ -111,13 +138,13 @@ export class GetNupiDatasetHandler
                 from tmp_and_adhoc.dbo.nupi_dataset as nupi_dataset
                 where ccc_no ='nan'
                 group by origin_facility_kmfl_code,
-                facility_type
+            facility_type
             ),
             --Count the number of complete  records  per site
             With_ccc_nos as (
                 select
                     cast (origin_facility_kmfl_code as nvarchar) As facility_code,
-                    facility_type,
+                    --facility_type,
                     count(*) as count_with_CCC_CR
                 from tmp_and_adhoc.dbo.nupi_dataset as nupi_dataset
                 where ccc_no <> 'nan'
@@ -141,8 +168,8 @@ export class GetNupiDatasetHandler
                 from tmp_and_adhoc.dbo.nupi_dataset as nupi_dataset
                 where  ccc_no is not null
                 group by origin_facility_kmfl_code
-                ),
-                nupi_NotVerified as (
+            ),
+            nupi_NotVerified as (
                 select
                     cast (origin_facility_kmfl_code as  nvarchar) As facility_code,
                     count(*) as nupi_NotVerified
@@ -156,16 +183,14 @@ export class GetNupiDatasetHandler
                 cast (MFLCode as nvarchar) As MFLCode,
                     count(*) as clients_with_nupi,
                     missing_ccc_nos.count_missing_ccc,
-                    With_ccc_nos.count_with_CCC_CR,
-                    coalesce (missing_ccc_nos.facility_type,With_ccc_nos.facility_type) As FacilityType
+                    With_ccc_nos.count_with_CCC_CR
                 from nupi
                 left join missing_ccc_nos on missing_ccc_nos.facility_code = nupi.MFLCode
                 left join With_ccc_nos on With_ccc_nos.facility_code=nupi.MFLCode
                 group by
                     MFLCode,
                     missing_ccc_nos.count_missing_ccc,
-                    With_ccc_nos.count_with_CCC_CR,
-                    coalesce (missing_ccc_nos.facility_type,With_ccc_nos.facility_type)
+                    With_ccc_nos.count_with_CCC_CR
             ),
             --Groupings of clients with Nupi in DWH per site---
             dwh_nupi_by_facility as (
@@ -231,75 +256,70 @@ export class GetNupiDatasetHandler
                     MFLcode
             ),
             FacilitySummary AS (
-            select distinct
-                EnrichedFullfacilitylist.MFLCode as MFLCode,
-                EnrichedFullfacilitylist.FacilityName as Facility,
-                EnrichedFullfacilitylist.SDIP,
-                EMRSites.EMR as EMR,
-                nupi_by_facility.FacilityType,
-                EnrichedFullfacilitylist.County,
-                EMRSites.[SDP Agency] as Agency,
-                khis.reporting_month as khis_reporting_month,
-                latest_upload.LatestDateUploaded as LatestDateUploaded,
-                sum(TXCurr_khis) as TXCurr_khis,
-                coalesce(sum(clients_with_nupi), 0) as clients_with_nupi_from_MoH,
-                coalesce(round(cast(sum(clients_with_nupi) as float) / cast(sum(TXCurr_khis) as float), 2), 0) as proportion_of_KHIS_with_nupi_no_from_MoH,
-                coalesce(nupi_by_facility.count_missing_ccc, 0) as missing_ccc_from_MoH,
-                coalesce (nupi_by_facility.count_with_CCC_CR,0) As With_ccc_MoH,
-                coalesce (nupi_overall.nupi_overall,0) AS NUPIVerified,
-                coalesce(round(sum(cast(nupi_overall.nupi_overall as float)) / cast(sum(TXCurr_khis) as float), 2), 0)  as proportion_of_KHIS_with_NUPIVerified_MOH,
-                coalesce (nupi_NotVerified.nupi_NotVerified,0) As nupi_NotVerified,
-                coalesce(round(sum(cast(nupi_NotVerified.nupi_NotVerified as float)) / cast(sum(TXCurr_khis) as float), 2), 0)  as proportion_of_KHIS_with_NUPINotVerified_MOH,
-                coalesce(dwh_nupi_by_facility.count_patients, 0) as count_patients_nupi_sent_to_dwh,
-                coalesce(round(sum(cast(dwh_nupi_by_facility.count_patients as float)) / cast(sum(TXCurr_khis) as float), 2), 0)  as proportion_of_KHIS_with_nupi_no_sent_to_dwh,
-                coalesce(dwh_nupi_by_facility_adults.count_patients, 0) as count_adults_patients_nupi_sent_to_dwh,
-                coalesce(dwh_nupi_by_facility_children.count_patients, 0) as count_children_patients_nupi_sent_to_dwh,
-                coalesce(round(cast(sum(dwh_nupi_by_facility_adults.count_patients) as float)/cast(sum(dwh_nupi_by_facility.count_patients) as float), 2), 0)  as proportion_of_adults_with_nupi_sent_to_dwh,
-                coalesce(round(cast(sum(dwh_nupi_by_facility_children.count_patients) as float)/cast(sum(dwh_nupi_by_facility.count_patients) as float),2), 0) as proportion_of_children_with_nupi_sent_to_dwh,
-                coalesce(PaedsTXCurr_DWH,0) As PaedsTXCurr_DWH,
-                coalesce (count_AdultsTXCurDWH,0) As AdultsTxCurr_DWH
-            from EnrichedFullfacilitylist
-            left join khis on cast (khis.SiteCode as nvarchar) = cast (EnrichedFullfacilitylist.MFLCode as nvarchar)
-            left join EMRSites on cast (EMRSites.MFLCode as nvarchar) =EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-            left join nupi_by_facility on nupi_by_facility.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-            left join dwh_nupi_by_facility on dwh_nupi_by_facility.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-            left join dwh_nupi_by_facility_adults on dwh_nupi_by_facility_adults.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-            left join dwh_nupi_by_facility_children on dwh_nupi_by_facility_children.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-            left join latest_upload on latest_upload.SiteCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-            left join Grouping_Paeds on Grouping_Paeds.MFLCode=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-            left join dwh_by_facility_adults on dwh_by_facility_adults.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-            left join nupi_overall on nupi_overall.facility_code=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-            left join nupi_NotVerified on nupi_NotVerified.facility_code=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-            group by
-                EnrichedFullfacilitylist.FacilityName,
-                EnrichedFullfacilitylist.MFLCode,
-                EnrichedFullfacilitylist.SDIP,
-                EMRSites.EMR,
-                nupi_by_facility.FacilityType,
-                EnrichedFullfacilitylist.County ,
-                EMRSites.[SDP Agency],
-                coalesce(nupi_by_facility.count_missing_ccc, 0),
-                coalesce(nupi_by_facility.count_with_CCC_CR, 0),
-                coalesce (nupi_overall,0),
-                coalesce (nupi_NotVerified,0),
-                dwh_nupi_by_facility.count_patients,
-                coalesce(dwh_nupi_by_facility_adults.count_patients, 0),
-                coalesce(dwh_nupi_by_facility_children.count_patients, 0),
-                khis.reporting_month,
-                latest_upload.LatestDateUploaded,
-                coalesce (PaedsTXCurr_DWH,0),
-                coalesce(count_AdultsTXCurDWH,0)
+                select distinct
+                    EnrichedFullfacilitylist.MFLCode as MFLCode,
+                    EnrichedFullfacilitylist.FacilityName as Facility,
+                    EnrichedFullfacilitylist.SDIP,
+                    EnrichedFullfacilitylist.EMR as EMR,
+                    EnrichedFullfacilitylist.FacilityType,
+                    EnrichedFullfacilitylist.County,
+                    EnrichedFullfacilitylist.Agency,
+                    khis.reporting_month as khis_reporting_month,
+                    latest_upload.LatestDateUploaded as LatestDateUploaded,
+                    sum(TXCurr_khis) as TXCurr_khis,
+                    coalesce (nupi_overall.nupi_overall,0) AS NUPIVerified,
+                    coalesce(round(sum(cast(nupi_overall.nupi_overall as float)) / cast(sum(TXCurr_khis) as float), 2), 0)  as proportion_of_KHIS_with_NUPIVerified_MOH,
+                    coalesce (nupi_NotVerified.nupi_NotVerified,0) As nupi_NotVerified,
+                    coalesce(round(sum(cast(nupi_NotVerified.nupi_NotVerified as float)) / cast(sum(TXCurr_khis) as float), 2), 0)  as proportion_of_KHIS_with_NUPINotVerified_MOH,
+                    coalesce(dwh_nupi_by_facility.count_patients, 0) as count_patients_nupi_sent_to_dwh,
+                    coalesce(round(sum(cast(dwh_nupi_by_facility.count_patients as float)) / cast(sum(TXCurr_khis) as float), 2), 0)  as proportion_of_KHIS_with_nupi_no_sent_to_dwh,
+                    coalesce(dwh_nupi_by_facility_adults.count_patients, 0) as count_adults_patients_nupi_sent_to_dwh,
+                    coalesce(dwh_nupi_by_facility_children.count_patients, 0) as count_children_patients_nupi_sent_to_dwh,
+                    coalesce(round(cast(sum(dwh_nupi_by_facility_adults.count_patients) as float)/cast(sum(dwh_nupi_by_facility.count_patients) as float), 2), 0)  as proportion_of_adults_with_nupi_sent_to_dwh,
+                    coalesce(round(cast(sum(dwh_nupi_by_facility_children.count_patients) as float)/cast(sum(dwh_nupi_by_facility.count_patients) as float),2), 0) as proportion_of_children_with_nupi_sent_to_dwh,
+                    coalesce(PaedsTXCurr_DWH,0) As PaedsTXCurr_DWH,
+                    coalesce (count_AdultsTXCurDWH,0) As AdultsTxCurr_DWH
+                from EnrichedFullfacilitylist
+                left join khis on cast (khis.SiteCode as nvarchar) = cast (EnrichedFullfacilitylist.MFLCode as nvarchar)
+                left join nupi_by_facility on nupi_by_facility.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                left join dwh_nupi_by_facility on dwh_nupi_by_facility.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                left join dwh_nupi_by_facility_adults on dwh_nupi_by_facility_adults.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                left join dwh_nupi_by_facility_children on dwh_nupi_by_facility_children.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                left join latest_upload on latest_upload.SiteCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                left join Grouping_Paeds on Grouping_Paeds.MFLCode=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                left join dwh_by_facility_adults on dwh_by_facility_adults.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                left join nupi_overall on nupi_overall.facility_code=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                left join nupi_NotVerified on nupi_NotVerified.facility_code=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                group by
+                    EnrichedFullfacilitylist.MFLCode,
+                    EnrichedFullfacilitylist.FacilityName,
+                    EnrichedFullfacilitylist.SDIP,
+                    EnrichedFullfacilitylist.EMR,
+                    EnrichedFullfacilitylist.FacilityType,
+                    EnrichedFullfacilitylist.County,
+                    EnrichedFullfacilitylist.Agency,
+                    --coalesce(nupi_by_facility.count_missing_ccc, 0),
+                    --coalesce(nupi_by_facility.count_with_CCC_CR, 0),
+                    coalesce (nupi_overall,0),
+                    coalesce (nupi_NotVerified,0),
+                    dwh_nupi_by_facility.count_patients,
+                    coalesce(dwh_nupi_by_facility_adults.count_patients, 0),
+                    coalesce(dwh_nupi_by_facility_children.count_patients, 0),
+                    khis.reporting_month,
+                    latest_upload.LatestDateUploaded,
+                    coalesce (PaedsTXCurr_DWH,0),
+                    coalesce(count_AdultsTXCurDWH,0)
             )
-            select
-                distinct
+            select 
+                distinct 
                 getdate() as DateQueried,
                 FacilitySummary.MFLCode,
                 Facility,
-                coalesce (FacilitySummary.SDIP,FullSites.SDIP) As SDIP,
-                coalesce (FacilitySummary.Agency,FullSites.Agency) As Agency,
+                FacilitySummary.SDIP,
+                FacilitySummary.Agency,
                 FacilitySummary.EMR,
-                coalesce (FullSites.FacilityType,FacilitySummary.FacilityType) As FacilityType,
-                UPPER (FacilitySummary.County) As County,
+                FacilitySummary.FacilityType,
+                upper (FacilitySummary.County) As County,
                 LatestDateUploaded,
                 khis_reporting_month as 'KHIS TXCurr Latest Reporting Month',
                 sum(TXCurr_khis) AS 'KHIS TXCurr',
@@ -315,15 +335,14 @@ export class GetNupiDatasetHandler
                 sum(AdultsTxCurr_DWH) As '# Adults TXCurr DWH' ,
                 coalesce(round (cast(sum(count_adults_patients_nupi_sent_to_dwh) as float) / nullif(cast(sum(AdultsTxCurr_DWH) as float),0),2),0) As '% Adults DWH verified of Adults TXCurr DWH'
             from FacilitySummary
-            left join HIS_Implementation.dbo.EMRandNonEMRSites FullSites on FullSites.MFLCode=FacilitySummary.MFLCode
             group by
-                Facility,
-                FacilitySummary.MFLCode,
-                coalesce (FacilitySummary.Agency,FullSites.Agency),
-                coalesce (FacilitySummary.SDIP,FullSites.SDIP),
+                FacilitySummary.Facility,
+                FacilitySummary.MFLCode, 
+                FacilitySummary.Agency,
+                FacilitySummary.SDIP,
                 FacilitySummary.EMR,
-                coalesce (FullSites.FacilityType,FacilitySummary.FacilityType),
-                FacilitySummary.County,
+                FacilitySummary.FacilityType,
+                FacilitySummary.County, 
                 FacilitySummary.Agency,
                 khis_reporting_month,
                 LatestDateUploaded;`;
