@@ -14,8 +14,8 @@ export class GetNupiDatasetHandler
 
     async execute(query: GetNupiDatasetQuery): Promise<any> {
         const params = [];
-        const nupiDataset = 
-        `with EnrichedFullfacilitylist As (
+        const nupiDataset = `
+            with EnrichedFullfacilitylist As (
             -- get the full facilities list with enriched columns
                 Select 
                     distinct cast(Allsites.MFLCode collate Latin1_General_CI_AS as nvarchar) as MFLCode,
@@ -280,7 +280,8 @@ export class GetNupiDatasetHandler
                 FacilitySummary.County, 
                 FacilitySummary.Agency,
                 khis_reporting_month,
-                LatestDateUploaded;`;
+                LatestDateUploaded;
+        `;
 
         if (query.county) {
             params.push(query.county)
