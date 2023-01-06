@@ -207,8 +207,6 @@ export class GetNupiDatasetHandler
                     EnrichedFullfacilitylist.FacilityType,
                     EnrichedFullfacilitylist.County,
                     EnrichedFullfacilitylist.Agency,
-                    --coalesce(nupi_by_facility.count_missing_ccc, 0),
-                    --coalesce(nupi_by_facility.count_with_CCC_CR, 0),
                     coalesce (nupi_overall,0),
                     coalesce (nupi_NotVerified,0),
                     dwh_nupi_by_facility.count_patients,
