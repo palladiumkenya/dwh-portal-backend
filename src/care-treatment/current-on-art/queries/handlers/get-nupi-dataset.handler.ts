@@ -65,27 +65,6 @@ export class GetNupiDatasetHandler
                     khis.SiteCode,
                     latest_reporting_month.reporting_month
             ),
-            --Count the number of records with missing CCC Numbers per site--
-            missing_ccc_nos as (
-                select
-                    cast (origin_facility_kmfl_code as nvarchar) As facility_code,
-                    facility_type,
-                    count(*) as count_missing_ccc
-                from tmp_and_adhoc.dbo.nupi_dataset as nupi_dataset
-                where ccc_no ='nan'
-                group by origin_facility_kmfl_code,
-            facility_type
-            ),
-            --Count the number of complete  records  per site
-            With_ccc_nos as (
-                select
-                    cast (origin_facility_kmfl_code as nvarchar) As facility_code,
-                    --facility_type,
-                    count(*) as count_with_CCC_CR
-                from tmp_and_adhoc.dbo.nupi_dataset as nupi_dataset
-                where ccc_no <> 'nan'
-                group by origin_facility_kmfl_code,facility_type
-            ),
             --Obtain the list of matching records between Central registry and DWH--
             nupi as (
             select
@@ -117,16 +96,10 @@ export class GetNupiDatasetHandler
             nupi_by_facility as (
             select
                 cast (MFLCode as nvarchar) As MFLCode,
-                    count(*) as clients_with_nupi,
-                    missing_ccc_nos.count_missing_ccc,
-                    With_ccc_nos.count_with_CCC_CR
+                    count(*) as clients_with_nupi
                 from nupi
-                left join missing_ccc_nos on missing_ccc_nos.facility_code = nupi.MFLCode
-                left join With_ccc_nos on With_ccc_nos.facility_code=nupi.MFLCode
                 group by
-                    MFLCode,
-                    missing_ccc_nos.count_missing_ccc,
-                    With_ccc_nos.count_with_CCC_CR
+                    MFLCode
             ),
             --Groupings of clients with Nupi in DWH per site---
             dwh_nupi_by_facility as (
@@ -234,8 +207,6 @@ export class GetNupiDatasetHandler
                     EnrichedFullfacilitylist.FacilityType,
                     EnrichedFullfacilitylist.County,
                     EnrichedFullfacilitylist.Agency,
-                    --coalesce(nupi_by_facility.count_missing_ccc, 0),
-                    --coalesce(nupi_by_facility.count_with_CCC_CR, 0),
                     coalesce (nupi_overall,0),
                     coalesce (nupi_NotVerified,0),
                     dwh_nupi_by_facility.count_patients,
