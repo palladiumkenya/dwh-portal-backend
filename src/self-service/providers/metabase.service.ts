@@ -7,10 +7,13 @@ export class MetabaseService {
     constructor(private readonly httpService: HttpService, private configService: ConfigService){}
 
     login(): Promise<AxiosResponse<any[]>> {
-        return this.httpService.post(`${this.configService.get<string>('METABASE_BASE_URL')}/api/session`,
-         {
-            username: this.configService.get<string>('METABASE_SHARED_USERNAME'),
-            password: this.configService.get<string>('METABASE_SHARED_PASSWORD'),
-         }).toPromise();
+        return this.httpService.post(`/api/session`,
+        // return this.httpService.post(`${this.configService.get<string>('METABASE_BASE_URL')}/api/session`,
+        {
+            // username: this.configService.get<string>('METABASE_SHARED_USERNAME'),
+            // password: this.configService.get<string>('METABASE_SHARED_PASSWORD'),
+            username: '',
+            password: '',
+        }).toPromise();
     }
 }
