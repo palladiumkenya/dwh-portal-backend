@@ -212,13 +212,13 @@ export class GetArtVerificationPendingSurveysByCountyHandler
                     coalesce (SurveysReceived,0)
             )
             select
-                FacilitySummary.SDIP,
+                FacilitySummary.County,
                 sum (TXCurr_khis)-sum (NUPIVerified) As 'Unverified',
                 sum (SurveysReceived) As SurveysReceived,
                 sum (TXCurr_khis)-sum (NUPIVerified)-sum (SurveysReceived) As Pendingsurveys
             from FacilitySummary
             group by
-                FacilitySummary.SDIP;
+                FacilitySummary.County;
         `;
 
         if (query.county) {
