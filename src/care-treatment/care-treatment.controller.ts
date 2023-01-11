@@ -261,7 +261,11 @@ import { GetCtTxCurrByFacilityQuery } from './current-on-art/queries/impl/get-ct
 import { GetNupiDatasetQuery } from './current-on-art/queries/impl/get-nupi-dataset.query';
 import { GetCtTxCurrQuery } from './current-on-art/queries/impl/get-ct-tx-curr.query';
 
-    
+import { GetArtVerificationPendingSurveysByPartnerQuery } from './art-verification/queries/impl/get-art-verification-pending-surveys-by-partner.query';
+import { GetArtVerificationPendingSurveysByCountyQuery } from './art-verification/queries/impl/get-art-verification-pending-surveys-by-county.query';
+import { GetArtVerificationReasonsQuery } from './art-verification/queries/impl/get-art-verification-reasons.query';
+
+
 @Controller('care-treatment')
 export class CareTreatmentController {
     constructor(private readonly queryBus: QueryBus) {}
@@ -13561,6 +13565,150 @@ export class CareTreatmentController {
 
         if (datimAgeGroup) {
             query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getArtVerificationByPartner')
+    async getArtVerificationByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetArtVerificationPendingSurveysByPartnerQuery();
+
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getArtVerificationByCounty')
+    async getArtVerificationByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetArtVerificationPendingSurveysByCountyQuery();
+
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getArtVerificationReasons')
+    async getArtVerificationReasons(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+    ): Promise<any> {
+        const query = new GetArtVerificationReasonsQuery();
+
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
         }
 
         return this.queryBus.execute(query);

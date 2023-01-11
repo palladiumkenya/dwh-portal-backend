@@ -304,6 +304,10 @@ import { GetCtTxCurrByFacilityHandler } from './current-on-art/queries/handlers/
 import { GetNupiDatasetHandler } from './current-on-art/queries/handlers/get-nupi-dataset.handler';
 import { GetCtTxCurrHandler } from './current-on-art/queries/handlers/get-ct-tx-curr.handler';
 
+import { GetArtVerificationPendingSurveysByPartnerHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-partner.handler';
+import { GetArtVerificationPendingSurveysByCountyHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-county.handler';
+import { GetArtVerificationReasonsHandler } from './art-verification/queries/handlers/get-art-verification-reasons.handler';
+
 
 @Module({
     imports: [
@@ -590,6 +594,10 @@ import { GetCtTxCurrHandler } from './current-on-art/queries/handlers/get-ct-tx-
         GetCtTxCurrByFacilityHandler,
         GetNupiDatasetHandler,
         GetCtTxCurrHandler,
+
+        GetArtVerificationPendingSurveysByPartnerHandler,
+        GetArtVerificationPendingSurveysByCountyHandler,
+        GetArtVerificationReasonsHandler
     ],
     controllers: [CareTreatmentController],
 })
