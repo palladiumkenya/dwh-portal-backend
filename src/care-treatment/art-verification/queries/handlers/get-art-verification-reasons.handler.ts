@@ -16,7 +16,7 @@ export class GetArtVerificationReasonsHandler
         let params = [];
         const nonReasons = `
             Select
-                count(*), non_verification_reason
+                count(*) NUM, non_verification_reason
                 FROM [pSurvey].[dbo].[stg_questionnaire_responses]
 				group by non_verification_reason
         `;
