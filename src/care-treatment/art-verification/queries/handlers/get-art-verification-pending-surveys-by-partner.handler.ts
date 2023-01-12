@@ -215,6 +215,8 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
                     coalesce (SurveysReceived,0)
             )
             select
+                sum (NUPIVerified) As NupiVerified,
+                sum(TXCurr_khis) As TxCurr,
                 FacilitySummary.SDIP,
                 sum (TXCurr_khis)-sum (NUPIVerified) As 'Unverified',
                 sum (SurveysReceived) As SurveysReceived,

@@ -215,6 +215,8 @@ export class GetArtVerificationPendingSurveysByCountyHandler
                     coalesce (SurveysReceived,0)
             )
             select
+                sum (NUPIVerified) As NupiVerified,
+                sum(TXCurr_khis) As TxCurr,
                 FacilitySummary.County,
                 sum (TXCurr_khis)-sum (NUPIVerified) As 'Unverified',
                 sum (SurveysReceived) As SurveysReceived,
