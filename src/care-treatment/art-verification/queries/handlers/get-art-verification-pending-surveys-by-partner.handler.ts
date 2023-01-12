@@ -222,8 +222,6 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
             from FacilitySummary
             where 
                 FacilitySummary.FacilityType = 'emr'
-            group by
-                FacilitySummary.SDIP;
         `;
 
         if (query.county) {
@@ -250,6 +248,10 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
             pendingByPartner = `${pendingByPartner} and Agency IN (?)`;
             params.push(query.agency);
         }
+
+        pendingByPartner = `${pendingByPartner} 
+            group by
+                FacilitySummary.SDIP`;
 
         return await this.repository.query(pendingByPartner, params);
     }

@@ -58,8 +58,6 @@ export class GetArtVerificationReasonsHandler
                 count(*), non_verification_reason
                 FROM FacilitySummary
                 where FacilitySummary.FacilityType = 'emr'
-                group by non_verification_reason
-                order by count(*);
         `;
 
         if (query.county) {
@@ -86,6 +84,10 @@ export class GetArtVerificationReasonsHandler
             nonReasons = `${nonReasons} and Agency IN (?)`;
             params.push(query.agency);
         }
+
+        nonReasons = `${nonReasons}
+                group by non_verification_reason
+                order by count(*);`
 
         return await this.repository.query(nonReasons, params);
     }
