@@ -55,7 +55,7 @@ export class GetArtVerificationReasonsHandler
                     EnrichedFullfacilitylist.Agency,
                     PSurveys.non_verification_reason
             ) Select
-                count(*), non_verification_reason
+                count(*) NUM, non_verification_reason
                 FROM FacilitySummary
                 where FacilitySummary.FacilityType = 'emr'
         `;
