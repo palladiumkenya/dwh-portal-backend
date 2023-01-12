@@ -61,28 +61,37 @@ export class GetArtVerificationReasonsHandler
         `;
 
         if (query.county) {
-            nonReasons = `${nonReasons} and County IN (:...counties)`,
-                { counties: query.county };
+            nonReasons = `${nonReasons} and County IN (${query.county
+                .join('')
+                .toString()})`;
             params.push(query.county);
         }
 
         if (query.subCounty) {
-            nonReasons = `${nonReasons} and SubCounty IN (?)`;
+            nonReasons = `${nonReasons} and SubCounty IN (${query.subCounty
+                .join('')
+                .toString()})`;
             params.push(query.subCounty);
         }
 
         if (query.facility) {
-            nonReasons = `${nonReasons} and FacilityName IN (?)`;
+            nonReasons = `${nonReasons} and FacilityName IN (${query.facility
+                .join('')
+                .toString()})`;
             params.push(query.facility);
         }
 
         if (query.partner) {
-            nonReasons = `${nonReasons} and SDIP IN (?)`;
+            nonReasons = `${nonReasons} and SDIP IN (${query.partner
+                .join('')
+                .toString()})`;
             params.push(query.partner);
         }
 
         if (query.agency) {
-            nonReasons = `${nonReasons} and Agency IN (?)`;
+            nonReasons = `${nonReasons} and Agency IN (${query.agency
+                .join('')
+                .toString()})`;
             params.push(query.agency);
         }
 

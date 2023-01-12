@@ -225,28 +225,37 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
         `;
 
         if (query.county) {
-            pendingByPartner = `${pendingByPartner} and County IN (:...counties)`,
-                { counties: query.county };
-            // params.push(query.county);
+            pendingByPartner = `${pendingByPartner} and County IN (${query.county
+                .join('')
+                .toString()})`;
+            params.push(query.county);
         }
 
         if (query.subCounty) {
-            pendingByPartner = `${pendingByPartner} and SubCounty IN (?)`;
+            pendingByPartner = `${pendingByPartner} and SubCounty IN (${query.subCounty
+                .join('')
+                .toString()})`;
             params.push(query.subCounty);
         }
 
         if (query.facility) {
-            pendingByPartner = `${pendingByPartner} and FacilityName IN (?)`;
+            pendingByPartner = `${pendingByPartner} and FacilityName IN (${query.facility
+                .join('')
+                .toString()})`;
             params.push(query.facility);
         }
 
         if (query.partner) {
-            pendingByPartner = `${pendingByPartner} and SDIP IN (?)`;
+            pendingByPartner = `${pendingByPartner} and SDIP IN (${query.partner
+                .join('')
+                .toString()})`;
             params.push(query.partner);
         }
 
         if (query.agency) {
-            pendingByPartner = `${pendingByPartner} and Agency IN (?)`;
+            pendingByPartner = `${pendingByPartner} and Agency IN (${query.agency
+                .join('')
+                .toString()})`;
             params.push(query.agency);
         }
 
