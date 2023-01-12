@@ -17,7 +17,7 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
         query: GetArtVerificationPendingSurveysByPartnerQuery,
     ): Promise<any> {
         let params = [];
-        const pendingByPartner = `
+        let pendingByPartner = `
             with EnrichedFullfacilitylist As (
             -- get the full facilities list with enriched columns
                 Select
@@ -26,6 +26,7 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
                     Allsites.County,
                     Allsites.FacilityType,
                     EMRs.EMR,
+                    EMRs.SubCounty,
                     coalesce(EMRs.SDP, Allsites.SDIP) As SDIP,
                     coalesce(EMRs.[SDP Agency], Allsites.Agency) as Agency
                 from  HIS_Implementation.dbo.EMRandNonEMRSites as Allsites
@@ -162,6 +163,7 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
                     EnrichedFullfacilitylist.FacilityName as Facility,
                     EnrichedFullfacilitylist.SDIP,
                     EnrichedFullfacilitylist.EMR as EMR,
+                    EnrichedFullfacilitylist.SubCounty,
                     EnrichedFullfacilitylist.FacilityType,
                     EnrichedFullfacilitylist.County,
                     EnrichedFullfacilitylist.Agency,
@@ -197,6 +199,7 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
                     EnrichedFullfacilitylist.FacilityName,
                     EnrichedFullfacilitylist.SDIP,
                     EnrichedFullfacilitylist.EMR,
+                    EnrichedFullfacilitylist.SubCounty,
                     EnrichedFullfacilitylist.FacilityType,
                     EnrichedFullfacilitylist.County,
                     EnrichedFullfacilitylist.Agency,
@@ -224,22 +227,27 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
         `;
 
         if (query.county) {
+            pendingByPartner = `${pendingByPartner} and County IN (?)`;
             params.push(query.county);
         }
 
         if (query.subCounty) {
+            pendingByPartner = `${pendingByPartner} and SubCounty IN (?)`;
             params.push(query.subCounty);
         }
 
         if (query.facility) {
+            pendingByPartner = `${pendingByPartner} and FacilityName IN (?)`;
             params.push(query.facility);
         }
 
         if (query.partner) {
+            pendingByPartner = `${pendingByPartner} and SDIP IN (?)`;
             params.push(query.partner);
         }
 
         if (query.agency) {
+            pendingByPartner = `${pendingByPartner} and Agency IN (?)`;
             params.push(query.agency);
         }
 

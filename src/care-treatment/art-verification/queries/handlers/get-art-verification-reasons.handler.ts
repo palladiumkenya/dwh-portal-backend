@@ -14,13 +14,14 @@ export class GetArtVerificationReasonsHandler
 
     async execute(query: GetArtVerificationReasonsQuery): Promise<any> {
         let params = [];
-        const nonReasons = `
+        let nonReasons = `
             with EnrichedFullfacilitylist As (
                 Select
                     distinct cast(Allsites.MFLCode collate Latin1_General_CI_AS as nvarchar) as MFLCode,
                     Allsites.FacilityName,
                     Allsites.County,
                     Allsites.FacilityType,
+                    EMRs.SubCounty,
                     EMRs.EMR,
                     coalesce(EMRs.SDP, Allsites.SDIP) As SDIP,
                     coalesce(EMRs.[SDP Agency], Allsites.Agency) as Agency
@@ -36,6 +37,7 @@ export class GetArtVerificationReasonsHandler
                     EnrichedFullfacilitylist.FacilityName as Facility,
                     EnrichedFullfacilitylist.SDIP,
                     EnrichedFullfacilitylist.EMR as EMR,
+                    EnrichedFullfacilitylist.SubCounty,
                     EnrichedFullfacilitylist.FacilityType,
                     EnrichedFullfacilitylist.County,
                     EnrichedFullfacilitylist.Agency,
@@ -47,6 +49,7 @@ export class GetArtVerificationReasonsHandler
                     EnrichedFullfacilitylist.FacilityName,
                     EnrichedFullfacilitylist.SDIP,
                     EnrichedFullfacilitylist.EMR,
+                    EnrichedFullfacilitylist.SubCounty,
                     EnrichedFullfacilitylist.FacilityType,
                     EnrichedFullfacilitylist.County,
                     EnrichedFullfacilitylist.Agency,
@@ -60,22 +63,27 @@ export class GetArtVerificationReasonsHandler
         `;
 
         if (query.county) {
+            nonReasons = `${nonReasons} and County IN (?)`;
             params.push(query.county);
         }
 
         if (query.subCounty) {
+            nonReasons = `${nonReasons} and SubCounty IN (?)`;
             params.push(query.subCounty);
         }
 
         if (query.facility) {
+            nonReasons = `${nonReasons} and FacilityName IN (?)`;
             params.push(query.facility);
         }
 
         if (query.partner) {
+            nonReasons = `${nonReasons} and SDIP IN (?)`;
             params.push(query.partner);
         }
 
         if (query.agency) {
+            nonReasons = `${nonReasons} and Agency IN (?)`;
             params.push(query.agency);
         }
 
