@@ -222,8 +222,6 @@ export class GetArtVerificationPendingSurveysByCountyHandler
             from FacilitySummary
             where 
                 FacilitySummary.FacilityType = 'emr'
-            group by
-                FacilitySummary.County;
         `;
 
         if (query.county) {
@@ -250,6 +248,10 @@ export class GetArtVerificationPendingSurveysByCountyHandler
             pendingByCounty = `${pendingByCounty} and Agency IN (?)`;
             params.push(query.agency);
         }
+
+        pendingByCounty = `${pendingByCounty}
+            group by
+                FacilitySummary.County;`;
 
         return await this.repository.query(pendingByCounty, params);
     }
