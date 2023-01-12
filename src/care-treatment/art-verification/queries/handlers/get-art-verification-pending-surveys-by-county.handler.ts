@@ -225,8 +225,8 @@ export class GetArtVerificationPendingSurveysByCountyHandler
         `;
 
         if (query.county) {
-            pendingByCounty = `${pendingByCounty} and County IN (?)`;
-            params.push(query.county);
+            pendingByCounty = `${pendingByCounty} and County IN (:...counties)`,
+                { counties: query.county };
         }
 
         if (query.subCounty) {

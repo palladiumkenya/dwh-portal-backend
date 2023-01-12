@@ -61,7 +61,8 @@ export class GetArtVerificationReasonsHandler
         `;
 
         if (query.county) {
-            nonReasons = `${nonReasons} and County IN (?)`;
+            nonReasons = `${nonReasons} and County IN (:...counties)`,
+                { counties: query.county };
             params.push(query.county);
         }
 
