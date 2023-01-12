@@ -19,6 +19,7 @@ export class GetArtVerificationReasonsHandler
                 count(*) NUM, non_verification_reason
                 FROM [pSurvey].[dbo].[stg_questionnaire_responses]
 				group by non_verification_reason
+                order by count(*);
         `;
 
         if (query.county) {
