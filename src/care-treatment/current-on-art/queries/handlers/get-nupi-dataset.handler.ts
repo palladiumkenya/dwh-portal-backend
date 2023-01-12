@@ -152,7 +152,16 @@ export class GetNupiDatasetHandler
                 count (distinct survey_id) AS SurveysReceived
                 FROM [pSurvey].[dbo].[stg_questionnaire_responses]
                 Group by mfl_code
-                ),
+             ),
+			verified_but_with_survey as (
+				select
+					origin_facility_kmfl_code as mfl_code,
+					count(distinct concat(nupi.ccc_no, '-', nupi.origin_facility_kmfl_code)) as count_of_patients
+				from tmp_and_adhoc.dbo.nupi_dataset as nupi
+				inner join [pSurvey].[dbo].[stg_questionnaire_responses] as surveys on surveys.ccc_no = nupi.ccc_no
+					and cast(surveys.mfl_code as varchar) = nupi.origin_facility_kmfl_code
+				group by origin_facility_kmfl_code						
+			),
             FacilitySummary AS (
                 select
                     EnrichedFullfacilitylist.MFLCode as MFLCode,
@@ -177,7 +186,8 @@ export class GetNupiDatasetHandler
                     coalesce(round(cast(sum(dwh_nupi_by_facility_children.count_patients) as float)/cast(sum(dwh_nupi_by_facility.count_patients) as float),2), 0) as proportion_of_children_with_nupi_sent_to_dwh,
                     coalesce(PaedsTXCurr_DWH,0) As PaedsTXCurr_DWH,
                     coalesce (count_AdultsTXCurDWH,0) As AdultsTxCurr_DWH,
-                    coalesce (SurveysReceived,0) As SurveysReceived
+                    coalesce (SurveysReceived,0) As SurveysReceived,
+					coalesce(verified_but_with_survey.count_of_patients,0) as patients_verified_but_with_survey
                 from EnrichedFullfacilitylist
                 left join khis on cast (khis.SiteCode as nvarchar) = cast (EnrichedFullfacilitylist.MFLCode as nvarchar)
                 left join dwh_nupi_by_facility on dwh_nupi_by_facility.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
@@ -189,6 +199,7 @@ export class GetNupiDatasetHandler
                 left join nupi_overall on nupi_overall.facility_code=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
                 left join nupi_non_art_clients on nupi_non_art_clients.facility_code=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
                 left join PSurveys on PSurveys.MFLCode=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+				left join verified_but_with_survey on verified_but_with_survey.mfl_code = EnrichedFullfacilitylist.MFLCode
                 group by
                     EnrichedFullfacilitylist.MFLCode,
                     EnrichedFullfacilitylist.FacilityName,
@@ -206,7 +217,8 @@ export class GetNupiDatasetHandler
                     latest_upload.LatestDateUploaded,
                     coalesce (PaedsTXCurr_DWH,0),
                     coalesce(count_AdultsTXCurDWH,0),
-                    coalesce (SurveysReceived,0)
+                    coalesce (SurveysReceived,0),
+					coalesce(verified_but_with_survey.count_of_patients,0)
             )
             select
                 getdate() as DateQueried,
@@ -233,7 +245,8 @@ export class GetNupiDatasetHandler
                 coalesce(round (cast(sum(count_adults_patients_nupi_sent_to_dwh) as float) / nullif(cast(sum(AdultsTxCurr_DWH) as float),0),2),0) As '% Adults DWH verified of Adults TXCurr DWH',
                 sum (TXCurr_khis)-sum (NUPIVerified) As '#Unverified',
                 sum (SurveysReceived) As SurveysReceived,
-                sum (TXCurr_khis)-sum (NUPIVerified)-sum (SurveysReceived) As Pendingsurveys
+                sum (TXCurr_khis)-sum (NUPIVerified)-sum (SurveysReceived) As Pendingsurveys,
+				sum(patients_verified_but_with_survey) as '# Patients verified but with survey'
             from FacilitySummary
             group by
                 FacilitySummary.Facility,
