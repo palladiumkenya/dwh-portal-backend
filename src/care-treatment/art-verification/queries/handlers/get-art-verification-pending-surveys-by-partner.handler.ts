@@ -225,37 +225,37 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
         `;
 
         if (query.county) {
-            pendingByPartner = `${pendingByPartner} and County IN (${query.county
-                .join('')
-                .toString()})`;
+            pendingByPartner = `${pendingByPartner} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`;
             params.push(query.county);
         }
 
         if (query.subCounty) {
-            pendingByPartner = `${pendingByPartner} and SubCounty IN (${query.subCounty
-                .join('')
-                .toString()})`;
+            pendingByPartner = `${pendingByPartner} and SubCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`;
             params.push(query.subCounty);
         }
 
         if (query.facility) {
-            pendingByPartner = `${pendingByPartner} and FacilityName IN (${query.facility
-                .join('')
-                .toString()})`;
+            pendingByPartner = `${pendingByPartner} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`;
             params.push(query.facility);
         }
 
         if (query.partner) {
-            pendingByPartner = `${pendingByPartner} and SDIP IN (${query.partner
-                .join('')
-                .toString()})`;
+            pendingByPartner = `${pendingByPartner} and SDIP IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
             params.push(query.partner);
         }
 
         if (query.agency) {
-            pendingByPartner = `${pendingByPartner} and Agency IN (${query.agency
-                .join('')
-                .toString()})`;
+            pendingByPartner = `${pendingByPartner} and Agency IN ('${query.agency
+                .toString()
+                .replace(/,/g, "','")}')`;
             params.push(query.agency);
         }
 
