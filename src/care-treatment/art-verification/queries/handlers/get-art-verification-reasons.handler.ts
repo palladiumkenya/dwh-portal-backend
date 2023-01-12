@@ -61,37 +61,37 @@ export class GetArtVerificationReasonsHandler
         `;
 
         if (query.county) {
-            nonReasons = `${nonReasons} and County IN (${query.county
-                .join('')
-                .toString()})`;
+            nonReasons = `${nonReasons} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`;
             params.push(query.county);
         }
 
         if (query.subCounty) {
-            nonReasons = `${nonReasons} and SubCounty IN (${query.subCounty
-                .join('')
-                .toString()})`;
+            nonReasons = `${nonReasons} and SubCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`;
             params.push(query.subCounty);
         }
 
         if (query.facility) {
-            nonReasons = `${nonReasons} and FacilityName IN (${query.facility
-                .join('')
-                .toString()})`;
+            nonReasons = `${nonReasons} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`;
             params.push(query.facility);
         }
 
         if (query.partner) {
-            nonReasons = `${nonReasons} and SDIP IN (${query.partner
-                .join('')
-                .toString()})`;
+            nonReasons = `${nonReasons} and SDIP IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
             params.push(query.partner);
         }
 
         if (query.agency) {
-            nonReasons = `${nonReasons} and Agency IN (${query.agency
-                .join('')
-                .toString()})`;
+            nonReasons = `${nonReasons} and Agency IN ('${query.agency
+                .toString()
+                .replace(/,/g, "','")}')`;
             params.push(query.agency);
         }
 
