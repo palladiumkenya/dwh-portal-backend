@@ -13,8 +13,11 @@ export class GetOtzOutcomesByGenderHandler implements IQueryHandler<GetOtzOutcom
     }
 
     async execute(query: GetOtzOutcomesByGenderQuery): Promise<any> {
-        const otzOutcomesByGender = this.repository.createQueryBuilder('f')
-            .select(['[Gender], CASE WHEN [Outcome] IS NULL THEN \'Active\' ELSE [Outcome] END as Outcome, SUM([Total_OutCome]) outcomesByGender'])
+        const otzOutcomesByGender = this.repository
+            .createQueryBuilder('f')
+            .select([
+                "[Gender], CASE WHEN [Outcome] IS NULL THEN 'Active' WHEN [Outcome] = 'Died' THEN 'Dead' ELSE [Outcome] END as Outcome, SUM([Total_OutCome]) outcomesByGender",
+            ])
             .andWhere('f.MFLCode IS NOT NULL');
 
         if (query.county) {
@@ -46,7 +49,7 @@ export class GetOtzOutcomesByGenderHandler implements IQueryHandler<GetOtzOutcom
         }
 
         return await otzOutcomesByGender
-            .groupBy('[Gender], [Outcome]')
+            .groupBy('[Gender], CASE WHEN [Outcome] IS NULL THEN \'Active\' WHEN [Outcome] = \'Died\' THEN \'Dead\' ELSE [Outcome] END')
             .getRawMany();
     }
 }

@@ -13,12 +13,34 @@ export class GetCtTxCurrVerifiedByCountyHandler
     ) {}
 
     async execute(query: GetCtTxCurrVerifiedByCountyQuery): Promise<any> {
-        const txCurrByCounty = this.repository
+        let txCurrByCounty = this.repository
             .createQueryBuilder('f')
             .select(['County, sum (NumNUPI) NumNupi'])
-            .where('f.[Gender] IS NOT NULL');
+            .where('f.[County] IS NOT NULL');
+
+        if (query.datimAgePopulations) {
+            if (
+                query.datimAgePopulations.includes('>18') &&
+                query.datimAgePopulations.includes('<18')
+            ) {
+            } else if (query.datimAgePopulations.includes('>18'))
+                txCurrByCounty = this.repository
+                    .createQueryBuilder('f')
+                    .select(['County, sum (Adults) NumNupi'])
+                    .where('f.[County] IS NOT NULL');
+            else if (query.datimAgePopulations.includes('<18'))
+                txCurrByCounty = this.repository
+                    .createQueryBuilder('f')
+                    .select(['County, sum (Children) NumNupi'])
+                    .where('f.[County] IS NOT NULL');
+        }
 
         if (query.county) {
+            txCurrByCounty = this.repository
+                .createQueryBuilder('f')
+                .select(['Subcounty County, sum (NumNUPI) NumNupi'])
+                .where('f.[County] IS NOT NULL');
+
             txCurrByCounty.andWhere('f.County IN (:...counties)', {
                 counties: query.county,
             });
@@ -60,9 +82,17 @@ export class GetCtTxCurrVerifiedByCountyHandler
             });
         }
 
-        return await txCurrByCounty
-            .groupBy('County')
-            .orderBy('NumNupi', 'DESC')
-            .getRawMany();
+
+        if (query.county) {
+            return await txCurrByCounty
+                .groupBy('[Subcounty]')
+                .orderBy('NumNupi', 'DESC')
+                .getRawMany();
+        } else {
+            return await txCurrByCounty
+                .groupBy('[County]')
+                .orderBy('NumNupi', 'DESC')
+                .getRawMany();
+        }
     }
 }
