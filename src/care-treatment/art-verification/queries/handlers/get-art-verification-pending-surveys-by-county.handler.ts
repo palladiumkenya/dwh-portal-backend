@@ -241,7 +241,7 @@ export class GetArtVerificationPendingSurveysByCountyHandler
         }
 
         if (query.facility) {
-            pendingByCounty = `${pendingByCounty} and FacilityName IN ('${query.facility
+            pendingByCounty = `${pendingByCounty} and FacilitySummary.Facility IN ('${query.facility
                 .toString()
                 .replace(/,/g, "','")}')`;
             params.push(query.facility);

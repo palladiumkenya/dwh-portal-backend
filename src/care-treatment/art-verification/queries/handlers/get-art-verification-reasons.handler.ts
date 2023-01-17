@@ -75,7 +75,7 @@ export class GetArtVerificationReasonsHandler
         }
 
         if (query.facility) {
-            nonReasons = `${nonReasons} and FacilityName IN ('${query.facility
+            nonReasons = `${nonReasons} and FacilitySummary.Facility IN ('${query.facility
                 .toString()
                 .replace(/,/g, "','")}')`;
             params.push(query.facility);
