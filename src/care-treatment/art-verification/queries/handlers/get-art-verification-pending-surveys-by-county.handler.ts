@@ -215,7 +215,7 @@ export class GetArtVerificationPendingSurveysByCountyHandler
                     coalesce (SurveysReceived,0)
             )
             select
-                sum (NUPIVerified) As NupiVerified,
+                sum (count_patients_nupi_sent_to_dwh) As NupiVerified,
                 sum(TXCurr_khis) As TxCurr,
                 FacilitySummary.County,
                 sum (TXCurr_khis)-sum (NUPIVerified) As 'Unverified',
@@ -241,7 +241,7 @@ export class GetArtVerificationPendingSurveysByCountyHandler
         }
 
         if (query.facility) {
-            pendingByCounty = `${pendingByCounty} and FacilityName IN ('${query.facility
+            pendingByCounty = `${pendingByCounty} and FacilitySummary.Facility IN ('${query.facility
                 .toString()
                 .replace(/,/g, "','")}')`;
             params.push(query.facility);
