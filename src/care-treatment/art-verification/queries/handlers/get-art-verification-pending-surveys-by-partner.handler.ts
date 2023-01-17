@@ -241,7 +241,7 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
         }
 
         if (query.facility) {
-            pendingByPartner = `${pendingByPartner} and FacilityName IN ('${query.facility
+            pendingByPartner = `${pendingByPartner} and FacilitySummary.Facility IN ('${query.facility
                 .toString()
                 .replace(/,/g, "','")}')`;
             params.push(query.facility);
