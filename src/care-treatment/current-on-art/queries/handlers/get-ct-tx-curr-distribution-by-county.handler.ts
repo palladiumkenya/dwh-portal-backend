@@ -21,10 +21,6 @@ export class GetCtTxCurrDistributionByCountyHandler
             .where("ARTOutcome ='V' AND ageLV BETWEEN 0 and 120");
 
         if (query.county) {
-            txCurrDistributionByCounty = this.repository
-                .createQueryBuilder('f')
-                .select(['[Subcounty] County,count(*) txCurr'])
-
             txCurrDistributionByCounty.andWhere('f.County IN (:...counties)', {
                 counties: query.county,
             });
@@ -82,16 +78,10 @@ export class GetCtTxCurrDistributionByCountyHandler
             );
         }
 
-        if (query.county) {
-            return await txCurrDistributionByCounty
-                .groupBy('[Subcounty]')
-                .orderBy('Count(*)', 'DESC')
-                .getRawMany();
-        } else {
-            return await txCurrDistributionByCounty
-                .groupBy('[County]')
-                .orderBy('count(*)', 'DESC')
-                .getRawMany();
-        }
+        return await txCurrDistributionByCounty
+            .groupBy('[County]')
+            .orderBy('count(*)', 'DESC')
+            .getRawMany();
+        
     }
 }
