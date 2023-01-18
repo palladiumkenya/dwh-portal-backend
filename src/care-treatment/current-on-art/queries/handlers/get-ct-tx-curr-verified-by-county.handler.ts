@@ -36,11 +36,6 @@ export class GetCtTxCurrVerifiedByCountyHandler
         }
 
         if (query.county) {
-            txCurrByCounty = this.repository
-                .createQueryBuilder('f')
-                .select(['Subcounty County, sum (NumNUPI) NumNupi'])
-                .where('f.[County] IS NOT NULL');
-
             txCurrByCounty.andWhere('f.County IN (:...counties)', {
                 counties: query.county,
             });
@@ -82,17 +77,10 @@ export class GetCtTxCurrVerifiedByCountyHandler
             });
         }
 
-
-        if (query.county) {
-            return await txCurrByCounty
-                .groupBy('[Subcounty]')
-                .orderBy('NumNupi', 'DESC')
-                .getRawMany();
-        } else {
-            return await txCurrByCounty
-                .groupBy('[County]')
-                .orderBy('NumNupi', 'DESC')
-                .getRawMany();
-        }
+        return await txCurrByCounty
+            .groupBy('[County]')
+            .orderBy('NumNupi', 'DESC')
+            .getRawMany();
+        
     }
 }
