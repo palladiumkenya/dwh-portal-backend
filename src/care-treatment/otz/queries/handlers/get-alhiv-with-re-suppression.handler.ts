@@ -1,15 +1,15 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { GetAlhivWithReSuppressionQuery } from '../impl/get-alhiv-with-re-suppression.query';
+import { LineListALHIV } from './../../entities/line-list-alhiv.model';
 
 @QueryHandler(GetAlhivWithReSuppressionQuery)
 export class GetAlhivWithReSuppressionHandler
     implements IQueryHandler<GetAlhivWithReSuppressionQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>,
+        @InjectRepository(LineListALHIV, 'mssql')
+        private readonly repository: Repository<LineListALHIV>,
     ) {}
 
     async execute(query: GetAlhivWithReSuppressionQuery): Promise<any> {
@@ -17,9 +17,9 @@ export class GetAlhivWithReSuppressionHandler
             .createQueryBuilder('f')
             .select([
                 'DISTINCT ' +
-                    "AlHivWithVlGreaterThan1000 = (SELECT COUNT(*) FROM [dbo].[FACT_Trans_OTZEnrollments] b WHERE (CASE WHEN FirstVL = 'undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000),\n" +
-                    "ALHivWithVLLessThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[FACT_Trans_OTZEnrollments] b WHERE (CASE WHEN [Last12MonthVLResults] = 'undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [Last12MonthVLResults]) END) < 1000 AND (CASE WHEN FirstVL = 'undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000),\n" +
-                    "ALHivWithVLGreaterThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[FACT_Trans_OTZEnrollments] b WHERE (CASE WHEN [Last12MonthVLResults] = 'undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [Last12MonthVLResults]) END) >= 1000 AND (CASE WHEN FirstVL = 'undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000 )",
+                    "AlHivWithVlGreaterThan1000 = (SELECT COUNT(*) FROM [dbo].[LineListALHIV] b WHERE (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000),\n" +
+                    "ALHivWithVLLessThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListALHIV] b WHERE (CASE WHEN [Last12MonthVLResults] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [Last12MonthVLResults]) END) < 1000 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000),\n" +
+                    "ALHivWithVLGreaterThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListALHIV] b WHERE (CASE WHEN [Last12MonthVLResults] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [Last12MonthVLResults]) END) >= 1000 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000 )",
             ]);
 
         if (query.county) {
@@ -56,7 +56,7 @@ export class GetAlhivWithReSuppressionHandler
 
         if (query.datimAgeGroup) {
             baselineVlReSuppression.andWhere(
-                'f.DATIM_AgeGroup IN (:...ageGroups)',
+                'f.AgeGroup IN (:...ageGroups)',
                 { ageGroups: query.datimAgeGroup },
             );
         }

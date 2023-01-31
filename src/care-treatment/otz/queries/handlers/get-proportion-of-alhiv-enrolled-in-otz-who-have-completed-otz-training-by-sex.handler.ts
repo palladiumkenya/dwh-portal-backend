@@ -1,21 +1,23 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexQuery } from '../impl/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { LineListOTZ } from './../../entities/line-list-otz.model';
 
 @QueryHandler(GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexQuery)
 export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHandler implements IQueryHandler<GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListOTZ, 'mssql')
+        private readonly repository: Repository<LineListOTZ>
     ) {
     }
 
     async execute(query: GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexQuery): Promise<any> {
-        const proportionWhoCompletedTrainingByGender = this.repository.createQueryBuilder('f')
-            .select(['[Gender], [OTZ_Traning] training, COUNT([OTZ_Traning]) count_training'])
-            .andWhere('f.OTZEnrollmentDate IS NOT NULL');
+        const proportionWhoCompletedTrainingByGender = this.repository
+            .createQueryBuilder('f')
+            .select([
+                '[Gender], [CompletedTraining] training, SUM([CompletedTraining]) count_training',
+            ]);
 
         if (query.county) {
             proportionWhoCompletedTrainingByGender.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -38,7 +40,7 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHa
         }
 
         if (query.datimAgeGroup) {
-            proportionWhoCompletedTrainingByGender.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            proportionWhoCompletedTrainingByGender.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
@@ -46,7 +48,7 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHa
         }
 
         return await proportionWhoCompletedTrainingByGender
-            .groupBy('OTZ_Traning, [Gender]')
+            .groupBy('CompletedTraining, [Gender]')
             .getRawMany();
     }
 }

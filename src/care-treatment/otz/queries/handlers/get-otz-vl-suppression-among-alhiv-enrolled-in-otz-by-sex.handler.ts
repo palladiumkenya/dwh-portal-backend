@@ -3,12 +3,13 @@ import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexQuery } from '../impl/ge
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { LineListOTZ } from './../../entities/line-list-otz.model';
 
 @QueryHandler(GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexQuery)
 export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler implements IQueryHandler<GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListOTZ, 'mssql')
+        private readonly repository: Repository<LineListOTZ>
     ) {
     }
 
@@ -19,7 +20,7 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler implements I
                 '[Gender], Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
             ])
             .andWhere(
-                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL and OTZEnrollmentDate IS NOT Null',
+                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL',
             );
 
         if (query.county) {

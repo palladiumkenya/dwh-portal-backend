@@ -1,22 +1,21 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { GetOtzNotEnrolledByCountyQuery } from '../impl/get-otz-not-enrolled-by-county.query';
+import { AggregateOtz } from './../../entities/aggregate-otz.model';
 
 @QueryHandler(GetOtzNotEnrolledByCountyQuery)
 export class GetOtzNotEnrolledByCountyHandler
     implements IQueryHandler<GetOtzNotEnrolledByCountyQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>,
+        @InjectRepository(AggregateOtz, 'mssql')
+        private readonly repository: Repository<AggregateOtz>,
     ) {}
 
     async execute(query: GetOtzNotEnrolledByCountyQuery): Promise<any> {
         const proportionWhoCompletedTraining = this.repository
             .createQueryBuilder('f')
-            .select(['SUM(TXCurr) Num, County'])
-            .andWhere('f.OTZEnrollmentDate IS NULL');
+            .select(['SUM(Enrolled) Num, County']);
 
         if (query.county) {
             proportionWhoCompletedTraining.andWhere(
@@ -55,7 +54,7 @@ export class GetOtzNotEnrolledByCountyHandler
 
         if (query.datimAgeGroup) {
             proportionWhoCompletedTraining.andWhere(
-                'f.DATIM_AgeGroup IN (:...ageGroups)',
+                'f.AgeGroup IN (:...ageGroups)',
                 { ageGroups: query.datimAgeGroup },
             );
         }
@@ -69,7 +68,7 @@ export class GetOtzNotEnrolledByCountyHandler
 
         return await proportionWhoCompletedTraining
             .groupBy('County')
-            .orderBy('SUM(TXCurr)', 'DESC')
+            .orderBy('SUM(Enrolled)', 'DESC')
             .getRawMany();
     }
 }

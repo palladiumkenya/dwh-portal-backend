@@ -1,21 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOTZCalhivOnArtQuery } from '../impl/get-calhiv-on-art.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { LineListALHIV } from './../../entities/line-list-alhiv.model';
 
 @QueryHandler(GetOTZCalhivOnArtQuery)
 export class GetOTZCalhivOnArtHandler implements IQueryHandler<GetOTZCalhivOnArtQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListALHIV, 'mssql')
+        private readonly repository: Repository<LineListALHIV>
     ) {
     }
 
     async execute(query: GetOTZCalhivOnArtQuery): Promise<any> {
         const CALHIVOnART = this.repository.createQueryBuilder('f')
-            .select(['Count (*)CALHIVonART'])
-            .andWhere('f.TXCurr = 1');
+            .select(['Count (*) CALHIVonART'])
 
         if (query.county) {
             CALHIVOnART.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -38,7 +37,7 @@ export class GetOTZCalhivOnArtHandler implements IQueryHandler<GetOTZCalhivOnArt
         }
 
         if (query.datimAgeGroup) {
-            CALHIVOnART.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            CALHIVOnART.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

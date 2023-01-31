@@ -1,14 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyQuery } from '../impl/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { LineListOTZ } from './../../entities/line-list-otz.model';
 
 @QueryHandler(GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyQuery)
 export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler implements IQueryHandler<GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListOTZ, 'mssql')
+        private readonly repository: Repository<LineListOTZ>
     ) {
     }
 
@@ -19,7 +19,7 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler implement
                 '[County], Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
             ])
             .andWhere(
-                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL AND OTZEnrollmentDate IS NOT NULL',
+                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL',
             );
 
         if (query.county) {
@@ -43,7 +43,7 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler implement
         }
 
         if (query.datimAgeGroup) {
-            vlSuppressionOtzByCounty.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            vlSuppressionOtzByCounty.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
