@@ -311,6 +311,8 @@ import { AggregateOtz } from './otz/entities/aggregate-otz.model';
 import { AggregateOTZOutcome } from './otz/entities/aggregate-otz-outcome.model';
 import { LineListOTZ } from './otz/entities/line-list-otz.model';
 import { LineListALHIV } from './otz/entities/line-list-alhiv.model';
+import { AggregateDSDStable } from './dsd/entities/aggregate-dsd-stable.model';
+import { AggregateDSD } from './dsd/entities/aggregate-dsd.model';
 
 
 @Module({
@@ -323,6 +325,8 @@ import { LineListALHIV } from './otz/entities/line-list-alhiv.model';
                 AggregateOTZOutcome,
                 LineListOTZ,
                 LineListALHIV,
+                AggregateDSDStable,
+                AggregateDSD,
 
 
                 AllEmrSites,
