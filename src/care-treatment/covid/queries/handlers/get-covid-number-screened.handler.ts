@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines.model';
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
-
+//Margaret
 @QueryHandler(GetCovidNumberScreenedQuery)
 export class GetCovidNumberScreenedHandler implements IQueryHandler<GetCovidNumberScreenedQuery> {
     constructor(

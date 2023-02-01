@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 import {GetCovidAdmissionSymptomaticOverallQuery} from "../impl/get-covid-admission-symptomatic-overall.query";
-
+//Margaret
 @QueryHandler(GetCovidAdmissionSymptomaticOverallQuery)
 export class GetCovidAdmissionSymptomaticOverallHandler implements IQueryHandler<GetCovidAdmissionSymptomaticOverallQuery> {
     constructor(
