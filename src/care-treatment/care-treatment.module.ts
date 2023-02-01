@@ -313,6 +313,8 @@ import { LineListOTZ } from './otz/entities/line-list-otz.model';
 import { LineListALHIV } from './otz/entities/line-list-alhiv.model';
 import { AggregateNupi } from './current-on-art/entities/aggregate-nupi.model';
 import { AggregateTXCurr } from './current-on-art/entities/aggregate-txcurr.model';
+import { AggregateDSDUnstable } from './dsd/entities/AggregateDSDUnstable.model';
+import { AggregateDSD } from './dsd/entities/AggregateDSD.model';
 
 
 @Module({
@@ -328,6 +330,9 @@ import { AggregateTXCurr } from './current-on-art/entities/aggregate-txcurr.mode
 
                 AggregateNupi,
                 AggregateTXCurr,
+
+                AggregateDSDUnstable,
+                AggregateDSD,
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,
