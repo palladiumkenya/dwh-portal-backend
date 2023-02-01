@@ -315,7 +315,7 @@ import { AggregateNupi } from './current-on-art/entities/aggregate-nupi.model';
 import { AggregateTXCurr } from './current-on-art/entities/aggregate-txcurr.model';
 import { AggregateDSDUnstable } from './dsd/entities/AggregateDSDUnstable.model';
 import { AggregateDSD } from './dsd/entities/AggregateDSD.model';
-import { AggregateCovid } from './covid/entities/aggregate-covid.model copy';
+import { AggregateCovid } from './covid/entities/aggregate-covid.model';
 import { LineListCovid } from './covid/entities/linelist-covid.model';
 
 
