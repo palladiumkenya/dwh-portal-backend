@@ -7,7 +7,7 @@ import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 import {
     GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery
 } from "../impl/get-cumulative-number-adult-plhiv-with-missing-date-given-first-dose.query";
-
+//Margaret
 @QueryHandler(GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery)
 export class GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler implements IQueryHandler<GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery> {
     constructor(
