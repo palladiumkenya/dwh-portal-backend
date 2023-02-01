@@ -1,21 +1,25 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransDsdStabilityStatus } from '../../entities/fact-trans-dsd-stability-status.model';
 import { Repository } from 'typeorm';
 import { GetDsdStabilityStatusQuery } from '../impl/get-dsd-stability-status.query';
+import { AggregateDSD } from './../../entities/AggregateDSD.model';
 
 @QueryHandler(GetDsdStabilityStatusQuery)
 export class GetDsdStabilityStatusHandler implements IQueryHandler<GetDsdStabilityStatusQuery> {
     constructor(
-        @InjectRepository(FactTransDsdStabilityStatus, 'mssql')
-        private readonly repository: Repository<FactTransDsdStabilityStatus>
+        @InjectRepository(AggregateDSD, 'mssql')
+        private readonly repository: Repository<AggregateDSD>
     ) {
 
     }
 
     async execute(query: GetDsdStabilityStatusQuery): Promise<any> {
-        const dsdStabilityStatus = this.repository.createQueryBuilder('f')
-            .select(['SUM(TxCurr) txCurr, SUM(MMD) mmd, SUM(NonMMD) nonMmd, SUM(Stable) stable, SUM(UnStable) unStable'])
+        const dsdStabilityStatus = this.repository
+            .createQueryBuilder('f')
+            //TODO:: Add stable and unstable columns
+            .select([
+                'SUM(TxCurr) txCurr, SUM(patients_onMMD) mmd, SUM(patients_nonMMD) nonMmd, SUM(Stable) stable, SUM(UnStable) unStable',
+            ])
             .where('f.MFLCode > 1');
 
         if (query.county) {
