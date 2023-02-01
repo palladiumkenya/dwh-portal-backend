@@ -311,6 +311,8 @@ import { AggregateOtz } from './otz/entities/aggregate-otz.model';
 import { AggregateOTZOutcome } from './otz/entities/aggregate-otz-outcome.model';
 import { LineListOTZ } from './otz/entities/line-list-otz.model';
 import { LineListALHIV } from './otz/entities/line-list-alhiv.model';
+import { AggregateDSDApptsByStability } from './dsd/entities/aggregate-dsd-appts-by-stability.model';
+import { AggregateDSD } from './dsd/entities/aggregate-dsd.model';
 
 
 @Module({
@@ -323,7 +325,8 @@ import { LineListALHIV } from './otz/entities/line-list-alhiv.model';
                 AggregateOTZOutcome,
                 LineListOTZ,
                 LineListALHIV,
-
+                AggregateDSDApptsByStability,
+                AggregateDSD,
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,
