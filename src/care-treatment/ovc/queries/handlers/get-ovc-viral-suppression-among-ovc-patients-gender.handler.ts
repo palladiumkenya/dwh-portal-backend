@@ -1,15 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOvcViralSuppressionAmongOvcPatientsGenderQuery } from '../impl/get-ovc-viral-suppression-among-ovc-patients-gender.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetOvcViralSuppressionAmongOvcPatientsGenderQuery)
 export class GetOvcViralSuppressionAmongOvcPatientsGenderHandler implements IQueryHandler<GetOvcViralSuppressionAmongOvcPatientsGenderQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
@@ -36,6 +35,15 @@ export class GetOvcViralSuppressionAmongOvcPatientsGenderHandler implements IQue
 
         if (query.agency) {
             viralSuppressionAmongOvcByGender.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+        
+        if (query.datimAgeGroup) {
+            viralSuppressionAmongOvcByGender.andWhere(
+                'f.DATIMAgeGroup IN (:...ageGroups)',
+                {
+                    ageGroups: query.datimAgeGroup,
+                },
+            );
         }
 
         return await viralSuppressionAmongOvcByGender

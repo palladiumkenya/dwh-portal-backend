@@ -1,21 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOvcVldoneQuery } from '../impl/get-ovc-vldone.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetOvcVldoneQuery)
 export class GetOvcVldoneHandler implements IQueryHandler<GetOvcVldoneQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
     async execute(query: GetOvcVldoneQuery): Promise<any> {
         const OVCVLDone = this.repository.createQueryBuilder('f')
-            .select(['Count (*)OVCVLDone'])
+            .select(['Count (*) OVCVLDone'])
             .andWhere('f.TXCurr=1 and VLDone=1 and OVCEnrollmentDate IS NOT NULL');
 
         if (query.county) {
@@ -43,7 +42,7 @@ export class GetOvcVldoneHandler implements IQueryHandler<GetOvcVldoneQuery> {
         }
 
         if (query.datimAgeGroup) {
-            OVCVLDone.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            OVCVLDone.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await OVCVLDone.getRawOne();

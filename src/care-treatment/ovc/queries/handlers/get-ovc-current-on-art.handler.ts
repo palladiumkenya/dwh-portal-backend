@@ -1,21 +1,21 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOvcCurrentOnArtQuery } from '../impl/get-ovc-current-on-art.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
+///// THIS IS NOT BEING USED /////
 @QueryHandler(GetOvcCurrentOnArtQuery)
 export class GetOvcCurrentOnArtHandler implements IQueryHandler<GetOvcCurrentOnArtQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
     async execute(query: GetOvcCurrentOnArtQuery): Promise<any> {
         const ovcCurrentOnART = this.repository.createQueryBuilder('f')
-            .select(['Count (*)ovcCurrentOnART'])
+            .select(['Count (*) ovcCurrentOnART'])
             .andWhere('f.OVCEnrollmentDate IS NOT NULL and f.TXCurr=1');
 
         if (query.county) {
@@ -43,7 +43,7 @@ export class GetOvcCurrentOnArtHandler implements IQueryHandler<GetOvcCurrentOnA
         }
 
         if (query.datimAgeGroup) {
-            ovcCurrentOnART.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            ovcCurrentOnART.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await ovcCurrentOnART.getRawOne();

@@ -1,21 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCalhivDeadQuery } from '../impl/get-calhiv-dead.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetCalhivDeadQuery)
 export class GetCalhivDeadHandler implements IQueryHandler<GetCalhivDeadQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
-
+//todo:: Something about linlist and agg dont match up
     async execute(query: GetCalhivDeadQuery): Promise<any> {
         const CALHIVonART = this.repository.createQueryBuilder('f')
-            .select(['Count (*)CALHIVDead'])
+            .select(['COUNT (*) CALHIVDead'])
             .andWhere('f.ARTOutcome=\'D\'');
 
         if (query.county) {
@@ -43,7 +42,7 @@ export class GetCalhivDeadHandler implements IQueryHandler<GetCalhivDeadQuery> {
         }
 
         if (query.datimAgeGroup) {
-            CALHIVonART.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            CALHIVonART.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await CALHIVonART.getRawOne();

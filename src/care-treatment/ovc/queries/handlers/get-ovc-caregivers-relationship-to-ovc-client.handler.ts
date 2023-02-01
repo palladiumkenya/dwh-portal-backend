@@ -1,23 +1,25 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOvcCaregiversRelationshipToOvcClientQuery } from '../impl/get-ovc-caregivers-relationship-to-ovc-client.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetOvcCaregiversRelationshipToOvcClientQuery)
 export class GetOvcCaregiversRelationshipToOvcClientHandler implements IQueryHandler<GetOvcCaregiversRelationshipToOvcClientQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
     async execute(query: GetOvcCaregiversRelationshipToOvcClientQuery): Promise<any> {
-        const ovcCareGiversRelationships = this.repository.createQueryBuilder('f')
-            .select(['case when RelationshipToClient IS NULL then \'Undocumented\' else RelationshipToClient end as RelationshipToClient, ' +
-            'case when RelationshipToClient IS NULL then \'Undocumented\' else RelationshipToClient end as RelationshipToClientCleaned, ' +
-            'COUNT(*) relationships, COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS Percentage'])
+        const ovcCareGiversRelationships = this.repository
+            .createQueryBuilder('f')
+            .select([
+                "case when RelationshipWithPatient IS NULL then 'Undocumented' else RelationshipWithPatient end as RelationshipToClient, " +
+                    "case when RelationshipWithPatient IS NULL then 'Undocumented' else RelationshipWithPatient end as RelationshipToClientCleaned, " +
+                    'COUNT(*) relationships, COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS Percentage',
+            ])
             .andWhere('f.OVCEnrollmentDate IS NOT NULL and TXCurr=1');
 
         if (query.county) {
@@ -45,11 +47,11 @@ export class GetOvcCaregiversRelationshipToOvcClientHandler implements IQueryHan
         }
 
         if (query.datimAgeGroup) {
-            ovcCareGiversRelationships.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            ovcCareGiversRelationships.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await ovcCareGiversRelationships
-            .groupBy('RelationshipToClient')
+            .groupBy('RelationshipWithPatient')
             .getRawMany();
     }
 }
