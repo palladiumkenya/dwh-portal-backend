@@ -4,21 +4,20 @@ import { Repository } from 'typeorm';
 import { GetCtTxCurrQuery } from '../impl/get-ct-tx-curr.query';
 import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
+import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrQuery)
 export class GetCtTxCurrHandler implements IQueryHandler<GetCtTxCurrQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>,
+        @InjectRepository(AggregateTXCurr, 'mssql')
+        private readonly repository: Repository<AggregateTXCurr>,
     ) {}
 
     async execute(query: GetCtTxCurrQuery): Promise<any> {
         const txCurr = this.repository
             .createQueryBuilder('f')
-            .select(['Count(*) TXCURR'])
-            .where(
-                "f.[Gender] IS NOT NULL and ARTOutcome ='V' AND ageLV BETWEEN 0 and 120",
-            );
+            .select(['SUM(CountClientsTXCur) TXCURR'])
+            .where('f.[Gender] IS NOT NULL');
 
         if (query.county) {
             txCurr.andWhere('f.County IN (:...counties)', {
@@ -39,19 +38,19 @@ export class GetCtTxCurrHandler implements IQueryHandler<GetCtTxCurrQuery> {
         }
 
         if (query.partner) {
-            txCurr.andWhere('f.CTPartner IN (:...partners)', {
+            txCurr.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            txCurr.andWhere('f.CTAgency IN (:...agencies)', {
+            txCurr.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
 
         if (query.datimAgeGroup) {
-            txCurr.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', {
+            txCurr.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', {
                 ageGroups: query.datimAgeGroup,
             });
         }

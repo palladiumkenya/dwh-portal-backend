@@ -5,20 +5,26 @@ import {
 import {InjectRepository} from '@nestjs/typeorm';
 import {FactTransHmisStatsTxcurr} from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import {Repository} from 'typeorm';
+import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrAgeGroupDistributionByPartnerQuery)
 export class GetCtTxCurrAgeGroupDistributionByPartnerHandler implements IQueryHandler<GetCtTxCurrAgeGroupDistributionByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransHmisStatsTxcurr, 'mssql')
-        private readonly repository: Repository<FactTransHmisStatsTxcurr>
+        @InjectRepository(AggregateTXCurr, 'mssql')
+        private readonly repository: Repository<AggregateTXCurr>
     ) {
     }
 
     async execute(query: GetCtTxCurrAgeGroupDistributionByPartnerQuery): Promise<any> {
-        const txCurrAgeGroupDistributionByPartner = this.repository.createQueryBuilder('f')
-            .select(['[CTPartner], f.[ageGroup], Gender, SUM([TXCURR_Total]) txCurr'])
+        const txCurrAgeGroupDistributionByPartner = this.repository
+            .createQueryBuilder('f')
+            .select([
+                '[PartnerName] CTPartner, f.[DATIMAgeGroup] ageGroup, Gender, SUM([CountClientsTXCur]) txCurr',
+            ])
             // .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
-            .where('f.[CTPartner] IS NOT NULL AND f.ageGroup IS NOT NULL');
+            .where(
+                'f.[PartnerName] IS NOT NULL AND f.DATIMAgeGroup IS NOT NULL',
+            );
 
         if (query.county) {
             txCurrAgeGroupDistributionByPartner
@@ -37,12 +43,12 @@ export class GetCtTxCurrAgeGroupDistributionByPartnerHandler implements IQueryHa
 
         if (query.partner) {
             txCurrAgeGroupDistributionByPartner
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.ParnterName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
             txCurrAgeGroupDistributionByPartner
-                .andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+                .andWhere('f.AcenyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -51,13 +57,15 @@ export class GetCtTxCurrAgeGroupDistributionByPartnerHandler implements IQueryHa
         }
 
         if (query.datimAgeGroup) {
-            txCurrAgeGroupDistributionByPartner
-                .andWhere('f.ageGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            txCurrAgeGroupDistributionByPartner.andWhere(
+                'f.DATIMAgeGroup IN (:...ageGroups)',
+                { ageGroups: query.datimAgeGroup },
+            );
         }
 
         return await txCurrAgeGroupDistributionByPartner
-            .groupBy('[CTPartner], f.[ageGroup], Gender')
-            .orderBy('SUM([TXCURR_Total])', 'DESC')
+            .groupBy('[PartnerName], f.[DATIMAgeGroup], Gender')
+            .orderBy('SUM([CountClientsTXCur])', 'DESC')
             .getRawMany();
     }
 }
