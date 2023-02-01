@@ -1,21 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetVlUptakeAmongAlhivEnrolledInOtzBySexQuery } from '../impl/get-vl-uptake-among-alhiv-enrolled-in-otz-by-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { LineListOTZ } from './../../entities/line-list-otz.model';
 
 @QueryHandler(GetVlUptakeAmongAlhivEnrolledInOtzBySexQuery)
 export class GetVlUptakeAmongAlhivEnrolledInOtzBySexHandler implements IQueryHandler<GetVlUptakeAmongAlhivEnrolledInOtzBySexQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListOTZ, 'mssql')
+        private readonly repository: Repository<LineListOTZ>
     ) {
     }
 
     async execute(query: GetVlUptakeAmongAlhivEnrolledInOtzBySexQuery): Promise<any> {
         const vlUptakeAmongAlHivEnrolledInOtzBySex = this.repository.createQueryBuilder('f')
-            .select(['[Gender], COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent'])
-            .andWhere('f.OTZEnrollmentDate IS NOT NULL');
+            .select(['[Gender], COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent']);
 
         if (query.county) {
             vlUptakeAmongAlHivEnrolledInOtzBySex.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -38,7 +37,7 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzBySexHandler implements IQueryHan
         }
 
         if (query.datimAgeGroup) {
-            vlUptakeAmongAlHivEnrolledInOtzBySex.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            vlUptakeAmongAlHivEnrolledInOtzBySex.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

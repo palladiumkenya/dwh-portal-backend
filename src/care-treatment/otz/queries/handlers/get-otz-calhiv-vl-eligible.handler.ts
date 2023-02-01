@@ -3,19 +3,20 @@ import { GetOtzCalhivVlEligibleQuery } from '../impl/get-otz-calhiv-vl-eligible.
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { LineListALHIV } from './../../entities/line-list-alhiv.model';
 
 @QueryHandler(GetOtzCalhivVlEligibleQuery)
 export class GetOtzCalhivVlEligibleHandler implements IQueryHandler<GetOtzCalhivVlEligibleQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListALHIV, 'mssql')
+        private readonly repository: Repository<LineListALHIV>
     ) {
     }
 
     async execute(query: GetOtzCalhivVlEligibleQuery): Promise<any> {
         const OTZCALHIVVLEligible = this.repository.createQueryBuilder('f')
             .select('Count (*)CALHIVEligible')
-            .andWhere('f.TXCurr=1 and f.EligibleVL=1');
+            .andWhere('f.EligibleVL=1');
 
         if (query.county) {
             OTZCALHIVVLEligible.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -38,7 +39,7 @@ export class GetOtzCalhivVlEligibleHandler implements IQueryHandler<GetOtzCalhiv
         }
 
         if (query.datimAgeGroup) {
-            OTZCALHIVVLEligible.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            OTZCALHIVVLEligible.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

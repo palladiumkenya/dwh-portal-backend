@@ -1,14 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzAdolescentsEnrolledByPartnerQuery } from '../impl/get-otz-adolescents-enrolled-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { LineListALHIV } from './../../entities/line-list-alhiv.model';
 
 @QueryHandler(GetOtzAdolescentsEnrolledByPartnerQuery)
 export class GetOtzAdolescentsEnrolledByPartnerHandler implements IQueryHandler<GetOtzAdolescentsEnrolledByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListALHIV, 'mssql')
+        private readonly repository: Repository<LineListALHIV>
     ) {
     }
 
@@ -37,7 +37,7 @@ export class GetOtzAdolescentsEnrolledByPartnerHandler implements IQueryHandler<
         }
 
         if (query.datimAgeGroup) {
-            otzEnrollmentsPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            otzEnrollmentsPartner.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

@@ -1,14 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzOutcomesByAgeGroupsQuery } from '../impl/get-otz-outcomes-by-age-groups.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzOutcome } from '../../entities/fact-trans-otz-outcome.model';
 import { Repository } from 'typeorm';
+import { AggregateOTZOutcome } from './../../entities/aggregate-otz-outcome.model';
 
 @QueryHandler(GetOtzOutcomesByAgeGroupsQuery)
 export class GetOtzOutcomesByAgeGroupsHandler implements IQueryHandler<GetOtzOutcomesByAgeGroupsQuery> {
     constructor(
-        @InjectRepository(FactTransOtzOutcome, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(AggregateOTZOutcome, 'mssql')
+        private readonly repository: Repository<AggregateOTZOutcome>
     ) {
     }
 
@@ -16,9 +16,8 @@ export class GetOtzOutcomesByAgeGroupsHandler implements IQueryHandler<GetOtzOut
         const otzOutcomesByAgeGroups = this.repository
             .createQueryBuilder('f')
             .select([
-                "[AgeGroup], CASE WHEN [Outcome] IS NULL THEN 'Active' WHEN [Outcome] = 'Died' THEN 'Dead' ELSE [Outcome] END as Outcome, SUM([Total_OutCome]) outcomesByAgeGroup",
-            ])
-            .andWhere('f.MFLCode IS NOT NULL');
+                "AgeGroup, CASE WHEN [Outcome] IS NULL THEN 'Active' WHEN [Outcome] = 'Died' THEN 'Dead' ELSE [Outcome] END as Outcome, SUM(patients_totalOutcome) outcomesByAgeGroup",
+            ]);
 
         if (query.county) {
             otzOutcomesByAgeGroups.andWhere('f.County IN (:...counties)', { counties: query.county });

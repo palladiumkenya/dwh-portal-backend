@@ -1,21 +1,21 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetVlUptakeAmongAlhivEnrolledInOtzByAgeQuery } from '../impl/get-vl-uptake-among-alhiv-enrolled-in-otz-by-age.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { LineListOTZ } from './../../entities/line-list-otz.model';
 
 @QueryHandler(GetVlUptakeAmongAlhivEnrolledInOtzByAgeQuery)
 export class GetVlUptakeAmongAlhivEnrolledInOtzByAgeHandler implements IQueryHandler<GetVlUptakeAmongAlhivEnrolledInOtzByAgeQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListOTZ, 'mssql')
+        private readonly repository: Repository<LineListOTZ>
     ) {
     }
 
     async execute(query: GetVlUptakeAmongAlhivEnrolledInOtzByAgeQuery): Promise<any> {
         const vlUptakeAmongAlHivEnrolledInOtzByAge = this.repository.createQueryBuilder('f')
-            .select(['[DATIM_AgeGroup] ageGroup, COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent'])
-            .andWhere('f.OTZEnrollmentDate IS NOT NULL');
+            .select(['[AgeGroup] ageGroup, COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent'])
+            ;
 
         if (query.county) {
             vlUptakeAmongAlHivEnrolledInOtzByAge.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -38,7 +38,7 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByAgeHandler implements IQueryHan
         }
 
         if (query.datimAgeGroup) {
-            vlUptakeAmongAlHivEnrolledInOtzByAge.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            vlUptakeAmongAlHivEnrolledInOtzByAge.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
@@ -46,7 +46,7 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByAgeHandler implements IQueryHan
         }
 
         return await vlUptakeAmongAlHivEnrolledInOtzByAge
-            .groupBy('DATIM_AgeGroup')
+            .groupBy('AgeGroup')
             .getRawMany();
     }
 }

@@ -3,20 +3,20 @@ import { GetOtzTotalWithVlResultsQuery } from '../impl/get-otz-total-with-vl-res
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { LineListOTZ } from './../../entities/line-list-otz.model';
 
 @QueryHandler(GetOtzTotalWithVlResultsQuery)
 export class GetOtzTotalWithVlResultsHandler implements IQueryHandler<GetOtzTotalWithVlResultsQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListOTZ, 'mssql')
+        private readonly repository: Repository<LineListOTZ>
     ) {
     }
 
     async execute(query: GetOtzTotalWithVlResultsQuery): Promise<any> {
         const totalWithVlResults = this.repository.createQueryBuilder('f')
             .select(['count(*) totalWithVlResults'])
-            .where('f.lastVL IS NOT NULL')
-            .andWhere('f.OTZEnrollmentDate IS NOT NULL');
+            .where('f.lastVL IS NOT NULL');
 
         if (query.county) {
             totalWithVlResults.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -39,7 +39,7 @@ export class GetOtzTotalWithVlResultsHandler implements IQueryHandler<GetOtzTota
         }
 
         if (query.datimAgeGroup) {
-            totalWithVlResults.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            totalWithVlResults.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
