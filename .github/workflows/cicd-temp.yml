@@ -1,0 +1,33 @@
+name: deploy to feat/new-reporting-layer
+on:
+  push:
+    branches: [ feat/new-reporting-layer ]
+jobs:
+
+  build:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote connection
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DATA_HOST }}
+        username: ${{ secrets.DATA_USERNAME }}
+        key: ${{ secrets.DATA_SECRET_KEY }}
+        port: ${{ secrets.DATA_PORT }}
+        script: |
+          cd /apps/githubworkflows/
+          sudo rm -rf dwh-portal-backend-temp
+          sudo mkdir dwh-portal-backend-temp
+          sudo chown -R cicd:cicd /apps/githubworkflows/dwh-portal-backend-temp
+          git config --global --add safe.directory /apps/githubworkflows/dwh-portal-backend-temp 
+          cd /apps/githubworkflows/dwh-portal-backend-temp
+          git clone -b feat/new-reporting-layer https://github.com/palladiumkenya/dwh-portal-backend.git .
+          git status
+          sudo cp /apps/nodeApps/dwh-portal-backend-temp/.env.production /apps/githubworkflows/dwh-portal-backend-temp
+          sudo cp /apps/nodeApps/dwh-portal-backend-temp/Dockerfile /apps/githubworkflows/dwh-portal-backend-temp
+          sudo cp -r /apps/nodeApps/dwh-portal-backend-temp/secrets /apps/githubworkflows/dwh-portal-backend-temp
+          sudo docker build -t cicdapplication/dwhportalbackendtemp:latest .
+          sudo docker stop dwhportalbackendtemp
+          sudo docker rm dwhportalbackendtemp
+          sudo docker run -p 2100:7000 -d --name=dwhportalbackendtemp --restart always cicdapplication/dwhportalbackendtemp:latest

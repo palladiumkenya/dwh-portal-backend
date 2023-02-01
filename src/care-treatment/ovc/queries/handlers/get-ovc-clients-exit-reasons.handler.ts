@@ -1,15 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOvcClientsExitReasonsQuery } from '../impl/get-ovc-clients-exit-reasons.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetOvcClientsExitReasonsQuery)
 export class GetOvcClientsExitReasonsHandler implements IQueryHandler<GetOvcClientsExitReasonsQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
@@ -36,6 +35,12 @@ export class GetOvcClientsExitReasonsHandler implements IQueryHandler<GetOvcClie
 
         if (query.agency) {
             overOvcServByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.datimAgeGroup) {
+            overOvcServByCounty.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', {
+                ageGroups: query.datimAgeGroup,
+            });
         }
 
         return await overOvcServByCounty
