@@ -1,24 +1,22 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCtTxCurrDistributionByCountyQuery } from '../impl/get-ct-tx-curr-distribution-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 import { FactTransNewCohort } from 'src/care-treatment/new-on-art/entities/fact-trans-new-cohort.model';
+import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrDistributionByCountyQuery)
 export class GetCtTxCurrDistributionByCountyHandler
     implements IQueryHandler<GetCtTxCurrDistributionByCountyQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>,
+        @InjectRepository(AggregateTXCurr, 'mssql')
+        private readonly repository: Repository<AggregateTXCurr>,
     ) {}
 
     async execute(query: GetCtTxCurrDistributionByCountyQuery): Promise<any> {
         let txCurrDistributionByCounty = this.repository
             .createQueryBuilder('f')
-            .select(['[County],count(*) txCurr'])
-            .where("ARTOutcome ='V' AND ageLV BETWEEN 0 and 120");
+            .select(['[County],Sum(CountClientsTXCur) txCurr']);
 
         if (query.county) {
             txCurrDistributionByCounty.andWhere('f.County IN (:...counties)', {
@@ -42,14 +40,14 @@ export class GetCtTxCurrDistributionByCountyHandler
 
         if (query.partner) {
             txCurrDistributionByCounty.andWhere(
-                'f.CTPartner IN (:...partners)',
+                'f.PartnerName IN (:...partners)',
                 { partners: query.partner },
             );
         }
 
         if (query.agency) {
             txCurrDistributionByCounty.andWhere(
-                'f.CTAgency IN (:...agencies)',
+                'f.AgencyName IN (:...agencies)',
                 { agencies: query.agency },
             );
         }
@@ -73,7 +71,7 @@ export class GetCtTxCurrDistributionByCountyHandler
 
         if (query.datimAgeGroup) {
             txCurrDistributionByCounty.andWhere(
-                'f.DATIM_AgeGroup IN (:...ageGroups)',
+                'f.DATIMAgeGroup IN (:...ageGroups)',
                 { ageGroups: query.datimAgeGroup },
             );
         }

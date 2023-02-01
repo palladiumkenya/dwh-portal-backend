@@ -311,6 +311,8 @@ import { AggregateOtz } from './otz/entities/aggregate-otz.model';
 import { AggregateOTZOutcome } from './otz/entities/aggregate-otz-outcome.model';
 import { LineListOTZ } from './otz/entities/line-list-otz.model';
 import { LineListALHIV } from './otz/entities/line-list-alhiv.model';
+import { AggregateNupi } from './current-on-art/entities/aggregate-nupi.model';
+import { AggregateTXCurr } from './current-on-art/entities/aggregate-txcurr.model';
 
 
 @Module({
@@ -324,6 +326,8 @@ import { LineListALHIV } from './otz/entities/line-list-alhiv.model';
                 LineListOTZ,
                 LineListALHIV,
 
+                AggregateNupi,
+                AggregateTXCurr,
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,
