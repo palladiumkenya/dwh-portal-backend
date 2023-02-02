@@ -2,20 +2,23 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetDsdStabilityStatusByPartnerQuery } from '../impl/get-dsd-stability-status-by-partner.query';
-import { FactTransDsdMmdUptake } from '../../entities/fact-trans-dsd-mmd-uptake.model';
+import { AggregateDSD } from './../../entities/AggregateDSD.model';
 
 @QueryHandler(GetDsdStabilityStatusByPartnerQuery)
 export class GetDsdStabilityStatusByPartnerHandler implements IQueryHandler<GetDsdStabilityStatusByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransDsdMmdUptake, 'mssql')
-        private readonly repository: Repository<FactTransDsdMmdUptake>
+        @InjectRepository(AggregateDSD, 'mssql')
+        private readonly repository: Repository<AggregateDSD>
     ) {
 
     }
 
     async execute(query: GetDsdStabilityStatusByPartnerQuery): Promise<any> {
-        const dsdStabilityStatusByPartner = this.repository.createQueryBuilder('f')
-            .select(['SUM(MMD) mmd, SUM(NonMMD) nonMmd, [CTPartner] partner, CASE WHEN (SUM(NonMMD) = 0 and SUM(MMD) > 0) THEN 100 WHEN (SUM(NonMMD) = 0 and SUM(MMD) = 0) THEN 0 ELSE (CAST(SUM(MMD) as float)/CAST(SUM(NonMMD) as float)) END percentMMD'])
+        const dsdStabilityStatusByPartner = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'SUM(patients_onMMD) mmd, SUM(patients_nonMMD) nonMmd, [CTPartner] partner, CASE WHEN (SUM(patients_nonMMD) = 0 and SUM(patients_onMMD) > 0) THEN 100 WHEN (SUM(patients_nonMMD) = 0 and SUM(patients_onMMD) = 0) THEN 0 ELSE (CAST(SUM(patients_onMMD) as float)/CAST(SUM(patients_nonMMD) as float)) END percentMMD',
+            ])
             .where('f.MFLCode > 1');
 
         if (query.county) {
@@ -39,7 +42,7 @@ export class GetDsdStabilityStatusByPartnerHandler implements IQueryHandler<GetD
         }
 
         if (query.datimAgeGroup) {
-            dsdStabilityStatusByPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            dsdStabilityStatusByPartner.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

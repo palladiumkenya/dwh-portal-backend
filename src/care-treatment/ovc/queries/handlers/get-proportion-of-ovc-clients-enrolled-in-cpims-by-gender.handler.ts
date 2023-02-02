@@ -4,12 +4,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
 import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetProportionOfOvcClientsEnrolledInCpimsByGenderQuery)
 export class GetProportionOfOvcClientsEnrolledInCpimsByGenderHandler implements IQueryHandler<GetProportionOfOvcClientsEnrolledInCpimsByGenderQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
@@ -43,7 +44,7 @@ export class GetProportionOfOvcClientsEnrolledInCpimsByGenderHandler implements 
         }
 
         if (query.datimAgeGroup) {
-            enrolledInCIPMS.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            enrolledInCIPMS.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await enrolledInCIPMS

@@ -311,6 +311,15 @@ import { AggregateOtz } from './otz/entities/aggregate-otz.model';
 import { AggregateOTZOutcome } from './otz/entities/aggregate-otz-outcome.model';
 import { LineListOTZ } from './otz/entities/line-list-otz.model';
 import { LineListALHIV } from './otz/entities/line-list-alhiv.model';
+import { AggregateDSDStable } from './dsd/entities/aggregate-dsd-stable.model';
+import { AggregateNupi } from './current-on-art/entities/aggregate-nupi.model';
+import { AggregateTXCurr } from './current-on-art/entities/aggregate-txcurr.model';
+import { AggregateDSDUnstable } from './dsd/entities/AggregateDSDUnstable.model';
+import { AggregateDSD } from './dsd/entities/AggregateDSD.model';
+import { AggregateCovid } from './covid/entities/aggregate-covid.model';
+import { LineListCovid } from './covid/entities/linelist-covid.model';
+import { AggregateOVCCount } from './ovc/entities/aggregate-ovc-count.model';
+import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.model';
 import { AggregateDSDApptsByStability } from './dsd/entities/aggregate-dsd-appts-by-stability.model';
 import { AggregateDSD } from './dsd/entities/aggregate-dsd.model';
 
@@ -325,6 +334,19 @@ import { AggregateDSD } from './dsd/entities/aggregate-dsd.model';
                 AggregateOTZOutcome,
                 LineListOTZ,
                 LineListALHIV,
+
+                AggregateNupi,
+                AggregateTXCurr,
+
+                AggregateDSDUnstable,
+                AggregateDSD,
+                AggregateDSDStable,
+
+                AggregateCovid,
+                LineListCovid,
+
+                AggregateOVCCount,
+                LineListOVCEnrollments,
                 AggregateDSDApptsByStability,
                 AggregateDSD,
 

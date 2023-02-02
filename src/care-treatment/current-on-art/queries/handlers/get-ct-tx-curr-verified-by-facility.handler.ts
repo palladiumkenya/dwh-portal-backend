@@ -1,22 +1,22 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactNUPI } from '../../entities/fact-nupi.model';
 import { GetCtTxCurrVerifiedByFacilityQuery } from './../impl/get-ct-tx-curr-verified-by-facility.query';
+import { AggregateNupi } from './../../entities/aggregate-nupi.model';
 
 @QueryHandler(GetCtTxCurrVerifiedByFacilityQuery)
 export class GetCtTxCurrVerifiedByFacilityHandler
     implements IQueryHandler<GetCtTxCurrVerifiedByFacilityQuery> {
     constructor(
-        @InjectRepository(FactNUPI, 'mssql')
-        private readonly repository: Repository<FactNUPI>,
+        @InjectRepository(AggregateNupi, 'mssql')
+        private readonly repository: Repository<AggregateNupi>,
     ) {}
 
     async execute(query: GetCtTxCurrVerifiedByFacilityQuery): Promise<any> {
         let txCurrByPartner = this.repository
             .createQueryBuilder('f')
             .select([
-                'FacilityName,CTPartner, County, Subcounty,CTAgency, MFLCode, sum (NumNUPI) NumNupi',
+                'FacilityName,CTPartner, County, Subcounty,CTAgency, MFLCode, sum (number_nupi) NumNupi',
             ])
             .where('f.[Gender] IS NOT NULL');
 
@@ -29,14 +29,14 @@ export class GetCtTxCurrVerifiedByFacilityHandler
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
                     .select([
-                        'FacilityName,CTPartner, County, Subcounty,CTAgency, MFLCode, sum (Adults) NumNupi',
+                        'FacilityName,CTPartner, County, Subcounty,CTAgency, MFLCode, sum (number_adults) NumNupi',
                     ])
                     .where('f.[Gender] IS NOT NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
                     .select([
-                        'FacilityName,CTPartner, County, Subcounty,CTAgency, MFLCode, sum (Children) NumNupi',
+                        'FacilityName,CTPartner, County, Subcounty,CTAgency, MFLCode, sum (number_children) NumNupi',
                     ])
                     .where('f.[Gender] IS NOT NULL');
         }
@@ -72,7 +72,7 @@ export class GetCtTxCurrVerifiedByFacilityHandler
         }
 
         if (query.datimAgeGroup) {
-            txCurrByPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', {
+            txCurrByPartner.andWhere('f.AgeGroup IN (:...ageGroups)', {
                 ageGroups: query.datimAgeGroup,
             });
         }

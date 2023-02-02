@@ -1,15 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOvcVirallySuppressedQuery } from '../impl/get-ovc-virally-suppressed.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetOvcVirallySuppressedQuery)
 export class GetOvcVirallySuppressedHandler implements IQueryHandler<GetOvcVirallySuppressedQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
@@ -43,7 +42,7 @@ export class GetOvcVirallySuppressedHandler implements IQueryHandler<GetOvcViral
         }
 
         if (query.datimAgeGroup) {
-            OVCVLSuppressed.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            OVCVLSuppressed.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await OVCVLSuppressed.getRawOne();

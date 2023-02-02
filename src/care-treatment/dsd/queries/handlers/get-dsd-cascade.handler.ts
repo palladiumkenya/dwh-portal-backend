@@ -3,19 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransDsdCascade } from '../../entities/fact-trans-dsd-cascade.model';
 import { Repository } from 'typeorm';
 import { GetDsdCascadeQuery } from '../impl/get-dsd-cascade.query';
+import { AggregateDSD } from '../../entities/aggregate-dsd.model';
 
 @QueryHandler(GetDsdCascadeQuery)
 export class GetDsdCascadeHandler implements IQueryHandler<GetDsdCascadeQuery> {
     constructor(
-        @InjectRepository(FactTransDsdCascade, 'mssql')
-        private readonly repository: Repository<FactTransDsdCascade>
+        @InjectRepository(AggregateDSD, 'mssql')
+        private readonly repository: Repository<AggregateDSD>
     ) {
 
     }
 
     async execute(query: GetDsdCascadeQuery): Promise<any> {
         const dsdCascade = this.repository.createQueryBuilder('f')
-            .select(['SUM([TXCurr]) txCurr, SUM([Stability]) stable, SUM([OnMMD]) mmd'])
+            .select(['SUM([TXCurr]) txCurr, SUM([Stability]) stable, SUM([patients_onMMD]) mmd'])
             .where('f.[MFLCode] > 1');
 
         if (query.county) {
@@ -39,7 +40,7 @@ export class GetDsdCascadeHandler implements IQueryHandler<GetDsdCascadeQuery> {
         }
 
         if (query.datimAgeGroup) {
-            dsdCascade.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            dsdCascade.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

@@ -5,7 +5,7 @@ import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
-
+//Margaret
 @QueryHandler(GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery)
 export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler implements IQueryHandler<GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery> {
     constructor(
