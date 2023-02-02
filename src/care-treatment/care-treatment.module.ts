@@ -311,6 +311,7 @@ import { AggregateOtz } from './otz/entities/aggregate-otz.model';
 import { AggregateOTZOutcome } from './otz/entities/aggregate-otz-outcome.model';
 import { LineListOTZ } from './otz/entities/line-list-otz.model';
 import { LineListALHIV } from './otz/entities/line-list-alhiv.model';
+import { AggregateDSDApptsByStability } from './dsd/entities/aggregate-dsd-appts-by-stability.model';
 import { AggregateDSDStable } from './dsd/entities/aggregate-dsd-stable.model';
 import { AggregateNupi } from './current-on-art/entities/aggregate-nupi.model';
 import { AggregateTXCurr } from './current-on-art/entities/aggregate-txcurr.model';
@@ -320,7 +321,6 @@ import { AggregateCovid } from './covid/entities/aggregate-covid.model';
 import { LineListCovid } from './covid/entities/linelist-covid.model';
 import { AggregateOVCCount } from './ovc/entities/aggregate-ovc-count.model';
 import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.model';
-import { AggregateDSDApptsByStability } from './dsd/entities/aggregate-dsd-appts-by-stability.model';
 
 
 @Module({
@@ -340,14 +340,13 @@ import { AggregateDSDApptsByStability } from './dsd/entities/aggregate-dsd-appts
                 AggregateDSDUnstable,
                 AggregateDSD,
                 AggregateDSDStable,
+                AggregateDSDApptsByStability,
 
                 AggregateCovid,
                 LineListCovid,
 
                 AggregateOVCCount,
                 LineListOVCEnrollments,
-                AggregateDSDApptsByStability,
-                AggregateDSD,
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,
