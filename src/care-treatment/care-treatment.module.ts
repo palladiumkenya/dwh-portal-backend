@@ -307,12 +307,21 @@ import { GetCtTxCurrHandler } from './current-on-art/queries/handlers/get-ct-tx-
 import { GetArtVerificationPendingSurveysByPartnerHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-partner.handler';
 import { GetArtVerificationPendingSurveysByCountyHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-county.handler';
 import { GetArtVerificationReasonsHandler } from './art-verification/queries/handlers/get-art-verification-reasons.handler';
+
 import { AggregateOtz } from './otz/entities/aggregate-otz.model';
 import { AggregateOTZOutcome } from './otz/entities/aggregate-otz-outcome.model';
 import { LineListOTZ } from './otz/entities/line-list-otz.model';
 import { LineListALHIV } from './otz/entities/line-list-alhiv.model';
 import { AggregateDSDApptsByStability } from './dsd/entities/aggregate-dsd-appts-by-stability.model';
-import { AggregateDSD } from './dsd/entities/aggregate-dsd.model';
+import { AggregateDSDStable } from './dsd/entities/aggregate-dsd-stable.model';
+import { AggregateNupi } from './current-on-art/entities/aggregate-nupi.model';
+import { AggregateTXCurr } from './current-on-art/entities/aggregate-txcurr.model';
+import { AggregateDSDUnstable } from './dsd/entities/AggregateDSDUnstable.model';
+import { AggregateDSD } from './dsd/entities/AggregateDSD.model';
+import { AggregateCovid } from './covid/entities/aggregate-covid.model';
+import { LineListCovid } from './covid/entities/linelist-covid.model';
+import { AggregateOVCCount } from './ovc/entities/aggregate-ovc-count.model';
+import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.model';
 
 
 @Module({
@@ -325,8 +334,21 @@ import { AggregateDSD } from './dsd/entities/aggregate-dsd.model';
                 AggregateOTZOutcome,
                 LineListOTZ,
                 LineListALHIV,
-                AggregateDSDApptsByStability,
+
+                AggregateNupi,
+                AggregateTXCurr,
+
+                AggregateDSDUnstable,
                 AggregateDSD,
+                AggregateDSDStable,
+                AggregateDSDApptsByStability,
+
+                AggregateCovid,
+                LineListCovid,
+
+                AggregateOVCCount,
+                LineListOVCEnrollments,
+
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,

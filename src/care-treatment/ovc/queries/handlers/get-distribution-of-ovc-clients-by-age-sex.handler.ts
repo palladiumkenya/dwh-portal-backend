@@ -1,21 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetDistributionOfOvcClientsByAgeSexQuery } from '../impl/get-distribution-of-ovc-clients-by-age-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetDistributionOfOvcClientsByAgeSexQuery)
 export class GetDistributionOfOvcClientsByAgeSexHandler implements IQueryHandler<GetDistributionOfOvcClientsByAgeSexQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
     async execute(query: GetDistributionOfOvcClientsByAgeSexQuery): Promise<any> {
         const distributionOfOvcClientsByAgeSex = this.repository.createQueryBuilder('f')
-            .select(['Gender,DATIM_AgeGroup, Count (*)OverallOVC'])
+            .select(['Gender, DATIMAgeGroup, Count (*) OverallOVC'])
             .andWhere('f.OVCEnrollmentDate IS NOT NULL and f.TXCurr=1');
 
         if (query.county) {
@@ -43,9 +42,9 @@ export class GetDistributionOfOvcClientsByAgeSexHandler implements IQueryHandler
         }
 
         if (query.datimAgeGroup) {
-            distributionOfOvcClientsByAgeSex.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            distributionOfOvcClientsByAgeSex.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
-        return await distributionOfOvcClientsByAgeSex.groupBy('Gender, DATIM_AgeGroup').orderBy('DATIM_AgeGroup').getRawMany();
+        return await distributionOfOvcClientsByAgeSex.groupBy('Gender, DATIMAgeGroup').orderBy('DATIMAgeGroup').getRawMany();
     }
 }

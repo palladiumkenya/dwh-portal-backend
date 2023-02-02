@@ -2,20 +2,20 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetCtTxCurrVerifiedQuery } from '../impl/get-ct-tx-curr-verified.query';
-import { FactNUPI } from '../../entities/fact-nupi.model';
+import { AggregateNupi } from './../../entities/aggregate-nupi.model';
 
 @QueryHandler(GetCtTxCurrVerifiedQuery)
 export class GetCtTxCurrVerifiedHandler
     implements IQueryHandler<GetCtTxCurrVerifiedQuery> {
     constructor(
-        @InjectRepository(FactNUPI, 'mssql')
-        private readonly repository: Repository<FactNUPI>,
+        @InjectRepository(AggregateNupi, 'mssql')
+        private readonly repository: Repository<AggregateNupi>,
     ) {}
 
     async execute(query: GetCtTxCurrVerifiedQuery): Promise<any> {
         let txCurr = this.repository
             .createQueryBuilder('f')
-            .select(['sum (NumNUPI) NumNupi'])
+            .select(['sum (number_nupi) NumNupi'])
             .where('f.[Gender] IS NOT NULL');
 
         if (query.datimAgePopulations) {
@@ -26,12 +26,12 @@ export class GetCtTxCurrVerifiedHandler
             } else if (query.datimAgePopulations.includes('>18'))
                 txCurr = this.repository
                     .createQueryBuilder('f')
-                    .select(['sum (Adults) NumNupi'])
+                    .select(['sum (number_adults) NumNupi'])
                     .where('f.[Gender] IS NOT NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurr = this.repository
                     .createQueryBuilder('f')
-                    .select(['sum (Children) NumNupi'])
+                    .select(['sum (number_children) NumNupi'])
                     .where('f.[Gender] IS NOT NULL');
         }
 
@@ -66,7 +66,7 @@ export class GetCtTxCurrVerifiedHandler
         }
 
         if (query.datimAgeGroup) {
-            txCurr.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', {
+            txCurr.andWhere('f.AgeGroup IN (:...ageGroups)', {
                 ageGroups: query.datimAgeGroup,
             });
         }

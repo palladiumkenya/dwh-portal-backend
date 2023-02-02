@@ -1,21 +1,21 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactNUPI } from '../../entities/fact-nupi.model';
 import { GetCtTxCurrVerifiedByPartnerQuery } from '../impl/get-ct-tx-curr-verified-partner.query';
+import { AggregateNupi } from './../../entities/aggregate-nupi.model';
 
 @QueryHandler(GetCtTxCurrVerifiedByPartnerQuery)
 export class GetCtTxCurrVerifiedByPartnerHandler
     implements IQueryHandler<GetCtTxCurrVerifiedByPartnerQuery> {
     constructor(
-        @InjectRepository(FactNUPI, 'mssql')
-        private readonly repository: Repository<FactNUPI>,
+        @InjectRepository(AggregateNupi, 'mssql')
+        private readonly repository: Repository<AggregateNupi>,
     ) {}
 
     async execute(query: GetCtTxCurrVerifiedByPartnerQuery): Promise<any> {
         let txCurrByPartner = this.repository
             .createQueryBuilder('f')
-            .select(['CTPartner, sum (NumNUPI) NumNupi'])
+            .select(['CTPartner, sum (number_nupi) NumNupi'])
             .where('f.[Gender] IS NOT NULL');
 
         if (query.datimAgePopulations) {
@@ -26,12 +26,12 @@ export class GetCtTxCurrVerifiedByPartnerHandler
             } else if (query.datimAgePopulations.includes('>18'))
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
-                    .select(['CTPartner, sum (Adults) NumNupi'])
+                    .select(['CTPartner, sum (number_adults) NumNupi'])
                     .where('f.[Gender] IS NOT NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
-                    .select(['CTPartner, sum (Children) NumNupi'])
+                    .select(['CTPartner, sum (number_children) NumNupi'])
                     .where('f.[Gender] IS NOT NULL');
         }
 
@@ -66,7 +66,7 @@ export class GetCtTxCurrVerifiedByPartnerHandler
         }
 
         if (query.datimAgeGroup) {
-            txCurrByPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', {
+            txCurrByPartner.andWhere('f.AgeGroup IN (:...ageGroups)', {
                 ageGroups: query.datimAgeGroup,
             });
         }

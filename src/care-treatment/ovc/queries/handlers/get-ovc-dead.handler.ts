@@ -1,21 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOvcDeadQuery } from '../impl/get-ovc-dead.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetOvcDeadQuery)
 export class GetOvcDeadHandler implements IQueryHandler<GetOvcDeadQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
     async execute(query: GetOvcDeadQuery): Promise<any> {
         const OVCDead = this.repository.createQueryBuilder('f')
-            .select(['Count (*)OVCDead'])
+            .select(['Count (*) OVCDead'])
             .andWhere('f.OVCEnrollmentDate IS NOT NULL and ARTOutcome=\'D\'');
 
         if (query.county) {
@@ -43,7 +42,7 @@ export class GetOvcDeadHandler implements IQueryHandler<GetOvcDeadQuery> {
         }
 
         if (query.datimAgeGroup) {
-            OVCDead.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            OVCDead.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await OVCDead.getRawOne();

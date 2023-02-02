@@ -15,6 +15,7 @@ export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<G
 
     async execute(query: GetArtOptimizationCurrentByAgeSexQuery): Promise<any> {
         const artOptimizationCurrentByAgeSex = this.repository.createQueryBuilder('f')
+        //TODO:: Add Current Regimen
             .select(['CurrentRegimen regimen, Gender gender, DATIM_AgeGroup datimAgeGroup, sum(TXCurr) txCurr'])
             .where('MFLCode IS NOT NULL');
 
