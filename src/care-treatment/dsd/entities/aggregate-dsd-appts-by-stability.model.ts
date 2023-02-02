@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('AggregateDSD')
-export class AggregateDSD {
+@Entity('AggregateDSDApptsByStability')
+export class AggregateDSDApptsByStability {
     @PrimaryColumn('text')
     MFLCode: string;
 
@@ -16,29 +16,26 @@ export class AggregateDSD {
 
     @Column('text')
     CTPartner: string;
-
+    
     @Column('text')
-   
     CTAgency: string;
-
+    
     @Column('text')
     Gender: string;
-
+    
     @Column('text')
     AgeGroup: string;
 
     @Column('int')
     StabilityAssessment: number;
 
-    @Column('int')
-    patients_TXCurr: number;
+    @Column('text')
+    AppointmentsCategory: string;
 
+    @Column('text')
+    Stability: string;
+    
     @Column('int')
-    patients_onMMD: number;
-
-    @Column('int')
-    patients_nonMMD: number;
-
-    @Column('int')
-    Stability: number;
+    patients_number: number;
+    
 }
