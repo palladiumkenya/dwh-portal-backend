@@ -5,21 +5,21 @@ import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
-//Margaret
+import { LineListCovid } from '../../entities/linelist-covid.model';
+//Margaret Error: Arithmetic overflow error converting expression to data type datetime.
 @QueryHandler(GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery)
 export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler implements IQueryHandler<GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>
+        @InjectRepository(LineListCovid, 'mssql')
+        private readonly repository: Repository<LineListCovid>
     ) {
     }
 
     async execute(query: GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery): Promise<any> {
         const cumulativeWhoReceivedOneDose = this.repository.createQueryBuilder('g')
-            .select(['DATENAME(Month,g.DategivenFirstDose) AS DategivenFirstDose,DATENAME(YEAR,g.DategivenFirstDose) AS YearFirstDose, count (*)Num, sum(count (*)) OVER (ORDER BY DATEPART(YEAR, g.DategivenFirstDose), DATEPART(MONTH, g.DategivenFirstDose)) as cumulative'])
-            .leftJoin(FactTransCovidVaccines, 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
-            .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('ageLV>=12 and ARTOutcome=\'V\' and (g.DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
+            .select(['DATENAME(Month,g.DateGivenFirstDoseKey) AS DategivenFirstDose,DATENAME(YEAR,g.DateGivenFirstDoseKey) AS YearFirstDose, count (*)Num, sum(count (*)) OVER (ORDER BY DATEPART(YEAR, g.DateGivenFirstDoseKey), DATEPART(MONTH, g.DateGivenFirstDoseKey)) as cumulative'])
+           
+            .where('(g.DateGivenFirstDoseKey >= (DATEADD(MONTH, -12, GETDATE())))');
 
         if (query.county) {
             cumulativeWhoReceivedOneDose.andWhere('g.County IN (:...counties)', { counties: query.county });
@@ -50,8 +50,8 @@ export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler imple
         }
 
         return await cumulativeWhoReceivedOneDose
-            .groupBy('DATENAME(Month,g.DategivenFirstDose), DATENAME(YEAR,g.DategivenFirstDose), DATEPART(YEAR, g.DategivenFirstDose), DATEPART(MONTH, g.DategivenFirstDose)')
-            .orderBy('DATEPART(YEAR, g.DategivenFirstDose), DATEPART(MONTH, g.DategivenFirstDose)')
+            .groupBy('DATENAME(Month,g.DateGivenFirstDoseKey), DATENAME(YEAR,g.DateGivenFirstDoseKey), DATEPART(YEAR, g.DateGivenFirstDoseKey), DATEPART(MONTH, g.DateGivenFirstDoseKey)')
+            .orderBy('DATEPART(YEAR, g.DateGivenFirstDoseKey), DATEPART(MONTH, g.DateGivenFirstDoseKey)')
             .getRawMany();
     }
 }

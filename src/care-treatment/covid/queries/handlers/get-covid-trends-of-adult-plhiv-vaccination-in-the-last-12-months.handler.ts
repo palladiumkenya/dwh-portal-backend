@@ -5,21 +5,21 @@ import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
-//Margaret
+import { LineListCovid } from '../../entities/linelist-covid.model';
+//Margaret Error: Arithmetic overflow error converting expression to data type datetime.
 @QueryHandler(GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsQuery)
 export class GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler implements IQueryHandler<GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>
+        @InjectRepository(LineListCovid, 'mssql')
+        private readonly repository: Repository<LineListCovid>
     ) {
     }
 
     async execute(query: GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsQuery): Promise<any> {
         const trendsOfPLHIVVaccination = this.repository.createQueryBuilder('g')
-            .select(['DATENAME(Month,f.DategivenFirstDose) AS DategivenFirstDose,DATENAME(YEAR,f.DategivenFirstDose) AS YearFirstDose, count (*)Num, f.VaccinationStatus'])
-            .leftJoin(FactTransCovidVaccines , 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
-            .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('ageLV>=12 and ARTOutcome=\'V\' and (f.DategivenFirstDose >= (DATEADD(MONTH, -12, GETDATE())))');
+            .select(['DATENAME(Month,g.DateGivenFirstDoseKey) AS DategivenFirstDose,DATENAME(YEAR,g.DateGivenFirstDoseKey) AS YearFirstDose, count (*)Num, g.VaccinationStatus'])
+          
+            .where('(g.DateGivenFirstDoseKey >= (DATEADD(MONTH, -12, GETDATE())))');
 
         if (query.county) {
             trendsOfPLHIVVaccination.andWhere('g.County IN (:...counties)', { counties: query.county });
@@ -30,7 +30,7 @@ export class GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler imple
         }
 
         if (query.facility) {
-            trendsOfPLHIVVaccination.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+            trendsOfPLHIVVaccination.andWhere('g.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
@@ -46,12 +46,12 @@ export class GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler imple
         }
 
         if (query.datimAgeGroup) {
-            trendsOfPLHIVVaccination.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            trendsOfPLHIVVaccination.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await trendsOfPLHIVVaccination
-            .groupBy('DATENAME(Month,f.DategivenFirstDose), DATENAME(YEAR,f.DategivenFirstDose),  DATEPART(YEAR, f.DategivenFirstDose), DATEPART(MONTH, f.DategivenFirstDose), f.VaccinationStatus')
-            .orderBy('DATEPART(YEAR, f.DategivenFirstDose), DATEPART(MONTH, f.DategivenFirstDose)')
+            .groupBy('DATENAME(Month,g.DateGivenFirstDoseKey), DATENAME(YEAR,g.DateGivenFirstDoseKey),  DATEPART(YEAR, g.DateGivenFirstDoseKey), DATEPART(MONTH, g.DateGivenFirstDoseKey), g.VaccinationStatus')
+            .orderBy('DATEPART(YEAR, g.DateGivenFirstDoseKey), DATEPART(MONTH, g.DateGivenFirstDoseKey)')
             .getRawMany();
     }
 }
