@@ -3,19 +3,21 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetDsdAppointmentDurationBySexQuery } from '../impl/get-dsd-appointment-duration-by-sex.query';
 import { FactTransDsdAppointmentByStabilityStatus } from '../../entities/fact-trans-dsd-appointment-by-stability-status.model';
+import {AggregateDSD} from "../../entities/aggregate-dsd.model";
+import {AggregateDSDApptsByStability} from "../../entities/aggregate-dsd-appts-by-stability.model";
 
 @QueryHandler(GetDsdAppointmentDurationBySexQuery)
 export class GetDsdAppointmentDurationBySexHandler implements IQueryHandler<GetDsdAppointmentDurationBySexQuery> {
     constructor(
-        @InjectRepository(FactTransDsdAppointmentByStabilityStatus, 'mssql')
-        private readonly repository: Repository<FactTransDsdAppointmentByStabilityStatus>
+        @InjectRepository(AggregateDSDApptsByStability, 'mssql')
+        private readonly repository: Repository<AggregateDSDApptsByStability>
     ) {
 
     }
 
     async execute(query: GetDsdAppointmentDurationBySexQuery): Promise<any> {
         const dsdAppointmentDuration = this.repository.createQueryBuilder('f')
-            .select(['SUM(NumPatients) patients, AppointmentsCategory, Gender'])
+            .select(['SUM(patients_number) patients, AppointmentsCategory, Gender'])
             .where('f.MFLCode > 1')
             .andWhere('f.AppointmentsCategory IS NOT NULL')
             .andWhere('f.Gender IS NOT NULL');
@@ -40,8 +42,8 @@ export class GetDsdAppointmentDurationBySexHandler implements IQueryHandler<GetD
             dsdAppointmentDuration.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
-        if (query.datimAgeGroup) {
-            dsdAppointmentDuration.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        if (query.ageGroup) {
+            dsdAppointmentDuration.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.ageGroup });
         }
 
         if (query.gender) {

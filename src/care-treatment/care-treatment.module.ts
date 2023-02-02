@@ -307,10 +307,12 @@ import { GetCtTxCurrHandler } from './current-on-art/queries/handlers/get-ct-tx-
 import { GetArtVerificationPendingSurveysByPartnerHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-partner.handler';
 import { GetArtVerificationPendingSurveysByCountyHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-county.handler';
 import { GetArtVerificationReasonsHandler } from './art-verification/queries/handlers/get-art-verification-reasons.handler';
+
 import { AggregateOtz } from './otz/entities/aggregate-otz.model';
 import { AggregateOTZOutcome } from './otz/entities/aggregate-otz-outcome.model';
 import { LineListOTZ } from './otz/entities/line-list-otz.model';
 import { LineListALHIV } from './otz/entities/line-list-alhiv.model';
+import { AggregateDSDApptsByStability } from './dsd/entities/aggregate-dsd-appts-by-stability.model';
 import { AggregateDSDStable } from './dsd/entities/aggregate-dsd-stable.model';
 import { AggregateNupi } from './current-on-art/entities/aggregate-nupi.model';
 import { AggregateTXCurr } from './current-on-art/entities/aggregate-txcurr.model';
@@ -339,12 +341,14 @@ import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.
                 AggregateDSDUnstable,
                 AggregateDSD,
                 AggregateDSDStable,
+                AggregateDSDApptsByStability,
 
                 AggregateCovid,
                 LineListCovid,
 
                 AggregateOVCCount,
                 LineListOVCEnrollments,
+
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,
