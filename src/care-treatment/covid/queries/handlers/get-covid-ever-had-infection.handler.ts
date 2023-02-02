@@ -5,20 +5,20 @@ import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
-//MARY
+import {AggregateCovid} from "../../entities/aggregate-covid.model";
+import {LineListCovid} from "../../entities/linelist-covid.model";
+//MARY- done
 @QueryHandler(GetCovidEverHadInfectionQuery)
 export class GetCovidEverHadInfectionHandler implements IQueryHandler<GetCovidEverHadInfectionQuery> {
     constructor(
-        @InjectRepository(FactTransCovidVaccines, 'mssql')
-        private readonly repository: Repository<FactTransCovidVaccines>
+        @InjectRepository(LineListCovid, 'mssql')
+        private readonly repository: Repository<LineListCovid>
     ) {
     }
 
     async execute(query: GetCovidEverHadInfectionQuery): Promise<any> {
         const everHadCovidInfection = this.repository.createQueryBuilder('f')
-            .select(['count(*) Num'])
-            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
-            .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
+            .select(['count(*) Num'])           
             .where('EverCOVID19Positive=\'Yes\'');
 
         if (query.county) {
@@ -45,8 +45,8 @@ export class GetCovidEverHadInfectionHandler implements IQueryHandler<GetCovidEv
             everHadCovidInfection.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
         }
 
-        if (query.datimAgeGroup) {
-            everHadCovidInfection.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        if (query.ageGroup) {
+            everHadCovidInfection.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.ageGroup });
         }
 
         return await everHadCovidInfection.getRawOne();

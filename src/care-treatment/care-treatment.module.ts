@@ -321,7 +321,6 @@ import { LineListCovid } from './covid/entities/linelist-covid.model';
 import { AggregateOVCCount } from './ovc/entities/aggregate-ovc-count.model';
 import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.model';
 import { AggregateDSDApptsByStability } from './dsd/entities/aggregate-dsd-appts-by-stability.model';
-import { AggregateDSD } from './dsd/entities/aggregate-dsd.model';
 
 
 @Module({
