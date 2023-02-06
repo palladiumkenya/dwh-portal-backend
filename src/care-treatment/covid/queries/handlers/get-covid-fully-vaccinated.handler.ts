@@ -18,7 +18,7 @@ export class GetCovidFullyVaccinatedHandler implements IQueryHandler<GetCovidFul
     async execute(query: GetCovidFullyVaccinatedQuery): Promise<any> {
         const covidFullyVaccinated = this.repository.createQueryBuilder('f')
             .select(['Count (*) FullyVaccinated'])
-            .where('f.TracingFinalOutcome = \'V\' AND f.VaccinationStatus=\'Fully Vaccinated\' ');
+            .where(' f.VaccinationStatus=\'Fully Vaccinated\' ');
 
         if (query.county) {
             covidFullyVaccinated.andWhere('County IN (:...counties)', { counties: query.county });

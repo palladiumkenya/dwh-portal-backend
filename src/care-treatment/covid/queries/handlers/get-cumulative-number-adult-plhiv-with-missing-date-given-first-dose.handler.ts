@@ -5,7 +5,7 @@ import {
     GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery
 } from "../impl/get-cumulative-number-adult-plhiv-with-missing-date-given-first-dose.query";
 import { LineListCovid } from '../../entities/linelist-covid.model';
-//Margaret Error: Conversion failed when converting the varchar value '0001-01-01' to data type int.
+
 @QueryHandler(GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery)
 export class GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler implements IQueryHandler<GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery> {
     constructor(

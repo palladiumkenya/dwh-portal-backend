@@ -1,12 +1,9 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCovidAdultPlhivVaccinatedByCountyQuery } from '../impl/get-covid-adult-plhiv-vaccinated-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines.model';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 import {LineListCovid} from "../../entities/linelist-covid.model";
-//MARY - done
+
 @QueryHandler(GetCovidAdultPlhivVaccinatedByCountyQuery)
 export class GetCovidAdultPLHIVVaccinatedByCountyHandler implements IQueryHandler<GetCovidAdultPlhivVaccinatedByCountyQuery> {
     constructor(
@@ -18,7 +15,6 @@ export class GetCovidAdultPLHIVVaccinatedByCountyHandler implements IQueryHandle
     async execute(query: GetCovidAdultPlhivVaccinatedByCountyQuery): Promise<any> {
         const adultPLHIVVaccinatedByCounty = this.repository.createQueryBuilder('g')
             .select(['g.VaccinationStatus, g.County, Count (*) Num'])
-            .where('g.TracingFinalOutcome = \'V\'');
 
         if (query.county) {
             adultPLHIVVaccinatedByCounty.andWhere('g.County IN (:...counties)', { counties: query.county });
