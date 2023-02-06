@@ -41,11 +41,11 @@ export class GetCovidAdultPLHIVVaccinatedByCountyHandler implements IQueryHandle
         }
 
         if (query.gender) {
-            adultPLHIVVaccinatedByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            adultPLHIVVaccinatedByCounty.andWhere('Gender IN (:...genders)', { genders: query.gender });
         }
 
         if (query.ageGroup) {
-            adultPLHIVVaccinatedByCounty.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.ageGroup });
+            adultPLHIVVaccinatedByCounty.andWhere('AgeGroup IN (:...ageGroups)', { ageGroups: query.ageGroup });
         }
 
         return await adultPLHIVVaccinatedByCounty

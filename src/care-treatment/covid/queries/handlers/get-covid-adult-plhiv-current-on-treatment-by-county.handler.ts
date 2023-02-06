@@ -41,7 +41,6 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler implements IQue
         }
 
         if (query.datimAgeGroup) {
-            // lacking age group
             covidAdultsCurrentOnTreatmentByCounty.andWhere(
                 'f.AgeGroup IN (:...ageGroups)',
                 { ageGroups: query.datimAgeGroup },

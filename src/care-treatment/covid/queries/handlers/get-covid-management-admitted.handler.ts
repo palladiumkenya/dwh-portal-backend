@@ -23,31 +23,31 @@ export class GetCovidManagementAdmittedHandler implements IQueryHandler<GetCovid
 
 
         if (query.county) {
-            covidManagementAdmitted.andWhere('f.County IN (:...counties)', { counties: query.county });
+            covidManagementAdmitted.andWhere('County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            covidManagementAdmitted.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            covidManagementAdmitted.andWhere('SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
-            covidManagementAdmitted.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+            covidManagementAdmitted.andWhere('FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
-            covidManagementAdmitted.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidManagementAdmitted.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidManagementAdmitted.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidManagementAdmitted.andWhere('CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
-            covidManagementAdmitted.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            covidManagementAdmitted.andWhere('Gender IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
-            covidManagementAdmitted.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            covidManagementAdmitted.andWhere('AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await covidManagementAdmitted
