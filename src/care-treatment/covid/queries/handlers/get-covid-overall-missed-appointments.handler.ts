@@ -1,24 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCovidOverallMissedAppointmentsQuery } from '../impl/get-covid-overall-missed-appointments.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines.model';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
+import { LineListCovid } from './../../entities/linelist-covid.model';
 
 @QueryHandler(GetCovidOverallMissedAppointmentsQuery)
 export class GetCovidOverallMissedAppointmentsHandler implements IQueryHandler<GetCovidOverallMissedAppointmentsQuery> {
     constructor(
-        @InjectRepository(FactTransCovidVaccines, 'mssql')
-        private readonly repository: Repository<FactTransCovidVaccines>
+        @InjectRepository(LineListCovid, 'mssql')
+        private readonly repository: Repository<LineListCovid>
     ) {
     }
 
     async execute(query: GetCovidOverallMissedAppointmentsQuery): Promise<any> {
         const overallMissedAppointments = this.repository.createQueryBuilder('f')
             .select(['count(*) Num'])
-            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
-            .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
             .where('MissedAppointmentDueToCOVID19=\'Yes\'');
 
         if (query.county) {
@@ -38,7 +34,7 @@ export class GetCovidOverallMissedAppointmentsHandler implements IQueryHandler<G
         }
 
         if (query.agency) {
-            overallMissedAppointments.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+            overallMissedAppointments.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -46,7 +42,7 @@ export class GetCovidOverallMissedAppointmentsHandler implements IQueryHandler<G
         }
 
         if (query.datimAgeGroup) {
-            overallMissedAppointments.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            overallMissedAppointments.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await overallMissedAppointments
