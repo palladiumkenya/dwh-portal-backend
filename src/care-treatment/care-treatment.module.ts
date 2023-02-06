@@ -321,6 +321,7 @@ import { AggregateCovid } from './covid/entities/aggregate-covid.model';
 import { LineListCovid } from './covid/entities/linelist-covid.model';
 import { AggregateOVCCount } from './ovc/entities/aggregate-ovc-count.model';
 import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.model';
+import { LinelistFACTART } from './common/entities/linelist-fact-art.model';
 
 
 @Module({
@@ -347,6 +348,9 @@ import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.
 
                 AggregateOVCCount,
                 LineListOVCEnrollments,
+
+                LinelistFACTART,
+
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,
@@ -630,7 +634,7 @@ import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.
 
         GetArtVerificationPendingSurveysByPartnerHandler,
         GetArtVerificationPendingSurveysByCountyHandler,
-        GetArtVerificationReasonsHandler
+        GetArtVerificationReasonsHandler,
     ],
     controllers: [CareTreatmentController],
 })

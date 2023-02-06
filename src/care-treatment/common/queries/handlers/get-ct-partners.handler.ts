@@ -3,20 +3,21 @@ import { GetCtPartnersQuery } from '../impl/get-ct-partners.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
+import { LinelistFACTART } from './../../entities/linelist-fact-art.model';
 
 @QueryHandler(GetCtPartnersQuery)
 export class GetCtPartnersHandler implements IQueryHandler<GetCtPartnersQuery> {
     constructor(
-        @InjectRepository(FactTransHmisStatsTxcurr, 'mssql')
-        private readonly repository: Repository<FactTransHmisStatsTxcurr>
+        @InjectRepository(LinelistFACTART, 'mssql')
+        private readonly repository: Repository<LinelistFACTART>
     ) {
 
     }
 
     async execute(query: GetCtPartnersQuery): Promise<any> {
         const partners = this.repository.createQueryBuilder('q')
-            .select(['distinct CTPartner partner'])
-            .where('q.CTPartner IS NOT NULL');
+            .select(['distinct PartnerName partner'])
+            .where('q.PartnerName IS NOT NULL');
 
         if (query.county) {
             partners.andWhere('q.County IN (:...county)', { county: query.county });
@@ -31,7 +32,7 @@ export class GetCtPartnersHandler implements IQueryHandler<GetCtPartnersQuery> {
         // }
 
         // if (query.partner) {
-        //     partners.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
+        //     partners.andWhere('q.PartnerName IN (:...partner)', { partner: query.partner });
         // }
 
         // if (query.agency) {
@@ -42,6 +43,6 @@ export class GetCtPartnersHandler implements IQueryHandler<GetCtPartnersQuery> {
         //     partners.andWhere('q.project IN (:...project)', { project: query.project });
         // }
 
-        return await partners.orderBy('q.CTPartner').getRawMany();
+        return await partners.orderBy('q.PartnerName').getRawMany();
     }
 }
