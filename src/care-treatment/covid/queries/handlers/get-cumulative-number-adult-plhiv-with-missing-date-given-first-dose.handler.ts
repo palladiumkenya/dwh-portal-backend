@@ -31,7 +31,7 @@ export class GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler i
         }
 
         if (query.facility) {
-            cumulativeWithMissingDate.andWhere('g.FacilityName IN (:...facilities)', { facilities: query.facility });
+            cumulativeWithMissingDate.andWhere('FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
@@ -43,7 +43,7 @@ export class GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler i
         }
 
         if (query.gender) {
-            cumulativeWithMissingDate.andWhere('g.Gender IN (:...genders)', { genders: query.gender });
+            cumulativeWithMissingDate.andWhere('Gender IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
