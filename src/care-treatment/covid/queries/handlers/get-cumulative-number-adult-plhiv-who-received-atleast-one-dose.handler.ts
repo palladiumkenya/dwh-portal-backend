@@ -3,7 +3,7 @@ import { GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery } from '../
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LineListCovid } from './../../entities/linelist-covid.model';
-//Margaret
+
 @QueryHandler(GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery)
 export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler implements IQueryHandler<GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseQuery> {
     constructor(

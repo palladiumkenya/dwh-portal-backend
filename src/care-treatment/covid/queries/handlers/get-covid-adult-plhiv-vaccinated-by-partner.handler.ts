@@ -5,21 +5,20 @@ import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
-//MARY
+import {LineListCovid} from "../../entities/linelist-covid.model";
+//MARY  -- done
 @QueryHandler(GetCovidAdultPlhivVaccinatedByPartnerQuery)
 export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandler<GetCovidAdultPlhivVaccinatedByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>
+        @InjectRepository(LineListCovid, 'mssql')
+        private readonly repository: Repository<LineListCovid>
     ) {
     }
 
     async execute(query: GetCovidAdultPlhivVaccinatedByPartnerQuery): Promise<any> {
         const adultPLHIVVaccinatedByPartner = this.repository.createQueryBuilder('g')
             .select(['g.VaccinationStatus, g.CTPartner, Count (*) Num'])
-            .leftJoin(FactTransCovidVaccines, 'f', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
-            .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('g.ageLV >= 12 AND g.ARTOutcome = \'V\'');
+            .where('g.TracingFinalOutcome = \'V\'');
 
         if (query.county) {
             adultPLHIVVaccinatedByPartner.andWhere('g.County IN (:...counties)', { counties: query.county });
@@ -45,8 +44,8 @@ export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandl
             adultPLHIVVaccinatedByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
         }
 
-        if (query.datimAgeGroup) {
-            adultPLHIVVaccinatedByPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        if (query.ageGroup) {
+            adultPLHIVVaccinatedByPartner.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.ageGroup });
         }
 
         return await adultPLHIVVaccinatedByPartner

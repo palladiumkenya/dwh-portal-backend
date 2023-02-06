@@ -5,27 +5,24 @@ import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
+import { LineListCovid } from '../../entities/linelist-covid.model';
 //Margaret
 @QueryHandler(GetCovidAdmissionByAgeQuery)
 export class GetCovidAdmissionByAgeHandler implements IQueryHandler<GetCovidAdmissionByAgeQuery> {
     constructor(
-        @InjectRepository(FactTransCovidVaccines, 'mssql')
-        private readonly repository: Repository<FactTransCovidVaccines>
+        @InjectRepository(LineListCovid, 'mssql')
+        private readonly repository: Repository<LineListCovid>
     ) {
     }
 
     async execute(query: GetCovidAdmissionByAgeQuery): Promise<any> {
         const covidAdmissionByAge = this.repository
             .createQueryBuilder('f')
-            .select(['g.DATIM_AgeGroup, count (*) Num'])
-            .leftJoin(
-                FactTransNewCohort,
-                'g',
-                'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK',
-            )
-            .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
+            .select(['AgeGroup, count (*) Num'])
+          
+            
             .where(
-                "ARTOutcome='V' and PatientStatus in ('Yes','Symptomatic') and AdmissionStatus='Yes'",
+                "PatientStatus in ('Yes','Symptomatic') and AdmissionStatus='Yes'",
             );
 
         if (query.county) {
@@ -53,11 +50,11 @@ export class GetCovidAdmissionByAgeHandler implements IQueryHandler<GetCovidAdmi
         }
 
         if (query.datimAgeGroup) {
-            covidAdmissionByAge.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            covidAdmissionByAge.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await covidAdmissionByAge
-            .groupBy('g.DATIM_AgeGroup')
+            .groupBy('AgeGroup')
             .getRawMany();
     }
 }

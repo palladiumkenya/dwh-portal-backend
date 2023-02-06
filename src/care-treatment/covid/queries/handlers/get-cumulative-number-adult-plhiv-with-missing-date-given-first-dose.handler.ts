@@ -5,7 +5,7 @@ import {
     GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery
 } from "../impl/get-cumulative-number-adult-plhiv-with-missing-date-given-first-dose.query";
 import { LineListCovid } from '../../entities/linelist-covid.model';
-//Margaret
+//Margaret Error: Conversion failed when converting the varchar value '0001-01-01' to data type int.
 @QueryHandler(GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery)
 export class GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler implements IQueryHandler<GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseQuery> {
     constructor(
@@ -31,7 +31,7 @@ export class GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler i
         }
 
         if (query.facility) {
-            cumulativeWithMissingDate.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+            cumulativeWithMissingDate.andWhere('g.FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
@@ -43,11 +43,11 @@ export class GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler i
         }
 
         if (query.gender) {
-            cumulativeWithMissingDate.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            cumulativeWithMissingDate.andWhere('g.Gender IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
-            cumulativeWithMissingDate.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            cumulativeWithMissingDate.andWhere('AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await cumulativeWithMissingDate

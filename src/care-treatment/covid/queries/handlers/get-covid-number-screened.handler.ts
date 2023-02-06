@@ -3,7 +3,7 @@ import { GetCovidNumberScreenedQuery } from '../impl/get-covid-number-screened.q
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LineListCovid } from './../../entities/linelist-covid.model';
-//Margaret
+
 @QueryHandler(GetCovidNumberScreenedQuery)
 export class GetCovidNumberScreenedHandler implements IQueryHandler<GetCovidNumberScreenedQuery> {
     constructor(
