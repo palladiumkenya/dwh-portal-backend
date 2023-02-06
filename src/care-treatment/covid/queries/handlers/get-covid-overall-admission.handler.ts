@@ -5,14 +5,16 @@ import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
+import { LineListALHIV } from './../../../otz/entities/line-list-alhiv.model';
+import { LineListCovid } from './../../entities/linelist-covid.model';
 
 @QueryHandler(GetCovidOverallAdmissionQuery)
-export class GetCovidOverallAdmissionHandler implements IQueryHandler<GetCovidOverallAdmissionQuery> {
+export class GetCovidOverallAdmissionHandler
+    implements IQueryHandler<GetCovidOverallAdmissionQuery> {
     constructor(
-        @InjectRepository(FactTransCovidVaccines, 'mssql')
-        private readonly repository: Repository<FactTransCovidVaccines>
-    ) {
-    }
+        @InjectRepository(LineListCovid, 'mssql')
+        private readonly repository: Repository<LineListCovid>,
+    ) {}
 
     async execute(query: GetCovidOverallAdmissionQuery): Promise<any> {
         const covidOverallAdmission = this.repository
@@ -20,40 +22,50 @@ export class GetCovidOverallAdmissionHandler implements IQueryHandler<GetCovidOv
             .select([
                 "AdmissionStatus, CASE WHEN AdmissionStatus='Yes' THEN 'Admitted' WHEN AdmissionStatus='No' THEN 'Not Admitted' ELSE 'Unclassified' END as Admission, count (*)Num",
             ])
-            .leftJoin(
-                FactTransNewCohort,
-                'g',
-                'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK',
-            )
-            .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where("ARTOutcome='V' and PatientStatus in ('Yes','Symptomatic')");
+            .where("PatientStatus in ('Yes','Symptomatic')");
 
         if (query.county) {
-            covidOverallAdmission.andWhere('f.County IN (:...counties)', { counties: query.county });
+            covidOverallAdmission.andWhere('f.County IN (:...counties)', {
+                counties: query.county,
+            });
         }
 
         if (query.subCounty) {
-            covidOverallAdmission.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            covidOverallAdmission.andWhere('f.SubCounty IN (:...subCounties)', {
+                subCounties: query.subCounty,
+            });
         }
 
         if (query.facility) {
-            covidOverallAdmission.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+            covidOverallAdmission.andWhere(
+                'f.FacilityName IN (:...facilities)',
+                { facilities: query.facility },
+            );
         }
 
         if (query.partner) {
-            covidOverallAdmission.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidOverallAdmission.andWhere('f.CTPartner IN (:...partners)', {
+                partners: query.partner,
+            });
         }
 
         if (query.agency) {
-            covidOverallAdmission.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidOverallAdmission.andWhere('f.CTAgency IN (:...agencies)', {
+                agencies: query.agency,
+            });
         }
 
         if (query.gender) {
-            covidOverallAdmission.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            covidOverallAdmission.andWhere('f.Gender IN (:...genders)', {
+                genders: query.gender,
+            });
         }
 
         if (query.datimAgeGroup) {
-            covidOverallAdmission.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            covidOverallAdmission.andWhere(
+                'f.AgeGroup IN (:...ageGroups)',
+                { ageGroups: query.datimAgeGroup },
+            );
         }
 
         return await covidOverallAdmission

@@ -1,21 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCovidAdultPlhivCurrentOnTreatmentByGenderQuery } from '../impl/get-covid-adult-plhiv-current-on-treatment-by-gender.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { Repository } from 'typeorm';
+import { LineListCovid } from './../../entities/linelist-covid.model';
 
 @QueryHandler(GetCovidAdultPlhivCurrentOnTreatmentByGenderQuery)
 export class GetCovidAdultPLHIVCurrentOnTreatmentByGenderHandler implements IQueryHandler<GetCovidAdultPlhivCurrentOnTreatmentByGenderQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>
+        @InjectRepository(LineListCovid, 'mssql')
+        private readonly repository: Repository<LineListCovid>
     ) {
     }
 
     async execute(query: GetCovidAdultPlhivCurrentOnTreatmentByGenderQuery): Promise<any> {
         const covidAdultsCurrentOnTreatmentByGender = this.repository.createQueryBuilder('f')
-            .select(['Count (*) Adults, Gender'])
-            .where('f.ageLV >= 12 AND f.ARTOutcome=\'V\'');
+            .select(['Count (*) Adults, Gender']);
 
         if (query.county) {
             covidAdultsCurrentOnTreatmentByGender.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -42,7 +41,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByGenderHandler implements IQue
         }
 
         if (query.datimAgeGroup) {
-            covidAdultsCurrentOnTreatmentByGender.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            covidAdultsCurrentOnTreatmentByGender.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
 

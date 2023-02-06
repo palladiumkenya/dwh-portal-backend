@@ -21,11 +21,11 @@ export class GetCovidFullyVaccinatedHandler implements IQueryHandler<GetCovidFul
             .where('f.TracingFinalOutcome = \'V\' AND f.VaccinationStatus=\'Fully Vaccinated\' ');
 
         if (query.county) {
-            covidFullyVaccinated.andWhere('g.County IN (:...counties)', { counties: query.county });
+            covidFullyVaccinated.andWhere('County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            covidFullyVaccinated.andWhere('g.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            covidFullyVaccinated.andWhere('SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
@@ -33,11 +33,11 @@ export class GetCovidFullyVaccinatedHandler implements IQueryHandler<GetCovidFul
         }
 
         if (query.partner) {
-            covidFullyVaccinated.andWhere('g.CTPartner IN (:...partners)', { partners: query.partner });
+            covidFullyVaccinated.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidFullyVaccinated.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidFullyVaccinated.andWhere('CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

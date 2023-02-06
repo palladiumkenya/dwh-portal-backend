@@ -38,7 +38,7 @@ export class GetCovidEverHadInfectionHandler implements IQueryHandler<GetCovidEv
         }
 
         if (query.agency) {
-            everHadCovidInfection.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+            everHadCovidInfection.andWhere('CTAgency IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

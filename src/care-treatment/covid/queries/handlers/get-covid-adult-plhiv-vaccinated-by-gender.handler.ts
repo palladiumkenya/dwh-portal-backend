@@ -29,7 +29,7 @@ export class GetCovidAdultPLHIVVaccinatedByGenderHandler implements IQueryHandle
         }
 
         if (query.facility) {
-            adultPLHIVVaccinatedByGender.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+            adultPLHIVVaccinatedByGender.andWhere('FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
@@ -41,11 +41,11 @@ export class GetCovidAdultPLHIVVaccinatedByGenderHandler implements IQueryHandle
         }
 
         if (query.gender) {
-            adultPLHIVVaccinatedByGender.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            adultPLHIVVaccinatedByGender.andWhere('Gender IN (:...genders)', { genders: query.gender });
         }
 
         if (query.ageGroup) {
-            adultPLHIVVaccinatedByGender.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.ageGroup });
+            adultPLHIVVaccinatedByGender.andWhere('AgeGroup IN (:...ageGroups)', { ageGroups: query.ageGroup });
         }
 
         return await adultPLHIVVaccinatedByGender

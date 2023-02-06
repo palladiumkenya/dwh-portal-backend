@@ -1,16 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCovidSymptomaticInfectionsQuery } from '../impl/get-covid-symptomatic-infections.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines.model';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
+import { LineListCovid } from './../../entities/linelist-covid.model';
 
 @QueryHandler(GetCovidSymptomaticInfectionsQuery)
 export class GetCovidSymptomaticInfectionsHandler implements IQueryHandler<GetCovidSymptomaticInfectionsQuery> {
     constructor(
-        @InjectRepository(FactTransCovidVaccines, 'mssql')
-        private readonly repository: Repository<FactTransCovidVaccines>
+        @InjectRepository(LineListCovid, 'mssql')
+        private readonly repository: Repository<LineListCovid>
     ) {
     }
 
@@ -18,12 +16,6 @@ export class GetCovidSymptomaticInfectionsHandler implements IQueryHandler<GetCo
         const covidSymptomaticInfections = this.repository
             .createQueryBuilder('f')
             .select(['count(*) Num'])
-            .leftJoin(
-                FactTransNewCohort,
-                'g',
-                'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK',
-            )
-            .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
             .where(
                 "EverCOVID19Positive='Yes' and PatientStatus in ('Yes','Symptomatic')",
             );
@@ -53,7 +45,7 @@ export class GetCovidSymptomaticInfectionsHandler implements IQueryHandler<GetCo
         }
 
         if (query.datimAgeGroup) {
-            covidSymptomaticInfections.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            covidSymptomaticInfections.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await covidSymptomaticInfections.getRawOne();

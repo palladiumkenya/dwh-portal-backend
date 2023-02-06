@@ -19,8 +19,6 @@ export class GetCovidAdmissionSymptomaticOverallHandler implements IQueryHandler
     async execute(query: GetCovidAdmissionSymptomaticOverallQuery): Promise<any> {
         const covidAdmissionSymptomaticOverall = this.repository.createQueryBuilder('f')
             .select(['AdmissionStatus, CASE WHEN AdmissionStatus=\'Yes\' THEN \'Admitted\' WHEN AdmissionStatus=\'No\' THEN \'Not Admitted\' ELSE \'Unclassified\' END as Admission, count (*)Num'])
-            
-            //.innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
             .where('PatientStatus in (\'Yes\',\'Symptomatic\')');
 
         if (query.county) {
