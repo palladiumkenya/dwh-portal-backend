@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 import {LineListCovid} from "../../entities/linelist-covid.model";
-//MARY -done
+
 @QueryHandler(GetCovidAdultPLHIVVaccinatedByAgeQuery)
 export class GetCovidAdultPLHIVVaccinatedByAgeHandler implements IQueryHandler<GetCovidAdultPLHIVVaccinatedByAgeQuery> {
     constructor(
@@ -17,8 +17,7 @@ export class GetCovidAdultPLHIVVaccinatedByAgeHandler implements IQueryHandler<G
 
     async execute(query: GetCovidAdultPLHIVVaccinatedByAgeQuery): Promise<any> {
         const adultPLHIVVaccinatedByAge = this.repository.createQueryBuilder('f')
-            .select(['f.VaccinationStatus, AgeGroup, Count (*) Num'])
-            .where('TracingFinalOutcome = \'V\'');
+            .select(['f.VaccinationStatus, AgeGroup, Count (*) Num']);
 
         if (query.county) {
             adultPLHIVVaccinatedByAge.andWhere('f.County IN (:...counties)', { counties: query.county });
