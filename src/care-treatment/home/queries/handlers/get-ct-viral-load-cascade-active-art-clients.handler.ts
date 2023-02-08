@@ -18,7 +18,7 @@ export class GetCtViralLoadCascadeActiveArtClientsHandler implements IQueryHandl
             .select([
                 'SUM([ISTxCurr]) TX_CURR, SUM([Eligible4VL]) Eligible4VL, SUM([Last12MonthVL]) Last12MonthVL, SUM([Last12MVLSup]) Last12MVLSup, SUM([HighViremia]) HighViremia, SUM([LowViremia]) LowViremia',
             ])
-            .where('f.[ISTxCurr] IS NOT NULL');
+            .where('f.[ISTxCurr] > 0');
 
         if (query.county) {
             viralLoadCascade

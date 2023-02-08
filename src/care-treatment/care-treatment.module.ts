@@ -322,6 +322,7 @@ import { LineListCovid } from './covid/entities/linelist-covid.model';
 import { AggregateOVCCount } from './ovc/entities/aggregate-ovc-count.model';
 import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.model';
 import { LinelistFACTART } from './common/entities/linelist-fact-art.model';
+import { AggregateAdverseEvents } from './adverse-events/entities/aggregate-adverse-events.model';
 
 
 @Module({
@@ -351,6 +352,7 @@ import { LinelistFACTART } from './common/entities/linelist-fact-art.model';
 
                 LinelistFACTART,
 
+                AggregateAdverseEvents,
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,

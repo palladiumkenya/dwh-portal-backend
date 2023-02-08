@@ -2,19 +2,22 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsQuery } from '../impl/get-proportion-of-plhiv-on-art-with-ae-by-type-of-suspected-causative-drugs.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactTransAeCausativeDrugs } from '../../entities/fact-trans-ae-causitive-drugs.model';
+import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsQuery)
 export class GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandler implements IQueryHandler<GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsQuery> {
     constructor(
-        @InjectRepository(FactTransAeCausativeDrugs, 'mssql')
-        private readonly repository: Repository<FactTransAeCausativeDrugs>
+        @InjectRepository(AggregateAdverseEvents, 'mssql')
+        private readonly repository: Repository<AggregateAdverseEvents>
     ) {
     }
 
     async execute(query: GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsQuery): Promise<any> {
-        const proportionOfPlHIVByCausativeDrugs = this.repository.createQueryBuilder('f')
-            .select(['AdverseEventCause adverseEventCause, SUM(Num) count_cat'])
+        const proportionOfPlHIVByCausativeDrugs = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'AdverseEventCause adverseEventCause, SUM(AdverseEventCount) count_cat',
+            ])
             .andWhere('f.MFLCode IS NOT NULL');
 
         if (query.county) {
@@ -38,17 +41,17 @@ export class GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandl
         }
 
         if (query.datimAgeGroup) {
-            proportionOfPlHIVByCausativeDrugs.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            proportionOfPlHIVByCausativeDrugs.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
             // lacking gender
-            // proportionOfPlHIVByCausativeDrugs.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            proportionOfPlHIVByCausativeDrugs.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
         }
 
         return await proportionOfPlHIVByCausativeDrugs
             .groupBy('f.AdverseEventCause')
-            .orderBy('SUM(Num)', 'DESC')
+            .orderBy('SUM(AdverseEventCount)', 'DESC')
             .getRawMany();
     }
 }

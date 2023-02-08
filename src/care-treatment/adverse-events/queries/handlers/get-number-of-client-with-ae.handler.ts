@@ -3,19 +3,23 @@ import { GetNumberOfClientWithAeQuery } from '../impl/get-number-of-client-with-
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransAeClients } from '../../entities/fact-trans-ae-clients.model';
 import { Repository } from 'typeorm';
+import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetNumberOfClientWithAeQuery)
 export class GetNumberOfClientWithAeHandler implements IQueryHandler<GetNumberOfClientWithAeQuery> {
     constructor(
-        @InjectRepository(FactTransAeClients, 'mssql')
-        private readonly repository: Repository<FactTransAeClients>
+        @InjectRepository(AggregateAdverseEvents, 'mssql')
+        private readonly repository: Repository<AggregateAdverseEvents>
     ) {
     }
 
     async execute(query: GetNumberOfClientWithAeQuery): Promise<any> {
-        const noOfClientsAdultsWithAe = this.repository.createQueryBuilder('f')
-            .select('SUM([Total]) total')
-            .where('[AgeGroup] NOT IN (\'Under 1\', \'1 to 4\', \'5 to 9\', \'10 to 14\')');
+        const noOfClientsAdultsWithAe = this.repository
+            .createQueryBuilder('f')
+            .select('SUM([AdverseEventCount]) total')
+            .where(
+                "[DATIMAgeGroup] NOT IN ('Under 1', '1 to 4', '5 to 9', '10 to 14')",
+            );
 
         if (query.county) {
             noOfClientsAdultsWithAe
@@ -42,7 +46,7 @@ export class GetNumberOfClientWithAeHandler implements IQueryHandler<GetNumberOf
         }
 
         if (query.datimAgeGroup) {
-            noOfClientsAdultsWithAe.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            noOfClientsAdultsWithAe.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

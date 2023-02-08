@@ -1,21 +1,24 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetAeTypeBySeverityQuery } from '../impl/get-ae-type-by-severity.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAeCategories } from '../../entities/fact-trans-ae-categories.model';
 import { Repository } from 'typeorm';
+import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetAeTypeBySeverityQuery)
 export class GetAeTypeBySeverityHandler implements IQueryHandler<GetAeTypeBySeverityQuery> {
     constructor(
-        @InjectRepository(FactTransAeCategories, 'mssql')
-        private readonly repository: Repository<FactTransAeCategories>
+        @InjectRepository(AggregateAdverseEvents, 'mssql')
+        private readonly repository: Repository<AggregateAdverseEvents>
     ) {
     }
 
     async execute(query: GetAeTypeBySeverityQuery): Promise<any> {
-        const aeTypesBySeverity = this.repository.createQueryBuilder('f')
-            .select('[Severity], [AdverseEvent], SUM([Severity_total]) total')
-            .where('ISNULL([Severity],\'\') <> \'\'');
+        const aeTypesBySeverity = this.repository
+            .createQueryBuilder('f')
+            .select(
+                '[Severity], [AdverseEvent], SUM([AdverseEventCount]) total',
+            )
+            .where("ISNULL([Severity],'') <> ''");
 
         if (query.county) {
             aeTypesBySeverity
@@ -42,12 +45,13 @@ export class GetAeTypeBySeverityHandler implements IQueryHandler<GetAeTypeBySeve
         }
 
         if (query.datimAgeGroup) {
-            aeTypesBySeverity.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            aeTypesBySeverity.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
-            // lacking gender
-            // aeTypesBySeverity.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            aeTypesBySeverity.andWhere('f.Gender IN (:...genders)', {
+                genders: query.gender,
+            });
         }
 
         return await aeTypesBySeverity
