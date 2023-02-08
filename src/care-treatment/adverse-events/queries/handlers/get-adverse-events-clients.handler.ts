@@ -1,7 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetAdverseEventsClientsQuery } from '../impl/get-adverse-events-clients.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAeClients } from '../../entities/fact-trans-ae-clients.model';
 import { Repository } from 'typeorm';
 import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
@@ -17,7 +16,7 @@ export class GetAdverseEventsClientsHandler implements IQueryHandler<GetAdverseE
         const adultsAEs = this.repository
             .createQueryBuilder('f')
             .select(
-                'SUM([AdverseEventCount]) total, DATIMAgeGroup, Gender, CAST((cast(SUM([AdverseEventCount]) as decimal (9,2))/ (SUM(SUM([AdverseEventCount])) OVER (PARTITION BY DATIMAgeGroup ORDER BY DATIMAgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup',
+                'SUM([AdverseClientsCount]) total, DATIMAgeGroup, Gender, CAST((cast(SUM([AdverseClientsCount]) as decimal (9,2))/ (SUM(SUM([AdverseClientsCount])) OVER (PARTITION BY DATIMAgeGroup ORDER BY DATIMAgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup',
             )
             .where('[DATIMAgeGroup] IS NOT NULL');
 

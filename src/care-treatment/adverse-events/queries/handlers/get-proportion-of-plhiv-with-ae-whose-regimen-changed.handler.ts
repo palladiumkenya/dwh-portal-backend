@@ -2,7 +2,6 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery } from '../impl/get-proportion-of-plhiv-with-ae-whose-regimen-changed.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactTransAeActionDrug } from '../../entities/fact-trans-ae-action-drug.model';
 import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery)
@@ -20,7 +19,7 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler implements IQu
                 'AdverseEventActionTaken adverseEventActionTaken, SUM(AdverseEventCount) numberOfPatientsAe',
             )
             .andWhere(
-                `f.AdverseEventActionTaken im ('Medicine causing AE substituted/withdrawn', 'SUBSTITUTED DRUG|SUBSTITUTED DRUG', 'Drug Substituted', 'Drug Withdrawn')`,
+                `f.AdverseEventActionTaken in ('Medicine causing AE substituted/withdrawn', 'SUBSTITUTED DRUG|SUBSTITUTED DRUG', 'Drug Substituted', 'Drug Withdrawn')`,
             );
 
         if (query.county) {
@@ -54,7 +53,6 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler implements IQu
             );
         }
 
-        console.log(proportionOfPLHIVWithAeWhoseRegimenChanged.getQuery())
 
         return await proportionOfPLHIVWithAeWhoseRegimenChanged
             .groupBy('f.AdverseEventActionTaken')

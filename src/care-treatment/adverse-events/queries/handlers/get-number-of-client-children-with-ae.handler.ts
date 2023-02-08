@@ -16,8 +16,10 @@ export class GetNumberOfClientChildrenWithAeHandler implements IQueryHandler<Get
     async execute(query: GetNumberOfClientChildrenWithAeQuery): Promise<any> {
         const noOfClientsChildrenWithAe = this.repository
             .createQueryBuilder('f')
-            .select('SUM([AdverseEventCount]) total')
-            .where("[DATIMAgeGroup] IN ('Under 1', '1 to 4', '5 to 9', '10 to 14')");
+            .select('SUM([AdverseClientsCount]) total')
+            .where(
+                "[DATIMAgeGroup] IN ('Under 1', '1 to 4', '5 to 9', '10 to 14')",
+            );
 
         if (query.county) {
             noOfClientsChildrenWithAe
