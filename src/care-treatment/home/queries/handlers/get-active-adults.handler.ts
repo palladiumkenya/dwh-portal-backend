@@ -3,19 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
 import { GetActiveArtAdultsQuery } from '../impl/get-active-art-adults.query';
+import { LinelistFACTART } from './../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetActiveArtAdultsQuery)
 export class GetActiveAdultsHandler implements IQueryHandler<GetActiveArtAdultsQuery> {
     constructor(
-        @InjectRepository(FactTransHmisStatsTxcurr, 'mssql')
-        private readonly repository: Repository<FactTransHmisStatsTxcurr>
+        @InjectRepository(LinelistFACTART, 'mssql')
+        private readonly repository: Repository<LinelistFACTART>
     ) {
     }
 
     async execute(query: GetActiveArtAdultsQuery): Promise<any> {
         const activeArt = this.repository.createQueryBuilder('f')
-            .select('SUM(f.[TXCURR_Total])', 'ActiveARTAdults')
-            .where("f.[ageGroup] NOT IN ('10-14', '<1', '1-4', '5-9')");
+            .select('SUM(f.[ISTxCurr])', 'ActiveARTAdults')
+            .where("f.[age] >= 15");
 
         if (query.county) {
             activeArt
@@ -34,7 +35,7 @@ export class GetActiveAdultsHandler implements IQueryHandler<GetActiveArtAdultsQ
 
         if (query.partner) {
             activeArt
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         return await activeArt.getRawMany();

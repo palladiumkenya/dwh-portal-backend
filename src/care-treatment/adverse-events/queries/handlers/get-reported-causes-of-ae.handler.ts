@@ -3,18 +3,20 @@ import { GetReportedCausesOfAeQuery } from '../impl/get-reported-causes-of-ae.qu
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransAeCauses } from '../../entities/fact-trans-ae-causes.model';
 import { Repository } from 'typeorm';
+import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetReportedCausesOfAeQuery)
 export class GetReportedCausesOfAeHandler implements IQueryHandler<GetReportedCausesOfAeQuery> {
     constructor(
-        @InjectRepository(FactTransAeCauses, 'mssql')
-        private readonly repository: Repository<FactTransAeCauses>
+        @InjectRepository(AggregateAdverseEvents, 'mssql')
+        private readonly repository: Repository<AggregateAdverseEvents>
     ) {
     }
 
     async execute(query: GetReportedCausesOfAeQuery): Promise<any> {
-        const reportedCausesOfAes = this.repository.createQueryBuilder('f')
-            .select('[AdverseEventCause], SUM([Total_AdverseEventCause]) total')
+        const reportedCausesOfAes = this.repository
+            .createQueryBuilder('f')
+            .select('[AdverseEventCause], SUM([AdverseEventCount]) total')
             .where('[AdverseEventCause] IS NOT NULL');
 
         if (query.county) {
@@ -42,12 +44,13 @@ export class GetReportedCausesOfAeHandler implements IQueryHandler<GetReportedCa
         }
 
         if (query.datimAgeGroup) {
-            reportedCausesOfAes.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            reportedCausesOfAes.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
-            // lacking gender
-            // reportedCausesOfAes.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            reportedCausesOfAes.andWhere('f.Gender IN (:...genders)', {
+                genders: query.gender,
+            });
         }
 
         return await reportedCausesOfAes

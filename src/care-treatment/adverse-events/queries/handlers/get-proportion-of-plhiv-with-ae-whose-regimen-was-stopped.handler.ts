@@ -3,19 +3,25 @@ import { GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedQuery } from '../impl/g
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransAeActionDrug } from '../../entities/fact-trans-ae-action-drug.model';
 import { Repository } from 'typeorm';
+import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedQuery)
 export class GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler implements IQueryHandler<GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedQuery> {
     constructor(
-        @InjectRepository(FactTransAeActionDrug, 'mssql')
-        private readonly repository: Repository<FactTransAeActionDrug>
+        @InjectRepository(AggregateAdverseEvents, 'mssql')
+        private readonly repository: Repository<AggregateAdverseEvents>
     ) {
     }
 
     async execute(query: GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedQuery): Promise<any> {
-        const proportionOfPLHIVWithAeWhoseRegimenWasStopped = this.repository.createQueryBuilder('f')
-            .select('AdverseEventActionTaken adverseEventActionTaken, SUM(AdverseEventCause_Total) numberOfPatientsAe')
-            .andWhere('f.AdverseEventActionTaken = :AdverseEventActionTaken', { AdverseEventActionTaken: "All drugs stopped"});
+        const proportionOfPLHIVWithAeWhoseRegimenWasStopped = this.repository
+            .createQueryBuilder('f')
+            .select(
+                'AdverseEventActionTaken adverseEventActionTaken, SUM(AdverseEventCount) numberOfPatientsAe',
+            )
+            .andWhere('f.AdverseEventActionTaken = (:...AdverseEventActionTaken)', {
+                AdverseEventActionTaken: ['All drugs stopped'],
+            });
 
         if (query.county) {
             proportionOfPLHIVWithAeWhoseRegimenWasStopped.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -38,12 +44,14 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler implements 
         }
 
         if (query.datimAgeGroup) {
-            proportionOfPLHIVWithAeWhoseRegimenWasStopped.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            proportionOfPLHIVWithAeWhoseRegimenWasStopped.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
-            // lacking gender
-            // proportionOfPLHIVWithAeWhoseRegimenWasStopped.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            proportionOfPLHIVWithAeWhoseRegimenWasStopped.andWhere(
+                'f.Gender IN (:...genders)',
+                { genders: query.gender },
+            );
         }
 
         return await proportionOfPLHIVWithAeWhoseRegimenWasStopped

@@ -3,18 +3,22 @@ import { GetReportedAesWithSeverityLevelsQuery } from '../impl/get-reported-aes-
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransAdverseEvents } from '../../entities/fact-trans-adverse-events.model';
 import { Repository } from 'typeorm';
+import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetReportedAesWithSeverityLevelsQuery)
 export class GetReportedAesWithSeverityLevelsHandler implements IQueryHandler<GetReportedAesWithSeverityLevelsQuery> {
     constructor(
-        @InjectRepository(FactTransAdverseEvents, 'mssql')
-        private readonly repository: Repository<FactTransAdverseEvents>
+        @InjectRepository(AggregateAdverseEvents, 'mssql')
+        private readonly repository: Repository<AggregateAdverseEvents>
     ) {
     }
 
     async execute(query: GetReportedAesWithSeverityLevelsQuery): Promise<any> {
-        const reportedAesWithSeverity = this.repository.createQueryBuilder('f')
-            .select('[AdverseEvent], [Severity] = CASE WHEN ISNULL([Severity],\'\') = \'\' THEN \'Unknown\' ELSE [Severity] END, SUM([AdverseEvent_Total]) total, AgeGroup ageGroup')
+        const reportedAesWithSeverity = this.repository
+            .createQueryBuilder('f')
+            .select(
+                "[AdverseEvent], [Severity] = CASE WHEN ISNULL([Severity],'') = '' THEN 'Unknown' ELSE [Severity] END, SUM([AdverseEventCount]) total, DATIMAgeGroup ageGroup",
+            )
             .where('[AdverseEvent] IS NOT NULL');
 
         if (query.county) {
@@ -42,7 +46,7 @@ export class GetReportedAesWithSeverityLevelsHandler implements IQueryHandler<Ge
         }
 
         if (query.datimAgeGroup) {
-            reportedAesWithSeverity.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            reportedAesWithSeverity.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
@@ -50,8 +54,8 @@ export class GetReportedAesWithSeverityLevelsHandler implements IQueryHandler<Ge
         }
 
         return await reportedAesWithSeverity
-            .groupBy('[AdverseEvent], [Severity], AgeGroup')
-            .orderBy('SUM([AdverseEvent_Total])')
+            .groupBy('[AdverseEvent], [Severity], DATIMAgeGroup')
+            .orderBy('SUM([AdverseEventCount])')
             .getRawMany();
     }
 }
