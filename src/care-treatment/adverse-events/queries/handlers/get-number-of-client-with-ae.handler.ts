@@ -1,7 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetNumberOfClientWithAeQuery } from '../impl/get-number-of-client-with-ae.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAeClients } from '../../entities/fact-trans-ae-clients.model';
 import { Repository } from 'typeorm';
 import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
@@ -16,7 +15,7 @@ export class GetNumberOfClientWithAeHandler implements IQueryHandler<GetNumberOf
     async execute(query: GetNumberOfClientWithAeQuery): Promise<any> {
         const noOfClientsAdultsWithAe = this.repository
             .createQueryBuilder('f')
-            .select('SUM([AdverseEventCount]) total')
+            .select('SUM([AdverseClientsCount]) total')
             .where(
                 "[DATIMAgeGroup] NOT IN ('Under 1', '1 to 4', '5 to 9', '10 to 14')",
             );
