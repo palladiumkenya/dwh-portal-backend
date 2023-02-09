@@ -3,20 +3,22 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransNewlyStarted } from '../../entities/fact-trans-newly-started.model';
 import { Repository } from 'typeorm';
 import { GetTxNewBySexQuery } from '../impl/get-tx-new-by-sex.query';
+import { AggregateCohortRetention } from './../../entities/aggregate-cohort-retention.model';
 
 @QueryHandler(GetTxNewBySexQuery)
 export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
     constructor(
-        @InjectRepository(FactTransNewlyStarted, 'mssql')
-        private readonly repository: Repository<FactTransNewlyStarted>
+        @InjectRepository(AggregateCohortRetention, 'mssql')
+        private readonly repository: Repository<AggregateCohortRetention>
     ) {
 
     }
 
     async execute(query: GetTxNewBySexQuery): Promise<any> {
-        const txNewBySex = this.repository.createQueryBuilder('f')
-            .select(['[Gender], SUM([StartedART]) txNew'])
-            .where('f.[StartedART] > 0')
+        const txNewBySex = this.repository
+            .createQueryBuilder('f')
+            .select(['[Gender], SUM([patients_startedART]) txNew'])
+            .where('f.[patients_startedART] > 0')
             .andWhere('f.[Gender] IS NOT NULL');
 
         if (query.partner) {
@@ -36,7 +38,10 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
         }
 
         if(query.month) {
-            txNewBySex.andWhere('f.StartART_Month = :month', { month: query.month });
+            txNewBySex.andWhere(
+                `MONTH (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) = :month`,
+                { month: query.month },
+            );
         }
 
         if (query.agency) {
@@ -54,9 +59,12 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
         if(query.year) {
             const yearVal = new Date().getFullYear();
             if(query.year == yearVal && !query.month) {
-                txNewBySex.andWhere('f.Start_Year >= :startYear', { startYear: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).getFullYear() });
+                txNewBySex.andWhere(`YEAR (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) >= :startYear`, { startYear: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).getFullYear() });
             } else {
-                txNewBySex.andWhere('f.Start_Year = :startYear', { startYear: query.year });
+                txNewBySex.andWhere(
+                    `YEAR (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) = :startYear`,
+                    { startYear: query.year },
+                );
             }
         }
 

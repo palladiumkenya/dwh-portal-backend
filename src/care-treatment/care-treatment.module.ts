@@ -323,6 +323,10 @@ import { AggregateOVCCount } from './ovc/entities/aggregate-ovc-count.model';
 import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.model';
 import { LinelistFACTART } from './common/entities/linelist-fact-art.model';
 import { AggregateAdverseEvents } from './adverse-events/entities/aggregate-adverse-events.model';
+import { AggregateTimeToARTLast12M } from './new-on-art/entities/aggregate-time-to-art-last-12-m.model';
+import { AggregateCohortRetention } from './new-on-art/entities/aggregate-cohort-retention.model';
+import { AggregateTimeToART } from './new-on-art/entities/aggregate-time-to-art.model';
+import { AggregateTimeToARTGrp } from './new-on-art/entities/aggregate-time-to-art-grp.model';
 
 
 @Module({
@@ -353,6 +357,11 @@ import { AggregateAdverseEvents } from './adverse-events/entities/aggregate-adve
                 LinelistFACTART,
 
                 AggregateAdverseEvents,
+
+                AggregateTimeToARTLast12M,
+                AggregateCohortRetention,
+                AggregateTimeToART,
+                AggregateTimeToARTGrp,
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,

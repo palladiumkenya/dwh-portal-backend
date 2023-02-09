@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactCTTimeToArt } from '../../entities/fact-ct-time-to-art-grp.model';
 import { Repository } from 'typeorm';
 import { GetTimeToArtFacilitiesQuery } from '../impl/get-time-to-art-facilities.query';
+import { AggregateTimeToART } from '../../entities/aggregate-time-to-art.model';
 
 @QueryHandler(GetTimeToArtFacilitiesQuery)
 export class GetTimeToArtFacilitiesHandler implements IQueryHandler<GetTimeToArtFacilitiesQuery> {
@@ -12,7 +13,7 @@ export class GetTimeToArtFacilitiesHandler implements IQueryHandler<GetTimeToArt
     ) {
 
     }
-
+// NOTE:: THis is not in use
     async execute(query: GetTimeToArtFacilitiesQuery): Promise<any> {
         const timeToArtFacilities = this.repository.createQueryBuilder('f')
             .select(['[TimeToARTDiagnosis_Grp] period, [StartART_Year] year, [StartART_Month] month, [FacilityName] facility, [County] county,[Subcounty] subCounty, [CTPartner] partner, SUM([NumPatients]) txNew'])
