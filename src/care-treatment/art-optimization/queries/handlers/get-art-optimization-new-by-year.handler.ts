@@ -3,12 +3,13 @@ import { GetArtOptimizationNewByYearQuery } from '../impl/get-art-optimization-n
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOptimizeStartRegimen } from '../../entities/fact-trans-optimize-start-regimen.model';
 import { Repository } from 'typeorm';
+import { AggregateOptimizeStartRegimens } from './../../entities/aggregate-optimize-start-regimens.model';
 
 @QueryHandler(GetArtOptimizationNewByYearQuery)
 export class GetArtOptimizationNewByYearHandler implements IQueryHandler<GetArtOptimizationNewByYearQuery> {
     constructor(
-        @InjectRepository(FactTransOptimizeStartRegimen, 'mssql')
-        private readonly repository: Repository<FactTransOptimizeStartRegimen>
+        @InjectRepository(AggregateOptimizeStartRegimens, 'mssql')
+        private readonly repository: Repository<AggregateOptimizeStartRegimens>
     ) {
 
     }
@@ -16,7 +17,7 @@ export class GetArtOptimizationNewByYearHandler implements IQueryHandler<GetArtO
     async execute(query: GetArtOptimizationNewByYearQuery): Promise<any> {
         const artOptimizationNewByYear = this.repository.createQueryBuilder('f')
             .select(['StartARTYr year, StartARTMonth month, StartRegimen startRegimen, sum(TXCurr) txCurr'])
-            .where('MFLCode IS NOT NULL');
+            .where('SiteCode IS NOT NULL');
 
         if (query.county) {
             artOptimizationNewByYear.andWhere('f.County IN (:...county)', { county: query.county });
@@ -55,11 +56,7 @@ export class GetArtOptimizationNewByYearHandler implements IQueryHandler<GetArtO
         }
 
         if (query.datimAgeGroup) {
-            artOptimizationNewByYear.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
-        }
-
-        if (query.populationType) {
-            artOptimizationNewByYear.andWhere('f.PopulationType IN (:...populationType)', { populationType: query.populationType });
+            artOptimizationNewByYear.andWhere('f.DATIMAgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
         }
 
         if (query.latestPregnancy) {

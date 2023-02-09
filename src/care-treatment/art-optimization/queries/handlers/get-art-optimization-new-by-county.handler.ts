@@ -3,12 +3,13 @@ import { GetArtOptimizationNewByCountyQuery } from '../impl/get-art-optimization
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOptimizeStartRegimen } from '../../entities/fact-trans-optimize-start-regimen.model';
 import { Repository } from 'typeorm';
+import { AggregateOptimizeStartRegimens } from '../../entities/aggregate-optimize-start-regimens.model';
 
 @QueryHandler(GetArtOptimizationNewByCountyQuery)
 export class GetArtOptimizationNewByCountyHandler implements IQueryHandler<GetArtOptimizationNewByCountyQuery> {
     constructor(
-        @InjectRepository(FactTransOptimizeStartRegimen, 'mssql')
-        private readonly repository: Repository<FactTransOptimizeStartRegimen>
+        @InjectRepository(AggregateOptimizeStartRegimens, 'mssql')
+        private readonly repository: Repository<AggregateOptimizeStartRegimens>
     ) {
 
     }
@@ -16,7 +17,7 @@ export class GetArtOptimizationNewByCountyHandler implements IQueryHandler<GetAr
     async execute(query: GetArtOptimizationNewByCountyQuery): Promise<any> {
         const artOptimizationNewByCounty = this.repository.createQueryBuilder('f')
             .select(['County county, StartRegimen startRegimen, StartARTYr year, StartARTMonth month, sum(TXCurr) txCurr'])
-            .where('MFLCode IS NOT NULL');
+            .where('SiteCode IS NOT NULL');
 
         if (query.county) {
             artOptimizationNewByCounty.andWhere('f.County IN (:...county)', { county: query.county });
@@ -55,11 +56,7 @@ export class GetArtOptimizationNewByCountyHandler implements IQueryHandler<GetAr
         }
 
         if (query.datimAgeGroup) {
-            artOptimizationNewByCounty.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
-        }
-
-        if (query.populationType) {
-            artOptimizationNewByCounty.andWhere('f.PopulationType IN (:...populationType)', { populationType: query.populationType });
+            artOptimizationNewByCounty.andWhere('f.DATIMAgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
         }
 
         if (query.latestPregnancy) {

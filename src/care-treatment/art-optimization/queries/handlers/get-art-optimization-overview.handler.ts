@@ -3,12 +3,13 @@ import { GetArtOptimizationOverviewQuery } from '../impl/get-art-optimization-ov
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOptimizeRegLines } from '../../entities/fact-trans-optimize-reg-lines.model';
 import { Repository } from 'typeorm';
+import { AggregateOptimizeCurrentRegimens } from './../../entities/aggregate-optimize-current-regimens.model';
 
 @QueryHandler(GetArtOptimizationOverviewQuery)
 export class GetArtOptimizationOverviewHandler implements IQueryHandler<GetArtOptimizationOverviewQuery> {
     constructor(
-        @InjectRepository(FactTransOptimizeRegLines, 'mssql')
-        private readonly repository: Repository<FactTransOptimizeRegLines>
+        @InjectRepository(AggregateOptimizeCurrentRegimens, 'mssql')
+        private readonly repository: Repository<AggregateOptimizeCurrentRegimens>
     ) {
 
     }
@@ -16,7 +17,7 @@ export class GetArtOptimizationOverviewHandler implements IQueryHandler<GetArtOp
     async execute(query: GetArtOptimizationOverviewQuery): Promise<any> {
         const artOptimizationOverview = this.repository.createQueryBuilder('f')
             .select(['Agegroup ageGroup, Gender gender, CurrentRegimen currentRegimen, RegimenLine regimenLine, sum(TXCurr) txCurr'])
-            .where('MFLCode IS NOT NULL');
+            .where('SiteCode IS NOT NULL');
 
         if (query.county) {
             artOptimizationOverview.andWhere('f.County IN (:...county)', { county: query.county });
@@ -31,11 +32,11 @@ export class GetArtOptimizationOverviewHandler implements IQueryHandler<GetArtOp
         }
 
         if (query.partner) {
-            artOptimizationOverview.andWhere('f.CTPartner IN (:...partner)', { partner: query.partner });
+            artOptimizationOverview.andWhere('f.PartnerName IN (:...partner)', { partner: query.partner });
         }
 
         if (query.agency) {
-            artOptimizationOverview.andWhere('f.CTAgency IN (:...agency)', { agency: query.agency });
+            artOptimizationOverview.andWhere('f.AgencyName IN (:...agency)', { agency: query.agency });
         }
 
         // if (query.project) {
@@ -55,7 +56,7 @@ export class GetArtOptimizationOverviewHandler implements IQueryHandler<GetArtOp
         }
 
         if (query.datimAgeGroup) {
-            artOptimizationOverview.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+            artOptimizationOverview.andWhere('f.DATIMAgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
         }
 
         if (query.populationType) {

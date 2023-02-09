@@ -1,14 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetArtOptimizationNewByPartnerQuery } from '../impl/get-art-optimization-new-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOptimizeStartRegimen } from '../../entities/fact-trans-optimize-start-regimen.model';
 import { Repository } from 'typeorm';
+import { AggregateOptimizeStartRegimens } from './../../entities/aggregate-optimize-start-regimens.model';
 
 @QueryHandler(GetArtOptimizationNewByPartnerQuery)
 export class GetArtOptimizationNewByPartnerHandler implements IQueryHandler<GetArtOptimizationNewByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransOptimizeStartRegimen, 'mssql')
-        private readonly repository: Repository<FactTransOptimizeStartRegimen>
+        @InjectRepository(AggregateOptimizeStartRegimens, 'mssql')
+        private readonly repository: Repository<AggregateOptimizeStartRegimens>
     ) {
 
     }
@@ -16,7 +16,7 @@ export class GetArtOptimizationNewByPartnerHandler implements IQueryHandler<GetA
     async execute(query: GetArtOptimizationNewByPartnerQuery): Promise<any> {
         const artOptimizationNewByPartner = this.repository.createQueryBuilder('f')
             .select(['CTPartner partner, StartRegimen startRegimen, StartARTYr year, StartARTMonth month, sum(TXCurr) txCurr'])
-            .where('MFLCode IS NOT NULL');
+            .where('SiteCode IS NOT NULL');
 
         if (query.county) {
             artOptimizationNewByPartner.andWhere('f.County IN (:...county)', { county: query.county });
@@ -55,11 +55,7 @@ export class GetArtOptimizationNewByPartnerHandler implements IQueryHandler<GetA
         }
 
         if (query.datimAgeGroup) {
-            artOptimizationNewByPartner.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
-        }
-
-        if (query.populationType) {
-            artOptimizationNewByPartner.andWhere('f.PopulationType IN (:...populationType)', { populationType: query.populationType });
+            artOptimizationNewByPartner.andWhere('f.DATIMAgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
         }
 
         if (query.latestPregnancy) {

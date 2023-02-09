@@ -327,6 +327,8 @@ import { AggregateTimeToARTLast12M } from './new-on-art/entities/aggregate-time-
 import { AggregateCohortRetention } from './new-on-art/entities/aggregate-cohort-retention.model';
 import { AggregateTimeToART } from './new-on-art/entities/aggregate-time-to-art.model';
 import { AggregateTimeToARTGrp } from './new-on-art/entities/aggregate-time-to-art-grp.model';
+import { AggregateOptimizeCurrentRegimens } from './art-optimization/entities/aggregate-optimize-current-regimens.model';
+import { AggregateOptimizeStartRegimens } from './art-optimization/entities/aggregate-optimize-start-regimens.model';
 
 
 @Module({
@@ -362,6 +364,9 @@ import { AggregateTimeToARTGrp } from './new-on-art/entities/aggregate-time-to-a
                 AggregateCohortRetention,
                 AggregateTimeToART,
                 AggregateTimeToARTGrp,
+
+                AggregateOptimizeCurrentRegimens,
+                AggregateOptimizeStartRegimens,
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,
