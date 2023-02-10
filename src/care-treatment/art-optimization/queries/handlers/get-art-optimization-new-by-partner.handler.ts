@@ -15,7 +15,7 @@ export class GetArtOptimizationNewByPartnerHandler implements IQueryHandler<GetA
 
     async execute(query: GetArtOptimizationNewByPartnerQuery): Promise<any> {
         const artOptimizationNewByPartner = this.repository.createQueryBuilder('f')
-            .select(['CTPartner partner, StartRegimen startRegimen, StartARTYr year, StartARTMonth month, sum(TXCurr) txCurr'])
+            .select(['PartnerName partner, StartRegimen startRegimen, StartARTYr year, StartARTMonth month, sum(TXCurr) txCurr'])
             .where('SiteCode IS NOT NULL');
 
         if (query.county) {
@@ -31,11 +31,11 @@ export class GetArtOptimizationNewByPartnerHandler implements IQueryHandler<GetA
         }
 
         if (query.partner) {
-            artOptimizationNewByPartner.andWhere('f.CTPartner IN (:...partner)', { partner: query.partner });
+            artOptimizationNewByPartner.andWhere('f.PartnerName IN (:...partner)', { partner: query.partner });
         }
 
         if (query.agency) {
-            artOptimizationNewByPartner.andWhere('f.CTAgency IN (:...agency)', { agency: query.agency });
+            artOptimizationNewByPartner.andWhere('f.AgencyName IN (:...agency)', { agency: query.agency });
         }
 
         // if (query.project) {
@@ -63,8 +63,8 @@ export class GetArtOptimizationNewByPartnerHandler implements IQueryHandler<GetA
         }
 
         return await artOptimizationNewByPartner
-            .groupBy('CTPartner, StartRegimen, StartARTYr, StartARTMonth')
-            .orderBy('CTPartner, StartRegimen, StartARTYr, StartARTMonth')
+            .groupBy('PartnerName, StartRegimen, StartARTYr, StartARTMonth')
+            .orderBy('PartnerName, StartRegimen, StartARTYr, StartARTMonth')
             .getRawMany();
     }
 }

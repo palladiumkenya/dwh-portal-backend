@@ -16,10 +16,10 @@ export class AggregateOptimizeStartRegimens {
     Subcounty: string;
 
     @Column('text')
-    CTPartner: string;
+    PartnerName: string;
 
     @Column('text')
-    CTAgency: string;
+    AgencyName: string;
 
     @Column('text')
     Agegroup: string;
