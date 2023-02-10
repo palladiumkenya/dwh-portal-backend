@@ -33,11 +33,11 @@ export class GetCovidSymptomaticInfectionsHandler implements IQueryHandler<GetCo
         }
 
         if (query.partner) {
-            covidSymptomaticInfections.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidSymptomaticInfections.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidSymptomaticInfections.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidSymptomaticInfections.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

@@ -16,7 +16,7 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeHandler
         @InjectRepository(LineListOTZ, 'mssql')
         private readonly repository2: Repository<LineListOTZ>,
     ) {}
-
+// TODO:: Move to correct table
     async execute(
         query: GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeQuery,
     ): Promise<any> {
@@ -81,13 +81,13 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeHandler
 
                         if (query.partner) {
                             vlSuppressionOtzByAgeAlhiv.andWhere(
-                                'f.CTPartner IN (:...partners)',
+                                'f.PartnerName IN (:...partners)',
                                 {
                                     partners: query.partner,
                                 },
                             );
                             vlSuppressionOtzByAge.andWhere(
-                                'f.CTPartner IN (:...partners)',
+                                'f.PartnerName IN (:...partners)',
                                 {
                                     partners: query.partner,
                                 },
@@ -96,13 +96,13 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeHandler
 
                         if (query.agency) {
                             vlSuppressionOtzByAgeAlhiv.andWhere(
-                                'f.CTAgency IN (:...agencies)',
+                                'f.AgencyName IN (:...agencies)',
                                 {
                                     agencies: query.agency,
                                 },
                             );
                             vlSuppressionOtzByAge.andWhere(
-                                'f.CTAgency IN (:...agencies)',
+                                'f.AgencyName IN (:...agencies)',
                                 {
                                     agencies: query.agency,
                                 },

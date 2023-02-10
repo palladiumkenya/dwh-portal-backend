@@ -35,11 +35,11 @@ export class GetDsdAppointmentDurationBySexHandler implements IQueryHandler<GetD
         }
 
         if (query.partner) {
-            dsdAppointmentDuration.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdAppointmentDuration.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdAppointmentDuration.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdAppointmentDuration.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.ageGroup) {

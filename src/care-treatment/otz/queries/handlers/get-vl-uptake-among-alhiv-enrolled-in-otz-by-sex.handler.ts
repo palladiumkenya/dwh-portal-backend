@@ -29,11 +29,11 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzBySexHandler implements IQueryHan
         }
 
         if (query.partner) {
-            vlUptakeAmongAlHivEnrolledInOtzBySex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlUptakeAmongAlHivEnrolledInOtzBySex.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlUptakeAmongAlHivEnrolledInOtzBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlUptakeAmongAlHivEnrolledInOtzBySex.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

@@ -32,11 +32,11 @@ export class GetCovidAdultPLHIVVaccinatedByGenderHandler implements IQueryHandle
         }
 
         if (query.partner) {
-            adultPLHIVVaccinatedByGender.andWhere('g.CTPartner IN (:...partners)', { partners: query.partner });
+            adultPLHIVVaccinatedByGender.andWhere('g.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            adultPLHIVVaccinatedByGender.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+            adultPLHIVVaccinatedByGender.andWhere('g.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

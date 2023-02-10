@@ -39,13 +39,13 @@ export class GetCalhivEligibleVlNotInOvcHandler
         }
 
         if (query.partner) {
-            CALHIVEligible.andWhere('f.CTPartner IN (:...partners)', {
+            CALHIVEligible.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            CALHIVEligible.andWhere('f.CTAgency IN (:...agencies)', {
+            CALHIVEligible.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

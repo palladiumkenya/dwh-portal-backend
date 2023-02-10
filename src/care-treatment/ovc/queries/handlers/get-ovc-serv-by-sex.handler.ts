@@ -30,11 +30,11 @@ export class GetOvcServBySexHandler implements IQueryHandler<GetOvcServBySexQuer
         }
 
         if (query.partner) {
-            ovcServBySex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            ovcServBySex.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            ovcServBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            ovcServBySex.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

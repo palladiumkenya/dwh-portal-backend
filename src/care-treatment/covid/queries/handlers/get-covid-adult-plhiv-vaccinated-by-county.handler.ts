@@ -29,11 +29,11 @@ export class GetCovidAdultPLHIVVaccinatedByCountyHandler implements IQueryHandle
         }
 
         if (query.partner) {
-            adultPLHIVVaccinatedByCounty.andWhere('g.CTPartner IN (:...partners)', { partners: query.partner });
+            adultPLHIVVaccinatedByCounty.andWhere('g.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            adultPLHIVVaccinatedByCounty.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+            adultPLHIVVaccinatedByCounty.andWhere('g.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

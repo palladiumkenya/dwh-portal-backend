@@ -37,11 +37,11 @@ export class GetCovidOverallAdmissionFemalesHandler implements IQueryHandler<Get
         }
 
         if (query.partner) {
-            covidOverallAdmissionFemales.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidOverallAdmissionFemales.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidOverallAdmissionFemales.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidOverallAdmissionFemales.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

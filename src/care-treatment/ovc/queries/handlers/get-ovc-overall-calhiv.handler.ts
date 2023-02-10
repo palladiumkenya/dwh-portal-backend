@@ -30,11 +30,11 @@ export class GetOvcOverallCalhivHandler implements IQueryHandler<GetOvcOverallCa
         }
 
         if (query.partner) {
-            overAllCalHiv.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            overAllCalHiv.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            overAllCalHiv.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            overAllCalHiv.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

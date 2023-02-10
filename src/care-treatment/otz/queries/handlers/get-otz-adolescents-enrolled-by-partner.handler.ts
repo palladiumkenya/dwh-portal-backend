@@ -11,10 +11,10 @@ export class GetOtzAdolescentsEnrolledByPartnerHandler implements IQueryHandler<
         private readonly repository: Repository<LineListALHIV>
     ) {
     }
-
+// TODO:: Move to correct Table
     async execute(query: GetOtzAdolescentsEnrolledByPartnerQuery): Promise<any> {
         const otzEnrollmentsPartner = this.repository.createQueryBuilder('f')
-            .select(['[CTPartner] partner, COUNT(*) totalAdolescents']);
+            .select(['[PartnerName] partner, COUNT(*) totalAdolescents']);
 
         if (query.county) {
             otzEnrollmentsPartner.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -29,11 +29,11 @@ export class GetOtzAdolescentsEnrolledByPartnerHandler implements IQueryHandler<
         }
 
         if (query.partner) {
-            otzEnrollmentsPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            otzEnrollmentsPartner.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            otzEnrollmentsPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            otzEnrollmentsPartner.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
@@ -45,7 +45,7 @@ export class GetOtzAdolescentsEnrolledByPartnerHandler implements IQueryHandler<
         }
 
         return await otzEnrollmentsPartner
-            .groupBy('CTPartner')
+            .groupBy('PartnerName')
             .getRawMany();
     }
 }

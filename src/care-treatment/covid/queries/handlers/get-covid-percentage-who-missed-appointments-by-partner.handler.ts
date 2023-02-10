@@ -17,8 +17,8 @@ export class GetCovidPercentageWhoMissedAppointmentsByPartnerHandler implements 
 
     async execute(query: GetCovidPercentageWhoMissedAppointmentsByPartnerQuery): Promise<any> {
         const covidPercentageWhoMissedAppointmentsByPartner = this.repository.createQueryBuilder('f')
-            .select(['CTPartner, count (*)Num'])
-            .where('MissedAppointmentDueToCOVID19=\'Yes\' AND CTPartner IS NOT NULL');
+            .select(['PartnerName CTPartner, count (*)Num'])
+            .where('MissedAppointmentDueToCOVID19=\'Yes\' AND PartnerName IS NOT NULL');
 
         if (query.county) {
             covidPercentageWhoMissedAppointmentsByPartner.andWhere('County IN (:...counties)', { counties: query.county });
@@ -33,11 +33,11 @@ export class GetCovidPercentageWhoMissedAppointmentsByPartnerHandler implements 
         }
 
         if (query.partner) {
-            covidPercentageWhoMissedAppointmentsByPartner.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
+            covidPercentageWhoMissedAppointmentsByPartner.andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidPercentageWhoMissedAppointmentsByPartner.andWhere('CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidPercentageWhoMissedAppointmentsByPartner.andWhere('AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -49,7 +49,7 @@ export class GetCovidPercentageWhoMissedAppointmentsByPartnerHandler implements 
         }
 
         return await covidPercentageWhoMissedAppointmentsByPartner
-            .groupBy('CTPartner')
+            .groupBy('PartnerName')
             .getRawMany();
     }
 }

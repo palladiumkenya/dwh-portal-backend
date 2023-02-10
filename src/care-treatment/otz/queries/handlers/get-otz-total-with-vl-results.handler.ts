@@ -31,11 +31,11 @@ export class GetOtzTotalWithVlResultsHandler implements IQueryHandler<GetOtzTota
         }
 
         if (query.partner) {
-            totalWithVlResults.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            totalWithVlResults.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            totalWithVlResults.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            totalWithVlResults.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

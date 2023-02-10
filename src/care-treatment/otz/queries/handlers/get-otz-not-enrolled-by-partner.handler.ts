@@ -15,7 +15,7 @@ export class GetOtzNotEnrolledByPartnerHandler
     async execute(query: GetOtzNotEnrolledByPartnerQuery): Promise<any> {
         const proportionWhoCompletedTraining = this.repository
             .createQueryBuilder('f')
-            .select(['SUM(Enrolled) Num, CTPartner']);
+            .select(['SUM(Enrolled) Num, PartnerName CTPartner']);
 
         if (query.county) {
             proportionWhoCompletedTraining.andWhere(
@@ -40,14 +40,14 @@ export class GetOtzNotEnrolledByPartnerHandler
 
         if (query.partner) {
             proportionWhoCompletedTraining.andWhere(
-                'f.CTPartner IN (:...partners)',
+                'f.PartnerName IN (:...partners)',
                 { partners: query.partner },
             );
         }
 
         if (query.agency) {
             proportionWhoCompletedTraining.andWhere(
-                'f.CTAgency IN (:...agencies)',
+                'f.AgencyName IN (:...agencies)',
                 { agencies: query.agency },
             );
         }
@@ -67,7 +67,7 @@ export class GetOtzNotEnrolledByPartnerHandler
         }
 
         return await proportionWhoCompletedTraining
-            .groupBy('CTPartner')
+            .groupBy('PartnerName')
             .orderBy('SUM(Enrolled)', 'DESC')
             .getRawMany();
     }

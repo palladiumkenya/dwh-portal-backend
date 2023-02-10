@@ -32,11 +32,11 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingHandler
         }
 
         if (query.partner) {
-            proportionWhoCompletedTraining.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            proportionWhoCompletedTraining.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            proportionWhoCompletedTraining.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            proportionWhoCompletedTraining.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

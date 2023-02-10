@@ -30,11 +30,11 @@ export class GetDistributionOfOvcClientsByAgeSexHandler implements IQueryHandler
         }
 
         if (query.partner) {
-            distributionOfOvcClientsByAgeSex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            distributionOfOvcClientsByAgeSex.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            distributionOfOvcClientsByAgeSex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            distributionOfOvcClientsByAgeSex.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

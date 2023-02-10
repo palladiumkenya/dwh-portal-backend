@@ -30,11 +30,11 @@ export class GetOvcVldoneHandler implements IQueryHandler<GetOvcVldoneQuery> {
         }
 
         if (query.partner) {
-            OVCVLDone.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            OVCVLDone.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            OVCVLDone.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            OVCVLDone.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

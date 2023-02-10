@@ -36,11 +36,11 @@ export class GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler imple
         }
 
         if (query.partner) {
-            trendsOfPLHIVVaccination.andWhere('g.CTPartner IN (:...partners)', { partners: query.partner });
+            trendsOfPLHIVVaccination.andWhere('g.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            trendsOfPLHIVVaccination.andWhere('CTAgency IN (:...agencies)', { agencies: query.agency });
+            trendsOfPLHIVVaccination.andWhere('AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

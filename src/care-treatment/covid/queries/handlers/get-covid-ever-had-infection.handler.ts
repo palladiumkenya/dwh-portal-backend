@@ -34,11 +34,11 @@ export class GetCovidEverHadInfectionHandler implements IQueryHandler<GetCovidEv
         }
 
         if (query.partner) {
-            everHadCovidInfection.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            everHadCovidInfection.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            everHadCovidInfection.andWhere('CTAgency IN (:...agencies)', { agencies: query.agency });
+            everHadCovidInfection.andWhere('AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

@@ -18,7 +18,7 @@ export class AggregateOTZOutcome {
     CTPartner: string;
 
     @Column('text')
-    CTAgency: string;
+    AgencyName: string;
 
     @Column('text')
     Gender: string;

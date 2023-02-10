@@ -30,11 +30,11 @@ export class GetOvcIITHandler implements IQueryHandler<GetOvcIITQuery> {
         }
 
         if (query.partner) {
-            OVCIIT.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            OVCIIT.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            OVCIIT.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            OVCIIT.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

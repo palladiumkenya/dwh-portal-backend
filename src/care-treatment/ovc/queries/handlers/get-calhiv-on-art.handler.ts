@@ -37,13 +37,13 @@ export class GetCalhivOnArtHandler
         }
 
         if (query.partner) {
-            CALHIVonART.andWhere('f.CTPartner IN (:...partners)', {
+            CALHIVonART.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            CALHIVonART.andWhere('f.CTAgency IN (:...agencies)', {
+            CALHIVonART.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

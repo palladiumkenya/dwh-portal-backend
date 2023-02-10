@@ -35,11 +35,11 @@ export class GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler i
         }
 
         if (query.partner) {
-            cumulativeWithMissingDate.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
+            cumulativeWithMissingDate.andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            cumulativeWithMissingDate.andWhere('CTAgency IN (:...agencies)', { agencies: query.agency });
+            cumulativeWithMissingDate.andWhere('AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

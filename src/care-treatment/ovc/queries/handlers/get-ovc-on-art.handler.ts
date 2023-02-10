@@ -30,11 +30,11 @@ export class GetOvcOnArtHandler implements IQueryHandler<GetOvcOnArtQuery> {
         }
 
         if (query.partner) {
-            OVConART.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            OVConART.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            OVConART.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            OVConART.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

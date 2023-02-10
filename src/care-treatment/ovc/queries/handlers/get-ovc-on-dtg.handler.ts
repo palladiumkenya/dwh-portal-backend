@@ -30,11 +30,11 @@ export class GetOvcOnDtgHandler implements IQueryHandler<GetOvcOnDtgQuery> {
         }
 
         if (query.partner) {
-            OVConDTG.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            OVConDTG.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            OVConDTG.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            OVConDTG.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

@@ -36,15 +36,15 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler implements I
         }
 
         if (query.partner) {
-            vlSuppressionOtzBySex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlSuppressionOtzBySex.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlSuppressionOtzBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlSuppressionOtzBySex.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            vlSuppressionOtzBySex.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            vlSuppressionOtzBySex.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

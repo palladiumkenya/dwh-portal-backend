@@ -44,13 +44,13 @@ export class GetCovidOverallAdmissionHandler
         }
 
         if (query.partner) {
-            covidOverallAdmission.andWhere('f.CTPartner IN (:...partners)', {
+            covidOverallAdmission.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            covidOverallAdmission.andWhere('f.CTAgency IN (:...agencies)', {
+            covidOverallAdmission.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

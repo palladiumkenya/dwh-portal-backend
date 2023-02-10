@@ -30,11 +30,11 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByCountyHandler implements IQuery
         }
 
         if (query.partner) {
-            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

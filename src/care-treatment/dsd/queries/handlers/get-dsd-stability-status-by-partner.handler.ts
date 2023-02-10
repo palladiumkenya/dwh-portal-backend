@@ -17,7 +17,7 @@ export class GetDsdStabilityStatusByPartnerHandler implements IQueryHandler<GetD
         const dsdStabilityStatusByPartner = this.repository
             .createQueryBuilder('f')
             .select([
-                'SUM(patients_onMMD) mmd, SUM(patients_nonMMD) nonMmd, [CTPartner] partner, CASE WHEN (SUM(patients_nonMMD) = 0 and SUM(patients_onMMD) > 0) THEN 100 WHEN (SUM(patients_nonMMD) = 0 and SUM(patients_onMMD) = 0) THEN 0 ELSE (CAST(SUM(patients_onMMD) as float)/CAST(SUM(patients_nonMMD) as float)) END percentMMD',
+                'SUM(patients_onMMD) mmd, SUM(patients_nonMMD) nonMmd, [PartnerName] partner, CASE WHEN (SUM(patients_nonMMD) = 0 and SUM(patients_onMMD) > 0) THEN 100 WHEN (SUM(patients_nonMMD) = 0 and SUM(patients_onMMD) = 0) THEN 0 ELSE (CAST(SUM(patients_onMMD) as float)/CAST(SUM(patients_nonMMD) as float)) END percentMMD',
             ])
             .where('f.MFLCode > 1');
 
@@ -34,11 +34,11 @@ export class GetDsdStabilityStatusByPartnerHandler implements IQueryHandler<GetD
         }
 
         if (query.partner) {
-            dsdStabilityStatusByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdStabilityStatusByPartner.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdStabilityStatusByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdStabilityStatusByPartner.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
@@ -50,7 +50,7 @@ export class GetDsdStabilityStatusByPartnerHandler implements IQueryHandler<GetD
         }
 
         return await dsdStabilityStatusByPartner
-            .groupBy('CTPartner')
+            .groupBy('PartnerName')
             .orderBy('percentMMD', 'DESC')
             .getRawMany();
     }

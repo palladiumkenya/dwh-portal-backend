@@ -3,18 +3,22 @@ import { GetOtzOutcomesByYearOfArtStartQuery } from '../impl/get-otz-outcomes-by
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOtzOutcome } from '../../entities/fact-trans-otz-outcome.model';
 import { Repository } from 'typeorm';
+import { AggregateOTZOutcome } from './../../entities/aggregate-otz-outcome.model';
 
 @QueryHandler(GetOtzOutcomesByYearOfArtStartQuery)
 export class GetOtzOutcomesByYearOfArtStartHandler implements IQueryHandler<GetOtzOutcomesByYearOfArtStartQuery> {
     constructor(
-        @InjectRepository(FactTransOtzOutcome, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(AggregateOTZOutcome, 'mssql')
+        private readonly repository: Repository<AggregateOTZOutcome>
     ) {
     }
-
+// TODO::ADD ART START DATE
     async execute(query: GetOtzOutcomesByYearOfArtStartQuery): Promise<any> {
-        const otzOutcomesByYearOfArtStart = this.repository.createQueryBuilder('f')
-            .select(['[OTZStart_Year], CASE WHEN [Outcome] IS NULL THEN \'Active\' ELSE [Outcome] END AS Outcome, SUM([Total_OutCome]) outcomesByYearOfArtStart'])
+        const otzOutcomesByYearOfArtStart = this.repository
+            .createQueryBuilder('f')
+            .select([
+                "[OTZStart_Year], CASE WHEN [Outcome] IS NULL THEN 'Active' ELSE [Outcome] END AS Outcome, SUM([patients_totalOutcome]) outcomesByYearOfArtStart",
+            ])
             .andWhere('f.MFLCode IS NOT NULL');
 
         if (query.county) {
@@ -30,11 +34,11 @@ export class GetOtzOutcomesByYearOfArtStartHandler implements IQueryHandler<GetO
         }
 
         if (query.partner) {
-            otzOutcomesByYearOfArtStart.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            otzOutcomesByYearOfArtStart.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            otzOutcomesByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            otzOutcomesByYearOfArtStart.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

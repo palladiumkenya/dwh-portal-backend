@@ -43,14 +43,14 @@ export class GetDsdStabilityStatusByAgeSexHandler implements IQueryHandler<GetDs
 
         if (query.partner) {
             dsdStabilityStatusByAgeSex.andWhere(
-                'f.CTPartner IN (:...partners)',
+                'f.PartnerName IN (:...partners)',
                 { partners: query.partner },
             );
         }
 
         if (query.agency) {
             dsdStabilityStatusByAgeSex.andWhere(
-                'f.CTAgency IN (:...agencies)',
+                'f.AgencyName IN (:...agencies)',
                 { agencies: query.agency },
             );
         }

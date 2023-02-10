@@ -16,7 +16,7 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartn
         const proportionWhoCompletedTrainingByCounty = this.repository
             .createQueryBuilder('f')
             .select([
-                'CTPartner partner, SUM([CompletedTraining]) count_training, SUM([CompletedTraining]) * 100.0/ SUM(SUM([CompletedTraining])) over () as proportion_training_percent',
+                'PartnerName partner, SUM([CompletedTraining]) count_training, SUM([CompletedTraining]) * 100.0/ SUM(SUM([CompletedTraining])) over () as proportion_training_percent',
             ])
             .andWhere('CompletedTraining > 0');
 
@@ -33,11 +33,11 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartn
         }
 
         if (query.partner) {
-            proportionWhoCompletedTrainingByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            proportionWhoCompletedTrainingByCounty.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            proportionWhoCompletedTrainingByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            proportionWhoCompletedTrainingByCounty.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
@@ -49,7 +49,7 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartn
         }
 
         return await proportionWhoCompletedTrainingByCounty
-            .groupBy('CTPartner')
+            .groupBy('PartnerName')
             .getRawMany();
     }
 }

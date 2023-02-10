@@ -14,7 +14,7 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler implements IQuer
 
     async execute(query: GetVlUptakeAmongAlhivEnrolledInOtzByPartnerQuery): Promise<any> {
         const vlUptakeAmongAlHivEnrolledInOtzByCounty = this.repository.createQueryBuilder('f')
-            .select(['[CTPartner] partner, COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent']);
+            .select(['[PartnerName] partner, COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent']);
 
         if (query.county) {
             vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -29,11 +29,11 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler implements IQuer
         }
 
         if (query.partner) {
-            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
@@ -45,7 +45,7 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler implements IQuer
         }
 
         return await vlUptakeAmongAlHivEnrolledInOtzByCounty
-            .groupBy('CTPartner')
+            .groupBy('PartnerName')
             .getRawMany();
     }
 }

@@ -40,14 +40,14 @@ export class GetOtzNotEnrolledByCountyHandler
 
         if (query.partner) {
             proportionWhoCompletedTraining.andWhere(
-                'f.CTPartner IN (:...partners)',
+                'f.PartnerName IN (:...partners)',
                 { partners: query.partner },
             );
         }
 
         if (query.agency) {
             proportionWhoCompletedTraining.andWhere(
-                'f.CTAgency IN (:...agencies)',
+                'f.AgencyName IN (:...agencies)',
                 { agencies: query.agency },
             );
         }

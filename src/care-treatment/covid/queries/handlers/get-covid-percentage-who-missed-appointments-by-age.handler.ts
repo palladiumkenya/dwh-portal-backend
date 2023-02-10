@@ -33,11 +33,11 @@ export class GetCovidPercentageWhoMissedAppointmentsByAgeHandler implements IQue
         }
 
         if (query.partner) {
-            covidPercentageWhoMissedAppointmentsByAge.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
+            covidPercentageWhoMissedAppointmentsByAge.andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidPercentageWhoMissedAppointmentsByAge.andWhere('CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidPercentageWhoMissedAppointmentsByAge.andWhere('AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

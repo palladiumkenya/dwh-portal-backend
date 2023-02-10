@@ -37,13 +37,13 @@ export class GetCalhivOnArtNotInOvcHandler
         }
 
         if (query.partner) {
-            CALHIVonARTNotInOvc.andWhere('f.CTPartner IN (:...partners)', {
+            CALHIVonARTNotInOvc.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            CALHIVonARTNotInOvc.andWhere('f.CTAgency IN (:...agencies)', {
+            CALHIVonARTNotInOvc.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

@@ -30,11 +30,11 @@ export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler imple
         }
 
         if (query.partner) {
-            cumulativeWhoReceivedOneDose.andWhere('g.CTPartner IN (:...partners)', { partners: query.partner });
+            cumulativeWhoReceivedOneDose.andWhere('g.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            cumulativeWhoReceivedOneDose.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+            cumulativeWhoReceivedOneDose.andWhere('g.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

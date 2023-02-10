@@ -35,11 +35,11 @@ export class GetOvcCaregiversRelationshipToOvcClientHandler implements IQueryHan
         }
 
         if (query.partner) {
-            ovcCareGiversRelationships.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            ovcCareGiversRelationships.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            ovcCareGiversRelationships.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            ovcCareGiversRelationships.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

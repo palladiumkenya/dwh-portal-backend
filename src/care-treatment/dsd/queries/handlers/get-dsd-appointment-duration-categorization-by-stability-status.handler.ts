@@ -32,11 +32,11 @@ export class GetDsdAppointmentDurationCategorizationByStabilityStatusHandler imp
         }
 
         if (query.partner) {
-            dsdAppointmentCategorization.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdAppointmentCategorization.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdAppointmentCategorization.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdAppointmentCategorization.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.ageGroup) {

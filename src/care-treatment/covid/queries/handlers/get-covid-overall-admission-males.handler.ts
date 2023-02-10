@@ -44,14 +44,14 @@ export class GetCovidOverallAdmissionMalesHandler
 
         if (query.partner) {
             covidOverallAdmissionMales.andWhere(
-                'f.CTPartner IN (:...partners)',
+                'f.PartnerName IN (:...partners)',
                 { partners: query.partner },
             );
         }
 
         if (query.agency) {
             covidOverallAdmissionMales.andWhere(
-                'f.CTAgency IN (:...agencies)',
+                'f.AgencyName IN (:...agencies)',
                 { agencies: query.agency },
             );
         }

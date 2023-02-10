@@ -30,11 +30,11 @@ export class GetOvcCalHIVByGenderHandler implements IQueryHandler<GetOvcCalHIVBy
         }
 
         if (query.partner) {
-            calHIVByGender.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            calHIVByGender.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            calHIVByGender.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            calHIVByGender.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

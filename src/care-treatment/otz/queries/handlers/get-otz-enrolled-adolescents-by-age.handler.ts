@@ -29,11 +29,11 @@ export class GetOtzEnrolledAdolescentsByAgeHandler implements IQueryHandler<GetO
         }
 
         if (query.partner) {
-            otzTotalAdolescentsByAgeGroup.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            otzTotalAdolescentsByAgeGroup.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            otzTotalAdolescentsByAgeGroup.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            otzTotalAdolescentsByAgeGroup.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

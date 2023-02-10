@@ -16,11 +16,9 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler implemen
         const vlSuppressionOtzByPartner = this.repository
             .createQueryBuilder('f')
             .select([
-                '[CTPartner], Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
+                '[PartnerName] CTPartner, Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
             ])
-            .andWhere(
-                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL',
-            );
+            .andWhere('f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL');
 
         if (query.county) {
             vlSuppressionOtzByPartner.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -35,11 +33,11 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler implemen
         }
 
         if (query.partner) {
-            vlSuppressionOtzByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlSuppressionOtzByPartner.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlSuppressionOtzByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlSuppressionOtzByPartner.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
@@ -51,8 +49,8 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler implemen
         }
 
         return await vlSuppressionOtzByPartner
-            .groupBy('[CTPartner], Last12MVLResult')
-            .orderBy('[CTPartner]')
+            .groupBy('[PartnerName], Last12MVLResult')
+            .orderBy('[PartnerName]')
             .getRawMany();
     }
 }

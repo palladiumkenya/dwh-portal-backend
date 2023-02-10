@@ -14,7 +14,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByPartnerHandler implements IQu
 
     async execute(query: GetCovidAdultPlhivCurrentOnTreatmentByPartnerQuery): Promise<any> {
         const covidAdultsCurrentOnTreatmentByPartner = this.repository.createQueryBuilder('f')
-            .select(['Count (*) Adults, CTPartner']);
+            .select(['Count (*) Adults, PartnerName CTPartner']);
 
         if (query.county) {
             covidAdultsCurrentOnTreatmentByPartner.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -29,11 +29,11 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByPartnerHandler implements IQu
         }
 
         if (query.partner) {
-            covidAdultsCurrentOnTreatmentByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidAdultsCurrentOnTreatmentByPartner.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidAdultsCurrentOnTreatmentByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidAdultsCurrentOnTreatmentByPartner.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -49,7 +49,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByPartnerHandler implements IQu
 
 
         return await covidAdultsCurrentOnTreatmentByPartner
-            .groupBy('CTPartner')
+            .groupBy('PartnerName')
             .getRawMany();
     }
 }

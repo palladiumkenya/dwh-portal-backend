@@ -30,11 +30,11 @@ export class GetCovidPLHIVCurrentOnArtHandler implements IQueryHandler<GetCovidP
         }
 
         if (query.partner) {
-            covidPLHIVCurrentOnART.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
+            covidPLHIVCurrentOnART.andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidPLHIVCurrentOnART.andWhere('CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidPLHIVCurrentOnART.andWhere('AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

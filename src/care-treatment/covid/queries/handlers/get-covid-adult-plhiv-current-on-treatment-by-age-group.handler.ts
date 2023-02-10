@@ -29,11 +29,11 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByAgeGroupHandler implements IQ
         }
 
         if (query.partner) {
-            covidAdultsCurrentOnTreatmentByAgeGroup.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidAdultsCurrentOnTreatmentByAgeGroup.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidAdultsCurrentOnTreatmentByAgeGroup.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidAdultsCurrentOnTreatmentByAgeGroup.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

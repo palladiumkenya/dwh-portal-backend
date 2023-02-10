@@ -35,11 +35,11 @@ export class GetOtzOutcomesAmongAlhivWithReSuppressionHandler implements IQueryH
         }
 
         if (query.partner) {
-            baselineVlReSuppression.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            baselineVlReSuppression.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            baselineVlReSuppression.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            baselineVlReSuppression.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

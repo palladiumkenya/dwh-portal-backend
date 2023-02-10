@@ -30,11 +30,11 @@ export class GetCovidOverallMissedAppointmentsHandler implements IQueryHandler<G
         }
 
         if (query.partner) {
-            overallMissedAppointments.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            overallMissedAppointments.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            overallMissedAppointments.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            overallMissedAppointments.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
