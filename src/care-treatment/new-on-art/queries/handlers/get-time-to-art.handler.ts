@@ -40,13 +40,13 @@ export class GetTimeToArtHandler implements IQueryHandler<GetTimeToArtQuery> {
         }
 
         if (query.partner) {
-            timeToArt.andWhere('f.CTPartner IN (:...partners)', {
+            timeToArt.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            timeToArt.andWhere('f.CTAgency IN (:...agencies)', {
+            timeToArt.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

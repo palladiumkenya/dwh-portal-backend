@@ -16,12 +16,12 @@ export class GetTimeToArtFacilitiesHandler implements IQueryHandler<GetTimeToArt
 // NOTE:: THis is not in use
     async execute(query: GetTimeToArtFacilitiesQuery): Promise<any> {
         const timeToArtFacilities = this.repository.createQueryBuilder('f')
-            .select(['[TimeToARTDiagnosis_Grp] period, [StartART_Year] year, [StartART_Month] month, [FacilityName] facility, [County] county,[Subcounty] subCounty, [CTPartner] partner, SUM([NumPatients]) txNew'])
+            .select(['[TimeToARTDiagnosis_Grp] period, [StartART_Year] year, [StartART_Month] month, [FacilityName] facility, [County] county,[Subcounty] subCounty, [PartnerName] partner, SUM([NumPatients]) txNew'])
             .where('f.[NumPatients] > 0')
             .andWhere('f.[TimeToARTDiagnosis_Grp] IS NOT NULL');
 
         if (query.partner) {
-            timeToArtFacilities.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            timeToArtFacilities.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.county) {
@@ -37,7 +37,7 @@ export class GetTimeToArtFacilitiesHandler implements IQueryHandler<GetTimeToArt
         }
 
         if (query.agency) {
-            timeToArtFacilities.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            timeToArtFacilities.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -62,7 +62,7 @@ export class GetTimeToArtFacilitiesHandler implements IQueryHandler<GetTimeToArt
         }
 
         return await timeToArtFacilities
-            .groupBy('f.[TimeToARTDiagnosis_Grp], f.[StartART_Year], f.[StartART_Month], f.[CTPartner], f.[County], f.[subCounty], f.[FacilityName]')
+            .groupBy('f.[TimeToARTDiagnosis_Grp], f.[StartART_Year], f.[StartART_Month], f.[PartnerName], f.[County], f.[subCounty], f.[FacilityName]')
             .orderBy('f.[TimeToARTDiagnosis_Grp], f.[StartART_Year], f.[StartART_Month]')
             .getRawMany();
     }

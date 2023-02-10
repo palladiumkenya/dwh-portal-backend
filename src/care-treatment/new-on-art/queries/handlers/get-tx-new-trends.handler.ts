@@ -22,7 +22,7 @@ export class GetTxNewTrendsHandler
             .where('f.[patients_startedART] > 0');
 
         if (query.partner) {
-            txNew.andWhere('f.CTPartner IN (:...partners)', {
+            txNew.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
@@ -50,7 +50,7 @@ export class GetTxNewTrendsHandler
         }
 
         if (query.agency) {
-            txNew.andWhere('f.CTAgency IN (:...agencies)', {
+            txNew.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
@@ -86,7 +86,9 @@ export class GetTxNewTrendsHandler
             .groupBy(
                 `YEAR (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)), MONTH (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)), f.Gender`,
             )
-            .orderBy('f.StartARTYearMonth')
+            .orderBy(
+                `YEAR (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)), MONTH (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE))`,
+            )
             .getRawMany();
     }
 }

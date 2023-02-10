@@ -17,80 +17,80 @@ export class GetMedianTimeToArtByPartnerHandler implements IQueryHandler<GetMedi
         let medianTimeToARTPartnerSql = this.repository
             .createQueryBuilder('f')
             .select([
-                'CTPartner partner, MedianTimeToARTDiagnosis_yearPartner medianTime',
+                'PartnerName partner, MedianTimeToARTDiagnosis_yearPartner medianTime',
             ])
-            .where('f.[CTPartner] IS NOT NULL')
+            .where('f.[PartnerName] IS NOT NULL')
             .andWhere('f.MFLCode IS NOT NULL');
 
         if (query.county) {
             medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
-                .select(['CTPartner partner, MedianTimeToARTDiagnosis_yearCounty medianTime'])
+                .select(['PartnerName partner, MedianTimeToARTDiagnosis_yearCounty medianTime'])
                 .andWhere('f.County IN (:...counties)', { counties: query.county });
 
             return await medianTimeToARTPartnerSql
-                .groupBy('CTPartner, MedianTimeToARTDiagnosis_yearCounty')
+                .groupBy('PartnerName, MedianTimeToARTDiagnosis_yearCounty')
                 .orderBy('f.MedianTimeToARTDiagnosis_yearCounty', 'DESC')
                 .getRawMany();
         }
 
         if (query.subCounty) {
             medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
-                .select(['CTPartner partner, MedianTimeToARTDiagnosis_yearSbCty medianTime'])
+                .select(['PartnerName partner, MedianTimeToARTDiagnosis_yearSbCty medianTime'])
                 .andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
 
 
             return await medianTimeToARTPartnerSql
-                .groupBy('CTPartner, MedianTimeToARTDiagnosis_yearSbCty')
+                .groupBy('PartnerName, MedianTimeToARTDiagnosis_yearSbCty')
                 .orderBy('f.MedianTimeToARTDiagnosis_yearSbCty', 'DESC')
                 .getRawMany();
         }
 
         if (query.partner) {
             medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
-                .select(['CTPartner partner, MedianTimeToARTDiagnosis_yearPartner medianTime'])
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .select(['PartnerName partner, MedianTimeToARTDiagnosis_yearPartner medianTime'])
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
 
             return await medianTimeToARTPartnerSql
-                .groupBy('CTPartner, MedianTimeToARTDiagnosis_yearPartner')
+                .groupBy('PartnerName, MedianTimeToARTDiagnosis_yearPartner')
                 .orderBy('f.MedianTimeToARTDiagnosis_yearPartner', 'DESC')
                 .getRawMany();
         }
 
         if (query.agency) {
             medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
-                .select(['CTPartner partner, MedianTimeToARTDiagnosis_yearCTAgency medianTime'])
-                .andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+                .select(['PartnerName partner, MedianTimeToARTDiagnosis_yearCTAgency medianTime'])
+                .andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
 
             return await medianTimeToARTPartnerSql
-                .groupBy('CTPartner, MedianTimeToARTDiagnosis_yearCTAgency')
+                .groupBy('PartnerName, MedianTimeToARTDiagnosis_yearCTAgency')
                 .orderBy('f.MedianTimeToARTDiagnosis_yearCTAgency', 'DESC')
                 .getRawMany();
         }
 
         if (query.gender) {
             medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
-                .select(['CTPartner partner, MedianTimeToART_Gender medianTime'])
+                .select(['PartnerName partner, MedianTimeToART_Gender medianTime'])
                 .andWhere('f.Gender IN (:...genders)', { genders: query.gender });
 
             return await medianTimeToARTPartnerSql
-                .groupBy('CTPartner, MedianTimeToART_Gender')
+                .groupBy('PartnerName, MedianTimeToART_Gender')
                 .orderBy('f.MedianTimeToART_Gender', 'DESC')
                 .getRawMany();
         }
 
         if (query.datimAgeGroup) {
             medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
-                .select(['CTPartner partner, MedianTimeToART_DATIM_AgeGroup medianTime'])
+                .select(['PartnerName partner, MedianTimeToART_DATIM_AgeGroup medianTime'])
                 .andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
 
             return await medianTimeToARTPartnerSql
-                .groupBy('CTPartner, MedianTimeToART_DATIM_AgeGroup')
+                .groupBy('PartnerName, MedianTimeToART_DATIM_AgeGroup')
                 .orderBy('f.MedianTimeToART_DATIM_AgeGroup', 'DESC')
                 .getRawMany();
         }
 
         return await medianTimeToARTPartnerSql
-            .groupBy('CTPartner, MedianTimeToARTDiagnosis_yearPartner')
+            .groupBy('PartnerName, MedianTimeToARTDiagnosis_yearPartner')
             .orderBy('f.MedianTimeToARTDiagnosis_yearPartner', 'DESC')
             .getRawMany();
     }

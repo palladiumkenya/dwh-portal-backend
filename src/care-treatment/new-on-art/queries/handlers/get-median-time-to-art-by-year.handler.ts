@@ -33,7 +33,7 @@ export class GetMedianTimeToArtByYearHandler
 
             return await medianTimeToARTSql
                 .groupBy('[StartARTYear], MedianTimeToARTDiagnosis_yearCounty')
-                .orderBy('f.StartYr')
+                .orderBy('f.StartARTYear')
                 .getRawMany();
         }
 
@@ -43,7 +43,7 @@ export class GetMedianTimeToArtByYearHandler
                 .select([
                     '[StartARTYear] StartYr, MedianTimeToARTDiagnosis_YearCountyPartner medianTime',
                 ])
-                .andWhere('f.CTPartner IN (:...partners)', {
+                .andWhere('f.PartnerName IN (:...partners)', {
                     partners: query.partner,
                 })
                 .andWhere('f.County IN (:...counties)', {
@@ -51,8 +51,10 @@ export class GetMedianTimeToArtByYearHandler
                 });
 
             return await medianTimeToARTSql
-                .groupBy('[StartARTYear], MedianTimeToARTDiagnosis_YearCountyPartner')
-                .orderBy('f.StartYr')
+                .groupBy(
+                    '[StartARTYear], MedianTimeToARTDiagnosis_YearCountyPartner',
+                )
+                .orderBy('f.StartARTYear')
                 .getRawMany();
         }
 
@@ -68,7 +70,7 @@ export class GetMedianTimeToArtByYearHandler
 
             return await medianTimeToARTSql
                 .groupBy('[StartARTYear], MedianTimeToARTDiagnosis_yearSbCty')
-                .orderBy('f.StartYr')
+                .orderBy('f.StartARTYear')
                 .getRawMany();
         }
 
@@ -84,7 +86,7 @@ export class GetMedianTimeToArtByYearHandler
 
             return await medianTimeToARTSql
                 .groupBy('StartYear, MedianTimeToARTDiagnosis_yearFacility')
-                .orderBy('f.StartYr')
+                .orderBy('f.StartARTYear')
                 .getRawMany();
         }
 
@@ -94,13 +96,15 @@ export class GetMedianTimeToArtByYearHandler
                 .select([
                     '[StartARTYear] StartYr, MedianTimeToARTDiagnosis_YearCountyPartner medianTime',
                 ])
-                .andWhere('f.CTPartner IN (:...partners)', {
+                .andWhere('f.PartnerName IN (:...partners)', {
                     partners: query.partner,
                 });
 
             return await medianTimeToARTSql
-                .groupBy('[StartARTYear], MedianTimeToARTDiagnosis_YearCountyPartner')
-                .orderBy('f.StartYr')
+                .groupBy(
+                    '[StartARTYear], MedianTimeToARTDiagnosis_YearCountyPartner',
+                )
+                .orderBy('f.StartARTYear')
                 .getRawMany();
         }
 
@@ -110,13 +114,15 @@ export class GetMedianTimeToArtByYearHandler
                 .select([
                     '[StartARTYear] StartYr, MedianTimeToARTDiagnosis_yearCTAgency medianTime',
                 ])
-                .andWhere('f.CTAgency IN (:...agencies)', {
+                .andWhere('f.AgencyName IN (:...agencies)', {
                     agencies: query.agency,
                 });
 
             return await medianTimeToARTSql
-                .groupBy('[StartARTYear], MedianTimeToARTDiagnosis_yearCTAgency')
-                .orderBy('f.StartYr')
+                .groupBy(
+                    '[StartARTYear], MedianTimeToARTDiagnosis_yearCTAgency',
+                )
+                .orderBy('f.StartARTYear')
                 .getRawMany();
         }
 
@@ -132,7 +138,7 @@ export class GetMedianTimeToArtByYearHandler
 
             return await medianTimeToARTSql
                 .groupBy('[StartARTYear], MedianTimeToART_Gender')
-                .orderBy('f.StartYr')
+                .orderBy('f.StartARTYear')
                 .getRawMany();
         }
 
@@ -148,13 +154,13 @@ export class GetMedianTimeToArtByYearHandler
 
             return await medianTimeToARTSql
                 .groupBy('[StartARTYear], MedianTimeToART_DATIM_AgeGroup')
-                .orderBy('f.StartYr')
+                .orderBy('f.StartARTYear')
                 .getRawMany();
         }
 
         return await medianTimeToARTSql
             .groupBy('[StartARTYear], MedianTimeToARTDiagnosis_year')
-            .orderBy('f.StartYr')
+            .orderBy('f.StartARTYear')
             .getRawMany();
     }
 }

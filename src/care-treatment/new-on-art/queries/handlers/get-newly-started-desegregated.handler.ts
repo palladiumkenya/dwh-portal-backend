@@ -43,7 +43,7 @@ export class GetNewlyStartedDesegregatedHandler implements IQueryHandler<GetNewl
 
         if (query.partner) {
             newlyStartedDesegregated
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.year) {
@@ -61,7 +61,7 @@ export class GetNewlyStartedDesegregatedHandler implements IQueryHandler<GetNewl
         }
 
         if (query.agency) {
-            newlyStartedDesegregated.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            newlyStartedDesegregated.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

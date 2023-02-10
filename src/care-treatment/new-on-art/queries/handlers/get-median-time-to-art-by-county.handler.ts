@@ -62,7 +62,7 @@ export class GetMedianTimeToArtByCountyHandler implements IQueryHandler<GetMedia
                 .select([
                     'County county, MedianTimeToARTDiagnosis_yearPartner medianTime',
                 ])
-                .andWhere('f.CTPartner IN (:...partners)', {
+                .andWhere('f.PartnerName IN (:...partners)', {
                     partners: query.partner,
                 });
 
@@ -78,7 +78,7 @@ export class GetMedianTimeToArtByCountyHandler implements IQueryHandler<GetMedia
                 .select([
                     'County county, MedianTimeToARTDiagnosis_yearCTAgency medianTime',
                 ])
-                .andWhere('f.CTAgency IN (:...agencies)', {
+                .andWhere('f.AgencyName IN (:...agencies)', {
                     agencies: query.agency,
                 });
 

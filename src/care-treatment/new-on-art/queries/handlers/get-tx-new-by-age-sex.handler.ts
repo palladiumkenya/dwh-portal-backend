@@ -22,7 +22,7 @@ export class GetTxNewByAgeSexHandler implements IQueryHandler<GetTxNewByAgeSexQu
             .andWhere('f.[Gender] IS NOT NULL');
 
         if (query.partner) {
-            txNewByAgeSex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            txNewByAgeSex.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
         
         if (query.county) {
@@ -42,7 +42,7 @@ export class GetTxNewByAgeSexHandler implements IQueryHandler<GetTxNewByAgeSexQu
         }
 
         if (query.agency) {
-            txNewByAgeSex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            txNewByAgeSex.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
