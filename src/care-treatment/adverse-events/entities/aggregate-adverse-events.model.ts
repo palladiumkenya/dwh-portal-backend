@@ -15,10 +15,10 @@ export class AggregateAdverseEvents {
     SubCounty: string;
 
     @Column('text')
-    CTPartner: string;
+    PartnerName: string;
 
     @Column('text')
-    CTAgency: string;
+    AgencyName: string;
 
     @Column('text')
     DATIMAgeGroup: string;

@@ -29,7 +29,7 @@ export class GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandl
         }
 
         if (query.partner) {
-            proportionOfPlHIVByCausativeDrugs.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            proportionOfPlHIVByCausativeDrugs.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.facility) {
@@ -37,7 +37,7 @@ export class GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandl
         }
 
         if (query.agency) {
-            proportionOfPlHIVByCausativeDrugs.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            proportionOfPlHIVByCausativeDrugs.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

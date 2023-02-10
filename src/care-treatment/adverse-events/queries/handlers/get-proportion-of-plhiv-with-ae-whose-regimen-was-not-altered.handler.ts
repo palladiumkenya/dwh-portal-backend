@@ -32,7 +32,7 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler implemen
         }
 
         if (query.partner) {
-            proportionOfPLHIVWithAeWhoseRegimenNotAltered.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            proportionOfPLHIVWithAeWhoseRegimenNotAltered.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.facility) {
@@ -40,7 +40,7 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler implemen
         }
 
         if (query.agency) {
-            proportionOfPLHIVWithAeWhoseRegimenNotAltered.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            proportionOfPLHIVWithAeWhoseRegimenNotAltered.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

@@ -38,11 +38,11 @@ export class GetReportedAesWithSeverityLevelsHandler implements IQueryHandler<Ge
 
         if (query.partner) {
             reportedAesWithSeverity
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            reportedAesWithSeverity.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            reportedAesWithSeverity.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
