@@ -35,11 +35,11 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeHandler implements I
         }
 
         if (query.partner) {
-            vlSuppressionOtzByAge.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlSuppressionOtzByAge.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlSuppressionOtzByAge.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlSuppressionOtzByAge.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

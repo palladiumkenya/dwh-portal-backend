@@ -33,11 +33,11 @@ export class GetCovidFullyVaccinatedHandler implements IQueryHandler<GetCovidFul
         }
 
         if (query.partner) {
-            covidFullyVaccinated.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
+            covidFullyVaccinated.andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidFullyVaccinated.andWhere('CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidFullyVaccinated.andWhere('AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

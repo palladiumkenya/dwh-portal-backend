@@ -29,11 +29,11 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler implements IQue
         }
 
         if (query.partner) {
-            covidAdultsCurrentOnTreatmentByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidAdultsCurrentOnTreatmentByCounty.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidAdultsCurrentOnTreatmentByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidAdultsCurrentOnTreatmentByCounty.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

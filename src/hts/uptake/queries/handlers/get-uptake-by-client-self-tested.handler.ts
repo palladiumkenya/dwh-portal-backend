@@ -3,42 +3,51 @@ import { GetUptakeByClientSelfTestedQuery } from '../impl/get-uptake-by-client-s
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsClientSelfTested } from '../../entities/fact-hts-clientselftested.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetUptakeByClientSelfTestedQuery)
-export class GetUptakeByClientSelfTestedHandler implements IQueryHandler<GetUptakeByClientSelfTestedQuery>{
+export class GetUptakeByClientSelfTestedHandler
+    implements IQueryHandler<GetUptakeByClientSelfTestedQuery> {
     constructor(
-        @InjectRepository(FactHtsClientSelfTested)
-        private readonly repository: Repository<FactHtsClientSelfTested>
-    ){}
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>,
+    ) {}
 
     async execute(query: GetUptakeByClientSelfTestedQuery): Promise<any> {
         const params = [];
-        let uptakeByClientSelfTestedSql = 'SELECT \n' +
-            '`ClientSelfTested` AS ClientSelfTested,\n' +
-            'SUM(`Tested`) Tested, \n' +
-            'SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END) positive, \n' +
-            '((SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END)/SUM(`Tested`))*100) AS positivity \n' +
-            '\n' +
-            'FROM `fact_hts_clientselftested`\n' +
-            'WHERE `ClientSelfTested` IS NOT NULL ';
+        let uptakeByClientSelfTestedSql = `SELECT
+                CASE WHEN ClientSelfTested = '1' THEN 'Yes' WHEN ClientSelfTested = '0' THEN 'No' else ClientSelfTested END ClientSelfTested,
+                SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive, 
+                ((CAST(SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) AS FLOAT)/CAST(SUM(Tested) AS FLOAT))*100) AS positivity 
+            FROM
+                NDWH.dbo.FactHTSClientTests AS link
+                INNER JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
+                INNER JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
+                INNER JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
+                INNER JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
+                INNER JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
+            WHERE ClientSelfTested is not null and Tested > 0`;
 
-        if(query.county) {
-            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and County IN (?)`;
-            params.push(query.county);
+        if (query.county) {
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.subCounty) {
-            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and SubCounty IN (?)`;
-            params.push(query.subCounty);
+        if (query.subCounty) {
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and SubCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.facility) {
-            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and FacilityName IN (?)`;
-            params.push(query.facility);
+        if (query.facility) {
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.partner) {
-            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and CTPartner IN (?)`;
+        if (query.partner) {
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and PartnerName IN (?)`;
             params.push(query.partner);
         }
 
@@ -53,17 +62,15 @@ export class GetUptakeByClientSelfTestedHandler implements IQueryHandler<GetUpta
         // }
 
         if (query.fromDate) {
-            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
-            params.push(query.fromDate);
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and DateTestedKey >= ${query.fromDate}01`;
         }
 
         if (query.toDate) {
-            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
-            params.push(query.toDate);
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and DateTestedKey <= ${query.toDate}01`;
         }
 
-        uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} GROUP BY ClientSelfTested`;
+        uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} GROUP BY CASE WHEN ClientSelfTested = '1' THEN 'Yes' WHEN ClientSelfTested = '0' THEN 'No' else ClientSelfTested END`;
 
-        return  await this.repository.query(uptakeByClientSelfTestedSql, params);
+        return await this.repository.query(uptakeByClientSelfTestedSql, params);
     }
 }

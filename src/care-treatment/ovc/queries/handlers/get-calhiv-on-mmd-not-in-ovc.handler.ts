@@ -30,11 +30,11 @@ export class GetCalhivOnMmdNotInOvcHandler implements IQueryHandler<GetCalhivOnM
         }
 
         if (query.partner) {
-            CALHIVonMMD.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            CALHIVonMMD.andWhere('f.PartnerNameme IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            CALHIVonMMD.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            CALHIVonMMD.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

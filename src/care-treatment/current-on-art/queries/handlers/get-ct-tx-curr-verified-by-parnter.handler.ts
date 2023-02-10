@@ -15,7 +15,7 @@ export class GetCtTxCurrVerifiedByPartnerHandler
     async execute(query: GetCtTxCurrVerifiedByPartnerQuery): Promise<any> {
         let txCurrByPartner = this.repository
             .createQueryBuilder('f')
-            .select(['CTPartner, sum (number_nupi) NumNupi'])
+            .select(['PartnerName CTPartner, sum (number_nupi) NumNupi'])
             .where('f.[Gender] IS NOT NULL');
 
         if (query.datimAgePopulations) {
@@ -26,12 +26,16 @@ export class GetCtTxCurrVerifiedByPartnerHandler
             } else if (query.datimAgePopulations.includes('>18'))
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
-                    .select(['CTPartner, sum (number_adults) NumNupi'])
+                    .select([
+                        'PartnerName CTPartner, sum (number_adults) NumNupi',
+                    ])
                     .where('f.[Gender] IS NOT NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
-                    .select(['CTPartner, sum (number_children) NumNupi'])
+                    .select([
+                        'PartnerName CTPartner, sum (number_children) NumNupi',
+                    ])
                     .where('f.[Gender] IS NOT NULL');
         }
 
@@ -54,13 +58,13 @@ export class GetCtTxCurrVerifiedByPartnerHandler
         }
 
         if (query.partner) {
-            txCurrByPartner.andWhere('f.CTPartner IN (:...partners)', {
+            txCurrByPartner.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            txCurrByPartner.andWhere('f.CTAgency IN (:...agencies)', {
+            txCurrByPartner.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
@@ -78,7 +82,7 @@ export class GetCtTxCurrVerifiedByPartnerHandler
         }
 
         return await txCurrByPartner
-            .groupBy('CTPartner')
+            .groupBy('PartnerName')
             .orderBy('NumNupi', 'DESC')
             .getRawMany();
     }

@@ -38,11 +38,11 @@ export class GetCovidAdmissionByAgeHandler implements IQueryHandler<GetCovidAdmi
         }
 
         if (query.partner) {
-            covidAdmissionByAge.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidAdmissionByAge.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidAdmissionByAge.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidAdmissionByAge.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

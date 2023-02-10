@@ -32,11 +32,11 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler implements IQuery
         }
 
         if (query.partner) {
-            otzEnrollmentsCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            otzEnrollmentsCounty.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            otzEnrollmentsCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            otzEnrollmentsCounty.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

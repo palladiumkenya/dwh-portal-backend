@@ -17,7 +17,7 @@ export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandl
 
     async execute(query: GetCovidAdultPlhivVaccinatedByPartnerQuery): Promise<any> {
         const adultPLHIVVaccinatedByPartner = this.repository.createQueryBuilder('g')
-            .select(['g.VaccinationStatus, g.CTPartner, Count (*) Num'])
+            .select(['g.VaccinationStatus, g.PartnerName CTPartner, Count (*) Num'])
 
         if (query.county) {
             adultPLHIVVaccinatedByPartner.andWhere('g.County IN (:...counties)', { counties: query.county });
@@ -32,11 +32,11 @@ export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandl
         }
 
         if (query.partner) {
-            adultPLHIVVaccinatedByPartner.andWhere('g.CTPartner IN (:...partners)', { partners: query.partner });
+            adultPLHIVVaccinatedByPartner.andWhere('g.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            adultPLHIVVaccinatedByPartner.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+            adultPLHIVVaccinatedByPartner.andWhere('g.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -48,7 +48,7 @@ export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandl
         }
 
         return await adultPLHIVVaccinatedByPartner
-            .groupBy('g.CTPartner,g.VaccinationStatus')
+            .groupBy('g.PartnerName,g.VaccinationStatus')
             .getRawMany();
     }
 }

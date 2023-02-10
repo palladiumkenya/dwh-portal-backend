@@ -29,11 +29,11 @@ export class GetOTZCalhivOnArtHandler implements IQueryHandler<GetOTZCalhivOnArt
         }
 
         if (query.partner) {
-            CALHIVOnART.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            CALHIVOnART.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            CALHIVOnART.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            CALHIVOnART.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

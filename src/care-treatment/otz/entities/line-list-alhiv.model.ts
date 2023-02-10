@@ -18,7 +18,7 @@ export class LineListALHIV {
     CTPartner: string;
 
     @Column('text')
-    CTAgency: string;
+    AgencyName: string;
 
     @Column('text')
     Gender: string;

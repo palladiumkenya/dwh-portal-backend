@@ -29,11 +29,11 @@ export class GetOtzEnrolledHandler implements IQueryHandler<GetOtzEnrolledQuery>
         }
 
         if (query.partner) {
-            otzEnrolled.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            otzEnrolled.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            otzEnrolled.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            otzEnrolled.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

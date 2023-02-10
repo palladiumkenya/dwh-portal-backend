@@ -31,7 +31,7 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler implements IQu
         }
 
         if (query.partner) {
-            proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.facility) {
@@ -39,7 +39,7 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler implements IQu
         }
 
         if (query.agency) {
-            proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

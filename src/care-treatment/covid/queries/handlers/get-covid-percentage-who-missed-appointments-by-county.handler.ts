@@ -30,11 +30,11 @@ export class GetCovidPercentageWhoMissedAppointmentsByCountyHandler implements I
         }
 
         if (query.partner) {
-            covidPercentageWhoMissedAppointmentsByCounty.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
+            covidPercentageWhoMissedAppointmentsByCounty.andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidPercentageWhoMissedAppointmentsByCounty.andWhere('CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidPercentageWhoMissedAppointmentsByCounty.andWhere('AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

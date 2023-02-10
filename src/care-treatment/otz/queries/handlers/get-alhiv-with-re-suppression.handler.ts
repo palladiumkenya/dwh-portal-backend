@@ -11,7 +11,7 @@ export class GetAlhivWithReSuppressionHandler
         @InjectRepository(LineListALHIV, 'mssql')
         private readonly repository: Repository<LineListALHIV>,
     ) {}
-
+// TODO:: MOve to correct table
     async execute(query: GetAlhivWithReSuppressionQuery): Promise<any> {
         const baselineVlReSuppression = this.repository
             .createQueryBuilder('f')
@@ -43,13 +43,13 @@ export class GetAlhivWithReSuppressionHandler
         }
 
         if (query.partner) {
-            baselineVlReSuppression.andWhere('f.CTPartner IN (:...partners)', {
+            baselineVlReSuppression.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            baselineVlReSuppression.andWhere('f.CTAgency IN (:...agencies)', {
+            baselineVlReSuppression.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

@@ -31,11 +31,11 @@ export class GetOtzCalhivVlEligibleHandler implements IQueryHandler<GetOtzCalhiv
         }
 
         if (query.partner) {
-            OTZCALHIVVLEligible.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            OTZCALHIVVLEligible.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            OTZCALHIVVLEligible.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            OTZCALHIVVLEligible.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

@@ -18,7 +18,7 @@ export class AggregateDSDUnstable {
     SubCounty: string;
 
     @Column('text')
-    CTPartner: string;
+    PartnerName: string;
 
     @Column('int')
     TxCurr: number;

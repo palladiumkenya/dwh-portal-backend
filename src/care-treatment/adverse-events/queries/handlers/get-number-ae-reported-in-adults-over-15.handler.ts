@@ -37,11 +37,11 @@ export class GetNumberAeReportedInAdultsOver15Handler implements IQueryHandler<G
 
         if (query.partner) {
             noOfReportedAeinAdults
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            noOfReportedAeinAdults.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            noOfReportedAeinAdults.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

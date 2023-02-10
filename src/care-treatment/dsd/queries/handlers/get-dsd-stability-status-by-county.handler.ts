@@ -40,11 +40,11 @@ export class GetDsdStabilityStatusByCountyHandler implements IQueryHandler<GetDs
         }
 
         if (query.partner) {
-            dsdStabilityStatusByCounty.andWhere('f.CTPartner IN (:partners)', { partners: query.partner });
+            dsdStabilityStatusByCounty.andWhere('f.PartnerName IN (:partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdStabilityStatusByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdStabilityStatusByCounty.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

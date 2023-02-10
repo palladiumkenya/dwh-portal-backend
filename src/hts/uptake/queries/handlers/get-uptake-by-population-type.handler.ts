@@ -22,22 +22,25 @@ export class GetUptakeByPopulationTypeHandler implements IQueryHandler<GetUptake
             'WHERE `Tested` > 0 ';
 
         if(query.county) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and County IN (?)`;
-            params.push(query.county);
+            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if(query.subCounty) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and SubCounty IN (?)`;
-            params.push(query.subCounty);
+            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and SubCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if(query.facility) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and FacilityName IN (?)`;
-            params.push(query.facility);
+            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if(query.partner) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and CTPartner IN (?)`;
+            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and PartnerName IN (?)`;
             params.push(query.partner);
         }
 

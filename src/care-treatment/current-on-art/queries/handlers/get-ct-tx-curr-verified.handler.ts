@@ -54,13 +54,13 @@ export class GetCtTxCurrVerifiedHandler
         }
 
         if (query.partner) {
-            txCurr.andWhere('f.CTPartner IN (:...partners)', {
+            txCurr.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            txCurr.andWhere('f.CTAgency IN (:...agencies)', {
+            txCurr.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

@@ -33,11 +33,11 @@ export class GetOtzOutcomesByGenderHandler implements IQueryHandler<GetOtzOutcom
         }
 
         if (query.partner) {
-            otzOutcomesByGender.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            otzOutcomesByGender.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            otzOutcomesByGender.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            otzOutcomesByGender.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

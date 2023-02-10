@@ -10,7 +10,7 @@ export class GetLinkageByPopulationTypeHandler implements IQueryHandler<GetLinka
         @InjectRepository(FactHtsPopulationType)
         private readonly repository: Repository<FactHtsPopulationType>
     ){}
-
+//No more pop type
     async execute(query: GetLinkageByPopulationTypeQuery): Promise<any> {
         const params = [];
         let linkageByPopulationTypeSql = 'SELECT ' +
@@ -22,23 +22,27 @@ export class GetLinkageByPopulationTypeHandler implements IQueryHandler<GetLinka
             'WHERE PopulationType IS NOT NULL AND positive > 0 ';
 
         if(query.county) {
-            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and County IN (?)`;
-            params.push(query.county);
+            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if(query.subCounty) {
-            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and SubCounty IN (?)`;
-            params.push(query.subCounty);
+            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and SubCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
         
         if(query.facility) {
-            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and FacilityName IN (?)`;
-            params.push(query.facility);
+            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if(query.partner) {
-            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and CTPartner IN (?)`;
-            params.push(query.partner);
+            linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and CTPartner IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if(query.year) {

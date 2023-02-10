@@ -30,11 +30,11 @@ export class GetOvcVirallySuppressedHandler implements IQueryHandler<GetOvcViral
         }
 
         if (query.partner) {
-            OVCVLSuppressed.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            OVCVLSuppressed.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            OVCVLSuppressed.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            OVCVLSuppressed.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

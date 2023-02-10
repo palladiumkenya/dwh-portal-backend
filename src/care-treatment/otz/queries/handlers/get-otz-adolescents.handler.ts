@@ -11,7 +11,7 @@ export class GetOtzAdolescentsHandler implements IQueryHandler<GetOtzAdolescents
         private readonly repository: Repository<LineListALHIV>
     ) {
     }
-
+// TODO:: MOve to correct table
     async execute(query: GetOtzAdolescentsQuery): Promise<any> {
         const otzTotalAdolescents = this.repository.createQueryBuilder('f')
             .select(['count(*) totalAdolescents, Gender']);
@@ -29,11 +29,11 @@ export class GetOtzAdolescentsHandler implements IQueryHandler<GetOtzAdolescents
         }
 
         if (query.partner) {
-            otzTotalAdolescents.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            otzTotalAdolescents.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            otzTotalAdolescents.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            otzTotalAdolescents.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

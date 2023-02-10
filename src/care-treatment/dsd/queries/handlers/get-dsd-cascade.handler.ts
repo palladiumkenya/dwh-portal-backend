@@ -32,11 +32,11 @@ export class GetDsdCascadeHandler implements IQueryHandler<GetDsdCascadeQuery> {
         }
 
         if (query.partner) {
-            dsdCascade.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdCascade.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdCascade.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdCascade.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

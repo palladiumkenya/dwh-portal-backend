@@ -35,11 +35,11 @@ export class GetCovidManagementAdmittedHandler implements IQueryHandler<GetCovid
         }
 
         if (query.partner) {
-            covidManagementAdmitted.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
+            covidManagementAdmitted.andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidManagementAdmitted.andWhere('CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidManagementAdmitted.andWhere('AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

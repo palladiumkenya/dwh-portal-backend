@@ -32,11 +32,11 @@ export class GetDsdMmdStableHandler implements IQueryHandler<GetDsdMmdStableQuer
         }
 
         if (query.partner) {
-            dsdMmdStable.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdMmdStable.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdMmdStable.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdMmdStable.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

@@ -39,13 +39,13 @@ export class GetDsdUnstableHandler
         }
 
         if (query.partner) {
-            dsdUnstable.andWhere('f.CTPartner IN (:...partners)', {
+            dsdUnstable.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            dsdUnstable.andWhere('f.CTAgency IN (:...agencies)', {
+            dsdUnstable.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

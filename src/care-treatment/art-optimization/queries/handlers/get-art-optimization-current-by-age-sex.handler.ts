@@ -1,14 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetArtOptimizationCurrentByAgeSexQuery } from '../impl/get-art-optimization-current-by-age-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOptimizeRegLines } from '../../entities/fact-trans-optimize-reg-lines.model';
 import { Repository } from 'typeorm';
+import { AggregateOptimizeCurrentRegimens } from './../../entities/aggregate-optimize-current-regimens.model';
 
 @QueryHandler(GetArtOptimizationCurrentByAgeSexQuery)
 export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<GetArtOptimizationCurrentByAgeSexQuery> {
     constructor(
-        @InjectRepository(FactTransOptimizeRegLines, 'mssql')
-        private readonly repository: Repository<FactTransOptimizeRegLines>
+        @InjectRepository(AggregateOptimizeCurrentRegimens, 'mssql')
+        private readonly repository: Repository<AggregateOptimizeCurrentRegimens>
     ) {
 
     }
@@ -16,8 +16,8 @@ export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<G
     async execute(query: GetArtOptimizationCurrentByAgeSexQuery): Promise<any> {
         const artOptimizationCurrentByAgeSex = this.repository.createQueryBuilder('f')
         //TODO:: Add Current Regimen
-            .select(['CurrentRegimen regimen, Gender gender, DATIM_AgeGroup datimAgeGroup, sum(TXCurr) txCurr'])
-            .where('MFLCode IS NOT NULL');
+            .select(['CurrentRegimen regimen, Gender gender, DATIMAgeGroup datimAgeGroup, sum(TXCurr) txCurr'])
+            .where('SiteCode IS NOT NULL');
 
         if (query.county) {
             artOptimizationCurrentByAgeSex.andWhere('f.County IN (:...county)', { county: query.county });
@@ -32,11 +32,11 @@ export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<G
         }
 
         if (query.partner) {
-            artOptimizationCurrentByAgeSex.andWhere('f.CTPartner IN (:...partner)', { partner: query.partner });
+            artOptimizationCurrentByAgeSex.andWhere('f.PartnerName IN (:...partner)', { partner: query.partner });
         }
 
         if (query.agency) {
-            artOptimizationCurrentByAgeSex.andWhere('f.CTAgency IN (:...agency)', { agency: query.agency });
+            artOptimizationCurrentByAgeSex.andWhere('f.AgencyName IN (:...agency)', { agency: query.agency });
         }
 
         // if (query.project) {
@@ -56,11 +56,7 @@ export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<G
         }
 
         if (query.datimAgeGroup) {
-            artOptimizationCurrentByAgeSex.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
-        }
-
-        if (query.populationType) {
-            artOptimizationCurrentByAgeSex.andWhere('f.PopulationType IN (:...populationType)', { populationType: query.populationType });
+            artOptimizationCurrentByAgeSex.andWhere('f.DATIMAgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
         }
 
         if (query.latestPregnancy) {
@@ -68,8 +64,8 @@ export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<G
         }
 
         return await artOptimizationCurrentByAgeSex
-            .groupBy('CurrentRegimen, Gender, DATIM_AgeGroup')
-            .orderBy('CurrentRegimen, Gender, DATIM_AgeGroup')
+            .groupBy('CurrentRegimen, Gender, DATIMAgeGroup')
+            .orderBy('CurrentRegimen, Gender, DATIMAgeGroup')
             .getRawMany();
     }
 }

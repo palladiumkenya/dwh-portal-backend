@@ -40,13 +40,13 @@ export class GetAeSeverityGradingHandler
         }
 
         if (query.partner) {
-            aeSeverityGrading.andWhere('f.CTPartner IN (:...partners)', {
+            aeSeverityGrading.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            aeSeverityGrading.andWhere('f.CTAgency IN (:...agencies)', {
+            aeSeverityGrading.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

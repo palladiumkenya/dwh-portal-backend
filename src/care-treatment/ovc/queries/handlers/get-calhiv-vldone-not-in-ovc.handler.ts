@@ -30,11 +30,11 @@ export class GetCalhivVldoneNotInOvcHandler implements IQueryHandler<GetCalhivVl
         }
 
         if (query.partner) {
-            CALHIVVLDone.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            CALHIVVLDone.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            CALHIVVLDone.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            CALHIVVLDone.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

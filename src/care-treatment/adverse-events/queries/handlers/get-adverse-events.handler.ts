@@ -37,11 +37,11 @@ export class GetAdverseEventsHandler implements IQueryHandler<GetAdverseEventsQu
 
         if (query.partner) {
             adultsAEs
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerNameme IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            adultsAEs.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            adultsAEs.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

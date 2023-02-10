@@ -30,11 +30,11 @@ export class GetProportionOfOvcClientsEnrolledInCpimsOverallHandler implements I
         }
 
         if (query.partner) {
-            enrolledInCIPMS.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            enrolledInCIPMS.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            enrolledInCIPMS.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            enrolledInCIPMS.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

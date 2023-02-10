@@ -29,11 +29,11 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentHandler implements IQueryHandle
         }
 
         if (query.partner) {
-            covidAdultsCurrentOnTreatment.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidAdultsCurrentOnTreatment.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidAdultsCurrentOnTreatment.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidAdultsCurrentOnTreatment.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

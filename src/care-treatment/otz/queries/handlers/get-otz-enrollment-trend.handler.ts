@@ -46,13 +46,13 @@ export class GetOtzEnrollmentTrentHandler
         }
 
         if (query.partner) {
-            otzEnrolled.andWhere('f.CTPartner IN (:...partners)', {
+            otzEnrolled.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            otzEnrolled.andWhere('f.CTAgency IN (:...agencies)', {
+            otzEnrolled.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

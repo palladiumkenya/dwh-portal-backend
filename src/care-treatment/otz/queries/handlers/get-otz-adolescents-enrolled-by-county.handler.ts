@@ -11,7 +11,7 @@ export class GetOtzAdolescentsEnrolledByCountyHandler
         @InjectRepository(LineListALHIV, 'mssql')
         private readonly repository: Repository<LineListALHIV>,
     ) {}
-
+//TODO:: Move to Correct table
     async execute(query: GetOtzAdolescentsEnrolledByCountyQuery): Promise<any> {
         const otzEnrollmentsCounty = this.repository
             .createQueryBuilder('f')
@@ -37,13 +37,13 @@ export class GetOtzAdolescentsEnrolledByCountyHandler
         }
 
         if (query.partner) {
-            otzEnrollmentsCounty.andWhere('f.CTPartner IN (:...partners)', {
+            otzEnrollmentsCounty.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            otzEnrollmentsCounty.andWhere('f.CTAgency IN (:...agencies)', {
+            otzEnrollmentsCounty.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

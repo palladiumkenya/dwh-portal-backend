@@ -35,11 +35,11 @@ export class GetDsdStabilityStatusHandler implements IQueryHandler<GetDsdStabili
         }
 
         if (query.partner) {
-            dsdStabilityStatus.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdStabilityStatus.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdStabilityStatus.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdStabilityStatus.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

@@ -43,13 +43,13 @@ export class GetOtzOutcomesAmongAlhivWithBaselineVlHandler
         }
 
         if (query.partner) {
-            baselineVl.andWhere('f.CTPartner IN (:...partners)', {
+            baselineVl.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            baselineVl.andWhere('f.CTAgency IN (:...agencies)', {
+            baselineVl.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

@@ -30,11 +30,11 @@ export class GetOvcOverallOvcServHandler implements IQueryHandler<GetOvcOverallO
         }
 
         if (query.partner) {
-            overOvcServ.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            overOvcServ.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            overOvcServ.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            overOvcServ.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

@@ -33,11 +33,11 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler implements IQueryHan
         }
 
         if (query.partner) {
-            otzEnrollmentsByAge.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            otzEnrollmentsByAge.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            otzEnrollmentsByAge.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            otzEnrollmentsByAge.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

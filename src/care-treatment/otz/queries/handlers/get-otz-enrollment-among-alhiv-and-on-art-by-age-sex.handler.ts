@@ -39,13 +39,13 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexHandler
         }
 
         if (query.partner) {
-            otzEnrollmentsByAge.andWhere('f.CTPartner IN (:...partners)', {
+            otzEnrollmentsByAge.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            otzEnrollmentsByAge.andWhere('f.CTAgency IN (:...agencies)', {
+            otzEnrollmentsByAge.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

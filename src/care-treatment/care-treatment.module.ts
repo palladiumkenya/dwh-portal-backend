@@ -323,6 +323,16 @@ import { AggregateOVCCount } from './ovc/entities/aggregate-ovc-count.model';
 import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.model';
 import { LinelistFACTART } from './common/entities/linelist-fact-art.model';
 import { AggregateAdverseEvents } from './adverse-events/entities/aggregate-adverse-events.model';
+import { AggregateTimeToARTLast12M } from './new-on-art/entities/aggregate-time-to-art-last-12-m.model';
+import { AggregateCohortRetention } from './new-on-art/entities/aggregate-cohort-retention.model';
+import { AggregateTimeToART } from './new-on-art/entities/aggregate-time-to-art.model';
+import { AggregateTimeToARTGrp } from './new-on-art/entities/aggregate-time-to-art-grp.model';
+import { AggregateOptimizeCurrentRegimens } from './art-optimization/entities/aggregate-optimize-current-regimens.model';
+import { AggregateOptimizeStartRegimens } from './art-optimization/entities/aggregate-optimize-start-regimens.model';
+import { AggregateVLUptakeOutcome } from './viral-load/entities/aggregate-vl-uptake-outcome.model';
+import { AggregateTimeToFirstVLGrp } from './viral-load/entities/aggregate-time-to-first-vl-grp.model';
+import { AggregateTimeToVL } from './viral-load/entities/aggregate-time-to-vl.model';
+import { AggregateTimeToVL12M } from './viral-load/entities/aggregate-time-to-vl-last-12m.model';
 
 
 @Module({
@@ -353,6 +363,19 @@ import { AggregateAdverseEvents } from './adverse-events/entities/aggregate-adve
                 LinelistFACTART,
 
                 AggregateAdverseEvents,
+
+                AggregateTimeToARTLast12M,
+                AggregateCohortRetention,
+                AggregateTimeToART,
+                AggregateTimeToARTGrp,
+
+                AggregateOptimizeCurrentRegimens,
+                AggregateOptimizeStartRegimens,
+
+                AggregateVLUptakeOutcome,
+                AggregateTimeToFirstVLGrp,
+                AggregateTimeToVL12M,
+                AggregateTimeToVL,
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,

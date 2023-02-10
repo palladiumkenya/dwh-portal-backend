@@ -40,11 +40,11 @@ export class GetCovidSeverityByGenderHandler implements IQueryHandler<GetCovidSe
         }
 
         if (query.partner) {
-            covidSeverityByGender.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
+            covidSeverityByGender.andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidSeverityByGender.andWhere('CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidSeverityByGender.andWhere('AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

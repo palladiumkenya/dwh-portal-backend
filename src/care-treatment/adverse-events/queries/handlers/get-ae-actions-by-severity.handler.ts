@@ -41,11 +41,11 @@ export class GetAeActionsBySeverityHandler implements IQueryHandler<GetAeActions
 
         if (query.partner) {
             aeActionsBySeverity
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            aeActionsBySeverity.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            aeActionsBySeverity.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

@@ -30,11 +30,11 @@ export class GetOvcViralSuppressionAmongOvcPatientsOverallHandler implements IQu
         }
 
         if (query.partner) {
-            viralSuppressionAmongOvcPatients.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            viralSuppressionAmongOvcPatients.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            viralSuppressionAmongOvcPatients.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            viralSuppressionAmongOvcPatients.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

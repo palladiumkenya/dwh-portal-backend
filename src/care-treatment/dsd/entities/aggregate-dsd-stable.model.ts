@@ -21,7 +21,7 @@ export class AggregateDSDStable {
     Subcounty: string;
 
     @Column('text')
-    CTPartner: string;
+    PartnerName: string;
 
     @Column('int')
     Stability: number;
