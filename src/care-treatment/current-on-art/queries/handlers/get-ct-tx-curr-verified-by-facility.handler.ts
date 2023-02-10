@@ -16,7 +16,7 @@ export class GetCtTxCurrVerifiedByFacilityHandler
         let txCurrByPartner = this.repository
             .createQueryBuilder('f')
             .select([
-                'FacilityName,CTPartner, County, Subcounty,CTAgency, MFLCode, sum (number_nupi) NumNupi',
+                'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, MFLCode, sum (number_nupi) NumNupi',
             ])
             .where('f.[Gender] IS NOT NULL');
 
@@ -29,14 +29,14 @@ export class GetCtTxCurrVerifiedByFacilityHandler
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
                     .select([
-                        'FacilityName,CTPartner, County, Subcounty,CTAgency, MFLCode, sum (number_adults) NumNupi',
+                        'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, MFLCode, sum (number_adults) NumNupi',
                     ])
                     .where('f.[Gender] IS NOT NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
                     .select([
-                        'FacilityName,CTPartner, County, Subcounty,CTAgency, MFLCode, sum (number_children) NumNupi',
+                        'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, MFLCode, sum (number_children) NumNupi',
                     ])
                     .where('f.[Gender] IS NOT NULL');
         }
@@ -60,19 +60,19 @@ export class GetCtTxCurrVerifiedByFacilityHandler
         }
 
         if (query.partner) {
-            txCurrByPartner.andWhere('f.CTPartner IN (:...partners)', {
+            txCurrByPartner.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            txCurrByPartner.andWhere('f.CTAgency IN (:...agencies)', {
+            txCurrByPartner.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
 
         if (query.datimAgeGroup) {
-            txCurrByPartner.andWhere('f.AgeGroup IN (:...ageGroups)', {
+            txCurrByPartner.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', {
                 ageGroups: query.datimAgeGroup,
             });
         }
@@ -85,7 +85,7 @@ export class GetCtTxCurrVerifiedByFacilityHandler
 
         return await txCurrByPartner
             .groupBy(
-                'FacilityName, CTPartner, County, Subcounty ,CTAgency, MFLCode',
+                'FacilityName, PartnerName, County, Subcounty ,AgencyName, MFLCode',
             )
             .orderBy('MFLCode', 'DESC')
             .getRawMany();

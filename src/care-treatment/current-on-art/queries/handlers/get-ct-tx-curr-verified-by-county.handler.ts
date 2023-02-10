@@ -54,13 +54,13 @@ export class GetCtTxCurrVerifiedByCountyHandler
         }
 
         if (query.partner) {
-            txCurrByCounty.andWhere('f.CTPartner IN (:...partners)', {
+            txCurrByCounty.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            txCurrByCounty.andWhere('f.CTAgency IN (:...agencies)', {
+            txCurrByCounty.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }

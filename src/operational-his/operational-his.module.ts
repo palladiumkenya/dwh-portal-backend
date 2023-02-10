@@ -46,6 +46,7 @@ import { GetKhisHTSTESTByPartnerHandler } from './khis/queries/handlers/get-khis
 import { GetKhisHTSTESTByFacilityHandler } from './khis/queries/handlers/get-khis-htstest-by-facility.handler';
 import { GetKhisHTSTESTHandler } from './khis/queries/handlers/get-khis-htstest.handler';
 import { GetDWHHTSTestTrendsHandler } from './khis/queries/handlers/get-dwh-htstest-trends.handler';
+import { AggregateTXCurr } from 'src/care-treatment/current-on-art/entities/aggregate-txcurr.model';
 
 @Module({
     imports: [
@@ -58,6 +59,8 @@ import { GetDWHHTSTestTrendsHandler } from './khis/queries/handlers/get-dwh-htst
                 FactTransNewlyStarted,
                 FactCtDhis2,
                 FactHtsDhis2,
+
+                AggregateTXCurr
             ],
             'mssql',
         ),

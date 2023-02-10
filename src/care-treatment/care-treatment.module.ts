@@ -329,6 +329,10 @@ import { AggregateTimeToART } from './new-on-art/entities/aggregate-time-to-art.
 import { AggregateTimeToARTGrp } from './new-on-art/entities/aggregate-time-to-art-grp.model';
 import { AggregateOptimizeCurrentRegimens } from './art-optimization/entities/aggregate-optimize-current-regimens.model';
 import { AggregateOptimizeStartRegimens } from './art-optimization/entities/aggregate-optimize-start-regimens.model';
+import { AggregateVLUptakeOutcome } from './viral-load/entities/aggregate-vl-uptake-outcome.model';
+import { AggregateTimeToFirstVLGrp } from './viral-load/entities/aggregate-time-to-first-vl-grp.model';
+import { AggregateTimeToVL } from './viral-load/entities/aggregate-time-to-vl.model';
+import { AggregateTimeToVL12M } from './viral-load/entities/aggregate-time-to-vl-last-12m.model';
 
 
 @Module({
@@ -367,6 +371,11 @@ import { AggregateOptimizeStartRegimens } from './art-optimization/entities/aggr
 
                 AggregateOptimizeCurrentRegimens,
                 AggregateOptimizeStartRegimens,
+
+                AggregateVLUptakeOutcome,
+                AggregateTimeToFirstVLGrp,
+                AggregateTimeToVL12M,
+                AggregateTimeToVL,
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,

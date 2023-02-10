@@ -41,13 +41,13 @@ export class GetCtTxCurrByAgeAndSexHandler
         }
 
         if (query.partner) {
-            txCurrByAgeAndSex.andWhere('f.CTPartner IN (:...partners)', {
+            txCurrByAgeAndSex.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            txCurrByAgeAndSex.andWhere('f.CTAgency IN (:...agencies)', {
+            txCurrByAgeAndSex.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
