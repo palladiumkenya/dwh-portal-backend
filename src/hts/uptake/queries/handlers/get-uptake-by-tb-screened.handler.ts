@@ -3,36 +3,52 @@ import { GetUptakeByTbScreenedQuery } from '../impl/get-uptake-by-tb-screened.qu
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsTBScreening } from '../../entities/fact-hts-tbscreening.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetUptakeByTbScreenedQuery)
-export class GetUptakeByTbScreenedHandler implements IQueryHandler<GetUptakeByTbScreenedQuery> {
+export class GetUptakeByTbScreenedHandler
+    implements IQueryHandler<GetUptakeByTbScreenedQuery> {
     constructor(
-        @InjectRepository(FactHtsTBScreening)
-        private readonly repository: Repository<FactHtsTBScreening>
-    ) {
-    }
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>,
+    ) {}
 
     async execute(query: GetUptakeByTbScreenedQuery): Promise<any> {
         const params = [];
-        let uptakeByTBScreenedSql = 'SELECT TBSCreening_grp, SUM(Tested)Tested, SUM(Positive) Positive, SUM(Linked) Linked FROM fact_hts_tbscreening where TBSCreening_grp is not null ';
+        let uptakeByTBScreenedSql = `SELECT
+                CASE WHEN TBScreening IN ('No Signs','On TB Treatment','Presumed TB','TB Confirmed','TB Prophylaxis', 'No TB signs', 'PrTB') THEN 'Screened for TB' WHEN TBScreening in ('', 'Not done') THEN 'Not Screened for TB' END AS TBSCreening_grp,
+                SUM(Tested)Tested, 
+                SUM(Positive) Positive, 
+                SUM(Linked) Linked
+            FROM
+                NDWH.dbo.FactHTSClientTests AS link
+                INNER JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
+                INNER JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
+                INNER JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
+                INNER JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
+                INNER JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
+            WHERE TBScreening IS NOT NULL`;
 
-        if(query.county) {
-            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and County IN (?)`;
-            params.push(query.county);
+        if (query.county) {
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.subCounty) {
-            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and subcounty IN (?)`;
-            params.push(query.subCounty);
+        if (query.subCounty) {
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and subcounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.facility) {
-            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and FacilityName IN (?)`;
-            params.push(query.facility);
+        if (query.facility) {
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.partner) {
-            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and CTPartner IN (?)`;
+        if (query.partner) {
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and PartnerName IN (?)`;
             params.push(query.partner);
         }
 
@@ -47,17 +63,15 @@ export class GetUptakeByTbScreenedHandler implements IQueryHandler<GetUptakeByTb
         // }
 
         if (query.fromDate) {
-            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
-            params.push(query.fromDate);
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and DateTestedKey >= ${query.fromDate}01`;
         }
 
         if (query.toDate) {
-            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
-            params.push(query.toDate);
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and DateTestedKey <= ${query.toDate}01`;
         }
 
-        uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} GROUP BY TBSCreening_grp`;
+        uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} GROUP BY CASE WHEN TBScreening IN ('No Signs','On TB Treatment','Presumed TB','TB Confirmed','TB Prophylaxis', 'No TB signs', 'PrTB') THEN 'Screened for TB' WHEN TBScreening in ('', 'Not done') THEN 'Not Screened for TB' END`;
 
-        return  await this.repository.query(uptakeByTBScreenedSql, params);
+        return await this.repository.query(uptakeByTBScreenedSql, params);
     }
 }

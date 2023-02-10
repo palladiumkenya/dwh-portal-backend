@@ -67,6 +67,9 @@ import { GetPnsKnowledgeHivStatusCascadeHandler } from './pns/queries/handlers/g
 import { GetNewOnPrepHandler } from './prep/queries/handlers/get-new-on-prep.handler';
 import { GetPrepDiscontinuationHandler } from './prep/queries/handlers/get-prep-discontinuation';
 import { GetPrepDiscontinuationReasonHandler } from './prep/queries/handlers/get-prep-discontinuation-reason';
+import { FactHTSClientTests } from './linkage/entities/fact-hts-client-tests.model';
+import { FactHTSClientLinkages } from './linkage/entities/fact-hts-client-linkages.model';
+import { FactHTSClientTracing } from './linkage/entities/fact-hts-client-tracing.model';
 
 @Module({
     imports: [
@@ -87,7 +90,13 @@ import { GetPrepDiscontinuationReasonHandler } from './prep/queries/handlers/get
             FactHtsuptake,
             FactPNSKnowledgeHivStatus,
         ]),
-        TypeOrmModule.forFeature([FactPrep], 'mssql'),
+        TypeOrmModule.forFeature([
+            FactHTSClientTests,
+            FactHTSClientLinkages,
+            FactHTSClientTracing,
+
+            FactPrep,
+        ], 'mssql'),
     ],
     providers: [
         GetHtsCountiesHandler,
