@@ -2,21 +2,21 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetCtTxCurrByFacilityQuery } from '../impl/get-ct-tx-curr-by-facility.query';
-import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
+import { LinelistFACTART } from './../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetCtTxCurrByFacilityQuery)
 export class GetCtTxCurrByFacilityHandler
     implements IQueryHandler<GetCtTxCurrByFacilityQuery> {
     constructor(
-        @InjectRepository(AggregateTXCurr, 'mssql')
-        private readonly repository: Repository<AggregateTXCurr>,
+        @InjectRepository(LinelistFACTART, 'mssql')
+        private readonly repository: Repository<LinelistFACTART>,
     ) {}
 
     async execute(query: GetCtTxCurrByFacilityQuery): Promise<any> {
         const txCurrByPartner = this.repository
             .createQueryBuilder('f')
             .select([
-                'FacilityName, PartnerName CTPartner, County, Subcounty, AgencyName CTAgency, MFLCode, SUM(CountClientsTXCur) TXCURR',
+                'FacilityName, PartnerName CTPartner, County, Subcounty, AgencyName CTAgency, SiteCode MFLCode, SUM(ISTXCurr) TXCURR',
             ])
             .where(
                 "f.[Gender] IS NOT NULL ",
@@ -65,9 +65,9 @@ export class GetCtTxCurrByFacilityHandler
                 query.datimAgePopulations.includes('<18')
             ) {
             } else if (query.datimAgePopulations.includes('>18'))
-                txCurrByPartner.andWhere('f.ageLV >= 18');
+                txCurrByPartner.andWhere('f.age >= 18');
             else if (query.datimAgePopulations.includes('<18'))
-                txCurrByPartner.andWhere('f.ageLV < 18');
+                txCurrByPartner.andWhere('f.age < 18');
         }
 
         if (query.gender) {
@@ -78,9 +78,9 @@ export class GetCtTxCurrByFacilityHandler
 
         return await txCurrByPartner
             .groupBy(
-                'PartnerName, County, Subcounty, AgencyName, MFLCode, FacilityName',
+                'PartnerName, County, Subcounty, AgencyName, SiteCode, FacilityName',
             )
-            .orderBy('MFLCode', 'DESC')
+            .orderBy('SiteCode', 'DESC')
             .getRawMany();
     }
 }

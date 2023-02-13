@@ -11,7 +11,6 @@ export class GetTimeToArtHandler implements IQueryHandler<GetTimeToArtQuery> {
         @InjectRepository(AggregateTimeToARTGrp, 'mssql')
         private readonly repository: Repository<AggregateTimeToARTGrp>,
     ) {}
-//TODO:: Add time to diagnosis Grp to agg
     async execute(query: GetTimeToArtQuery): Promise<any> {
         const timeToArt = this.repository
             .createQueryBuilder('f')

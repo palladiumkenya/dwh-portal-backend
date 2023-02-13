@@ -4,22 +4,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOtzOutcome } from '../../entities/fact-trans-otz-outcome.model';
 import { Repository } from 'typeorm';
 import { AggregateOTZOutcome } from './../../entities/aggregate-otz-outcome.model';
+import { LineListOTZ } from './../../entities/line-list-otz.model';
 
 @QueryHandler(GetOtzOutcomesByYearOfArtStartQuery)
 export class GetOtzOutcomesByYearOfArtStartHandler implements IQueryHandler<GetOtzOutcomesByYearOfArtStartQuery> {
     constructor(
-        @InjectRepository(AggregateOTZOutcome, 'mssql')
-        private readonly repository: Repository<AggregateOTZOutcome>
+        @InjectRepository(LineListOTZ, 'mssql')
+        private readonly repository: Repository<LineListOTZ>
     ) {
     }
-// TODO::ADD ART START DATE
     async execute(query: GetOtzOutcomesByYearOfArtStartQuery): Promise<any> {
         const otzOutcomesByYearOfArtStart = this.repository
             .createQueryBuilder('f')
             .select([
-                "[OTZStart_Year], CASE WHEN [Outcome] IS NULL THEN 'Active' ELSE [Outcome] END AS Outcome, SUM([patients_totalOutcome]) outcomesByYearOfArtStart",
+                "YEAR([startARTDate]) OTZStart_Year, CASE WHEN [TransitionAttritionReason] IS NULL THEN 'TransitionAttritionReason' ELSE [TransitionAttritionReason] END AS Outcome, count(*) outcomesByYearOfArtStart",
             ])
-            .andWhere('f.MFLCode IS NOT NULL');
+            .andWhere(
+                'f.MFLCode IS NOT NULL and TransitionAttritionReason IS NOT NULL',
+            );
 
         if (query.county) {
             otzOutcomesByYearOfArtStart.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -50,7 +52,7 @@ export class GetOtzOutcomesByYearOfArtStartHandler implements IQueryHandler<GetO
         }
 
         return await otzOutcomesByYearOfArtStart
-            .groupBy('[OTZStart_Year], [Outcome]')
+            .groupBy('YEAR([startARTDate]), TransitionAttritionReason')
             .getRawMany();
     }
 }
