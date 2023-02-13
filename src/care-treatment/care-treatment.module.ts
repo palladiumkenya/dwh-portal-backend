@@ -333,6 +333,7 @@ import { AggregateVLUptakeOutcome } from './viral-load/entities/aggregate-vl-upt
 import { AggregateTimeToFirstVLGrp } from './viral-load/entities/aggregate-time-to-first-vl-grp.model';
 import { AggregateTimeToVL } from './viral-load/entities/aggregate-time-to-vl.model';
 import { AggregateTimeToVL12M } from './viral-load/entities/aggregate-time-to-vl-last-12m.model';
+import { AggregateTreatmentOutcomes } from './treatment-outcomes/entities/aggregate-treatment-outcomes.model';
 
 
 @Module({
@@ -376,6 +377,8 @@ import { AggregateTimeToVL12M } from './viral-load/entities/aggregate-time-to-vl
                 AggregateTimeToFirstVLGrp,
                 AggregateTimeToVL12M,
                 AggregateTimeToVL,
+
+                AggregateTreatmentOutcomes,
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,
