@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
 import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyQuery } from '../impl/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-county.query';
-import { AggregateOtz } from '../../entities/aggregate-otz.model';
+import { LineListOTZEligibilityAndEnrollments } from './../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyQuery)
 export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler
@@ -12,8 +11,10 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler
             GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyQuery
         > {
     constructor(
-        @InjectRepository(AggregateOtz, 'mssql')
-        private readonly repository: Repository<AggregateOtz>,
+        @InjectRepository(LineListOTZEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<
+            LineListOTZEligibilityAndEnrollments
+        >,
     ) {}
 
     async execute(
@@ -25,7 +26,7 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler
                 '[County], Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
             ])
             .andWhere(
-                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL',
+                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL AND Enrolled = 0',
             );
 
         if (query.county) {
@@ -49,22 +50,27 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler
         }
 
         if (query.partner) {
-            vlSuppressionOtzByCounty.andWhere('f.PartnerName IN (:...partners)', {
-                partners: query.partner,
-            });
+            vlSuppressionOtzByCounty.andWhere(
+                'f.PartnerName IN (:...partners)',
+                {
+                    partners: query.partner,
+                },
+            );
         }
 
         if (query.agency) {
-            vlSuppressionOtzByCounty.andWhere('f.AgencyName IN (:...agencies)', {
-                agencies: query.agency,
-            });
+            vlSuppressionOtzByCounty.andWhere(
+                'f.AgencyName IN (:...agencies)',
+                {
+                    agencies: query.agency,
+                },
+            );
         }
 
         if (query.datimAgeGroup) {
-            vlSuppressionOtzByCounty.andWhere(
-                'f.AgeGroup IN (:...ageGroups)',
-                { ageGroups: query.datimAgeGroup },
-            );
+            vlSuppressionOtzByCounty.andWhere('f.AgeGroup IN (:...ageGroups)', {
+                ageGroups: query.datimAgeGroup,
+            });
         }
 
         if (query.gender) {

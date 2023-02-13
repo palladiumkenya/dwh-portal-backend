@@ -2,16 +2,18 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzAdolescentsEnrolledByCountyQuery } from '../impl/get-otz-adolescents-enrolled-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LineListALHIV } from './../../entities/line-list-alhiv.model';
+import { LineListOTZEligibilityAndEnrollments } from '../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetOtzAdolescentsEnrolledByCountyQuery)
 export class GetOtzAdolescentsEnrolledByCountyHandler
     implements IQueryHandler<GetOtzAdolescentsEnrolledByCountyQuery> {
     constructor(
-        @InjectRepository(LineListALHIV, 'mssql')
-        private readonly repository: Repository<LineListALHIV>,
+        @InjectRepository(LineListOTZEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<
+            LineListOTZEligibilityAndEnrollments
+        >,
     ) {}
-//TODO:: Move to Correct table
+
     async execute(query: GetOtzAdolescentsEnrolledByCountyQuery): Promise<any> {
         const otzEnrollmentsCounty = this.repository
             .createQueryBuilder('f')
@@ -49,10 +51,9 @@ export class GetOtzAdolescentsEnrolledByCountyHandler
         }
 
         if (query.datimAgeGroup) {
-            otzEnrollmentsCounty.andWhere(
-                'f.AgeGroup IN (:...ageGroups)',
-                { ageGroups: query.datimAgeGroup },
-            );
+            otzEnrollmentsCounty.andWhere('f.AgeGroup IN (:...ageGroups)', {
+                ageGroups: query.datimAgeGroup,
+            });
         }
 
         if (query.gender) {
