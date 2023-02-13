@@ -3,20 +3,24 @@ import { Get6MonthViralSuppressionByYearOfArtStartQuery } from '../impl/get-6-mo
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FactTransVlSuppressionArtStart } from '../../entities/fact-trans-vl-suppression-art-start.model';
+import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(Get6MonthViralSuppressionByYearOfArtStartQuery)
 export class Get6MonthViralSuppressionByYearOfArtStartHandler implements IQueryHandler<Get6MonthViralSuppressionByYearOfArtStartQuery> {
     constructor(
-        @InjectRepository(FactTransVlSuppressionArtStart, 'mssql')
-        private readonly repository: Repository<FactTransVlSuppressionArtStart>
+        @InjectRepository(AggregateVLUptakeOutcome, 'mssql')
+        private readonly repository: Repository<AggregateVLUptakeOutcome>
     ) {
     }
 
     async execute(query: Get6MonthViralSuppressionByYearOfArtStartQuery): Promise<any> {
-        const sixMonthViralSupByYearOfArtStart = this.repository.createQueryBuilder('f')
-            .select(['StartYear startYear, SUM(VLAt6Months_Sup) vlAt6Months_Sup, CASE WHEN SUM(VLAt6Months) = 0 THEN 0 ELSE (CAST(SUM(VLAt6Months_Sup) as float)/CAST(SUM(VLAt6Months) as float)) END percentAt6Months'])
+        const sixMonthViralSupByYearOfArtStart = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'StartARTYear startYear, SUM(VLAt6Months_Sup) vlAt6Months_Sup, CASE WHEN SUM(VLAt6Months) = 0 THEN 0 ELSE (CAST(SUM(VLAt6Months_Sup) as float)/CAST(SUM(VLAt6Months) as float)) END percentAt6Months',
+            ])
             .where('f.MFLCode > 1')
-            .andWhere('f.StartYear >= 2011');
+            .andWhere('f.StartARTYear >= 2011');
 
         if (query.county) {
             sixMonthViralSupByYearOfArtStart.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -31,11 +35,11 @@ export class Get6MonthViralSuppressionByYearOfArtStartHandler implements IQueryH
         }
 
         if (query.partner) {
-            sixMonthViralSupByYearOfArtStart.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            sixMonthViralSupByYearOfArtStart.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            sixMonthViralSupByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            sixMonthViralSupByYearOfArtStart.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
@@ -49,8 +53,8 @@ export class Get6MonthViralSuppressionByYearOfArtStartHandler implements IQueryH
         }
 
         return await sixMonthViralSupByYearOfArtStart
-            .groupBy('f.StartYear')
-            .orderBy('StartYear')
+            .groupBy('f.StartARTYear')
+            .orderBy('StartARTYear')
             .getRawMany();
     }
 }

@@ -1,14 +1,14 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransVLOverallUptake } from '../../entities/fact-trans-vl-overall-uptake.model';
 import { GetVlOverallUptakeAndSuppressionBySexQuery } from '../impl/get-vl-overall-uptake-and-suppression-by-sex.query';
+import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlOverallUptakeAndSuppressionBySexQuery)
 export class GetVlOverallUptakeAndSuppressionBySexHandler implements IQueryHandler<GetVlOverallUptakeAndSuppressionBySexQuery> {
     constructor(
-        @InjectRepository(FactTransVLOverallUptake, 'mssql')
-        private readonly repository: Repository<FactTransVLOverallUptake>
+        @InjectRepository(AggregateVLUptakeOutcome, 'mssql')
+        private readonly repository: Repository<AggregateVLUptakeOutcome>
     ) {
     }
 

@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('LineListALHIV')
-export class LineListALHIV {
+@Entity('LineListOTZEligibilityAndEnrollments')
+export class LineListOTZEligibilityAndEnrollments {
     @PrimaryColumn('text')
     MFLCode: string;
 

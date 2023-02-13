@@ -64,7 +64,7 @@ export class GetLinkageByAgeSexHandler
         //     linkageByAgeSexSql = `${linkageByAgeSexSql} and month=?`;
         //     params.push(query.month);
         // }
-        //TODO:: These filters
+
         if (query.fromDate) {
             linkageByAgeSexSql = `${linkageByAgeSexSql} and DateTestedKey >= ${query.fromDate}01`;
         }

@@ -310,7 +310,7 @@ import { GetArtVerificationReasonsHandler } from './art-verification/queries/han
 import { AggregateOtz } from './otz/entities/aggregate-otz.model';
 import { AggregateOTZOutcome } from './otz/entities/aggregate-otz-outcome.model';
 import { LineListOTZ } from './otz/entities/line-list-otz.model';
-import { LineListALHIV } from './otz/entities/line-list-alhiv.model';
+import { LineListOTZEligibilityAndEnrollments } from './otz/entities/line-list-otz-eligibility-and-enrollments.model';
 import { AggregateDSDApptsByStability } from './dsd/entities/aggregate-dsd-appts-by-stability.model';
 import { AggregateDSDStable } from './dsd/entities/aggregate-dsd-stable.model';
 import { AggregateNupi } from './current-on-art/entities/aggregate-nupi.model';
@@ -333,6 +333,7 @@ import { AggregateVLUptakeOutcome } from './viral-load/entities/aggregate-vl-upt
 import { AggregateTimeToFirstVLGrp } from './viral-load/entities/aggregate-time-to-first-vl-grp.model';
 import { AggregateTimeToVL } from './viral-load/entities/aggregate-time-to-vl.model';
 import { AggregateTimeToVL12M } from './viral-load/entities/aggregate-time-to-vl-last-12m.model';
+import { AggregateTreatmentOutcomes } from './treatment-outcomes/entities/aggregate-treatment-outcomes.model';
 
 
 @Module({
@@ -344,7 +345,7 @@ import { AggregateTimeToVL12M } from './viral-load/entities/aggregate-time-to-vl
                 AggregateOtz,
                 AggregateOTZOutcome,
                 LineListOTZ,
-                LineListALHIV,
+                LineListOTZEligibilityAndEnrollments,
 
                 AggregateNupi,
                 AggregateTXCurr,
@@ -376,6 +377,8 @@ import { AggregateTimeToVL12M } from './viral-load/entities/aggregate-time-to-vl
                 AggregateTimeToFirstVLGrp,
                 AggregateTimeToVL12M,
                 AggregateTimeToVL,
+
+                AggregateTreatmentOutcomes,
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,
