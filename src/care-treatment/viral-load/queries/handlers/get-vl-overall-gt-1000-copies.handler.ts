@@ -3,13 +3,14 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { GetVlOverallUptakeGt1000CopiesQuery } from '../impl/get-vl-overall-uptake-gt-1000-copies.query';
+import { LinelistFACTART } from './../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetVlOverallUptakeGt1000CopiesQuery)
 export class GetVlOverallGt1000CopiesHandler
     implements IQueryHandler<GetVlOverallUptakeGt1000CopiesQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>,
+        @InjectRepository(LinelistFACTART, 'mssql')
+        private readonly repository: Repository<LinelistFACTART>,
     ) {}
 
     async execute(query: GetVlOverallUptakeGt1000CopiesQuery): Promise<any> {
@@ -20,7 +21,7 @@ export class GetVlOverallGt1000CopiesHandler
                     "WHEN CAST(Replace(LastVL,',','')AS FLOAT) <=50.90 THEN '<50 Copies' " +
                     "WHEN CAST(Replace(LastVL,',','') AS FLOAT) between 51.00 and 399.00 THEN '51-399' " +
                     "WHEN CAST(Replace(LastVL,',','')AS FLOAT) between 400.00 and 999.00 THEN '400-999' " +
-                    "WHEN CAST(Replace(LastVL,',','')AS FLOAT) >=1000 THEN '>1000 Copies' " +
+                    "WHEN CAST(Replace(LastVL,',','')AS FLOAT) >= 1000 THEN '>1000 Copies' " +
                     "END WHEN LastVL IN ('undetectable','NOT DETECTED','0 copies/ml','LDL','ND','Target Not Detected',' Not detected','Target Not Detected.','Less than Low Detectable Level') THEN '<50 Copies' " +
                     'ELSE NULL END AS [Last12MVLResult]',
             ])
@@ -48,20 +49,20 @@ export class GetVlOverallGt1000CopiesHandler
         }
 
         if (query.partner) {
-            vlOverallUptakeGt1000.andWhere('f.CTPartner IN (:...partners)', {
+            vlOverallUptakeGt1000.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            vlOverallUptakeGt1000.andWhere('f.CTAgency IN (:...agencies)', {
+            vlOverallUptakeGt1000.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
 
         if (query.datimAgeGroup) {
             vlOverallUptakeGt1000.andWhere(
-                'f.DATIM_AgeGroup IN (:...ageGroups)',
+                'f.AgeGroup IN (:...ageGroups)',
                 { ageGroups: query.datimAgeGroup },
             );
         }

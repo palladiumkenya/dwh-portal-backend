@@ -334,6 +334,7 @@ import { AggregateTimeToFirstVLGrp } from './viral-load/entities/aggregate-time-
 import { AggregateTimeToVL } from './viral-load/entities/aggregate-time-to-vl.model';
 import { AggregateTimeToVL12M } from './viral-load/entities/aggregate-time-to-vl-last-12m.model';
 import { AggregateTreatmentOutcomes } from './treatment-outcomes/entities/aggregate-treatment-outcomes.model';
+import { LineListViralLoad } from './viral-load/entities/linelist-viral-load.model';
 
 
 @Module({
@@ -379,6 +380,7 @@ import { AggregateTreatmentOutcomes } from './treatment-outcomes/entities/aggreg
                 AggregateTimeToVL,
 
                 AggregateTreatmentOutcomes,
+                LineListViralLoad,
 
                 AllEmrSites,
                 FactTransHmisStatsTxcurr,
