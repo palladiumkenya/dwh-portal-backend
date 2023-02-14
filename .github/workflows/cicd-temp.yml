@@ -25,8 +25,8 @@ jobs:
           git clone -b feat/new-reporting-layer https://github.com/palladiumkenya/dwh-portal-backend.git .
           git status
           sudo cp /apps/nodeApps/dwh-portal-backend-temp/.env.production /apps/githubworkflows/dwh-portal-backend-temp
-          sudo cp /apps/nodeApps/dwh-portal-backend-temp/Dockerfile /apps/githubworkflows/dwh-portal-backend-temp
-          sudo cp -r /apps/nodeApps/dwh-portal-backend-temp/secrets /apps/githubworkflows/dwh-portal-backend-temp
+          sudo cp /apps/nodeApps/dwh-portal-backend/Dockerfile /apps/githubworkflows/dwh-portal-backend-temp
+          sudo cp -r /apps/nodeApps/dwh-portal-backend/secrets /apps/githubworkflows/dwh-portal-backend-temp
           sudo docker build -t cicdapplication/dwhportalbackendtemp:latest .
           sudo docker stop dwhportalbackendtemp
           sudo docker rm dwhportalbackendtemp
