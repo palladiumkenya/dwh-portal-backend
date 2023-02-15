@@ -6,18 +6,19 @@ import { GetRecencyUploadsQuery } from '../impl/get-recency-uploads.query';
 import { RecencyUploadsTileDto } from '../../entities/dtos/recency-uploads-tile.dto';
 
 @QueryHandler(GetRecencyUploadsQuery)
-export class GetRecencyUploadsHandler implements IQueryHandler<GetRecencyUploadsQuery> {
+export class GetRecencyUploadsHandler
+    implements IQueryHandler<GetRecencyUploadsQuery> {
     constructor(
-        @InjectRepository(FactManifest)
+        @InjectRepository(FactManifest, 'mssql')
         private readonly repository: Repository<FactManifest>,
-    ) {
+    ) {}
 
-    }
-
-    async execute(query: GetRecencyUploadsQuery): Promise<RecencyUploadsTileDto> {
+    async execute(
+        query: GetRecencyUploadsQuery,
+    ): Promise<RecencyUploadsTileDto> {
         const params = [];
         params.push(query.docket);
-        let recencySql = 'select sum(recency) as totalrecency from recency_uploads where docket=?';
+        let recencySql = `select sum(recency) as totalrecency from AggregateRecencyUploads where docket='${query.docket}'`;
         if (query.county) {
             recencySql = `${recencySql} and county IN (?)`;
             params.push(query.county);
@@ -39,13 +40,16 @@ export class GetRecencyUploadsHandler implements IQueryHandler<GetRecencyUploads
             params.push(query.agency);
         }
         if (query.period) {
-            const year=query.period.split(',')[0];
-            const month=query.period.split(',')[1];
-            recencySql = `${recencySql} and year=? and month=?`;
+            const year = query.period.split(',')[0];
+            const month = query.period.split(',')[1];
+            recencySql = `${recencySql} and year=${year} and month=${month}`;
             params.push(year);
             params.push(month);
         }
         const overallResult = await this.repository.query(recencySql, params);
-        return new RecencyUploadsTileDto(query.docket,+overallResult[0].totalrecency);
+        return new RecencyUploadsTileDto(
+            query.docket,
+            +overallResult[0].totalrecency,
+        );
     }
 }
