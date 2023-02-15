@@ -3,7 +3,7 @@ import { ConfigurationModule } from '../config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ManifestsController } from './manifests.controller';
-import { FactManifest } from './entities/fact-manifest.entity';
+import { FactManifest } from './entities/fact-manifest.model';
 import { GetExpectedUploadsHandler } from './queries/handlers/get-expected-uploads.handler';
 import { GetRecencyUploadsHandler } from './queries/handlers/get-recency-uploads.handler';
 import { GetConsistencyUploadsHandler } from './queries/handlers/get-consistency-uploads.handler';
@@ -22,7 +22,7 @@ import { GetExpectedUploadsPartnerCountyHandler } from './queries/handlers/get-e
     imports: [
         CqrsModule,
         ConfigurationModule,
-        TypeOrmModule.forFeature([FactManifest])],
+        TypeOrmModule.forFeature([FactManifest], 'mssql')],
     providers: [
         GetConsistencyUploadsHandler,
         GetConsistencyByFacilityHandler,

@@ -6,18 +6,17 @@ import { GetTrendsRecencyQuery } from '../impl/get-trends-recency.query';
 import { RecencyUploadsDto } from '../../entities/dtos/recency-uploads.dto';
 
 @QueryHandler(GetTrendsRecencyQuery)
-export class GetTrendsRecencyHandler implements IQueryHandler<GetTrendsRecencyQuery> {
+export class GetTrendsRecencyHandler
+    implements IQueryHandler<GetTrendsRecencyQuery> {
     constructor(
-        @InjectRepository(FactManifest)
+        @InjectRepository(FactManifest, 'mssql')
         private readonly repository: Repository<FactManifest>,
-    ) {
-
-    }
+    ) {}
 
     async execute(query: GetTrendsRecencyQuery): Promise<RecencyUploadsDto> {
         const params = [];
         params.push(query.docket);
-        let recencySql = 'select * from recency_uploads where docket=?';
+        let recencySql = `select * from AggregateRecencyUploads where docket='${query.docket}'`;
         if (query.county) {
             recencySql = `${recencySql} and county IN (?)`;
             params.push(query.county);
@@ -41,7 +40,7 @@ export class GetTrendsRecencyHandler implements IQueryHandler<GetTrendsRecencyQu
         if (query.period) {
             const year = query.period.split(',')[0];
             const month = query.period.split(',')[1];
-            recencySql = `${recencySql} and year=? and month=?`;
+            recencySql = `${recencySql} and year=${year} and month=${month}`;
             params.push(year);
             params.push(month);
         }
