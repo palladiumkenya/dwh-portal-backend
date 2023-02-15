@@ -194,7 +194,7 @@ export class GetOverallReportingByFacilityHandler
         }
 
         if (query.facility) {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and FacilityFacilityName IN ('${query.facility
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and FacilityName IN ('${query.facility
                 .toString()
                 .replace(/,/g, "','")}')`
         }
