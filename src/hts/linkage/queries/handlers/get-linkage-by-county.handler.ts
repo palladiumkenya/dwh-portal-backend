@@ -37,7 +37,7 @@ export class GetLinkageByCountyHandler
         }
 
         if (query.subCounty) {
-            linkageByCountySql = `${linkageByCountySql} and SubCounty IN ('${query.county
+            linkageByCountySql = `${linkageByCountySql} and SubCounty IN ('${query.subCounty
                 .toString()
                 .replace(/,/g, "','")}')`
         }
@@ -69,7 +69,7 @@ export class GetLinkageByCountyHandler
         }
 
         if (query.toDate) {
-            linkageByCountySql = `${linkageByCountySql} and DateTestedKey <= ${query.toDate}01`;
+            linkageByCountySql = `${linkageByCountySql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         linkageByCountySql = `${linkageByCountySql} GROUP BY County ORDER BY SUM(Positive) DESC`;

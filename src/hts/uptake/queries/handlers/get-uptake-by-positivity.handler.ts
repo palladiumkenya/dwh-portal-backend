@@ -75,7 +75,7 @@ export class GetUptakeByPositivityHandler
         }
 
         if (query.toDate) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and DateTestedKey <= ${query.toDate}01`;
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         numberTestedPositivitySql = `${numberTestedPositivitySql} GROUP BY YEAR(DateTestedKey), month(DateTestedKey)`;

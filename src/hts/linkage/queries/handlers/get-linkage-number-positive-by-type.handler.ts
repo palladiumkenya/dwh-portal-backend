@@ -74,7 +74,7 @@ export class GetLinkageNumberPositiveByTypeHandler
         }
 
         if (query.toDate) {
-            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and DateTestedKey <= ${query.toDate}01`;
+            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} GROUP BY TestedBefore, year(DateTestedKey), month(DateTestedKey)`;

@@ -182,28 +182,33 @@ export class GetOverallReportingByFacilityHandler
         }
 
         if (query.county) {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and County IN (?)`;
-            params.push(query.county);
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.subCounty) {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and subCounty IN (?)`;
-            params.push(query.subCounty);
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.facility) {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and FacilityName IN (?)`;
-            params.push(query.facility);
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and FacilityFacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.partner) {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and partner IN (?)`;
-            params.push(query.partner);
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and Partner IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.agency) {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and Agency IN (?)`;
-            params.push(query.agency);
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and agency IN ('${query.agency
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         return await this.repository.query(

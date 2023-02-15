@@ -21,20 +21,24 @@ export class GetExpectedUploadsHandler
         params.push(query.docket);
         let expectedSql = `select sum(expected) as totalexpected from AggregateExpectedUploads where docket='${query.docket}'`;
         if (query.county) {
-            expectedSql = `${expectedSql} and county IN (?)`;
-            params.push(query.county);
+            expectedSql = `${expectedSql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
         if (query.subCounty) {
-            expectedSql = `${expectedSql} and subCounty IN (?)`;
-            params.push(query.subCounty);
+            expectedSql = `${expectedSql} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
         if (query.agency) {
-            expectedSql = `${expectedSql} and agency IN (?)`;
-            params.push(query.agency);
+            expectedSql = `${expectedSql} and agency IN ('${query.agency
+                .toString()
+                .replace(/,/g, "','")}')`
         }
         if (query.partner) {
-            expectedSql = `${expectedSql} and partner IN (?)`;
-            params.push(query.partner);
+            expectedSql = `${expectedSql} and Partner IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
         const expectedResult = await this.repository.query(expectedSql, params);
         return new ExpectedUploadsTileDto(

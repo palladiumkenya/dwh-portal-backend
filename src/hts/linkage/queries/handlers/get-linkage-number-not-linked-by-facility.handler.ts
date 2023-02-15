@@ -78,7 +78,7 @@ export class GetLinkageNumberNotLinkedByFacilityHandler
         }
 
         if (query.toDate) {
-            linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and DateTestedKey <= ${query.toDate}01`;
+            linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} GROUP BY MFLCode, FacilityName, County, subcounty, PartnerName`;

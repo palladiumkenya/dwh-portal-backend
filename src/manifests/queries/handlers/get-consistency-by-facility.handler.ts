@@ -106,28 +106,33 @@ export class GetConsistencyByFacilityHandler
         // }
 
         if (query.county) {
-            consistencyByFacilitySql = `${consistencyByFacilitySql} and County IN (?)`;
-            params.push(query.county);
+            consistencyByFacilitySql = `${consistencyByFacilitySql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.subCounty) {
-            consistencyByFacilitySql = `${consistencyByFacilitySql} and subCounty IN (?)`;
-            params.push(query.subCounty);
+            consistencyByFacilitySql = `${consistencyByFacilitySql} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.facility) {
-            consistencyByFacilitySql = `${consistencyByFacilitySql} and name IN (?)`;
-            params.push(query.facility);
+            consistencyByFacilitySql = `${consistencyByFacilitySql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.partner) {
-            consistencyByFacilitySql = `${consistencyByFacilitySql} and partner IN (?)`;
-            params.push(query.partner);
+            consistencyByFacilitySql = `${consistencyByFacilitySql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.agency) {
-            consistencyByFacilitySql = `${consistencyByFacilitySql} and Agency IN (?)`;
-            params.push(query.agency);
+            consistencyByFacilitySql = `${consistencyByFacilitySql} and agencyName IN ('${query.agency
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         return await this.repository.query(consistencyByFacilitySql, params);

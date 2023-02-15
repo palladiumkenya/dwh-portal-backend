@@ -69,7 +69,7 @@ export class GetLinkageByEntryPointHandler
         }
 
         if (query.toDate) {
-            linkageByEntryPointSql = `${linkageByEntryPointSql} and DateTestedKey <= ${query.toDate}01`;
+            linkageByEntryPointSql = `${linkageByEntryPointSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         linkageByEntryPointSql = `${linkageByEntryPointSql} GROUP BY EntryPoint ORDER BY SUM(positive) DESC`;

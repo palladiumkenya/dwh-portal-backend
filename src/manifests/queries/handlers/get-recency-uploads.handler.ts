@@ -20,24 +20,28 @@ export class GetRecencyUploadsHandler
         params.push(query.docket);
         let recencySql = `select sum(recency) as totalrecency from AggregateRecencyUploads where docket='${query.docket}'`;
         if (query.county) {
-            recencySql = `${recencySql} and county IN (?)`;
-            params.push(query.county);
+            recencySql = `${recencySql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
         if (query.subCounty) {
-            recencySql = `${recencySql} and subCounty IN (?)`;
-            params.push(query.subCounty);
+            recencySql = `${recencySql} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
         // if (query.facility) {
         //     recencySql = `${recencySql} and facility IN (?)`;
         //     params.push(query.facility);
         // }
         if (query.partner) {
-            recencySql = `${recencySql} and partner IN (?)`;
-            params.push(query.partner);
+            recencySql = `${recencySql} and Partner IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
         if (query.agency) {
-            recencySql = `${recencySql} and agency IN (?)`;
-            params.push(query.agency);
+            recencySql = `${recencySql} and agency IN ('${query.agency
+                .toString()
+                .replace(/,/g, "','")}')`
         }
         if (query.period) {
             const year = query.period.split(',')[0];

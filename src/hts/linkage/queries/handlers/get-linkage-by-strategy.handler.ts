@@ -69,7 +69,7 @@ export class GetLinkageByStrategyHandler
         }
 
         if (query.toDate) {
-            linkageByStrategySql = `${linkageByStrategySql} and DateTestedKey <= ${query.toDate}01`;
+            linkageByStrategySql = `${linkageByStrategySql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         linkageByStrategySql = `${linkageByStrategySql} GROUP BY TestStrategy ORDER BY SUM(positive) DESC`;

@@ -67,7 +67,7 @@ export class GetUptakeBySexHandler
         }
 
         if (query.toDate) {
-            uptakeBySexSql = `${uptakeBySexSql} and DateTestedKey <= ${query.toDate}01`;
+            uptakeBySexSql = `${uptakeBySexSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         uptakeBySexSql = `${uptakeBySexSql} GROUP BY CASE WHEN Gender = 'M' THEN 'Male' WHEN Gender = 'F' THEN 'Female' ELSE Gender END`;
