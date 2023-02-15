@@ -69,7 +69,7 @@ export class GetLinkageByPartnerHandler
         }
 
         if (query.toDate) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and DateTestedKey <= ${query.toDate}01`;
+            linkageByPartnerSql = `${linkageByPartnerSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         linkageByPartnerSql = `${linkageByPartnerSql} GROUP BY PartnerName ORDER BY SUM(Positive) DESC`;

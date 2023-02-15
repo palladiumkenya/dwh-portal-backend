@@ -64,7 +64,7 @@ export class GetUptakeByAgeSexPositivityHandler
         }
 
         if (query.toDate) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and DateTestedKey <= ${query.toDate}01`;
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         uptakeByAgeSexSql = `${uptakeByAgeSexSql} GROUP BY DATIMAgeGroup`;

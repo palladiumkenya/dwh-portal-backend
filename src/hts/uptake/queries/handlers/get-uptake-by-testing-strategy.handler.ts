@@ -67,7 +67,7 @@ export class GetUptakeByTestingStrategyHandler
         }
 
         if (query.toDate) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and DateTestedKey <= ${query.toDate}01`;
+            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} GROUP BY TestStrategy ORDER BY SUM(Tested) DESC`;

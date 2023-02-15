@@ -23,28 +23,33 @@ export class GetOverallReportingHandler
             WHERE docketId = '${query.docket}'`;
 
         if (query.county) {
-            overAllReportingSql = `${overAllReportingSql} and county IN (?)`;
-            params.push(query.county);
+            overAllReportingSql = `${overAllReportingSql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.subCounty) {
-            overAllReportingSql = `${overAllReportingSql} and subCounty IN (?)`;
-            params.push(query.subCounty);
+            overAllReportingSql = `${overAllReportingSql} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.facility) {
-            overAllReportingSql = `${overAllReportingSql} and name IN (?)`;
-            params.push(query.facility);
+            overAllReportingSql = `${overAllReportingSql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.partner) {
-            overAllReportingSql = `${overAllReportingSql} and partner IN (?)`;
-            params.push(query.partner);
+            overAllReportingSql = `${overAllReportingSql} and Partner IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.agency) {
-            overAllReportingSql = `${overAllReportingSql} and agency IN (?)`;
-            params.push(query.agency);
+            overAllReportingSql = `${overAllReportingSql} and agencyName IN ('${query.agency
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.period) {

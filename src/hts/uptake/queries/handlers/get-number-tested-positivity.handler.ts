@@ -77,7 +77,7 @@ export class GetNumberTestedPositivityHandler
         }
 
         if (query.toDate) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and DateTestedKey <= ${query.toDate}01`;
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         numberTestedPositivitySql = `${numberTestedPositivitySql} GROUP BY TestedBefore, year(DateTestedKey), month(DateTestedKey)`;

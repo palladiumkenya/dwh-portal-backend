@@ -70,7 +70,7 @@ export class GetLinkageByAgeSexHandler
         }
 
         if (query.toDate) {
-            linkageByAgeSexSql = `${linkageByAgeSexSql} and DateTestedKey <= ${query.toDate}01`;
+            linkageByAgeSexSql = `${linkageByAgeSexSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         linkageByAgeSexSql = `${linkageByAgeSexSql} GROUP BY DATIMAgeGroup, CASE WHEN Gender = 'M' THEN 'Male' WHEN Gender = 'F' THEN 'Female' ELSE Gender END`;

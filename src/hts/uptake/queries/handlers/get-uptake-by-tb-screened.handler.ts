@@ -67,7 +67,7 @@ export class GetUptakeByTbScreenedHandler
         }
 
         if (query.toDate) {
-            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and DateTestedKey <= ${query.toDate}01`;
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} GROUP BY CASE WHEN TBScreening IN ('No Signs','On TB Treatment','Presumed TB','TB Confirmed','TB Prophylaxis', 'No TB signs', 'PrTB') THEN 'Screened for TB' WHEN TBScreening in ('', 'Not done') THEN 'Not Screened for TB' END`;

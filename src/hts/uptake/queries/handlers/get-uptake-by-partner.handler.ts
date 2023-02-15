@@ -57,7 +57,7 @@ export class GetUptakeByPartnerHandler
         }
 
         if (query.toDate) {
-            uptakeByPartnerSql = `${uptakeByPartnerSql} and DateTestedKey <= ${query.toDate}01`;
+            uptakeByPartnerSql = `${uptakeByPartnerSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         // if(query.month) {

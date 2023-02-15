@@ -29,13 +29,15 @@ export class GetRecencyByPartnerHandler
                                     WHERE docket = '${query.docket}'`;
 
         if (query.county) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and county IN (?)`;
-            params.push(query.county);
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.subCounty) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and subCounty IN (?)`;
-            params.push(query.subCounty);
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         // if(query.facility) {
@@ -44,13 +46,15 @@ export class GetRecencyByPartnerHandler
         // }
 
         if (query.partner) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and partner IN (?)`;
-            params.push(query.partner);
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and Partner IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.agency) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and agency IN (?)`;
-            params.push(query.agency);
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and agency IN ('${query.agency
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.period) {
@@ -73,13 +77,15 @@ export class GetRecencyByPartnerHandler
         }
 
         if (query.county) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and county IN (?)`;
-            params.push(query.county);
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.subCounty) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and subCounty IN (?)`;
-            params.push(query.subCounty);
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         // if(query.facility) {
@@ -88,13 +94,15 @@ export class GetRecencyByPartnerHandler
         // }
 
         if (query.partner) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and partner IN (?)`;
-            params.push(query.partner);
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and Partner IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.agency) {
-            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and agency IN (?)`;
-            params.push(query.agency);
+            recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and agency IN ('${query.agency
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} GROUP BY partner

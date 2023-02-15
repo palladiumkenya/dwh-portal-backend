@@ -67,7 +67,7 @@ export class GetUptakeByTestedasHandler
         }
 
         if (query.toDate) {
-            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and DateTestedKey <= ${query.toDate}01`;
+            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} GROUP BY ClientTestedAs`;

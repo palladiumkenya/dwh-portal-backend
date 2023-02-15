@@ -66,7 +66,7 @@ export class GetUptakeByClientSelfTestedHandler
         }
 
         if (query.toDate) {
-            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and DateTestedKey <= ${query.toDate}01`;
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} GROUP BY CASE WHEN ClientSelfTested = '1' THEN 'Yes' WHEN ClientSelfTested = '0' THEN 'No' else ClientSelfTested END`;

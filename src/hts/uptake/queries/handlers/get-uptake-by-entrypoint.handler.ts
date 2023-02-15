@@ -67,7 +67,7 @@ export class GetUptakeByEntrypointHandler
         }
 
         if (query.toDate) {
-            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and DateTestedKey <= ${query.toDate}01`;
+            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         uptakeByEntryPointSql = `${uptakeByEntryPointSql} GROUP BY EntryPoint ORDER BY SUM(Tested) DESC`;
