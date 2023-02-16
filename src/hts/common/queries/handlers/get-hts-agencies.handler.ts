@@ -3,19 +3,20 @@ import { GetHtsAgenciesQuery } from '../impl/get-hts-agencies.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
+import { AllEmrSites } from './../../../../care-treatment/common/entities/all-emr-sites.model';
 
 @QueryHandler(GetHtsAgenciesQuery)
 export class GetHtsAgenciesHandler implements IQueryHandler<GetHtsAgenciesQuery> {
     constructor(
-        @InjectRepository(FactHtsUptake)
-        private readonly repository: Repository<FactHtsUptake>
+        @InjectRepository(AllEmrSites, 'mssql')
+        private readonly repository: Repository<AllEmrSites>
     ) {
         
     }
 
     async execute(query: GetHtsAgenciesQuery): Promise<any> {
         const params = [];
-        let agenciesSql = `SELECT DISTINCT agency AS agency FROM dim_facility WHERE agency IS NOT NULL `;
+        let agenciesSql = `SELECT DISTINCT agencyName AS agency FROM all_EMRSites WHERE agencyName IS NOT NULL and isHts = 1`;
   
         if(query.county) {
             agenciesSql = `${agenciesSql} and county IN (?)`;
@@ -47,7 +48,7 @@ export class GetHtsAgenciesHandler implements IQueryHandler<GetHtsAgenciesQuery>
         //     params.push(query.project);
         // }
 
-        agenciesSql = `${agenciesSql} ORDER BY agency ASC`;
+        agenciesSql = `${agenciesSql} ORDER BY agencyName ASC`;
 
         return  await this.repository.query(agenciesSql, params);
     }
