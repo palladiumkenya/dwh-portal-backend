@@ -3,17 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetVlMedianTimeToFirstVlByYearQuery } from '../impl/get-vl-median-time-to-first-vl-by-year.query';
 import { FactTransTimeToVl } from '../../entities/fact-trans-time-to-vl.model';
+import { AggregateTimeToART } from './../../../new-on-art/entities/aggregate-time-to-art.model';
+import { AggregateTimeToVL } from './../../entities/aggregate-time-to-vl.model';
 
 @QueryHandler(GetVlMedianTimeToFirstVlByYearQuery)
 export class GetVlMedianTimeToFirstVlByYearHandler implements IQueryHandler<GetVlMedianTimeToFirstVlByYearQuery> {
     constructor(
-        @InjectRepository(FactTransTimeToVl, 'mssql')
-        private readonly repository: Repository<FactTransTimeToVl>
+        @InjectRepository(AggregateTimeToVL, 'mssql')
+        private readonly repository: Repository<AggregateTimeToVL>
     ) {
     }
 
     async execute(query: GetVlMedianTimeToFirstVlByYearQuery): Promise<any> {
-        let medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
+        let medianTimeToFirstVlSql = this.repository
+            .createQueryBuilder('f')
             .select(['StartYr year, MedianTimeToFirstVL_year medianTime'])
             .andWhere('f.MFLCode IS NOT NULL');
 
@@ -30,12 +33,12 @@ export class GetVlMedianTimeToFirstVlByYearHandler implements IQueryHandler<GetV
 
         if (query.county && query.partner) {
             medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
-                .select(['StartYr year, MedianTimeToFirstVL_YearCountyPartner medianTime'])
+                .select(['StartYr year, MedianTimeToFirstVL_yearCountyPartner medianTime'])
                 .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner })
                 .andWhere('f.County IN (:...counties)', { counties: query.county });
 
             return await medianTimeToFirstVlSql
-                .groupBy('StartYr, MedianTimeToFirstVL_YearCountyPartner')
+                .groupBy('StartYr, MedianTimeToFirstVL_yearCountyPartner')
                 .orderBy('f.StartYr')
                 .getRawMany();
         }
@@ -86,7 +89,7 @@ export class GetVlMedianTimeToFirstVlByYearHandler implements IQueryHandler<GetV
 
         if (query.datimAgeGroup) {
             medianTimeToFirstVlSql.andWhere(
-                'f.DATIM_AgeGroup IN (:...ageGroups)',
+                'f.AgeGroup IN (:...ageGroups)',
                 { ageGroups: query.datimAgeGroup },
             );
         }

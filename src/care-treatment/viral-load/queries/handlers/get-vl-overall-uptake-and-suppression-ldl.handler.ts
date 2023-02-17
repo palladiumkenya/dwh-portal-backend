@@ -4,13 +4,14 @@ import { Repository } from 'typeorm';
 import { FactTransVLOverallUptake } from '../../entities/fact-trans-vl-overall-uptake.model';
 import { GetVlOverallUptakeAndSuppressionLdlQuery } from '../impl/get-vl-overall-uptake-and-suppression-ldl.query';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
+import { LinelistFACTART } from './../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetVlOverallUptakeAndSuppressionLdlQuery)
 export class GetVlOverallUptakeAndSuppressionLdlHandler
     implements IQueryHandler<GetVlOverallUptakeAndSuppressionLdlQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>,
+        @InjectRepository(LinelistFACTART, 'mssql')
+        private readonly repository: Repository<LinelistFACTART>,
     ) {}
 
     async execute(
@@ -50,21 +51,21 @@ export class GetVlOverallUptakeAndSuppressionLdlHandler
 
         if (query.partner) {
             vlOverallUptakeAndSuppressinLDL.andWhere(
-                'f.CTPartner IN (:...partners)',
+                'f.PartnerName IN (:...partners)',
                 { partners: query.partner },
             );
         }
 
         if (query.agency) {
             vlOverallUptakeAndSuppressinLDL.andWhere(
-                'f.CTAgency IN (:...agencies)',
+                'f.AgencyName IN (:...agencies)',
                 { agencies: query.agency },
             );
         }
 
         if (query.datimAgeGroup) {
             vlOverallUptakeAndSuppressinLDL.andWhere(
-                'f.DATIM_AgeGroup IN (:...ageGroups)',
+                'f.AgeGroup IN (:...ageGroups)',
                 {
                     ageGroups: query.datimAgeGroup,
                 },

@@ -2561,7 +2561,7 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('ageGroup') ageGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationBySexQuery();
         if (county) {
@@ -2600,8 +2600,8 @@ export class CareTreatmentController {
             query.gender = gender;
         }
 
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+        if (ageGroup) {
+            query.ageGroup = ageGroup;
         }
 
         return this.queryBus.execute(query);
@@ -2618,7 +2618,7 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('ageGroup') ageGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationByAgeQuery();
         if (county) {
@@ -2657,8 +2657,8 @@ export class CareTreatmentController {
             query.gender = gender;
         }
 
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+        if (ageGroup) {
+            query.ageGroup = ageGroup;
         }
 
         return this.queryBus.execute(query);
@@ -2675,7 +2675,7 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('ageGroup') ageGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationByCountyQuery();
         if (county) {
@@ -2714,8 +2714,8 @@ export class CareTreatmentController {
             query.gender = gender;
         }
 
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+        if (ageGroup) {
+            query.ageGroup = ageGroup;
         }
 
         return this.queryBus.execute(query);
@@ -2732,7 +2732,7 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('ageGroup') ageGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationByPartnerQuery();
         if (county) {
@@ -2771,8 +2771,8 @@ export class CareTreatmentController {
             query.gender = gender;
         }
 
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+        if (ageGroup) {
+            query.ageGroup = ageGroup;
         }
 
         return this.queryBus.execute(query);
@@ -2789,7 +2789,7 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('ageGroup') ageGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationCategorizationByStabilityStatusQuery();
         if (county) {
@@ -2828,8 +2828,8 @@ export class CareTreatmentController {
             query.gender = gender;
         }
 
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+        if (ageGroup) {
+            query.ageGroup = ageGroup;
         }
 
         return this.queryBus.execute(query);
@@ -10621,7 +10621,7 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('ageGroup') ageGroup,
     ): Promise<any> {
         const query = new GetCovidFullyVaccinatedQuery();
 
@@ -10661,8 +10661,8 @@ export class CareTreatmentController {
             query.gender = gender;
         }
 
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+        if (ageGroup) {
+            query.ageGroup = ageGroup;
         }
 
         return this.queryBus.execute(query);
@@ -10679,7 +10679,7 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('ageGroup') ageGroup,
     ): Promise<any> {
         const query = new GetCovidAdultPLHIVVaccinatedByAgeQuery();
 
@@ -10719,8 +10719,8 @@ export class CareTreatmentController {
             query.gender = gender;
         }
 
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(agegrp =>
+        if (ageGroup) {
+            query.ageGroup = ageGroup.map(agegrp =>
                 agegrp.replace(' to ', '-'),
             );
         }
@@ -10739,7 +10739,7 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('ageGroup') ageGroup,
     ): Promise<any> {
         const query = new GetCovidAdultPlhivVaccinatedByGenderQuery();
 
@@ -10779,8 +10779,8 @@ export class CareTreatmentController {
             query.gender = gender;
         }
 
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+        if (ageGroup) {
+            query.ageGroup = ageGroup;
         }
 
         return this.queryBus.execute(query);
@@ -10797,7 +10797,7 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('ageGroup') ageGroup,
     ): Promise<any> {
         const query = new GetCovidAdultPlhivVaccinatedByCountyQuery();
 
@@ -10837,8 +10837,8 @@ export class CareTreatmentController {
             query.gender = gender;
         }
 
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+        if (ageGroup) {
+            query.ageGroup = ageGroup;
         }
 
         return this.queryBus.execute(query);
@@ -10855,7 +10855,7 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('ageGroup') ageGroup,
     ): Promise<any> {
         const query = new GetCovidAdultPlhivVaccinatedByPartnerQuery();
 
@@ -10895,8 +10895,8 @@ export class CareTreatmentController {
             query.gender = gender;
         }
 
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+        if (ageGroup) {
+            query.ageGroup = ageGroup;
         }
 
         return this.queryBus.execute(query);
@@ -11493,7 +11493,7 @@ export class CareTreatmentController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('ageGroup') ageGroup,
     ): Promise<any> {
         const query = new GetCovidEverHadInfectionQuery();
 
@@ -11533,8 +11533,8 @@ export class CareTreatmentController {
             query.gender = gender;
         }
 
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+        if (ageGroup) {
+            query.ageGroup = ageGroup;
         }
 
         return this.queryBus.execute(query);

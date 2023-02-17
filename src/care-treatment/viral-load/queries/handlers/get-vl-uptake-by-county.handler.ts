@@ -3,12 +3,13 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { FactTransVLOverallUptake } from '../../entities/fact-trans-vl-overall-uptake.model';
 import { GetVlUptakeByCountyQuery } from '../impl/get-vl-uptake-by-county.query';
+import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlUptakeByCountyQuery)
 export class GetVlUptakeByCountyHandler implements IQueryHandler<GetVlUptakeByCountyQuery> {
     constructor(
-        @InjectRepository(FactTransVLOverallUptake, 'mssql')
-        private readonly repository: Repository<FactTransVLOverallUptake>
+        @InjectRepository(AggregateVLUptakeOutcome, 'mssql')
+        private readonly repository: Repository<AggregateVLUptakeOutcome>
     ) {
     }
 
@@ -31,11 +32,11 @@ export class GetVlUptakeByCountyHandler implements IQueryHandler<GetVlUptakeByCo
         }
 
         if (query.partner) {
-            vlUptakeByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlUptakeByCounty.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlUptakeByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlUptakeByCounty.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

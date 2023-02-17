@@ -1,14 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzOutcomesByGenderQuery } from '../impl/get-otz-outcomes-by-gender.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzOutcome } from '../../entities/fact-trans-otz-outcome.model';
+import { AggregateOTZOutcome } from './../../entities/aggregate-otz-outcome.model';
 import { Repository } from 'typeorm';
 
 @QueryHandler(GetOtzOutcomesByGenderQuery)
 export class GetOtzOutcomesByGenderHandler implements IQueryHandler<GetOtzOutcomesByGenderQuery> {
     constructor(
-        @InjectRepository(FactTransOtzOutcome, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(AggregateOTZOutcome, 'mssql')
+        private readonly repository: Repository<AggregateOTZOutcome>
     ) {
     }
 
@@ -16,7 +16,7 @@ export class GetOtzOutcomesByGenderHandler implements IQueryHandler<GetOtzOutcom
         const otzOutcomesByGender = this.repository
             .createQueryBuilder('f')
             .select([
-                "[Gender], CASE WHEN [Outcome] IS NULL THEN 'Active' WHEN [Outcome] = 'Died' THEN 'Dead' ELSE [Outcome] END as Outcome, SUM([Total_OutCome]) outcomesByGender",
+                "[Gender], CASE WHEN [Outcome] IS NULL THEN 'Active' WHEN [Outcome] = 'Died' THEN 'Dead' ELSE [Outcome] END as Outcome, SUM([patients_totalOutcome]) outcomesByGender",
             ])
             .andWhere('f.MFLCode IS NOT NULL');
 
@@ -33,11 +33,11 @@ export class GetOtzOutcomesByGenderHandler implements IQueryHandler<GetOtzOutcom
         }
 
         if (query.partner) {
-            otzOutcomesByGender.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            otzOutcomesByGender.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            otzOutcomesByGender.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            otzOutcomesByGender.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {

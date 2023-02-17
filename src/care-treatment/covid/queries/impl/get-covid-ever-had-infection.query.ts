@@ -7,6 +7,6 @@ export class GetCovidEverHadInfectionQuery {
     month?: number;
     project?: string[];
     gender?: string[];
-    datimAgeGroup?: string[];
+    ageGroup?: string[];
     agency?: string[];
 }

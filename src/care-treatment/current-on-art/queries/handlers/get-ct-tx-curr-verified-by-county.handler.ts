@@ -2,20 +2,20 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetCtTxCurrVerifiedByCountyQuery } from '../impl/get-ct-tx-curr-verified-county.query';
-import { FactNUPI } from '../../entities/fact-nupi.model';
+import { AggregateNupi } from './../../entities/aggregate-nupi.model';
 
 @QueryHandler(GetCtTxCurrVerifiedByCountyQuery)
 export class GetCtTxCurrVerifiedByCountyHandler
     implements IQueryHandler<GetCtTxCurrVerifiedByCountyQuery> {
     constructor(
-        @InjectRepository(FactNUPI, 'mssql')
-        private readonly repository: Repository<FactNUPI>,
+        @InjectRepository(AggregateNupi, 'mssql')
+        private readonly repository: Repository<AggregateNupi>,
     ) {}
 
     async execute(query: GetCtTxCurrVerifiedByCountyQuery): Promise<any> {
         let txCurrByCounty = this.repository
             .createQueryBuilder('f')
-            .select(['County, sum (NumNUPI) NumNupi'])
+            .select(['County, sum (number_nupi) NumNupi'])
             .where('f.[County] IS NOT NULL');
 
         if (query.datimAgePopulations) {
@@ -26,12 +26,12 @@ export class GetCtTxCurrVerifiedByCountyHandler
             } else if (query.datimAgePopulations.includes('>18'))
                 txCurrByCounty = this.repository
                     .createQueryBuilder('f')
-                    .select(['County, sum (Adults) NumNupi'])
+                    .select(['County, sum (number_adults) NumNupi'])
                     .where('f.[County] IS NOT NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurrByCounty = this.repository
                     .createQueryBuilder('f')
-                    .select(['County, sum (Children) NumNupi'])
+                    .select(['County, sum (number_children) NumNupi'])
                     .where('f.[County] IS NOT NULL');
         }
 
@@ -54,19 +54,19 @@ export class GetCtTxCurrVerifiedByCountyHandler
         }
 
         if (query.partner) {
-            txCurrByCounty.andWhere('f.CTPartner IN (:...partners)', {
+            txCurrByCounty.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            txCurrByCounty.andWhere('f.CTAgency IN (:...agencies)', {
+            txCurrByCounty.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
 
         if (query.datimAgeGroup) {
-            txCurrByCounty.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', {
+            txCurrByCounty.andWhere('f.AgeGroup IN (:...ageGroups)', {
                 ageGroups: query.datimAgeGroup,
             });
         }

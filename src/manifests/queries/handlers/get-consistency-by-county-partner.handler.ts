@@ -8,7 +8,7 @@ import { countBy, fromPairs, sortBy, toPairs } from 'lodash';
 @QueryHandler(GetConsistencyByCountyPartnerQuery)
 export class GetConsistencyByCountyPartnerHandler implements IQueryHandler<GetConsistencyByCountyPartnerQuery> {
     constructor(
-        @InjectRepository(FactManifest)
+        @InjectRepository(FactManifest, 'mssql')
         private readonly repository: Repository<FactManifest>
     ) {
 
@@ -16,12 +16,14 @@ export class GetConsistencyByCountyPartnerHandler implements IQueryHandler<GetCo
 
     async execute(query: GetConsistencyByCountyPartnerQuery): Promise<any> {
         const params = [query.getDatePeriod(), query.docket];
-        const consistencySql = 'call generate_consistency_uploads(?,?)';
+        const consistencySql = `EXEC generate_consistency_uploads @PERIOD = '${query.getDatePeriod()}', @docketName ='${
+            query.docket
+        }'`;
         const results = await this.repository.query(consistencySql, params);
         let consistencyResult = [];
         let consistencyValue = {};
-        if(results && results[0].length > 0) {
-            consistencyResult = results[0];
+        if(results) {
+            consistencyResult = results;
             if (query.county) {
                 consistencyResult = consistencyResult.filter(x => query.county.indexOf(x.county) !== -1);
             }

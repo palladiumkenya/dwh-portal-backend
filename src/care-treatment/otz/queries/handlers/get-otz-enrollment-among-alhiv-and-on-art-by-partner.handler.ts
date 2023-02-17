@@ -3,19 +3,22 @@ import { GetOtzEnrollmentAmongAlhivAndOnArtByPartnerQuery } from '../impl/get-ot
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { AggregateOtz } from './../../entities/aggregate-otz.model';
 
 @QueryHandler(GetOtzEnrollmentAmongAlhivAndOnArtByPartnerQuery)
 export class GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler implements IQueryHandler<GetOtzEnrollmentAmongAlhivAndOnArtByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(AggregateOtz, 'mssql')
+        private readonly repository: Repository<AggregateOtz>
     ) {
     }
 
     async execute(query: GetOtzEnrollmentAmongAlhivAndOnArtByPartnerQuery) {
-        const otzEnrollmentsPartner = this.repository.createQueryBuilder('f')
-            .select(['[CTPartner] partner, COUNT(OTZ_Traning) count_training, SUM([TXCurr]) TXCurr, SUM(f.[TXCurr]) * 100.0 / SUM(SUM(f.[TXCurr])) OVER () AS Percentage'])
-            .andWhere('f.OTZEnrollmentDate IS NOT NULL');
+        const otzEnrollmentsPartner = this.repository
+            .createQueryBuilder('f')
+            .select([
+                '[PartnerName] partner, SUM(CompletedTraining) count_training, SUM(Enrolled) TXCurr, SUM(Enrolled) * 100.0 / SUM(SUM(Enrolled)) OVER () AS Percentage',
+            ]);
 
         if (query.county) {
             otzEnrollmentsPartner.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -30,15 +33,15 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler implements IQuer
         }
 
         if (query.partner) {
-            otzEnrollmentsPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            otzEnrollmentsPartner.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            otzEnrollmentsPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            otzEnrollmentsPartner.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            otzEnrollmentsPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            otzEnrollmentsPartner.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
@@ -46,7 +49,7 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler implements IQuer
         }
 
         return await otzEnrollmentsPartner
-            .groupBy('CTPartner')
+            .groupBy('PartnerName')
             .getRawMany();
     }
 }

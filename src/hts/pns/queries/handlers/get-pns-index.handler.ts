@@ -3,35 +3,51 @@ import { GetPnsIndexQuery } from '../impl/get-pns-index.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsuptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetPnsIndexQuery)
 export class GetPnsIndexHandler implements IQueryHandler<GetPnsIndexQuery> {
     constructor(
-        @InjectRepository(FactHtsuptake)
-        private readonly repository: Repository<FactHtsuptake>
-    ) {
-
-    }
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>,
+    ) {}
 
     async execute(query: GetPnsIndexQuery): Promise<any> {
-        const pnsIndex = this.repository.createQueryBuilder('q')
-            .select(['SUM(q.positive) indexClients'])
-            .where('q.positive > 0');
+        let params = [];
+        let pnsIndex = `SELECT 
+                Count(*) indexClients
+            FROM 
+                NDWH.[dbo].[FactHTSPartnerNotificationServices] link
+                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
+                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
+                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
+                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
+                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
+                LEFT JOIN NDWH.dbo.FactHTSClientTests test on test.PatientKey = link.PatientKey
+            WHERE FinalTestResult = 'Positive'`;
 
-        if(query.county) {
-            pnsIndex.andWhere('q.County IN (:...county)', { county: query.county });
+        if (query.county) {
+            pnsIndex = `${pnsIndex}  and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.subCounty) {
-            pnsIndex.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: query.subCounty });
+        if (query.subCounty) {
+            pnsIndex = `${pnsIndex} and SubCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.facility) {
-            pnsIndex.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
+        if (query.facility) {
+            pnsIndex = `${pnsIndex} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.partner) {
-            pnsIndex.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
+        if (query.partner) {
+            pnsIndex = `${pnsIndex} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
         // if(query.month) {
@@ -43,17 +59,13 @@ export class GetPnsIndexHandler implements IQueryHandler<GetPnsIndexQuery> {
         // }
 
         if (query.fromDate) {
-            pnsIndex.andWhere(`CONCAT(year, LPAD(month, 2, '0'))>= :fromDate`, {
-                fromDate: query.fromDate,
-            });
+            pnsIndex = `${pnsIndex}  and DateTestedKey >= ${query.fromDate}01`;
         }
 
         if (query.toDate) {
-            pnsIndex.andWhere(`CONCAT(year, LPAD(month, 2, '0'))<= :toDate`, {
-                toDate: query.toDate,
-            });
+            pnsIndex = `${pnsIndex}  and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
-        return await pnsIndex.getRawOne();
+        return await this.repository.query(pnsIndex, params);
     }
 }

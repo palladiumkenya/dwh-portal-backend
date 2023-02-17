@@ -1,21 +1,24 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCtViralLoadCascadeActiveArtClientsQuery } from '../impl/get-ct-viral-load-cascade-active-art-clients.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
+import { LinelistFACTART } from 'src/care-treatment/common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetCtViralLoadCascadeActiveArtClientsQuery)
 export class GetCtViralLoadCascadeActiveArtClientsHandler implements IQueryHandler<GetCtViralLoadCascadeActiveArtClientsQuery> {
     constructor(
-        @InjectRepository(FactTransHmisStatsTxcurr, 'mssql')
-        private readonly repository: Repository<FactTransHmisStatsTxcurr>
+        @InjectRepository(LinelistFACTART, 'mssql')
+        private readonly repository: Repository<LinelistFACTART>
     ) {
     }
 
     async execute(query: GetCtViralLoadCascadeActiveArtClientsQuery): Promise<any> {
-        const viralLoadCascade = this.repository.createQueryBuilder('f')
-            .select(['SUM([TXCURR_Total]) TX_CURR, SUM([Eligible4VL]) Eligible4VL, SUM([Last12MonthVL]) Last12MonthVL, SUM([Last12MVLSup]) Last12MVLSup, SUM([HighViremia]) HighViremia, SUM([LowViremia]) LowViremia'])
-            .where('f.[TXCURR_Total] IS NOT NULL');
+        const viralLoadCascade = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'SUM([ISTxCurr]) TX_CURR, SUM([Eligible4VL]) Eligible4VL, SUM([Last12MonthVL]) Last12MonthVL, SUM([Last12MVLSup]) Last12MVLSup, SUM([HighViremia]) HighViremia, SUM([LowViremia]) LowViremia',
+            ])
+            .where('f.[ISTxCurr] > 0');
 
         if (query.county) {
             viralLoadCascade
@@ -34,16 +37,17 @@ export class GetCtViralLoadCascadeActiveArtClientsHandler implements IQueryHandl
 
         if (query.partner) {
             viralLoadCascade
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            viralLoadCascade.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            viralLoadCascade.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            viralLoadCascade
-                .andWhere('f.ageGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            viralLoadCascade.andWhere('f.AgeGroup IN (:...ageGroups)', {
+                ageGroups: query.datimAgeGroup,
+            });
         }
 
         if (query.gender) {

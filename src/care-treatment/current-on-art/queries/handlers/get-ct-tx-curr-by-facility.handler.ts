@@ -2,25 +2,24 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetCtTxCurrByFacilityQuery } from '../impl/get-ct-tx-curr-by-facility.query';
-import { FactTransHmisStatsTxcurr } from './../../entities/fact-trans-hmis-stats-txcurr.model';
-import { FactTransNewCohort } from './../../../new-on-art/entities/fact-trans-new-cohort.model';
+import { LinelistFACTART } from './../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetCtTxCurrByFacilityQuery)
 export class GetCtTxCurrByFacilityHandler
     implements IQueryHandler<GetCtTxCurrByFacilityQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>,
+        @InjectRepository(LinelistFACTART, 'mssql')
+        private readonly repository: Repository<LinelistFACTART>,
     ) {}
 
     async execute(query: GetCtTxCurrByFacilityQuery): Promise<any> {
         const txCurrByPartner = this.repository
             .createQueryBuilder('f')
             .select([
-                'FacilityName, CTPartner, County, Subcounty,CTAgency, MFLCode, Count(*) TXCURR',
+                'FacilityName, PartnerName CTPartner, County, Subcounty, AgencyName CTAgency, SiteCode MFLCode, SUM(ISTXCurr) TXCURR',
             ])
             .where(
-                "f.[Gender] IS NOT NULL and ARTOutcome ='V' AND ageLV BETWEEN 0 and 120",
+                "f.[Gender] IS NOT NULL ",
             );
 
         if (query.county) {
@@ -42,32 +41,33 @@ export class GetCtTxCurrByFacilityHandler
         }
 
         if (query.partner) {
-            txCurrByPartner.andWhere('f.CTPartner IN (:...partners)', {
+            txCurrByPartner.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            txCurrByPartner.andWhere('f.CTAgency IN (:...agencies)', {
+            txCurrByPartner.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
 
         if (query.datimAgeGroup) {
-            txCurrByPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', {
+            txCurrByPartner.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', {
                 ageGroups: query.datimAgeGroup,
             });
         }
 
+        //TODO:: Get ages
         if (query.datimAgePopulations) {
             if (
                 query.datimAgePopulations.includes('>18') &&
                 query.datimAgePopulations.includes('<18')
             ) {
             } else if (query.datimAgePopulations.includes('>18'))
-                txCurrByPartner.andWhere('f.ageLV >= 18');
+                txCurrByPartner.andWhere('f.age >= 18');
             else if (query.datimAgePopulations.includes('<18'))
-                txCurrByPartner.andWhere('f.ageLV < 18');
+                txCurrByPartner.andWhere('f.age < 18');
         }
 
         if (query.gender) {
@@ -78,9 +78,9 @@ export class GetCtTxCurrByFacilityHandler
 
         return await txCurrByPartner
             .groupBy(
-                'CTPartner, County, Subcounty, CTAgency, MFLCode, FacilityName',
+                'PartnerName, County, Subcounty, AgencyName, SiteCode, FacilityName',
             )
-            .orderBy('MFLCode', 'DESC')
+            .orderBy('SiteCode', 'DESC')
             .getRawMany();
     }
 }

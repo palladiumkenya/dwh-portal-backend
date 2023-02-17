@@ -3,20 +3,22 @@ import { GetCtAgenciesQuery } from '../impl/get-ct-agencies.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
+import { LinelistFACTART } from './../../entities/linelist-fact-art.model';
 
 @QueryHandler(GetCtAgenciesQuery)
 export class GetCtAgenciesHandler implements IQueryHandler<GetCtAgenciesQuery> {
     constructor(
-        @InjectRepository(FactTransHmisStatsTxcurr, 'mssql')
-        private readonly repository: Repository<FactTransHmisStatsTxcurr>
+        @InjectRepository(LinelistFACTART, 'mssql')
+        private readonly repository: Repository<LinelistFACTART>
     ) {
 
     }
 
     async execute(query: GetCtAgenciesQuery): Promise<any> {
-        const agencies = this.repository.createQueryBuilder('q')
-            .select(['distinct q.County agency'])
-            .where('q.County IS NOT NULL');
+        const agencies = this.repository
+            .createQueryBuilder('q')
+            .select(['distinct q.AgencyName agency'])
+            .where('q.AgencyName IS NOT NULL');
         
         if (query.county) {
             agencies.andWhere('q.County IN (:...county)', { county: query.county });
@@ -42,6 +44,6 @@ export class GetCtAgenciesHandler implements IQueryHandler<GetCtAgenciesQuery> {
         //     agencies.andWhere('q.project IN (:...project)', { project: query.project });
         // }
 
-        return await agencies.orderBy('q.County').getRawMany();
+        return await agencies.orderBy('q.AgencyName').getRawMany();
     }
 }

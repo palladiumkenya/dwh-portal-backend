@@ -4,31 +4,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines.model';
 import { Repository } from 'typeorm';
 import { GetCovidOverallAdmissionMalesQuery } from '../impl/get-covid-overall-admission-males.query';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
+import { LineListCovid } from './../../entities/linelist-covid.model';
 
 @QueryHandler(GetCovidOverallAdmissionFemalesQuery)
 export class GetCovidOverallAdmissionFemalesHandler implements IQueryHandler<GetCovidOverallAdmissionFemalesQuery> {
     constructor(
-        @InjectRepository(FactTransCovidVaccines, 'mssql')
-        private readonly repository: Repository<FactTransCovidVaccines>
+        @InjectRepository(LineListCovid, 'mssql')
+        private readonly repository: Repository<LineListCovid>
     ) {
     }
 
-    async execute(query: GetCovidOverallAdmissionMalesQuery): Promise<any> {
+    async execute(query: GetCovidOverallAdmissionFemalesQuery): Promise<any> {
         const covidOverallAdmissionFemales = this.repository
             .createQueryBuilder('f')
             .select([
                 "AdmissionStatus, CASE WHEN AdmissionStatus='Yes' THEN 'Admitted' WHEN AdmissionStatus='No' THEN 'Not Admitted' ELSE 'Unclassified' END as Admission, count (*)Num",
             ])
-            .leftJoin(
-                FactTransNewCohort,
-                'g',
-                'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK',
-            )
-            .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
             .where(
-                "f.Gender ='Female' and ARTOutcome='V' and PatientStatus in ('Yes','Symptomatic')",
+                "f.Gender in ('Female', 'F') and PatientStatus in ('Yes','Symptomatic')",
             );
 
         if (query.county) {
@@ -44,11 +37,11 @@ export class GetCovidOverallAdmissionFemalesHandler implements IQueryHandler<Get
         }
 
         if (query.partner) {
-            covidOverallAdmissionFemales.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidOverallAdmissionFemales.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidOverallAdmissionFemales.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidOverallAdmissionFemales.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -56,7 +49,7 @@ export class GetCovidOverallAdmissionFemalesHandler implements IQueryHandler<Get
         }
 
         if (query.datimAgeGroup) {
-            covidOverallAdmissionFemales.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            covidOverallAdmissionFemales.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await covidOverallAdmissionFemales

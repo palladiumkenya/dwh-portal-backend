@@ -1,21 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCovidAdultPlhivCurrentOnTreatmentByCountyQuery } from '../impl/get-covid-adult-plhiv-current-on-treatment-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { Repository } from 'typeorm';
+import { LineListCovid } from './../../entities/linelist-covid.model';
 
 @QueryHandler(GetCovidAdultPlhivCurrentOnTreatmentByCountyQuery)
 export class GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler implements IQueryHandler<GetCovidAdultPlhivCurrentOnTreatmentByCountyQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>
+        @InjectRepository(LineListCovid, 'mssql')
+        private readonly repository: Repository<LineListCovid>
     ) {
     }
 
     async execute(query: GetCovidAdultPlhivCurrentOnTreatmentByCountyQuery): Promise<any> {
         const covidAdultsCurrentOnTreatmentByCounty = this.repository.createQueryBuilder('f')
-            .select(['Count (*) Adults, County'])
-            .where('f.ageLV >= 12 AND f.ARTOutcome=\'V\'');
+            .select(['Count (*) Adults, County']);
 
         if (query.county) {
             covidAdultsCurrentOnTreatmentByCounty.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -30,11 +29,11 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler implements IQue
         }
 
         if (query.partner) {
-            covidAdultsCurrentOnTreatmentByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidAdultsCurrentOnTreatmentByCounty.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidAdultsCurrentOnTreatmentByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidAdultsCurrentOnTreatmentByCounty.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -42,8 +41,10 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler implements IQue
         }
 
         if (query.datimAgeGroup) {
-            // lacking age group
-            // covidAdmissionByAge.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            covidAdultsCurrentOnTreatmentByCounty.andWhere(
+                'f.AgeGroup IN (:...ageGroups)',
+                { ageGroups: query.datimAgeGroup },
+            );
         }
 
 

@@ -3,23 +3,24 @@ import { GetCtTxCurrByAgeAndSexQuery } from '../impl/get-ct-tx-curr-by-age-and-s
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
-import { FactTransNewCohort } from 'src/care-treatment/new-on-art/entities/fact-trans-new-cohort.model';
+import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrByAgeAndSexQuery)
 export class GetCtTxCurrByAgeAndSexHandler
     implements IQueryHandler<GetCtTxCurrByAgeAndSexQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>,
+        @InjectRepository(AggregateTXCurr, 'mssql')
+        private readonly repository: Repository<AggregateTXCurr>,
     ) {}
 
     async execute(query: GetCtTxCurrByAgeAndSexQuery): Promise<any> {
         const txCurrByAgeAndSex = this.repository
             .createQueryBuilder('f')
-            .select(['f.[DATIM_AgeGroup] ageGroup, [Gender], count(*) txCurr'])
+            .select([
+                'f.[DATIMAgeGroup] ageGroup, [Gender], Sum(CountClientsTXCur) txCurr',
+            ]);
             // .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
-            .where(`ARTOutcome ='V' AND ageLV BETWEEN 0 and 120`);
+            // .where(`ARTOutcome ='V' AND ageLV BETWEEN 0 and 120`);
 
         if (query.county) {
             txCurrByAgeAndSex.andWhere('f.County IN (:...counties)', {
@@ -40,13 +41,13 @@ export class GetCtTxCurrByAgeAndSexHandler
         }
 
         if (query.partner) {
-            txCurrByAgeAndSex.andWhere('f.CTPartner IN (:...partners)', {
+            txCurrByAgeAndSex.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            txCurrByAgeAndSex.andWhere('f.CTAgency IN (:...agencies)', {
+            txCurrByAgeAndSex.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
@@ -69,14 +70,14 @@ export class GetCtTxCurrByAgeAndSexHandler
         }
 
         if (query.datimAgeGroup) {
-            txCurrByAgeAndSex.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', {
+            txCurrByAgeAndSex.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', {
                 ageGroups: query.datimAgeGroup,
             });
         }
 
         const result = await txCurrByAgeAndSex
-            .groupBy('f.[DATIM_AgeGroup], [Gender]')
-            .orderBy('f.[DATIM_AgeGroup]')
+            .groupBy('f.[DATIMAgeGroup], [Gender]')
+            .orderBy('f.[DATIMAgeGroup]')
             .getRawMany();
 
         const returnedVal = [];

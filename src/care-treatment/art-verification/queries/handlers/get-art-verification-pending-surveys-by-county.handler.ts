@@ -155,7 +155,7 @@ export class GetArtVerificationPendingSurveysByCountyHandler
                 count (distinct survey_id) AS SurveysReceived
                 FROM [pSurvey].[dbo].[stg_questionnaire_responses]
                 Group by mfl_code
-             ),
+            ),
 			verified_but_with_survey as (
 				select
 					origin_facility_kmfl_code as mfl_code,

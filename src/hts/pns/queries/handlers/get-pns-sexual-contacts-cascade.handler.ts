@@ -3,36 +3,69 @@ import { GetPnsSexualContactsCascadeQuery } from '../impl/get-pns-sexual-contact
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactPNSSexualPartner } from '../../entities/fact-pns-sexual-partner.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetPnsSexualContactsCascadeQuery)
 export class GetPnsSexualContactsCascadeHandler implements IQueryHandler<GetPnsSexualContactsCascadeQuery> {
     constructor(
-        @InjectRepository(FactPNSSexualPartner)
-        private readonly repository: Repository<FactPNSSexualPartner>
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>
     ) {
 
     }
 
     async execute(query: GetPnsSexualContactsCascadeQuery): Promise<any> {
-        const pnsSexualContactsCascade = this.repository.createQueryBuilder('q')
-            .select(['SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
-            .where('q.Mflcode IS NOT NULL');
+        let pnsSexualContactsCascade = `Select 
+                Sum(Case WHEN PatientPK is not null then 1 ELSE 0 End) elicited,
+                SUM(Tested)   tested,
+                
+                sum(Case WHEN FinalTestResult = 'Positive' then 1 ELSE 0 End ) positive,
+                SUM(Case WHEN (ReportedCCCNumber  is not null) then 1 ELSE 0 End ) linked,
+                
+                SUM(Case WHEN (KnowledgeOfHivStatus='Positive') then 1 ELSE 0 End)  knownPositive
+            From NDWH.dbo.FactHTSPartnerNotificationServices pns
+            LEFT JOIN NDWH.dbo.FactHTSClientTests test on test.PatientKey = pns.PatientKey
+            LEFT JOIN NDWH.dbo.DimPatient pat on pns.PatientKey = pat.PatientKey
+            LEFT JOIN NDWH.dbo.DimFacility f on f.FacilityKey = pns.FacilityKey
+            LEFT JOIN NDWH.dbo.DimAgeGroup age on pns.AgeGroupKey = age.AgeGroupKey
+            LEFT JOIN NDWH.dbo.DimAgency a on pns.AgencyKey = a.AgencyKey
+            LEFT JOIN NDWH.dbo.DimPartner p on pns.PartnerKey = p.PartnerKey
 
-        if(query.county) {
-            pnsSexualContactsCascade.andWhere('q.County IN (:...county)', { county: query.county });
+            where RelationsipToIndexClient in ('Partner','Spouse','Co-Wife','cowife','Sexual Partner','Sexual Network')
+        `;
+        // this.repository.createQueryBuilder('q')
+        //     .select(['SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
+        //     .where('q.Mflcode IS NOT NULL');
+
+        if (query.county) {
+            pnsSexualContactsCascade = `${pnsSexualContactsCascade} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.subCounty) {
-            pnsSexualContactsCascade.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: query.subCounty });
+        if (query.subCounty) {
+            pnsSexualContactsCascade = `${pnsSexualContactsCascade} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.facility) {
-            pnsSexualContactsCascade.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
+        if (query.facility) {
+            pnsSexualContactsCascade = `${pnsSexualContactsCascade} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.partner) {
-            pnsSexualContactsCascade.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
+        if (query.partner) {
+            pnsSexualContactsCascade = `${pnsSexualContactsCascade} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
+
+        // if (query.agency) {
+        //     pnsSexualContactsCascade = `${pnsSexualContactsCascade} and agencyName IN ('${query.agency
+        //         .toString()
+        //         .replace(/,/g, "','")}')`;
+        // }
 
         // if(query.month) {
         //     pnsSexualContactsCascade.andWhere('q.month = :month', { month: query.month });
@@ -43,23 +76,13 @@ export class GetPnsSexualContactsCascadeHandler implements IQueryHandler<GetPnsS
         // }
 
         if (query.fromDate) {
-            pnsSexualContactsCascade.andWhere(
-                `CONCAT(year, LPAD(month, 2, '0'))>= :fromDate`,
-                {
-                    fromDate: query.fromDate,
-                },
-            );
+            pnsSexualContactsCascade = `${pnsSexualContactsCascade} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2)) >= ${query.fromDate}`;
         }
 
         if (query.toDate) {
-            pnsSexualContactsCascade.andWhere(
-                `CONCAT(year, LPAD(month, 2, '0'))<= :toDate`,
-                {
-                    toDate: query.toDate,
-                },
-            );
+            pnsSexualContactsCascade = `${pnsSexualContactsCascade} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2))<= ${query.toDate}`;
         }
 
-        return await pnsSexualContactsCascade.getRawOne();
+        return await this.repository.query(pnsSexualContactsCascade, []);
     }
 }

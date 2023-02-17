@@ -3,12 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransDsdMmdActivePatients } from '../../entities/fact-trans-dsd-mmd-active-patients.model';
 import { Repository } from 'typeorm';
 import { GetDsdMmdStableQuery } from '../impl/get-dsd-mmd-stable.query';
+import { AggregateDSDStable } from '../../entities/aggregate-dsd-stable.model';
 
 @QueryHandler(GetDsdMmdStableQuery)
 export class GetDsdMmdStableHandler implements IQueryHandler<GetDsdMmdStableQuery> {
     constructor(
-        @InjectRepository(FactTransDsdMmdActivePatients, 'mssql')
-        private readonly repository: Repository<FactTransDsdMmdActivePatients>
+        @InjectRepository(AggregateDSDStable, 'mssql')
+        private readonly repository: Repository<AggregateDSDStable>
     ) {
 
     }
@@ -31,15 +32,15 @@ export class GetDsdMmdStableHandler implements IQueryHandler<GetDsdMmdStableQuer
         }
 
         if (query.partner) {
-            dsdMmdStable.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdMmdStable.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdMmdStable.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdMmdStable.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            dsdMmdStable.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            dsdMmdStable.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

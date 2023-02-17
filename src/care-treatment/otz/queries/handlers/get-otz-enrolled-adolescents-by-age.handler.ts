@@ -1,20 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzEnrolledAdolescentsByAgeQuery } from '../impl/get-otz-enrolled-adolescents-by-age.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { AggregateOtz } from './../../entities/aggregate-otz.model';
 
 @QueryHandler(GetOtzEnrolledAdolescentsByAgeQuery)
 export class GetOtzEnrolledAdolescentsByAgeHandler implements IQueryHandler<GetOtzEnrolledAdolescentsByAgeQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(AggregateOtz, 'mssql')
+        private readonly repository: Repository<AggregateOtz>
     ) {
     }
 
     async execute(query: GetOtzEnrolledAdolescentsByAgeQuery): Promise<any> {
         const otzTotalAdolescentsByAgeGroup = this.repository.createQueryBuilder('f')
-            .select(['count(*) totalAdolescents, DATIM_AgeGroup ageGroup']);
+            .select(['Sum(Enrolled) totalAdolescents, AgeGroup ageGroup']);
 
         if (query.county) {
             otzTotalAdolescentsByAgeGroup.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -29,15 +29,15 @@ export class GetOtzEnrolledAdolescentsByAgeHandler implements IQueryHandler<GetO
         }
 
         if (query.partner) {
-            otzTotalAdolescentsByAgeGroup.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            otzTotalAdolescentsByAgeGroup.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            otzTotalAdolescentsByAgeGroup.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            otzTotalAdolescentsByAgeGroup.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            otzTotalAdolescentsByAgeGroup.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            otzTotalAdolescentsByAgeGroup.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
@@ -45,8 +45,8 @@ export class GetOtzEnrolledAdolescentsByAgeHandler implements IQueryHandler<GetO
         }
 
         return await otzTotalAdolescentsByAgeGroup
-            .groupBy('[DATIM_AgeGroup]')
-            .orderBy('[DATIM_AgeGroup]')
+            .groupBy('[AgeGroup]')
+            .orderBy('[AgeGroup]')
             .getRawMany();
     }
 }
