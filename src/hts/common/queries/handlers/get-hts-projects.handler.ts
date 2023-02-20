@@ -3,26 +3,26 @@ import { GetHtsProjectsQuery } from '../impl/get-hts-projects.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
+import { AllEmrSites } from './../../../../care-treatment/common/entities/all-emr-sites.model';
 
 @QueryHandler(GetHtsProjectsQuery)
-export class GetHtsProjectsHandler implements IQueryHandler<GetHtsProjectsQuery> {
+export class GetHtsProjectsHandler
+    implements IQueryHandler<GetHtsProjectsQuery> {
     constructor(
-        @InjectRepository(FactHtsUptake)
-        private readonly repository: Repository<FactHtsUptake>
-    ) {
-        
-    }
+        @InjectRepository(AllEmrSites, 'mssql')
+        private readonly repository: Repository<AllEmrSites>,
+    ) {}
 
     async execute(query: GetHtsProjectsQuery): Promise<any> {
         const params = [];
         let projectsSql = `SELECT DISTINCT \`Project\` AS \`project\` FROM \`fact_pns_sexualpartner\` WHERE \`Project\` IS NOT NULL `;
 
-        if(query.county) {
+        if (query.county) {
             projectsSql = `${projectsSql} and County IN (?)`;
             params.push(query.county);
         }
 
-        if(query.subCounty) {
+        if (query.subCounty) {
             projectsSql = `${projectsSql} and SubCounty IN (?)`;
             params.push(query.subCounty);
         }
@@ -49,6 +49,6 @@ export class GetHtsProjectsHandler implements IQueryHandler<GetHtsProjectsQuery>
 
         projectsSql = `${projectsSql} ORDER BY Project ASC`;
 
-        return  await this.repository.query(projectsSql, params);
+        return await this.repository.query(projectsSql, params);
     }
 }

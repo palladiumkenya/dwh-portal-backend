@@ -3,26 +3,26 @@ import { GetHtsPartnersQuery } from '../impl/get-hts-partners.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
+import { AllEmrSites } from 'src/care-treatment/common/entities/all-emr-sites.model';
 
 @QueryHandler(GetHtsPartnersQuery)
-export class GetHtsPartnersHandler implements IQueryHandler<GetHtsPartnersQuery> {
+export class GetHtsPartnersHandler
+    implements IQueryHandler<GetHtsPartnersQuery> {
     constructor(
-        @InjectRepository(FactHtsUptake)
-        private readonly repository: Repository<FactHtsUptake>
-    ) {
-        
-    }
+        @InjectRepository(AllEmrSites, 'mssql')
+        private readonly repository: Repository<AllEmrSites>,
+    ) {}
 
     async execute(query: GetHtsPartnersQuery): Promise<any> {
         const params = [];
-        let partnersSql = `SELECT DISTINCT \`CTPartner\` AS \`partner\` FROM \`fact_htsuptake\` WHERE \`CTPartner\` IS NOT NULL `;
+        let partnersSql = `SELECT DISTINCT PartnerName AS partner FROM all_EMRSites WHERE PartnerName IS NOT NULL and isHTS = 1`;
 
-        if(query.county) {
+        if (query.county) {
             partnersSql = `${partnersSql} and County IN (?)`;
             params.push(query.county);
         }
 
-        if(query.subCounty) {
+        if (query.subCounty) {
             partnersSql = `${partnersSql} and SubCounty IN (?)`;
             params.push(query.subCounty);
         }
@@ -47,8 +47,8 @@ export class GetHtsPartnersHandler implements IQueryHandler<GetHtsPartnersQuery>
         //     params.push(query.project);
         // }
 
-        partnersSql = `${partnersSql} ORDER BY CTPartner ASC`;
+        partnersSql = `${partnersSql} ORDER BY PartnerName ASC`;
 
-        return  await this.repository.query(partnersSql, params);
+        return await this.repository.query(partnersSql, params);
     }
 }

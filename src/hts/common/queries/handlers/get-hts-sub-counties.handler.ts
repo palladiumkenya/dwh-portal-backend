@@ -3,21 +3,21 @@ import { GetHtsSubCountiesQuery } from '../impl/get-hts-sub-counties.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
+import { AllEmrSites } from './../../../../care-treatment/common/entities/all-emr-sites.model';
 
 @QueryHandler(GetHtsSubCountiesQuery)
-export class GetHtsSubCountiesHandler implements IQueryHandler<GetHtsSubCountiesQuery>{
+export class GetHtsSubCountiesHandler
+    implements IQueryHandler<GetHtsSubCountiesQuery> {
     constructor(
-        @InjectRepository(FactHtsUptake)
-        private readonly repository: Repository<FactHtsUptake>
-    ) {
-        
-    }
+        @InjectRepository(AllEmrSites, 'mssql')
+        private readonly repository: Repository<AllEmrSites>,
+    ) {}
 
     async execute(query: GetHtsSubCountiesQuery): Promise<any> {
         const params = [];
-        let subCountiesSql = `SELECT DISTINCT \`SubCounty\` AS subCounty FROM \`fact_htsuptake\` WHERE SubCounty IS NOT NULL  `;
+        let subCountiesSql = `SELECT DISTINCT SubCounty AS subCounty FROM all_EMRSites WHERE SubCounty IS NOT NULL and  isHTS = 1`;
 
-        if(query.county) {
+        if (query.county) {
             subCountiesSql = `${subCountiesSql} and County IN (?)`;
             params.push(query.county);
         }
@@ -49,6 +49,6 @@ export class GetHtsSubCountiesHandler implements IQueryHandler<GetHtsSubCounties
 
         subCountiesSql = `${subCountiesSql} ORDER BY SubCounty ASC`;
 
-        return  await this.repository.query(subCountiesSql, params);
+        return await this.repository.query(subCountiesSql, params);
     }
 }
