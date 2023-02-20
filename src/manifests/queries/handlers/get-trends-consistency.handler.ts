@@ -37,7 +37,7 @@ export class GetTrendsConsistencyHandler
             const consistencySql = `EXEC generate_consistency_uploads @PERIOD = '${queryDate}' , @docketName ='${query.docket}'`;
             const results = await this.repository.query(consistencySql, params);
             if (results) {
-                consistencyResult = consistencyResult.concat(results[0]);
+                consistencyResult = consistencyResult.concat(results);
             }
         }
         if (consistencyResult.length > 0) {
