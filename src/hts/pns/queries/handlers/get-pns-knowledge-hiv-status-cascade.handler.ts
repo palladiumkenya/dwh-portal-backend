@@ -34,9 +34,9 @@ export class GetPnsKnowledgeHivStatusCascadeHandler implements IQueryHandler<Get
             LEFT JOIN NDWH.dbo.DimAgency a on pns.AgencyKey = a.AgencyKey
             LEFT JOIN NDWH.dbo.DimPartner p on pns.PartnerKey = p.PartnerKey
             Where MFLCode is not Null`;
-        this.repository.createQueryBuilder('q')
-            .select(['SUM(q.ContactElicited) elicited, SUM(q.ContactTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive, SUM(q.NewNegatives) newNegatives, SUM(q.NewPositives) newPositives, SUM(q.UnknownStatus) unknownStatus'])
-            .where('q.Mflcode IS NOT NULL');
+        // this.repository.createQueryBuilder('q')
+        //     .select(['SUM(q.ContactElicited) elicited, SUM(q.ContactTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive, SUM(q.NewNegatives) newNegatives, SUM(q.NewPositives) newPositives, SUM(q.UnknownStatus) unknownStatus'])
+        //     .where('q.Mflcode IS NOT NULL');
 
         if (query.county) {
             pnsKnowledgeHivStatusCascade = `${pnsKnowledgeHivStatusCascade} and County IN ('${query.county

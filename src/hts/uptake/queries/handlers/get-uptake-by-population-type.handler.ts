@@ -3,12 +3,13 @@ import { GetUptakeByPopulationTypeQuery } from '../impl/get-uptake-by-population
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsPopulationType } from '../../entities/fact-hts-populationtype.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetUptakeByPopulationTypeQuery)
 export class GetUptakeByPopulationTypeHandler implements IQueryHandler<GetUptakeByPopulationTypeQuery> {
     constructor(
-        @InjectRepository(FactHtsPopulationType)
-        private readonly repository: Repository<FactHtsPopulationType>
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>
     ){}
 
     async execute(query: GetUptakeByPopulationTypeQuery): Promise<any> {
