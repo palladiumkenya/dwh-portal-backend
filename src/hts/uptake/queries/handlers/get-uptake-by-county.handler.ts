@@ -85,7 +85,7 @@ export class GetUptakeByCountyHandler
         }
 
         if (query.toDate) {
-            uptakeByCountySql = `${uptakeByCountySql} and DateTestedKey <= EOMONTH('EOMONTH('${query.toDate}01')')`;
+            uptakeByCountySql = `${uptakeByCountySql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
         if (query.county) {
