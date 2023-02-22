@@ -49,11 +49,11 @@ export class GetNupiDatasetHandler
                 from NDWH.dbo.FACT_CT_DHIS2 as khis
                 where CurrentOnART_Total is not null
                     and datediff(
-						mm,
-						cast(concat(ReportMonth_Year, '01') as date),
-						(select max(cast(concat(ReportMonth_Year, '01') as date)
-						) from All_Staging_2016_2.dbo.FACT_CT_DHIS2)    
-					) <= 6
+                      mm,
+                      cast(concat(ReportMonth_Year, '01') as date),
+                      (select max(cast(concat(ReportMonth_Year, '01') as date)
+                      ) from All_Staging_2016_2.dbo.FACT_CT_DHIS2)    
+                    ) <= 6
                 group by SiteCode
             ),
             --
