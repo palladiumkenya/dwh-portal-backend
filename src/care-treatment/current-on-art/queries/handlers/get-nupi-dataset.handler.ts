@@ -44,12 +44,17 @@ export class GetNupiDatasetHandler
             --Obtain the latest reporting month in KHIS and pick the latest TXCurr--
             latest_reporting_month as (
                 select distinct
-                    cast (SiteCode as nvarchar) SiteCode,
-                    max(ReportMonth_Year) as reporting_month
-                from All_Staging_2016_2.dbo.FACT_CT_DHIS2 as khis
-                where CurrentOnART_Total is not null
-                    and (select max(cast(ReportMonth_Year as int)) from All_Staging_2016_2.dbo.FACT_CT_DHIS2)  - cast(ReportMonth_Year as int) <= 6
-                group by SiteCode
+			cast (SiteCode as nvarchar) SiteCode,
+			max(ReportMonth_Year) as reporting_month
+		from All_Staging_2016_2.dbo.FACT_CT_DHIS2 as khis
+		where CurrentOnART_Total is not null
+			and datediff(
+				mm,
+				cast(concat(ReportMonth_Year, '01') as date),
+				(select max(cast(concat(ReportMonth_Year, '01') as date)
+				) from All_Staging_2016_2.dbo.FACT_CT_DHIS2)    
+			) <= 6
+		group by SiteCode
             ),
             --
             khis as (
