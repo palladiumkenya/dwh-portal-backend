@@ -1,23 +1,23 @@
 import {IQueryHandler, QueryHandler} from '@nestjs/cqrs';
 import {InjectRepository} from '@nestjs/typeorm';
-import {
-    FactTransHmisStatsTxcurr
-} from '../../../../care-treatment/current-on-art/entities/fact-trans-hmis-stats-txcurr.model';
+
 import {Repository} from 'typeorm';
 import {FactTransNewlyStarted} from "../../../../care-treatment/new-on-art/entities/fact-trans-newly-started.model";
+import {FactCtDhis2} from "../../entities/fact-ct-dhis2.model";
 import {GetTxNewBySexDwhQuery} from "../impl/get-tx-new-by-sex-dwh.query";
+import { AggregateCohortRetention } from 'src/care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
 
 @QueryHandler(GetTxNewBySexDwhQuery)
 export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQuery> {
     constructor(
-        @InjectRepository(FactTransNewlyStarted, 'mssql')
-        private readonly repository: Repository<FactTransNewlyStarted>
+        @InjectRepository(AggregateCohortRetention, 'mssql')
+        private readonly repository: Repository<AggregateCohortRetention>
     ) {
     }
 
     async execute(query: GetTxNewBySexDwhQuery): Promise<any> {
         const txNewBySex = this.repository.createQueryBuilder('a')
-            .select('a.FacilityName,a.County,a.SubCounty,MFLCode,CTAgency, CTPartner,' +
+            .select('a.FacilityName,a.County,a.SubCounty,MFLCode, AgencyName CTAgency, PartnerName CTPartner,' +
                 'SUM ( CASE WHEN Gender = \'Male\' THEN StartedART ELSE 0 END ) DWHmale,SUM ( CASE WHEN Gender = \'Female\' THEN StartedART ELSE 0 END ) DWHFemale,SUM ( a.StartedART ) DWHtxNew')
 
         if (query.county) {
@@ -36,11 +36,11 @@ export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQu
         }
 
         if (query.partner) {
-            txNewBySex.andWhere('a.CTPartner IN (:...partners)', {partners: query.partner});
+            txNewBySex.andWhere('a.PartnerName IN (:...partners)', {partners: query.partner});
         }
 
         if (query.agency) {
-            txNewBySex.andWhere('a.CTAgency IN (:...agencies)', {agencies: query.agency});
+            txNewBySex.andWhere('a.AgencyName IN (:...agencies)', {agencies: query.agency});
         }
 
         if (query.datimAgeGroup) {

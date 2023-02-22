@@ -1,7 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCtTxCurrAgeGroupDistributionByCountyQuery } from '../impl/get-ct-tx-curr-age-group-distribution-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransHmisStatsTxcurr } from '../../../../care-treatment/current-on-art/entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
 import { AggregateTXCurr } from './../../../../care-treatment/current-on-art/entities/aggregate-txcurr.model';
 

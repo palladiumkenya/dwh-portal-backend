@@ -73,11 +73,11 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
         }
 
         if (query.partner) {
-            txNewBySex.andWhere('a.SDP IN (:...partners)', {partners: query.partner});
+            txNewBySex.andWhere('a.PartnerName IN (:...partners)', {partners: query.partner});
         }
 
         if (query.agency) {
-            txNewBySex.andWhere('a.Agency IN (:...agencies)', {agencies: query.agency});
+            txNewBySex.andWhere('a.AgencyName IN (:...agencies)', {agencies: query.agency});
         }
 
         if (query.year) {

@@ -1,9 +1,9 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransHmisStatsTxcurr } from '../../../../care-treatment/current-on-art/entities/fact-trans-hmis-stats-txcurr.model';
+
 import { Repository } from 'typeorm';
 import {GetTxCurrBySexQuery} from "../impl/get-tx-curr-by-sex.query";
-import {FactCtDhis2} from "../../entities/fact-ct-dhis2.model";
+import { FactCtDhis2 } from '../../entities/fact-ct-dhis2.model';
 import {AllEmrSites} from "../../../../care-treatment/common/entities/all-emr-sites.model";
 
 @QueryHandler(GetTxCurrBySexQuery)
@@ -76,12 +76,12 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
 
         if (query.agency) {
             txCurrBySex
-                .andWhere('Agency IN (:...agencies)', { agencies: query.agency });
+                .andWhere('AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.partner) {
             txCurrBySex
-                .andWhere('SDP IN (:...partners)', { partners: query.partner });
+                .andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.year) {
