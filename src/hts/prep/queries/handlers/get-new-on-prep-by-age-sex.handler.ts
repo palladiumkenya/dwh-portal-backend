@@ -1,27 +1,22 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GetNewOnPrepQuery } from '../impl/get-new-on-prep.query';
+import { GetNewOnPrepByAgeSexQuery } from '../impl/get-new-on-prep-by-age-sex.query';
 import { FactPrep } from '../../entities/fact-prep.model';
 
-@QueryHandler(GetNewOnPrepQuery)
-export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
+@QueryHandler(GetNewOnPrepByAgeSexQuery)
+export class GetNewOnPrepByAgeSexHandler
+    implements IQueryHandler<GetNewOnPrepByAgeSexQuery> {
     constructor(
         @InjectRepository(FactPrep, 'mssql')
         private readonly repository: Repository<FactPrep>,
     ) {}
 
-    async execute(query: GetNewOnPrepQuery): Promise<any> {
+    async execute(query: GetNewOnPrepByAgeSexQuery): Promise<any> {
         const params = [];
         let newOnPrep = `SELECT
-                MFLCode Sitecode, 
-                FacilityName, 
-                County, 
-                SubCounty, 
-                PartnerName CTPartner, 
-                Agencyname CTAgency, 
-                visit.month VisitMonth, 
-                Visit.year VisitYear,
+                DatimAgeGroup,
+                Gender,
                 Count (distinct (concat(PrepNumber,PatientPKHash,MFLCode))) As StartedPrep
             from NDWH.dbo.FactPrep prep
 
@@ -34,13 +29,8 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
             LEFT JOIN NDWH.dbo.DimDate enrol ON enrol.DateKey = PrepEnrollmentDateKey 
 
             where DATEDIFF(month, enrol.Date, GETDATE()) = 1
-        `; 
-        this.repository
-            .createQueryBuilder('f')
-            .select([
-                'Sitecode, FacilityName, County, SubCounty, CTPartner, CTAgency, VisitMonth, VisitYear, Count (distinct (concat(PrepNumber,PatientPk,SiteCode))) As StartedPrep',
-            ])
-            .where('DATEDIFF(month, PrepEnrollmentDate, GETDATE()) = 2');
+        `;
+
 
         if (query.county) {
             newOnPrep = `${newOnPrep} and County IN ('${query.county
@@ -84,7 +74,8 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
                 .replace(/,/g, "','")}')`;
         }
 
-        newOnPrep = `${newOnPrep} GROUP BY MFLCode, FacilityName, County, SubCounty, PartnerName, AgencyName, visit.month, visit.year`;
+        newOnPrep = `${newOnPrep} GROUP BY DATIMAgeGroup, Gender
+						ORDER BY DATIMAgeGroup, Gender`;
 
         return await this.repository.query(newOnPrep, params);
     }
