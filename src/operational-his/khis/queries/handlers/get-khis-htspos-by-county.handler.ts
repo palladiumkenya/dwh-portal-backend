@@ -86,13 +86,13 @@ export class GetKhisHTSPOSByCountyHandler
         }
 
         if (query.partner) {
-            htsPOS.andWhere('SDP IN (:...partners)', {
+            htsPOS.andWhere('partnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            htsPOS.andWhere('[SDP Agency] IN (:...agencies)', {
+            htsPOS.andWhere('[AgencyName] IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
