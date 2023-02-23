@@ -18,7 +18,7 @@ export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQu
     async execute(query: GetTxNewBySexDwhQuery): Promise<any> {
         const txNewBySex = this.repository.createQueryBuilder('a')
             .select('a.FacilityName,a.County,a.SubCounty,MFLCode, AgencyName CTAgency, PartnerName CTPartner,' +
-                'SUM ( CASE WHEN Gender = \'Male\' THEN StartedART ELSE 0 END ) DWHmale,SUM ( CASE WHEN Gender = \'Female\' THEN StartedART ELSE 0 END ) DWHFemale,SUM ( a.StartedART ) DWHtxNew')
+                'SUM ( CASE WHEN Gender = \'Male\' THEN patients_startedART ELSE 0 END ) DWHmale,SUM ( CASE WHEN Gender = \'Female\' THEN patients_startedART ELSE 0 END ) DWHFemale,SUM ( a.patients_startedART ) DWHtxNew')
 
         if (query.county) {
             txNewBySex
@@ -70,7 +70,7 @@ export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQu
         }
 
         return await txNewBySex
-            .groupBy('a.FacilityName, a.County, a.SubCounty, MFLCode,CTAgency, CTPartner')
+            .groupBy('a.FacilityName, a.County, a.SubCounty, MFLCode,AgencyName, PartnerName')
             .orderBy('a.FacilityName')
             .getRawMany();
     }

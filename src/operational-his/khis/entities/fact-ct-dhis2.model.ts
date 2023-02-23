@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('FACT_CT_DHIS2')
+@Entity('AggregateFACT_CT_DHIS2')
 export class FactCtDhis2 {
     @PrimaryColumn('text')
     id: string;
