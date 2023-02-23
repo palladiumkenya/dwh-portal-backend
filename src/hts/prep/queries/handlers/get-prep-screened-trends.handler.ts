@@ -1,28 +1,23 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GetNewOnPrepQuery } from '../impl/get-new-on-prep.query';
 import { FactPrep } from '../../entities/fact-prep.model';
+import { GetPrepScreenedTrendsQuery } from '../impl/get-prep-screened-trends.query';
 
-@QueryHandler(GetNewOnPrepQuery)
-export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
+@QueryHandler(GetPrepScreenedTrendsQuery)
+export class GetPrepScreenedTrendsHandler
+    implements IQueryHandler<GetPrepScreenedTrendsQuery> {
     constructor(
         @InjectRepository(FactPrep, 'mssql')
         private readonly repository: Repository<FactPrep>,
     ) {}
 
-    async execute(query: GetNewOnPrepQuery): Promise<any> {
+    async execute(query: GetPrepScreenedTrendsQuery): Promise<any> {
         const params = [];
         let newOnPrep = `SELECT
-                MFLCode Sitecode, 
-                FacilityName, 
-                County, 
-                SubCounty, 
-                PartnerName CTPartner, 
-                Agencyname CTAgency, 
-                visit.month VisitMonth, 
-                Visit.year VisitYear,
-                Count (distinct (concat(PrepNumber,PatientPKHash,MFLCode))) As StartedPrep
+                visit.month,
+                visit.year,
+                Sum([ScreenedPrep]) As ScreenedPrep
             from NDWH.dbo.FactPrep prep
 
             LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
@@ -31,16 +26,8 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
             LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
             LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
             LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
-            LEFT JOIN NDWH.dbo.DimDate enrol ON enrol.DateKey = PrepEnrollmentDateKey 
-
-            where DATEDIFF(month, enrol.Date, GETDATE()) = 1
-        `; 
-        this.repository
-            .createQueryBuilder('f')
-            .select([
-                'Sitecode, FacilityName, County, SubCounty, CTPartner, CTAgency, VisitMonth, VisitYear, Count (distinct (concat(PrepNumber,PatientPk,SiteCode))) As StartedPrep',
-            ])
-            .where('DATEDIFF(month, PrepEnrollmentDate, GETDATE()) = 2');
+            -- where VisitDateKey is not null and VisitDateKey <> PrepEnrollmentDateKey and DATEDIFF(month, visit.Date, GETDATE()) = 1
+        `;
 
         if (query.county) {
             newOnPrep = `${newOnPrep} and County IN ('${query.county
@@ -84,7 +71,8 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
                 .replace(/,/g, "','")}')`;
         }
 
-        newOnPrep = `${newOnPrep} GROUP BY MFLCode, FacilityName, County, SubCounty, PartnerName, AgencyName, visit.month, visit.year`;
+        newOnPrep = `${newOnPrep} Group by visit.month, visit.year
+ORDER by visit.year DESC, visit.month DESC`;
 
         return await this.repository.query(newOnPrep, params);
     }

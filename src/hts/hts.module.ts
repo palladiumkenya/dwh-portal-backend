@@ -71,6 +71,13 @@ import { FactHTSClientTests } from './linkage/entities/fact-hts-client-tests.mod
 import { FactHTSClientLinkages } from './linkage/entities/fact-hts-client-linkages.model';
 import { FactHTSClientTracing } from './linkage/entities/fact-hts-client-tracing.model';
 import { AllEmrSites } from 'src/care-treatment/common/entities/all-emr-sites.model';
+import { GetNewOnPrepByAgeSexHandler } from './prep/queries/handlers/get-new-on-prep-by-age-sex.handler';
+import { GetNewOnPrepTrendsHandler } from './prep/queries/handlers/get-new-on-prep-trends.handler';
+import { GetPrepEligibleTrendsHandler } from './prep/queries/handlers/get-prep-eligible-trends.handler';
+import { GetCTPrepHandler } from './prep/queries/handlers/get-ct-prep.handler';
+import { GetPrepScreenedTrendsHandler } from './prep/queries/handlers/get-prep-screened-trends.handler';
+import { GetPrepEligibleByAgegroupHandler } from './prep/queries/handlers/get-prep-eligible-by-agegroup.handler';
+import { GetPrepSTIScreenedOutcomeHandler } from './prep/queries/handlers/get-prep-sti-screening-outcome.handler';
 
 @Module({
     imports: [
@@ -91,14 +98,17 @@ import { AllEmrSites } from 'src/care-treatment/common/entities/all-emr-sites.mo
         //     FactHtsuptake,
         //     FactPNSKnowledgeHivStatus,
         // ]),
-        TypeOrmModule.forFeature([
-            FactHTSClientTests,
-            FactHTSClientLinkages,
-            FactHTSClientTracing,
-            AllEmrSites,
+        TypeOrmModule.forFeature(
+            [
+                FactHTSClientTests,
+                FactHTSClientLinkages,
+                FactHTSClientTracing,
+                AllEmrSites,
 
-            FactPrep,
-        ], 'mssql'),
+                FactPrep,
+            ],
+            'mssql',
+        ),
     ],
     providers: [
         GetHtsCountiesHandler,
@@ -149,6 +159,13 @@ import { AllEmrSites } from 'src/care-treatment/common/entities/all-emr-sites.mo
         GetNewOnPrepHandler,
         GetPrepDiscontinuationHandler,
         GetPrepDiscontinuationReasonHandler,
+        GetNewOnPrepByAgeSexHandler,
+        GetNewOnPrepTrendsHandler,
+        GetPrepEligibleTrendsHandler,
+        GetPrepScreenedTrendsHandler,
+        GetPrepEligibleByAgegroupHandler,
+        GetCTPrepHandler,
+        GetPrepSTIScreenedOutcomeHandler,
     ],
     controllers: [HtsController],
 })
