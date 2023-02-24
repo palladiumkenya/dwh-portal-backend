@@ -60,6 +60,10 @@ import { GetPrepSTIScreeningOutcomeQuery } from './prep/queries/impl/get-prep-st
 import { GetPrepSTITreatmentOutcomeQuery } from './prep/queries/impl/get-prep-treatment-outcome.query';
 import { GetPrepDiscontinuationTrendsQuery } from './prep/queries/impl/get-prep-discontinuation-trends.query';
 import { GetCTPrepTrendQuery } from './prep/queries/impl/get-ct-prep-trends.query';
+import { GetPrepTotalTestedQuery } from './prep/queries/impl/get-prep-total-tested.query';
+import { GetPrepTotalTestedTrendsQuery } from './prep/queries/impl/get-prep-total-tested-trends.query';
+import { GetPrepAgeSexTrendsQuery } from './prep/queries/impl/get-prep-age-sex-trends.query';
+
 @Controller('hts')
 export class HtsController {
     constructor(private readonly queryBus: QueryBus) {}
@@ -2519,6 +2523,180 @@ export class HtsController {
         @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetCTPrepTrendQuery();
+
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getPrepAgeSexTrends')
+    async GetPrepAgeSexTrendsQuery(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetPrepAgeSexTrendsQuery();
+
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getPrepTotalTested')
+    async GetPrepTotalTestedQuery(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetPrepTotalTestedQuery();
+
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getPrepTotalTestedTrends')
+    async GetPrepTotalTestedTrendsQuery(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetPrepTotalTestedTrendsQuery();
 
         if (county) {
             query.county = county;
