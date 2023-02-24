@@ -2392,7 +2392,6 @@ export class HtsController {
 
         return this.queryBus.execute(query);
     }
-    
 
     @Get('getPrepSTITreatmentOutcome')
     async GetPrepSTITreatmentOutcome(
@@ -2451,8 +2450,9 @@ export class HtsController {
 
         return this.queryBus.execute(query);
     }
+
     @Get('getPrepDiscontinuationTrends')
-    async GetPrepDiscontinuationTrendsQuery(
+    async GetPrepDiscontinuationTrends(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -2568,7 +2568,7 @@ export class HtsController {
     }
 
     @Get('getPrepAgeSexTrends')
-    async GetPrepAgeSexTrendsQuery(
+    async GetPrepAgeSexTrends(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -2626,7 +2626,7 @@ export class HtsController {
     }
 
     @Get('getPrepTotalTested')
-    async GetPrepTotalTestedQuery(
+    async GetPrepTotalTested(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -2684,7 +2684,7 @@ export class HtsController {
     }
 
     @Get('getPrepTotalTestedTrends')
-    async GetPrepTotalTestedTrendsQuery(
+    async GetPrepTotalTestedTrends(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
