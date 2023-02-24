@@ -2447,7 +2447,7 @@ export class HtsController {
 
         return this.queryBus.execute(query);
     }
-    @Get('getPrepDiscontinuationTrendsQuery')
+    @Get('getPrepDiscontinuationTrends')
     async GetPrepDiscontinuationTrendsQuery(
         @Query('county') county,
         @Query('subCounty') subCounty,
@@ -2505,7 +2505,7 @@ export class HtsController {
         return this.queryBus.execute(query);
     }
 
-    @Get('getCTPrepTrendQuery')
+    @Get('getCTPrepTrend')
     async GetCTPrepTrendQuery(
         @Query('county') county,
         @Query('subCounty') subCounty,

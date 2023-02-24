@@ -17,8 +17,8 @@ export class GetNewOnPrepTrendsHandler
         let newOnPrep = `SELECT
                 enrol.month,
                 enrol.year,
-                Count (distinct (concat(PrepNumber,PatientPKHash,MFLCode))) As StartedPrep
-            from NDWH.dbo.FactPrep prep
+                COUNT(distinct (concat(PrepNumber,PatientPKHash,MFLCode))) As StartedPrep
+            FROM NDWH.dbo.FactPrep prep
 
             LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
             LEFT JOIN NDWH.dbo.DimFacility fac ON fac.FacilityKey = prep.FacilityKey
@@ -27,6 +27,8 @@ export class GetNewOnPrepTrendsHandler
             LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
             LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
             LEFT JOIN NDWH.dbo.DimDate enrol ON enrol.DateKey = PrepEnrollmentDateKey 
+
+            WHERE PrepEnrollmentDateKey IS NOT NULL
         `;
 
         if (query.county) {
