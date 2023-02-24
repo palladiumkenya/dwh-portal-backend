@@ -19,7 +19,6 @@ export class GetPrepRefillAgeSexTrendsmonth1Handler implements IQueryHandler<Get
         const params = [];
         let newOnPrep = `SELECT
          DATIMAgeGroup,
-         Gender,
          sum(case when RefilMonth1 is not null then 1 else 0 end) tested
          from NDWH.dbo.FactPrep prep
          LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
@@ -75,8 +74,8 @@ export class GetPrepRefillAgeSexTrendsmonth1Handler implements IQueryHandler<Get
         }
 
         newOnPrep = `${newOnPrep} 
-         GROUP BY DATIMAgeGroup, Gender
-         Order by DATIMAgeGroup,Gender
+         GROUP BY DATIMAgeGroup
+         Order by DATIMAgeGroup
 `
 
     

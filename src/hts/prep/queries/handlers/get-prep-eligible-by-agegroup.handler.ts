@@ -26,7 +26,7 @@ export class GetPrepEligibleByAgegroupHandler
             LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
             LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
             LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
-            
+
             WHERE DATEDIFF(month, visit.Date, GETDATE()) = 1
         `;
 
