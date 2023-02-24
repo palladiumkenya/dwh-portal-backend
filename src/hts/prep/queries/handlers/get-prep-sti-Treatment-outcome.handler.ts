@@ -17,8 +17,8 @@ export class GetPrepSTITreatmentOutcomeHandler
     async execute(query: GetPrepSTITreatmentOutcomeQuery): Promise<any> {
         const params = [];
         let newOnPrep = `SELECT
-                sum(case  when [STIScreening] = 'Yes' then 1 else 0 END) as Positive,
-                sum(case  when [STIScreening] = 'No' then 1 else 0 END) as Negative
+                sum(case  when [STITreated] = 'Yes' then 1 else 0 END) as Treated,
+                sum(case  when [STITreated] = 'No' then 1 else 0 END) as NotTreated
             from NDWH.dbo.FactPrep prep
 
             LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
