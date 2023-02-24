@@ -40,7 +40,7 @@
     "fs": "^0.0.1-security",
     "helmet": "^3.22.0",
     "lodash": "^4.17.21",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "mssql": "^6.2.1",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
