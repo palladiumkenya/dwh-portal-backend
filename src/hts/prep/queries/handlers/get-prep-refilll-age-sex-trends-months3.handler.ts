@@ -18,9 +18,8 @@ export class GetPrepRefillAgeSexTrendsmonth3Handler implements IQueryHandler<Get
     async execute(query: GetPrepRefillAgeSexMonth3Query): Promise<any> {
         const params = [];
         let newOnPrep = ` SELECT
-        DATIMAgeGroup,
-        Gender,
-        sum(case when RefilMonth3 is not null then 1 else 0 end) tested
+            DATIMAgeGroup,
+            sum(case when RefilMonth3 is not null then 1 else 0 end) tested
         from NDWH.dbo.FactPrep prep
         LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
         LEFT JOIN NDWH.dbo.DimFacility fac ON fac.FacilityKey = prep.FacilityKey
@@ -75,8 +74,8 @@ export class GetPrepRefillAgeSexTrendsmonth3Handler implements IQueryHandler<Get
         }
 
         newOnPrep = `${newOnPrep} 
-        GROUP BY DATIMAgeGroup, Gender
-        Order by DATIMAgeGroup,Gender`
+        GROUP BY DATIMAgeGroup
+        Order by DATIMAgeGroup`
 
     
 

@@ -2,7 +2,6 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FactPrep } from '../../entities/fact-prep.model';
-import { GetPrepScreenedTrendsQuery } from '../impl/get-prep-screened-trends.query';
 import { GetPrepSTITreatmentOutcomeQuery } from '../impl/get-prep-treatment-outcome.query';
 
 

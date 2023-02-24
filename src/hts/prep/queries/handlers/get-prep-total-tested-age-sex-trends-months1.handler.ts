@@ -17,16 +17,15 @@ export class GetPrepTotalTestedAgeSexTrendsmonth1Handler implements IQueryHandle
     async execute(query: GetPrepTotalTestedAgeSexTrendsMonth1Query): Promise<any> {
         const params = [];
         let newOnPrep = ` SELECT
-        age.DATIMAgeGroup,
-		Gender, 
-        Count(*) As TotalTested
-        from NDWH.dbo.FactPrep prep
+            age.DATIMAgeGroup,
+            Count(*) As TotalTested
+        FROM NDWH.dbo.FactPrep prep
         LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
         LEFT JOIN NDWH.dbo.DimFacility fac ON fac.FacilityKey = prep.FacilityKey
         LEFT JOIN NDWH.dbo.DimPartner p ON p.PartnerKey = prep.PartnerKey
         LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
         LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey      
-        LEFT JOIN NDWH.dbo.DimDate test ON test.DateKey = DateTestMonth1Key COLLATE Latin1_General_CI_AS
+        LEFT JOIN NDWH.dbo.DimDate test ON test.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
         WHERE DATEDIFF(month, test.Date, GETDATE()) = 1
         `;
 
@@ -73,9 +72,8 @@ export class GetPrepTotalTestedAgeSexTrendsmonth1Handler implements IQueryHandle
         }
 
         newOnPrep = `${newOnPrep} 
-        Group BY  age.DATIMAgeGroup,Gender
-	 
-        Order by age.DATIMAgeGroup,Gender`
+        Group BY  age.DATIMAgeGroup
+        Order by age.DATIMAgeGroup`
 
     
 

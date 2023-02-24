@@ -2517,7 +2517,7 @@ export class HtsController {
     }
 
     @Get('getCTPrepTrend')
-    async GetCTPrepTrendQuery(
+    async GetCTPrepTrend(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -2575,7 +2575,7 @@ export class HtsController {
     }
 
     @Get('getPrepSTIDiagnosed')
-    async GetPrepSTIDiagnosedQuery(
+    async GetPrepSTIDiagnosed(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -2633,7 +2633,7 @@ export class HtsController {
     }
 
     @Get('getPrepTotalTestedAgeSexTrendsMonth1')
-    async GetPrepTotalTestedAgeSexTrendsMonth1Query(
+    async GetPrepTotalTestedAgeSexTrendsMonth1(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -2691,7 +2691,7 @@ export class HtsController {
     }
 
     @Get('getPrepTotalTestedAgeSexTrendsMonth3')
-    async GetPrepTotalTestedAgeSexTrendsMonth3Query(
+    async GetPrepTotalTestedAgeSexTrendsMonth3(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -2865,7 +2865,7 @@ export class HtsController {
     }
 
     @Get('getPrepRefillMonth1')
-    async GetPrepRefillMonth1Query(
+    async GetPrepRefillMonth1(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -2922,7 +2922,7 @@ export class HtsController {
         return this.queryBus.execute(query);
     }
     @Get('getPrepRefillMonth3')
-    async GetPrepRefillMonth3Query(
+    async GetPrepRefillMonth3(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -2980,7 +2980,7 @@ export class HtsController {
     }
 
     @Get('getPrepRefillAgeSexMonth1')
-    async GetPrepRefillAgeSexMonth1Query(
+    async GetPrepRefillAgeSexMonth1(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -3038,7 +3038,7 @@ export class HtsController {
     }
 
     @Get('getPrepRefillAgeSexMonth3')
-    async GetPrepRefillAgeSexMonth3Query(
+    async GetPrepRefillAgeSexMonth3(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
