@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FactPrep } from '../../entities/fact-prep.model';
 import { GetCTPrepTrendQuery } from '../impl/get-ct-prep-trends.query';
-import { GetCTPrepQuery } from '../impl/get-ct-prep.query';
 
 @QueryHandler(GetCTPrepTrendQuery)
 export class GetCTPrepTrendHandler implements IQueryHandler<GetCTPrepTrendQuery> {
