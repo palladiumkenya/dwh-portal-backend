@@ -80,7 +80,10 @@ import { GetPrepEligibleByAgegroupHandler } from './prep/queries/handlers/get-pr
 import { GetPrepSTIScreenedOutcomeHandler } from './prep/queries/handlers/get-prep-sti-screening-outcome.handler';
 import { GetPrepSTITreatmentOutcomeHandler } from './prep/queries/handlers/get-prep-sti-Treatment-outcome.handler';
 import { GetPrepDiscontinuationTrendHandler } from './prep/queries/handlers/get-prep-discontinuation-trends.handler';
-import { GetCTPrepTrendHandler } from './prep/queries/handlers/get-ct-prep.trends.handler';
+import { GetCTPrepTrendHandler } from './prep/queries/handlers/get-ct-prep-trends.handler';
+import { GetPrepTotalTestedHandler } from './prep/queries/handlers/get-prep-total-tested.handler';
+import { GetPrepTotalTestedTrendsHandler } from './prep/queries/handlers/get-prep-total-tested-trends.handler';
+import { GetPrepAgeSexTrendHandler } from './prep/queries/handlers/get-prep-age-sex-trends.handler';
 
 @Module({
     imports: [
@@ -172,6 +175,9 @@ import { GetCTPrepTrendHandler } from './prep/queries/handlers/get-ct-prep.trend
         GetPrepSTITreatmentOutcomeHandler,
         GetPrepDiscontinuationTrendHandler,
         GetCTPrepTrendHandler,
+        GetPrepTotalTestedHandler,
+        GetPrepTotalTestedTrendsHandler,
+        GetPrepAgeSexTrendHandler,
     ],
     controllers: [HtsController],
 })
