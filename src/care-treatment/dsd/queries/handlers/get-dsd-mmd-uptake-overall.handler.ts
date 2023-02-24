@@ -3,19 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransDsdMmdUptake } from '../../entities/fact-trans-dsd-mmd-uptake.model';
 import { Repository } from 'typeorm';
 import { GetDsdMmdUptakeOverallQuery } from '../impl/get-dsd-mmd-uptake-overall.query';
+import { AggregateDSD } from '../../entities/aggregate-dsd.model';
 
 @QueryHandler(GetDsdMmdUptakeOverallQuery)
 export class GetDsdMmdUptakeOverallHandler implements IQueryHandler<GetDsdMmdUptakeOverallQuery> {
     constructor(
-        @InjectRepository(FactTransDsdMmdUptake, 'mssql')
-        private readonly repository: Repository<FactTransDsdMmdUptake>
+        @InjectRepository(AggregateDSD, 'mssql')
+        private readonly repository: Repository<AggregateDSD>
     ) {
 
     }
 
     async execute(query: GetDsdMmdUptakeOverallQuery): Promise<any> {
         const dsdMmdStable = this.repository.createQueryBuilder('f')
-            .select(['SUM(TxCurr) txCurr, SUM(MMD) mmd, SUM(NonMMD) nonMmd'])
+            .select(['SUM(TxCurr) txCurr, SUM(patients_onMMD) mmd, SUM(patients_nonMMD) nonMmd'])
             .where('f.MFLCode > 1');
 
         if (query.county) {
@@ -31,15 +32,15 @@ export class GetDsdMmdUptakeOverallHandler implements IQueryHandler<GetDsdMmdUpt
         }
 
         if (query.partner) {
-            dsdMmdStable.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdMmdStable.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdMmdStable.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdMmdStable.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            dsdMmdStable.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            dsdMmdStable.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

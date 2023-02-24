@@ -1,27 +1,28 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransNewlyStarted } from '../../entities/fact-trans-newly-started.model';
 import { Repository } from 'typeorm';
 import { GetTxNewByAgeSexQuery } from '../impl/get-tx-new-by-age-sex.query';
+import { AggregateCohortRetention } from './../../entities/aggregate-cohort-retention.model';
 
 @QueryHandler(GetTxNewByAgeSexQuery)
 export class GetTxNewByAgeSexHandler implements IQueryHandler<GetTxNewByAgeSexQuery> {
     constructor(
-        @InjectRepository(FactTransNewlyStarted, 'mssql')
-        private readonly repository: Repository<FactTransNewlyStarted>
+        @InjectRepository(AggregateCohortRetention, 'mssql')
+        private readonly repository: Repository<AggregateCohortRetention>
     ) {
 
     }
 
     async execute(query: GetTxNewByAgeSexQuery): Promise<any> {
-        const txNewByAgeSex = this.repository.createQueryBuilder('f')
-            .select(['[AgeGroup], [Gender], SUM([StartedART]) txNew'])
-            .where('f.[StartedART] > 0')
+        const txNewByAgeSex = this.repository
+            .createQueryBuilder('f')
+            .select(['[AgeGroup], [Gender], SUM([patients_startedART]) txNew'])
+            .where('f.[patients_startedART] > 0')
             .andWhere('f.[AgeGroup] IS NOT NULL')
             .andWhere('f.[Gender] IS NOT NULL');
 
         if (query.partner) {
-            txNewByAgeSex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            txNewByAgeSex.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
         
         if (query.county) {
@@ -37,11 +38,11 @@ export class GetTxNewByAgeSexHandler implements IQueryHandler<GetTxNewByAgeSexQu
         }
 
         if(query.month) {
-            txNewByAgeSex.andWhere('f.StartART_Month = :month', { month: query.month });
+            txNewByAgeSex.andWhere(`MONTH (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) = :month`, { month: query.month });
         }
 
         if (query.agency) {
-            txNewByAgeSex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            txNewByAgeSex.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -55,9 +56,9 @@ export class GetTxNewByAgeSexHandler implements IQueryHandler<GetTxNewByAgeSexQu
         if(query.year) {
             const yearVal = new Date().getFullYear();
             if(query.year == yearVal && !query.month) {
-                txNewByAgeSex.andWhere('f.Start_Year >= :startYear', { startYear: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).getFullYear() });
+                txNewByAgeSex.andWhere(`YEAR (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) >= :startYear`, { startYear: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).getFullYear() });
             } else {
-                txNewByAgeSex.andWhere('f.Start_Year = :startYear', { startYear: query.year });
+                txNewByAgeSex.andWhere(`YEAR (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) = :startYear`, { startYear: query.year });
             }
         }
 

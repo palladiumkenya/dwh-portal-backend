@@ -3,18 +3,19 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { FactTransVLOutcome } from '../../entities/fact-trans-vl-outcome.model';
 import { GetVlSuppressionByAgeQuery } from '../impl/get-vl-suppression-by-age.query';
+import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlSuppressionByAgeQuery)
 export class GetVlSuppressionByAgeHandler implements IQueryHandler<GetVlSuppressionByAgeQuery> {
     constructor(
-        @InjectRepository(FactTransVLOutcome, 'mssql')
-        private readonly repository: Repository<FactTransVLOutcome>
+        @InjectRepository(AggregateVLUptakeOutcome, 'mssql')
+        private readonly repository: Repository<AggregateVLUptakeOutcome>
     ) {
     }
 
     async execute(query: GetVlSuppressionByAgeQuery): Promise<any> {
         const vlSuppressionByAge = this.repository.createQueryBuilder('f')
-            .select(['f.AgeGroup ageGroup, f.Last12MVLResult suppression, SUM(f.Total_Last12MVL) vlDone'])
+            .select(['f.AgeGroup ageGroup, f.Last12MVLResult suppression, SUM(f.TotalLast12MVL) vlDone'])
             .where('f.MFLCode > 0')
             .andWhere('f.AgeGroup IS NOT NULL')
             .andWhere('f.Last12MVLResult IS NOT NULL');
@@ -32,11 +33,11 @@ export class GetVlSuppressionByAgeHandler implements IQueryHandler<GetVlSuppress
         }
 
         if (query.partner) {
-            vlSuppressionByAge.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlSuppressionByAge.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlSuppressionByAge.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlSuppressionByAge.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

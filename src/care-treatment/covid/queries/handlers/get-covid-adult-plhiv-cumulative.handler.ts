@@ -11,7 +11,7 @@ export class GetCovidAdultPLHIVCumulativeHandler implements IQueryHandler<GetCov
         private readonly repository: Repository<FactTransCovidVaccines>
     ) {
     }
-
+//TODO:: FInd out why
     async execute(query: GetCovidAdultPlhivCumulativeQuery): Promise<any> {
 
     }

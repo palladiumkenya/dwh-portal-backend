@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('FACT_NUPI')
+@Entity('portaldevtest.dbo.FACT_NUPI')
 export class FactNUPI {
     @PrimaryColumn('text')
     MFLCode: string;

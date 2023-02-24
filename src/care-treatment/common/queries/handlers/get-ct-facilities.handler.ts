@@ -3,12 +3,13 @@ import { GetCtFacilitiesQuery } from '../impl/get-ct-facilities.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
+import { LinelistFACTART } from './../../entities/linelist-fact-art.model';
 
 @QueryHandler(GetCtFacilitiesQuery)
 export class GetCtFacilitiesHandler implements IQueryHandler<GetCtFacilitiesQuery> {
     constructor(
-        @InjectRepository(FactTransHmisStatsTxcurr, 'mssql')
-        private readonly repository: Repository<FactTransHmisStatsTxcurr>
+        @InjectRepository(LinelistFACTART, 'mssql')
+        private readonly repository: Repository<LinelistFACTART>
     ) {
 
     }

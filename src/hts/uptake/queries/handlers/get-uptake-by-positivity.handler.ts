@@ -3,39 +3,51 @@ import { GetUptakeByPositivityQuery } from '../impl/get-uptake-by-positivity.que
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetUptakeByPositivityQuery)
-export class GetUptakeByPositivityHandler implements IQueryHandler<GetUptakeByPositivityQuery>  {
+export class GetUptakeByPositivityHandler
+    implements IQueryHandler<GetUptakeByPositivityQuery> {
     constructor(
-        @InjectRepository(FactHtsUptake)
-        private readonly repository: Repository<FactHtsUptake>
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>,
     ) {}
 
     async execute(query: GetUptakeByPositivityQuery): Promise<any> {
         const params = [];
-        let numberTestedPositivitySql = 'SELECT \n' +
-            'YEAR,\n' +
-            'MONTH, \n' +
-            '((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity \n' +
-            'FROM fact_htsuptake WHERE Tested IS NOT NULL ';
+        let numberTestedPositivitySql = `SELECT
+                YEAR(DateTestedKey) YEAR,
+                MONTH(DateTestedKey) MONTH, 
+                ((CAST(SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) AS FLOAT)/CAST(SUM(Tested) AS FLOAT))*100) AS positivity
+            FROM
+                NDWH.dbo.FactHTSClientTests AS link
+                INNER JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
+                INNER JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
+                INNER JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
+                INNER JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
+                INNER JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
+            WHERE Tested > 0`;
 
-        if(query.county) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and County IN (?)`;
-            params.push(query.county);
+        if (query.county) {
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.subCounty) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and SubCounty IN (?)`;
-            params.push(query.subCounty);
+        if (query.subCounty) {
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and SubCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.facility) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and FacilityName IN (?)`;
-            params.push(query.facility);
+        if (query.facility) {
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.partner) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and CTPartner IN (?)`;
+        if (query.partner) {
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and PartnerName IN (?)`;
             params.push(query.partner);
         }
 
@@ -59,16 +71,14 @@ export class GetUptakeByPositivityHandler implements IQueryHandler<GetUptakeByPo
         if (query.fromDate) {
             const dateVal = new Date();
             const yearVal = dateVal.getFullYear();
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
-            params.push(query.fromDate);
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and DateTestedKey >= ${query.fromDate}01`;
         }
 
         if (query.toDate) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
-            params.push(query.toDate);
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
-        numberTestedPositivitySql = `${numberTestedPositivitySql} GROUP BY year,month`;
+        numberTestedPositivitySql = `${numberTestedPositivitySql} GROUP BY YEAR(DateTestedKey), month(DateTestedKey)`;
 
         return await this.repository.query(numberTestedPositivitySql, params);
     }

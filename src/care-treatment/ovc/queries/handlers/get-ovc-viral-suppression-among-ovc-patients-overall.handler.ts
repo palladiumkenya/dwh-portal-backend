@@ -1,15 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOvcViralSuppressionAmongOvcPatientsOverallQuery } from '../impl/get-ovc-viral-suppression-among-ovc-patients-overall.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetOvcViralSuppressionAmongOvcPatientsOverallQuery)
 export class GetOvcViralSuppressionAmongOvcPatientsOverallHandler implements IQueryHandler<GetOvcViralSuppressionAmongOvcPatientsOverallQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
@@ -31,11 +30,29 @@ export class GetOvcViralSuppressionAmongOvcPatientsOverallHandler implements IQu
         }
 
         if (query.partner) {
-            viralSuppressionAmongOvcPatients.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            viralSuppressionAmongOvcPatients.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            viralSuppressionAmongOvcPatients.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            viralSuppressionAmongOvcPatients.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
+        }
+
+        if (query.gender) {
+            viralSuppressionAmongOvcPatients.andWhere(
+                'f.Gender IN (:...genders)',
+                {
+                    genders: query.gender,
+                },
+            );
+        }
+
+        if (query.datimAgeGroup) {
+            viralSuppressionAmongOvcPatients.andWhere(
+                'f.DATIMAgeGroup IN (:...ageGroups)',
+                {
+                    ageGroups: query.datimAgeGroup,
+                },
+            );
         }
 
         return await viralSuppressionAmongOvcPatients

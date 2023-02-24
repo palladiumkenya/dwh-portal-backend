@@ -2,22 +2,20 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetOtzNotEnrolledByPartnerQuery } from '../impl/get-otz-not-enrolled-by-partner.query';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
+import { AggregateOtz } from './../../entities/aggregate-otz.model';
 
 @QueryHandler(GetOtzNotEnrolledByPartnerQuery)
 export class GetOtzNotEnrolledByPartnerHandler
     implements IQueryHandler<GetOtzNotEnrolledByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>,
+        @InjectRepository(AggregateOtz, 'mssql')
+        private readonly repository: Repository<AggregateOtz>,
     ) {}
 
     async execute(query: GetOtzNotEnrolledByPartnerQuery): Promise<any> {
         const proportionWhoCompletedTraining = this.repository
             .createQueryBuilder('f')
-            .select(['SUM(TXCurr) Num, CTPartner'])
-            .andWhere('f.OTZEnrollmentDate IS NULL');
+            .select(['SUM(Enrolled) Num, PartnerName CTPartner']);
 
         if (query.county) {
             proportionWhoCompletedTraining.andWhere(
@@ -42,21 +40,21 @@ export class GetOtzNotEnrolledByPartnerHandler
 
         if (query.partner) {
             proportionWhoCompletedTraining.andWhere(
-                'f.CTPartner IN (:...partners)',
+                'f.PartnerName IN (:...partners)',
                 { partners: query.partner },
             );
         }
 
         if (query.agency) {
             proportionWhoCompletedTraining.andWhere(
-                'f.CTAgency IN (:...agencies)',
+                'f.AgencyName IN (:...agencies)',
                 { agencies: query.agency },
             );
         }
 
         if (query.datimAgeGroup) {
             proportionWhoCompletedTraining.andWhere(
-                'f.DATIM_AgeGroup IN (:...ageGroups)',
+                'f.AgeGroup IN (:...ageGroups)',
                 { ageGroups: query.datimAgeGroup },
             );
         }
@@ -69,8 +67,8 @@ export class GetOtzNotEnrolledByPartnerHandler
         }
 
         return await proportionWhoCompletedTraining
-            .groupBy('CTPartner')
-            .orderBy('SUM(TXCurr)', 'DESC')
+            .groupBy('PartnerName')
+            .orderBy('SUM(Enrolled)', 'DESC')
             .getRawMany();
     }
 }

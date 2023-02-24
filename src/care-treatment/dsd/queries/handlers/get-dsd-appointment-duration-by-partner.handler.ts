@@ -3,22 +3,25 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetDsdAppointmentDurationByPartnerQuery } from '../impl/get-dsd-appointment-duration-by-partner.query';
 import { FactTransDsdAppointmentByStabilityStatus } from '../../entities/fact-trans-dsd-appointment-by-stability-status.model';
+import {AggregateDSD} from "../../entities/aggregate-dsd.model";
+import {AggregateDSDApptsByStability} from "../../entities/aggregate-dsd-appts-by-stability.model";
 
 @QueryHandler(GetDsdAppointmentDurationByPartnerQuery)
 export class GetDsdAppointmentDurationByPartnerHandler implements IQueryHandler<GetDsdAppointmentDurationByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransDsdAppointmentByStabilityStatus, 'mssql')
-        private readonly repository: Repository<FactTransDsdAppointmentByStabilityStatus>
+        @InjectRepository(AggregateDSD, 'mssql')
+        private readonly repository: Repository<AggregateDSD>
     ) {
 
     }
 
     async execute(query: GetDsdAppointmentDurationByPartnerQuery): Promise<any> {
         const dsdAppointmentDuration = this.repository.createQueryBuilder('f')
-            .select(['SUM(TXCurr) patients, DATIM_AgeGroup ageGroup, SUM([NumPatients]) stablePatients, CTPartner partner, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
+            .select([' SUM(f.TxCurr) patients, f.AgeGroup ageGroup, SUM(df.patients_number) stablePatients, f.PartnerName partner, (CAST(SUM(f.Stability) as float)/CAST(SUM(f.TxCurr) as float)) percentStable'])
+            .innerJoin(AggregateDSDApptsByStability, 'df', 'df.MFLCode = f.MFLCode')
             .where('f.MFLCode > 1')
-            .andWhere('f.Stability = :stability', { stability: "Stable"});
-
+            .andWhere('CAST(f.Stability AS NVARCHAR(10)) = :stability', { stability: "Stable"})
+            
         if (query.county) {
             dsdAppointmentDuration.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
@@ -32,15 +35,15 @@ export class GetDsdAppointmentDurationByPartnerHandler implements IQueryHandler<
         }
 
         if (query.partner) {
-            dsdAppointmentDuration.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdAppointmentDuration.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdAppointmentDuration.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdAppointmentDuration.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
-        if (query.datimAgeGroup) {
-            dsdAppointmentDuration.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        if (query.ageGroup) {
+            dsdAppointmentDuration.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.ageGroup });
         }
 
         if (query.gender) {
@@ -48,7 +51,7 @@ export class GetDsdAppointmentDurationByPartnerHandler implements IQueryHandler<
         }
 
         return await dsdAppointmentDuration
-            .groupBy('CTPartner, DATIM_AgeGroup')
+            .groupBy('f.PartnerName, f.AgeGroup')
             .orderBy('percentStable', 'DESC')
             .getRawMany();
     }

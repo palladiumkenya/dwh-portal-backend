@@ -21,7 +21,7 @@ export class FactTransOtzEnrollments {
     Gender: string;
 
     @Column('text')
-    DATIM_AgeGroup: string;
+    AgeGroup: string;
 
     @Column('text')
     ModulesPreviouslyCovered: string;

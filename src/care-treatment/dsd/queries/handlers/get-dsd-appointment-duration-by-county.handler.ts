@@ -3,27 +3,35 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetDsdAppointmentDurationByCountyQuery } from '../impl/get-dsd-appointment-duration-by-county.query';
 import { FactTransDsdAppointmentByStabilityStatus } from '../../entities/fact-trans-dsd-appointment-by-stability-status.model';
+import {AggregateDSD} from "../../entities/aggregate-dsd.model";
+import {AggregateDSDApptsByStability} from "../../entities/aggregate-dsd-appts-by-stability.model";
 
 @QueryHandler(GetDsdAppointmentDurationByCountyQuery)
 export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<GetDsdAppointmentDurationByCountyQuery> {
     constructor(
-        @InjectRepository(FactTransDsdAppointmentByStabilityStatus, 'mssql')
-        private readonly repository: Repository<FactTransDsdAppointmentByStabilityStatus>
+        @InjectRepository(AggregateDSD, 'mssql')
+        private readonly repository: Repository<AggregateDSD>
     ) {
 
     }
 
     async execute(query: GetDsdAppointmentDurationByCountyQuery): Promise<any> {
         let dsdAppointmentDuration = this.repository.createQueryBuilder('f')
-            .select(['SUM(TXCurr) patients, DATIM_AgeGroup, SUM([NumPatients]) stablePatients, County county, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
+            .select([' SUM(f.TxCurr) patients, f.AgeGroup ageGroup, SUM(df.patients_number) stablePatients, f.County county, (CAST(SUM(f.Stability) as float)/CAST(SUM(f.TxCurr) as float)) percentStable'])
+            .innerJoin(AggregateDSDApptsByStability, 'df', 'df.MFLCode = f.MFLCode')
             .where('f.MFLCode > 1')
-            .andWhere('f.Stability = :stability', { stability: "Stable"});
+            .andWhere('CAST(f.Stability AS NVARCHAR(10)) = :stability', { stability: "Stable"})
 
         if (query.county) {
             dsdAppointmentDuration = this.repository.createQueryBuilder('f')
-                .select(['SUM(TXCurr) patients, DATIM_AgeGroup, SUM([NumPatients]) stablePatients, SubCounty county, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
+                .select([' SUM(f.TxCurr) patients, f.AgeGroup ageGroup, SUM(df.patients_number) stablePatients, f.SubCounty county, (CAST(SUM(f.Stability) as float)/CAST(SUM(f.TxCurr) as float)) percentStable'])
+                .innerJoin(AggregateDSDApptsByStability, 'df', 'df.MFLCode = f.MFLCode')
                 .where('f.MFLCode > 1')
-                .andWhere('f.Stability = :stability', { stability: "Stable"});
+                .andWhere('CAST(f.Stability AS NVARCHAR(10)) = :stability', { stability: "Stable"})
+
+            // .select(['SUM(TXCurr) patients, AgeGroup, SUM([NumPatients]) stablePatients, SubCounty county, (CAST(SUM([StabilityAssessment]) as float)/CAST(SUM(TXCurr) as float)) percentStable'])
+            // .where('f.MFLCode > 1')
+            // .andWhere('f.Stability = :stability', { stability: "Stable"});
             dsdAppointmentDuration.andWhere('f.County IN (:counties)', { counties: query.county });
         }
 
@@ -36,15 +44,15 @@ export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<G
         }
 
         if (query.partner) {
-            dsdAppointmentDuration.andWhere('f.CTPartner IN (:partners)', { partners: query.partner });
+            dsdAppointmentDuration.andWhere('f.PartnerName IN (:partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdAppointmentDuration.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdAppointmentDuration.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
-        if (query.datimAgeGroup) {
-            dsdAppointmentDuration.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        if (query.ageGroup) {
+            dsdAppointmentDuration.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.ageGroup });
         }
 
         if (query.gender) {
@@ -53,12 +61,12 @@ export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<G
 
         if (query.county) {
             return await dsdAppointmentDuration
-                .groupBy('SubCounty, DATIM_AgeGroup')
+                .groupBy('f.SubCounty, f.AgeGroup')
                 .orderBy('percentStable', 'DESC')
                 .getRawMany();
         } else {
             return await dsdAppointmentDuration
-                .groupBy('County, DATIM_AgeGroup')
+                .groupBy('f.County, f.AgeGroup')
                 .orderBy('percentStable', 'DESC')
                 .getRawMany();
         }

@@ -3,37 +3,76 @@ import { GetPnsSexualContactsByCountyQuery } from '../impl/get-pns-sexual-contac
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactPNSSexualPartner } from '../../entities/fact-pns-sexual-partner.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetPnsSexualContactsByCountyQuery)
 export class GetPnsSexualContactsByCountyHandler implements IQueryHandler<GetPnsSexualContactsByCountyQuery> {
     constructor(
-        @InjectRepository(FactPNSSexualPartner)
-        private readonly repository: Repository<FactPNSSexualPartner>
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>
     ) {
 
     }
 
     async execute(query: GetPnsSexualContactsByCountyQuery): Promise<any> {
-        const pnsSexualContactsByCounty = this.repository.createQueryBuilder('q')
-            .select(['q.County county, SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
-            .where('q.Mflcode IS NOT NULL')
-            .andWhere('q.County IS NOT NULL');
+        let pnsSexualContactsByCounty = `Select County county,
+                Sum(Case WHEN PatientPK is not null then 1 ELSE 0 End) elicited,
+                SUM(Tested)   tested,
+                
+                sum(Case WHEN FinalTestResult = 'Positive' then 1 ELSE 0 End ) positive,
+                SUM(Case WHEN (ReportedCCCNumber  is not null) then 1 ELSE 0 End ) linked,
+                
+                SUM(Case WHEN (KnowledgeOfHivStatus='Positive') then 1 ELSE 0 End)  knownPositive
+            From NDWH.dbo.FactHTSPartnerNotificationServices pns
+            LEFT JOIN NDWH.dbo.FactHTSClientTests test on test.PatientKey = pns.PatientKey
+            LEFT JOIN NDWH.dbo.DimPatient pat on pns.PatientKey = pat.PatientKey
+            LEFT JOIN NDWH.dbo.DimFacility f on f.FacilityKey = pns.FacilityKey
+            LEFT JOIN NDWH.dbo.DimAgeGroup age on pns.AgeGroupKey = age.AgeGroupKey
+            LEFT JOIN NDWH.dbo.DimAgency a on pns.AgencyKey = a.AgencyKey
+            LEFT JOIN NDWH.dbo.DimPartner p on pns.PartnerKey = p.PartnerKey
 
-        if(query.county) {
-            pnsSexualContactsByCounty.andWhere('q.County IN (:...county)', { county: query.county });
+            where RelationsipToIndexClient in ('Partner','Spouse','Co-Wife','cowife','Sexual Partner','Sexual Network')
+            `;
+        
+        // this.repository.createQueryBuilder('q')
+        //     .select(['q.County county, SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
+        //     .where('q.Mflcode IS NOT NULL')
+        //     .andWhere('q.County IS NOT NULL');
+
+        
+        if (query.county) {
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.subCounty) {
-            pnsSexualContactsByCounty.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: query.subCounty });
+        if (query.subCounty) {
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.facility) {
-            pnsSexualContactsByCounty.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
+        if (query.facility) {
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.partner) {
-            pnsSexualContactsByCounty.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
+        if (query.partner) {
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
+
+        // if (query.agency) {
+        //     pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and agencyName IN ('${query.agency
+        //         .toString()
+        //         .replace(/,/g, "','")}')`;
+        // }
+
+        // if(query.project) {
+        //     pnsSexualContactsByCounty.andWhere('q.project IN (:...project)', { project: query.project });
+        // }
 
         // if(query.month) {
         //     pnsSexualContactsByCounty.andWhere('q.month = :month', { month: query.month });
@@ -44,26 +83,17 @@ export class GetPnsSexualContactsByCountyHandler implements IQueryHandler<GetPns
         // }
 
         if (query.fromDate) {
-            pnsSexualContactsByCounty.andWhere(
-                `CONCAT(year, LPAD(month, 2, '0'))>= :fromDate`,
-                {
-                    fromDate: query.fromDate,
-                },
-            );
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2)) >= ${query.fromDate}`;
         }
 
         if (query.toDate) {
-            pnsSexualContactsByCounty.andWhere(
-                `CONCAT(year, LPAD(month, 2, '0'))<= :toDate`,
-                {
-                    toDate: query.toDate,
-                },
-            );
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2))<= ${query.toDate}`;
         }
 
-        return await pnsSexualContactsByCounty
-            .groupBy('q.County')
-            .orderBy('SUM(q.PartnerTested)', 'DESC')
-            .getRawMany();
+        pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} GROUP BY County`;
+
+        pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} ORDER BY SUM(Tested) Desc`;
+
+        return await this.repository.query(pnsSexualContactsByCounty, []);
     }
 }

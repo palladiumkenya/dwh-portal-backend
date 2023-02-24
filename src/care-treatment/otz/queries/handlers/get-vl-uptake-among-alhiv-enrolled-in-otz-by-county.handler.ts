@@ -1,21 +1,21 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetVlUptakeAmongAlhivEnrolledInOtzByCountyQuery } from '../impl/get-vl-uptake-among-alhiv-enrolled-in-otz-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { LineListOTZ } from './../../entities/line-list-otz.model';
 
 @QueryHandler(GetVlUptakeAmongAlhivEnrolledInOtzByCountyQuery)
 export class GetVlUptakeAmongAlhivEnrolledInOtzByCountyHandler implements IQueryHandler<GetVlUptakeAmongAlhivEnrolledInOtzByCountyQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListOTZ, 'mssql')
+        private readonly repository: Repository<LineListOTZ>
     ) {
     }
 
     async execute(query: GetVlUptakeAmongAlhivEnrolledInOtzByCountyQuery): Promise<any> {
         const vlUptakeAmongAlHivEnrolledInOtzByCounty = this.repository.createQueryBuilder('f')
             .select(['[County], COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent'])
-            .andWhere('f.OTZEnrollmentDate IS NOT NULL');
+            ;
 
         if (query.county) {
             vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -30,15 +30,15 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByCountyHandler implements IQuery
         }
 
         if (query.partner) {
-            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

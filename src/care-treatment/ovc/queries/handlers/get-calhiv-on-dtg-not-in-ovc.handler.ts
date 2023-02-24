@@ -4,18 +4,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
 import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetCalhivOnDtgQuery)
 export class GetCalhivOnDtgNotInOvcHandler implements IQueryHandler<GetCalhivOnDtgQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
     async execute(query: GetCalhivOnDtgQuery): Promise<any> {
         const CALHIVonDTG = this.repository.createQueryBuilder('f')
-            .select(['Count (*)CALHIVonDTG'])
+            .select(['Count (*) CALHIVonDTG'])
             .andWhere('f.LastRegimen <>\'non DTG\' AND f.OVCEnrollmentDate IS NULL and TXCurr=1');
 
         if (query.county) {
@@ -31,11 +32,11 @@ export class GetCalhivOnDtgNotInOvcHandler implements IQueryHandler<GetCalhivOnD
         }
 
         if (query.partner) {
-            CALHIVonDTG.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            CALHIVonDTG.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            CALHIVonDTG.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            CALHIVonDTG.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -43,7 +44,7 @@ export class GetCalhivOnDtgNotInOvcHandler implements IQueryHandler<GetCalhivOnD
         }
 
         if (query.datimAgeGroup) {
-            CALHIVonDTG.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            CALHIVonDTG.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await CALHIVonDTG.getRawOne();

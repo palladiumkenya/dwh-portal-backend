@@ -15,13 +15,13 @@ export class FactTransOvcEnrollments {
     SubCounty: string;
 
     @Column('text')
-    CTPartner: string;
+    PartnerName: string;
 
     @Column('text')
     Gender: string;
 
     @Column('text')
-    DATIM_AgeGroup: string;
+    AgeGroup: string;
 
     @Column('date')
     OVCEnrollmentDate: Date;

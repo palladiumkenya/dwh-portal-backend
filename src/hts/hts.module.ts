@@ -4,19 +4,19 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigurationModule } from '../config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { FactHtsUptake } from './uptake/entities/fact-htsuptake.entity';
-import { FactHtsUptakeAgeGender } from './uptake/entities/fact-htsuptake-agegender.entity';
-import { FactHtsPopulationType } from './uptake/entities/fact-hts-populationtype.entity';
-import { FactHtsTeststrategy } from './uptake/entities/fact-hts-teststrategy.entity';
-import { FactHtsEntryPoint } from './uptake/entities/fact-hts-entrypoint.entity';
-import { FactHtsClientTestedAs } from './uptake/entities/fact-hts-clienttestedas.entity';
-import { FactHtsMonthsLastTest } from './uptake/entities/fact-hts-monthslasttest.entity';
-import { FactHtsTBScreening } from './uptake/entities/fact-hts-tbscreening.entity';
-import { FactHtsClientSelfTested } from './uptake/entities/fact-hts-clientselftested.entity';
-import { FactHtsuptake } from './pns/entities/fact-htsuptake.entity';
-import { FactPNSSexualPartner } from './pns/entities/fact-pns-sexual-partner.entity';
-import { FactPNSChildren } from './pns/entities/fact-pns-children.entity';
-import { FactPNSKnowledgeHivStatus } from './pns/entities/fact-pns-knowledge-hiv-status.entity';
+// import { FactHtsUptake } from './uptake/entities/fact-htsuptake.entity';
+// import { FactHtsUptakeAgeGender } from './uptake/entities/fact-htsuptake-agegender.entity';
+// import { FactHtsPopulationType } from './uptake/entities/fact-hts-populationtype.entity';
+// import { FactHtsTeststrategy } from './uptake/entities/fact-hts-teststrategy.entity';
+// import { FactHtsEntryPoint } from './uptake/entities/fact-hts-entrypoint.entity';
+// import { FactHtsClientTestedAs } from './uptake/entities/fact-hts-clienttestedas.entity';
+// import { FactHtsMonthsLastTest } from './uptake/entities/fact-hts-monthslasttest.entity';
+// import { FactHtsTBScreening } from './uptake/entities/fact-hts-tbscreening.entity';
+// import { FactHtsClientSelfTested } from './uptake/entities/fact-hts-clientselftested.entity';
+// import { FactHtsuptake } from './pns/entities/fact-htsuptake.entity';
+// import { FactPNSSexualPartner } from './pns/entities/fact-pns-sexual-partner.entity';
+// import { FactPNSChildren } from './pns/entities/fact-pns-children.entity';
+// import { FactPNSKnowledgeHivStatus } from './pns/entities/fact-pns-knowledge-hiv-status.entity';
 import { FactPrep } from './prep/entities/fact-prep.model';
 
 import { GetHtsCountiesHandler } from './common/queries/handlers/get-hts-counties.handler';
@@ -67,27 +67,38 @@ import { GetPnsKnowledgeHivStatusCascadeHandler } from './pns/queries/handlers/g
 import { GetNewOnPrepHandler } from './prep/queries/handlers/get-new-on-prep.handler';
 import { GetPrepDiscontinuationHandler } from './prep/queries/handlers/get-prep-discontinuation';
 import { GetPrepDiscontinuationReasonHandler } from './prep/queries/handlers/get-prep-discontinuation-reason';
+import { FactHTSClientTests } from './linkage/entities/fact-hts-client-tests.model';
+import { FactHTSClientLinkages } from './linkage/entities/fact-hts-client-linkages.model';
+import { FactHTSClientTracing } from './linkage/entities/fact-hts-client-tracing.model';
+import { AllEmrSites } from 'src/care-treatment/common/entities/all-emr-sites.model';
 
 @Module({
     imports: [
         CqrsModule,
         ConfigurationModule,
+        // TypeOrmModule.forFeature([
+        //     FactHtsUptake,
+        //     FactHtsUptakeAgeGender,
+        //     FactHtsPopulationType,
+        //     FactHtsTeststrategy,
+        //     FactHtsEntryPoint,
+        //     FactHtsClientTestedAs,
+        //     FactHtsClientSelfTested,
+        //     FactHtsMonthsLastTest,
+        //     FactHtsTBScreening,
+        //     FactPNSSexualPartner,
+        //     FactPNSChildren,
+        //     FactHtsuptake,
+        //     FactPNSKnowledgeHivStatus,
+        // ]),
         TypeOrmModule.forFeature([
-            FactHtsUptake,
-            FactHtsUptakeAgeGender,
-            FactHtsPopulationType,
-            FactHtsTeststrategy,
-            FactHtsEntryPoint,
-            FactHtsClientTestedAs,
-            FactHtsClientSelfTested,
-            FactHtsMonthsLastTest,
-            FactHtsTBScreening,
-            FactPNSSexualPartner,
-            FactPNSChildren,
-            FactHtsuptake,
-            FactPNSKnowledgeHivStatus,
-        ]),
-        TypeOrmModule.forFeature([FactPrep], 'mssql'),
+            FactHTSClientTests,
+            FactHTSClientLinkages,
+            FactHTSClientTracing,
+            AllEmrSites,
+
+            FactPrep,
+        ], 'mssql'),
     ],
     providers: [
         GetHtsCountiesHandler,

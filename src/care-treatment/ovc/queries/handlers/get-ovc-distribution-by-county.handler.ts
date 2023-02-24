@@ -1,15 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOvcDistributionByCountyQuery } from '../impl/get-ovc-distribution-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetOvcDistributionByCountyQuery)
 export class GetOvcDistributionByCountyHandler implements IQueryHandler<GetOvcDistributionByCountyQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
@@ -31,11 +30,11 @@ export class GetOvcDistributionByCountyHandler implements IQueryHandler<GetOvcDi
         }
 
         if (query.partner) {
-            overOvcServByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            overOvcServByCounty.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            overOvcServByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            overOvcServByCounty.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -43,7 +42,7 @@ export class GetOvcDistributionByCountyHandler implements IQueryHandler<GetOvcDi
         }
 
         if (query.datimAgeGroup) {
-            overOvcServByCounty.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            overOvcServByCounty.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await overOvcServByCounty

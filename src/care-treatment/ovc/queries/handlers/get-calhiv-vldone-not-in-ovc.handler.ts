@@ -1,21 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCalhivVldoneQuery } from '../impl/get-calhiv-vldone.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from '../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetCalhivVldoneQuery)
 export class GetCalhivVldoneNotInOvcHandler implements IQueryHandler<GetCalhivVldoneQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
     async execute(query: GetCalhivVldoneQuery): Promise<any> {
         const CALHIVVLDone = this.repository.createQueryBuilder('f')
-            .select(['Count (*)CALHIVVLDone'])
+            .select(['Count (*) CALHIVVLDone'])
             .andWhere('f.TXCurr=1 and VLDone=1 and f.OVCEnrollmentDate IS NULL');
 
         if (query.county) {
@@ -31,11 +30,11 @@ export class GetCalhivVldoneNotInOvcHandler implements IQueryHandler<GetCalhivVl
         }
 
         if (query.partner) {
-            CALHIVVLDone.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            CALHIVVLDone.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            CALHIVVLDone.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            CALHIVVLDone.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -43,7 +42,7 @@ export class GetCalhivVldoneNotInOvcHandler implements IQueryHandler<GetCalhivVl
         }
 
         if (query.datimAgeGroup) {
-            CALHIVVLDone.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            CALHIVVLDone.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await CALHIVVLDone.getRawOne();

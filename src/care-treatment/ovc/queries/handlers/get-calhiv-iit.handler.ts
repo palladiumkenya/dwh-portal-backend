@@ -1,21 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCalhivIitQuery } from '../impl/get-calhiv-iit.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from '../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetCalhivIitQuery)
 export class GetCalhivIitHandler implements IQueryHandler<GetCalhivIitQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
     async execute(query: GetCalhivIitQuery): Promise<any> {
         const CALHIVonART = this.repository.createQueryBuilder('f')
-            .select(['Count (*)CALHIVIIT'])
+            .select(['Count (*) CALHIVIIT'])
             .andWhere('f.ARTOutcome=\'uL\'');
 
         if (query.county) {
@@ -31,11 +30,11 @@ export class GetCalhivIitHandler implements IQueryHandler<GetCalhivIitQuery> {
         }
 
         if (query.partner) {
-            CALHIVonART.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            CALHIVonART.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            CALHIVonART.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            CALHIVonART.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -43,7 +42,7 @@ export class GetCalhivIitHandler implements IQueryHandler<GetCalhivIitQuery> {
         }
 
         if (query.datimAgeGroup) {
-            CALHIVonART.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            CALHIVonART.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await CALHIVonART.getRawOne();

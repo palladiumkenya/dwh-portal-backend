@@ -2,20 +2,25 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery } from '../impl/get-proportion-of-plhiv-with-ae-whose-regimen-changed.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactTransAeActionDrug } from '../../entities/fact-trans-ae-action-drug.model';
+import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery)
 export class GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler implements IQueryHandler<GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery> {
     constructor(
-        @InjectRepository(FactTransAeActionDrug, 'mssql')
-        private readonly repository: Repository<FactTransAeActionDrug>
+        @InjectRepository(AggregateAdverseEvents, 'mssql')
+        private readonly repository: Repository<AggregateAdverseEvents>
     ) {
     }
 
     async execute(query: GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery): Promise<any> {
-        const proportionOfPLHIVWithAeWhoseRegimenChanged = this.repository.createQueryBuilder('f')
-            .select('AdverseEventActionTaken adverseEventActionTaken, SUM(AdverseEventCause_Total) numberOfPatientsAe')
-            .andWhere('f.AdverseEventActionTaken = :AdverseEventActionTaken', { AdverseEventActionTaken: "Medicine causing AE substituted/withdrawn"});
+        const proportionOfPLHIVWithAeWhoseRegimenChanged = this.repository
+            .createQueryBuilder('f')
+            .select(
+                'AdverseEventActionTaken adverseEventActionTaken, SUM(AdverseEventCount) numberOfPatientsAe',
+            )
+            .andWhere(
+                `f.AdverseEventActionTaken in ('Medicine causing AE substituted/withdrawn', 'SUBSTITUTED DRUG|SUBSTITUTED DRUG', 'Drug Substituted', 'Drug Withdrawn')`,
+            );
 
         if (query.county) {
             proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -26,7 +31,7 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler implements IQu
         }
 
         if (query.partner) {
-            proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.facility) {
@@ -34,17 +39,20 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler implements IQu
         }
 
         if (query.agency) {
-            proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
-            // lacking gender
-            // proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere(
+                'f.Gender IN (:...genders)',
+                { genders: query.gender },
+            );
         }
+
 
         return await proportionOfPLHIVWithAeWhoseRegimenChanged
             .groupBy('f.AdverseEventActionTaken')

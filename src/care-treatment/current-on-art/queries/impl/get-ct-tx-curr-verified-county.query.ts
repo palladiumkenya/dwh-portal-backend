@@ -9,4 +9,5 @@ export class GetCtTxCurrVerifiedByCountyQuery {
     project?: string[];
     gender?: string[];
     datimAgeGroup?: string[];
+    datimAgePopulations?: string[];
 }

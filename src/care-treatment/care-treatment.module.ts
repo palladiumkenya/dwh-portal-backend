@@ -294,15 +294,96 @@ import { GetOtzEnrollmentTrentHandler } from './otz/queries/handlers/get-otz-enr
 import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-age-sex.handler';
 import { GetOtzNotEnrolledByPartnerHandler } from './otz/queries/handlers/get-otz-not-enrolled-by-partner.handler';
 import { GetOtzNotEnrolledByCountyHandler } from './otz/queries/handlers/get-otz-not-enrolled-by-county.handler';
+import { GetAlhivWithReSuppressionHandler } from './otz/queries/handlers/get-alhiv-with-re-suppression.handler';
+import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-age.handler';
+import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-sex.handler';
+import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-partner.handler';
+import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-county.handler';
+import { GetCtTxCurrVerifiedByFacilityHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-verified-by-facility.handler';
+import { GetCtTxCurrByFacilityHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-by-facility.handler';
+import { GetNupiDatasetHandler } from './current-on-art/queries/handlers/get-nupi-dataset.handler';
+import { GetCtTxCurrHandler } from './current-on-art/queries/handlers/get-ct-tx-curr.handler';
+
+import { GetArtVerificationPendingSurveysByPartnerHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-partner.handler';
+import { GetArtVerificationPendingSurveysByCountyHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-county.handler';
+import { GetArtVerificationReasonsHandler } from './art-verification/queries/handlers/get-art-verification-reasons.handler';
+import { AggregateOtz } from './otz/entities/aggregate-otz.model';
+import { AggregateOTZOutcome } from './otz/entities/aggregate-otz-outcome.model';
+import { LineListOTZ } from './otz/entities/line-list-otz.model';
+import { LineListOTZEligibilityAndEnrollments } from './otz/entities/line-list-otz-eligibility-and-enrollments.model';
+import { AggregateDSDApptsByStability } from './dsd/entities/aggregate-dsd-appts-by-stability.model';
+import { AggregateDSDStable } from './dsd/entities/aggregate-dsd-stable.model';
+import { AggregateNupi } from './current-on-art/entities/aggregate-nupi.model';
+import { AggregateTXCurr } from './current-on-art/entities/aggregate-txcurr.model';
+import { AggregateDSDUnstable } from './dsd/entities/AggregateDSDUnstable.model';
+import { AggregateDSD } from './dsd/entities/AggregateDSD.model';
+import { AggregateCovid } from './covid/entities/aggregate-covid.model';
+import { LineListCovid } from './covid/entities/linelist-covid.model';
+import { AggregateOVCCount } from './ovc/entities/aggregate-ovc-count.model';
+import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.model';
+import { LinelistFACTART } from './common/entities/linelist-fact-art.model';
+import { AggregateAdverseEvents } from './adverse-events/entities/aggregate-adverse-events.model';
+import { AggregateTimeToARTLast12M } from './new-on-art/entities/aggregate-time-to-art-last-12-m.model';
+import { AggregateCohortRetention } from './new-on-art/entities/aggregate-cohort-retention.model';
+import { AggregateTimeToART } from './new-on-art/entities/aggregate-time-to-art.model';
+import { AggregateTimeToARTGrp } from './new-on-art/entities/aggregate-time-to-art-grp.model';
+import { AggregateOptimizeCurrentRegimens } from './art-optimization/entities/aggregate-optimize-current-regimens.model';
+import { AggregateOptimizeStartRegimens } from './art-optimization/entities/aggregate-optimize-start-regimens.model';
+import { AggregateVLUptakeOutcome } from './viral-load/entities/aggregate-vl-uptake-outcome.model';
+import { AggregateTimeToFirstVLGrp } from './viral-load/entities/aggregate-time-to-first-vl-grp.model';
+import { AggregateTimeToVL } from './viral-load/entities/aggregate-time-to-vl.model';
+import { AggregateTimeToVL12M } from './viral-load/entities/aggregate-time-to-vl-last-12m.model';
+import { AggregateTreatmentOutcomes } from './treatment-outcomes/entities/aggregate-treatment-outcomes.model';
+import { LineListViralLoad } from './viral-load/entities/linelist-viral-load.model';
 
 
 @Module({
     imports: [
-    CqrsModule,
+        CqrsModule,
         ConfigurationModule,
         TypeOrmModule.forFeature(
             [
+                AggregateOtz,
+                AggregateOTZOutcome,
+                LineListOTZ,
+                LineListOTZEligibilityAndEnrollments,
+
+                AggregateNupi,
+                AggregateTXCurr,
+
+                AggregateDSDUnstable,
+                AggregateDSD,
+                AggregateDSDStable,
+                AggregateDSDApptsByStability,
+
+                AggregateCovid,
+                LineListCovid,
+
+                AggregateOVCCount,
+                LineListOVCEnrollments,
+
+                LinelistFACTART,
+
+                AggregateAdverseEvents,
+
+                AggregateTimeToARTLast12M,
+                AggregateCohortRetention,
+                AggregateTimeToART,
+                AggregateTimeToARTGrp,
+
+                AggregateOptimizeCurrentRegimens,
+                AggregateOptimizeStartRegimens,
+
+                AggregateVLUptakeOutcome,
+                AggregateTimeToFirstVLGrp,
+                AggregateTimeToVL12M,
+                AggregateTimeToVL,
+
+                AggregateTreatmentOutcomes,
+                LineListViralLoad,
+
                 AllEmrSites,
+
                 FactTransHmisStatsTxcurr,
                 FactTransNewlyStarted,
                 FactCTTimeToArt,
@@ -338,10 +419,10 @@ import { GetOtzNotEnrolledByCountyHandler } from './otz/queries/handlers/get-otz
                 FactTransCohortRetention,
                 FactTransCovidVaccines,
                 DimAgeGroups,
-                FactNUPI
+                FactNUPI,
             ],
-            'mssql'
-        )
+            'mssql',
+        ),
     ],
     providers: [
         GetCtCountyHandler,
@@ -492,6 +573,11 @@ import { GetOtzNotEnrolledByCountyHandler } from './otz/queries/handlers/get-otz
         GetOtzTotalWithVlResultsHandler,
         GetOtzTotalWithVlLessThan1000Handler,
         GetOtzEnrollmentTrentHandler,
+        GetAlhivWithReSuppressionHandler,
+        GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeHandler,
+        GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexHandler,
+        GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerHandler,
+        GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler,
         GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexHandler,
         GetOtzNotEnrolledByPartnerHandler,
         GetOtzNotEnrolledByCountyHandler,
@@ -572,7 +658,15 @@ import { GetOtzNotEnrolledByCountyHandler } from './otz/queries/handlers/get-otz
         GetCtTxCurrVerifiedByCountyHandler,
         GetCtTxCurrVerifiedByPartnerHandler,
         GetCtTxCurrVerifiedBySexHandler,
+        GetCtTxCurrVerifiedByFacilityHandler,
+        GetCtTxCurrByFacilityHandler,
+        GetNupiDatasetHandler,
+        GetCtTxCurrHandler,
+
+        GetArtVerificationPendingSurveysByPartnerHandler,
+        GetArtVerificationPendingSurveysByCountyHandler,
+        GetArtVerificationReasonsHandler,
     ],
-    controllers: [CareTreatmentController]
+    controllers: [CareTreatmentController],
 })
 export class CareTreatmentModule {}

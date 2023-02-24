@@ -15,7 +15,7 @@ export class FactTransAeActionDrug {
     SubCounty: string;
 
     @Column('text')
-    CTPartner: string;
+    PartnerName: string;
 
     @Column('text')
     AdverseEventCause: string;

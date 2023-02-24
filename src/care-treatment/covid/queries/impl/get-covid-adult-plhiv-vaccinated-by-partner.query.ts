@@ -7,6 +7,6 @@ export class GetCovidAdultPlhivVaccinatedByPartnerQuery {
     month?: number;
     project?: string[];
     gender?: string[];
-    datimAgeGroup?: string[];
+    ageGroup?: string[];
     agency?: string[];
 }

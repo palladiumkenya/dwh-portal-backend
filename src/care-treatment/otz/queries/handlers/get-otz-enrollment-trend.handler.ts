@@ -4,13 +4,14 @@ import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollmen
 import { Repository } from 'typeorm';
 import { GetOtzEnrollmentTrendQuery } from './../impl/get-otz-enrollment-trend.query';
 import moment = require('moment');
+import { AggregateOtz } from './../../entities/aggregate-otz.model';
 
 @QueryHandler(GetOtzEnrollmentTrendQuery)
 export class GetOtzEnrollmentTrentHandler
     implements IQueryHandler<GetOtzEnrollmentTrendQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>,
+        @InjectRepository(AggregateOtz, 'mssql')
+        private readonly repository: Repository<AggregateOtz>,
     ) {}
 
     async execute(query: GetOtzEnrollmentTrendQuery): Promise<any> {
@@ -18,15 +19,13 @@ export class GetOtzEnrollmentTrentHandler
             .subtract(2, 'month')
             .add(16, 'days')
             .endOf('month')
-            .format('YYYY-MM-DD');
+            .format('YYYY-MM');
         const otzEnrolled = this.repository
             .createQueryBuilder('f')
             .select([
-                "count( * ) enrolledInOTZ, MONTH ( OTZEnrollmentDate ) 'month', YEAR ( OTZEnrollmentDate ) 'year'",
+                "SUM(Enrolled) enrolledInOTZ, MONTH (CAST(REPLACE(OTZEnrollmentYearMonth , '-', '') + '01' AS DATE)) 'month', YEAR ( CAST(REPLACE(OTZEnrollmentYearMonth , '-', '') + '01' AS DATE)) 'year'",
             ])
-            .where(
-                `f.OTZEnrollmentDate IS NOT NULL and OTZEnrollmentDate <= '${previousMonth}'`,
-            );
+            .where(`OTZEnrollmentYearMonth <= '${previousMonth}'`);
 
         if (query.county) {
             otzEnrolled.andWhere('f.County IN (:...counties)', {
@@ -47,19 +46,19 @@ export class GetOtzEnrollmentTrentHandler
         }
 
         if (query.partner) {
-            otzEnrolled.andWhere('f.CTPartner IN (:...partners)', {
+            otzEnrolled.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            otzEnrolled.andWhere('f.CTAgency IN (:...agencies)', {
+            otzEnrolled.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
 
         if (query.datimAgeGroup) {
-            otzEnrolled.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', {
+            otzEnrolled.andWhere('f.AgeGroup IN (:...ageGroups)', {
                 ageGroups: query.datimAgeGroup,
             });
         }
@@ -71,9 +70,17 @@ export class GetOtzEnrollmentTrentHandler
         }
 
         return await otzEnrolled
-            .groupBy('MONTH ( OTZEnrollmentDate ), YEAR ( OTZEnrollmentDate ) ')
-            .orderBy('YEAR ( OTZEnrollmentDate )', 'DESC')
-            .addOrderBy('MONTH ( OTZEnrollmentDate )', 'DESC')
+            .groupBy(
+                `MONTH ( CAST(REPLACE(OTZEnrollmentYearMonth, '-', '') + '01' AS DATE) ), YEAR ( CAST(REPLACE(OTZEnrollmentYearMonth, '-', '') + '01' AS DATE) ) `,
+            )
+            .orderBy(
+                `YEAR ( CAST(REPLACE(OTZEnrollmentYearMonth , '-', '') + '01' AS DATE))`,
+                'DESC',
+            )
+            .addOrderBy(
+                `MONTH ( CAST(REPLACE(OTZEnrollmentYearMonth, '-', '') + '01' AS DATE) )`,
+                'DESC',
+            )
             .getRawMany();
     }
 }

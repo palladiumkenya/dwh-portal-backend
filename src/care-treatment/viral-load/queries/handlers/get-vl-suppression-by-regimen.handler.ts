@@ -3,20 +3,24 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { FactTransOptimizeStartRegimen } from '../../entities/fact-trans-optimize-start-regimen.model';
 import { GetVlSuppressionByRegimenQuery } from '../impl/get-vl-suppression-by-regimen.query';
+import { AggregateOptimizeStartRegimens } from './../../../art-optimization/entities/aggregate-optimize-start-regimens.model';
 
 @QueryHandler(GetVlSuppressionByRegimenQuery)
 export class GetVlSuppressionByRegimenHandler implements IQueryHandler<GetVlSuppressionByRegimenQuery> {
     constructor(
-        @InjectRepository(FactTransOptimizeStartRegimen, 'mssql')
-        private readonly repository: Repository<FactTransOptimizeStartRegimen>
+        @InjectRepository(AggregateOptimizeStartRegimens, 'mssql')
+        private readonly repository: Repository<AggregateOptimizeStartRegimens>
     ) {
 
     }
 
     async execute(query: GetVlSuppressionByRegimenQuery): Promise<any> {
-        const vlSuppressionByRegimen = this.repository.createQueryBuilder('f')
-            .select(['f.StartRegimen regimen, Last12MVLResult, count(Last12MVLResult) count'])
-            .where('f.MFLCode > 0')
+        const vlSuppressionByRegimen = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'f.StartRegimen regimen, Last12MVLResult, count(Last12MVLResult) count',
+            ])
+            .where('f.SiteCode > 0')
             .andWhere('f.StartRegimen IS NOT NULL')
             .andWhere('f.Last12MVLResult IS NOT NULL');
 
@@ -33,15 +37,15 @@ export class GetVlSuppressionByRegimenHandler implements IQueryHandler<GetVlSupp
         }
 
         if (query.partner) {
-            vlSuppressionByRegimen.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlSuppressionByRegimen.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlSuppressionByRegimen.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlSuppressionByRegimen.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            vlSuppressionByRegimen.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            vlSuppressionByRegimen.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
