@@ -84,6 +84,13 @@ import { GetCTPrepTrendHandler } from './prep/queries/handlers/get-ct-prep-trend
 import { GetPrepTotalTestedHandler } from './prep/queries/handlers/get-prep-total-tested.handler';
 import { GetPrepTotalTestedTrendsHandler } from './prep/queries/handlers/get-prep-total-tested-trends.handler';
 import { GetPrepAgeSexTrendHandler } from './prep/queries/handlers/get-prep-age-sex-trends.handler';
+import { GetPrepTotalTestedAgeSexTrendsmonth1Handler } from './prep/queries/handlers/get-prep-total-tested-age-sex-trends-months1.handler';
+import { GetPrepTotalTestedAgeSexTrendsmonth3Handler } from './prep/queries/handlers/get-prep-total-tested-age-sex-trends-months3.handler';
+import { GetPrepRefillMonth1Handler } from './prep/queries/handlers/get-prep-refill-month1.handler';
+import { GetPrepRefillMonth3Handler } from './prep/queries/handlers/get-prep-refill-month3.handler';
+import { GetPrepRefillAgeSexTrendsmonth1Handler } from './prep/queries/handlers/get-prep-refilll-age-sex-trends-months1.handler';
+import { GetPrepRefillAgeSexTrendsmonth3Handler } from './prep/queries/handlers/get-prep-refilll-age-sex-trends-months3.handler';
+import { GetPrepSTIDiagnosedHandler } from './prep/queries/handlers/get-prep-sti-diagnosed.handler';
 
 @Module({
     imports: [
@@ -178,6 +185,14 @@ import { GetPrepAgeSexTrendHandler } from './prep/queries/handlers/get-prep-age-
         GetPrepTotalTestedHandler,
         GetPrepTotalTestedTrendsHandler,
         GetPrepAgeSexTrendHandler,
+        GetPrepTotalTestedAgeSexTrendsmonth1Handler,
+        GetPrepTotalTestedAgeSexTrendsmonth3Handler,
+        GetPrepRefillMonth1Handler,
+        GetPrepRefillMonth3Handler,
+        GetPrepRefillAgeSexTrendsmonth1Handler,
+        GetPrepRefillAgeSexTrendsmonth3Handler,
+        GetPrepSTIDiagnosedHandler,
+        
     ],
     controllers: [HtsController],
 })
