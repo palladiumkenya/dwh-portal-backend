@@ -17,7 +17,7 @@ export class GetVlOverallUptakeReceivedFollowTestsHandler implements IQueryHandl
         const vlOverallUptakeReceivedFollow = this.repository
             .createQueryBuilder('cohort')
             .select([
-                `SiteCode, cohort.PatientID,cohort.County,cohort.SubCounty,DOB,cohort.Gender,LatestVL1 as LastVL,LatestVLDate2Key,LatestVLDate1Key,ARTOutcome,
+                `SiteCode, cohort.PatientIDHash,cohort.County,cohort.SubCounty,DOB,cohort.Gender,LatestVL1 as LastVL,LatestVLDate2Key,LatestVLDate1Key,ARTOutcome,
                     CASE
                         WHEN ISNUMERIC(LatestVL1)=1 THEN
                             CASE
@@ -46,7 +46,7 @@ export class GetVlOverallUptakeReceivedFollowTestsHandler implements IQueryHandl
             .leftJoin(
                 'LineListViralLoad',
                 'c',
-                'cohort.Patientid=c.PatientID and cohort.PatientPK=c.PatientPK and c.MFLCode=cohort.SiteCode',
+                'cohort.PatientidHash=c.PatientID and cohort.PatientPKHash=c.PatientPK and c.MFLCode=cohort.SiteCode',
             );
 
         if (query.county) {
