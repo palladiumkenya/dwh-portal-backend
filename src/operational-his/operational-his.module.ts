@@ -48,6 +48,7 @@ import { GetKhisHTSTESTHandler } from './khis/queries/handlers/get-khis-htstest.
 import { GetDWHHTSTestTrendsHandler } from './khis/queries/handlers/get-dwh-htstest-trends.handler';
 import { AggregateTXCurr } from 'src/care-treatment/current-on-art/entities/aggregate-txcurr.model';
 import { AggregateCohortRetention } from 'src/care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
+import { FactHTSClientTests } from 'src/hts/linkage/entities/fact-hts-client-tests.model';
 
 @Module({
     imports: [
@@ -60,10 +61,10 @@ import { AggregateCohortRetention } from 'src/care-treatment/new-on-art/entities
                 FactTransNewlyStarted,
                 FactCtDhis2,
                 FactHtsDhis2,
-                
+
                 AggregateTXCurr,
-                AggregateCohortRetention
-                
+                AggregateCohortRetention,
+                FactHTSClientTests,
             ],
             'mssql',
         ),
