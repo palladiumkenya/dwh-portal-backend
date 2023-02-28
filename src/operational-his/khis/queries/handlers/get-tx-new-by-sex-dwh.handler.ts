@@ -2,8 +2,6 @@ import {IQueryHandler, QueryHandler} from '@nestjs/cqrs';
 import {InjectRepository} from '@nestjs/typeorm';
 
 import {Repository} from 'typeorm';
-import {FactTransNewlyStarted} from "../../../../care-treatment/new-on-art/entities/fact-trans-newly-started.model";
-import {FactCtDhis2} from "../../entities/fact-ct-dhis2.model";
 import {GetTxNewBySexDwhQuery} from "../impl/get-tx-new-by-sex-dwh.query";
 import { AggregateCohortRetention } from 'src/care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
 
@@ -56,18 +54,21 @@ export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQu
             });
         }
 
-        if(query.month) {
-            txNewBySex.andWhere('a.StartART_Month = :month', { month: query.month });
+        if (query.month && query.year) {
+            txNewBySex.andWhere(
+                `a.StartARTYearMonth = '${query.year}-${query.month}'`
+            );
         }
 
-        if(query.year) {
-            const yearVal = new Date().getFullYear();
-            if(query.year == yearVal && !query.month) {
-                txNewBySex.andWhere('a.Start_Year >= :startYear', { startYear: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).getFullYear() });
-            } else {
-                txNewBySex.andWhere('a.Start_Year = :startYear', { startYear: query.year });
-            }
-        }
+        // if(query.year) {
+        //     const yearVal = new Date().getFullYear();
+        //     if(query.year == yearVal && !query.month) {
+        //         txNewBySex.andWhere('a.Start_Year >= :startYear', { startYear: new Date(new Date().setFullYear(new Date().getFullYear() - 1)).getFullYear() });
+        //     } else {
+        //         txNewBySex.andWhere('a.Start_Year = :startYear', { startYear: query.year });
+        //     }
+        // }
+        console.log(txNewBySex.getQuery());
 
         return await txNewBySex
             .groupBy('a.FacilityName, a.County, a.SubCounty, MFLCode,AgencyName, PartnerName')
