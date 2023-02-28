@@ -3,56 +3,67 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FactHtsUptakeAgeGender } from '../../../../hts/uptake/entities/fact-htsuptake-agegender.entity';
 import { GetDWHHTSPOSByCountyQuery } from '../impl/get-dwh-htspos-by-county.query';
+import { FactHTSClientTests } from 'src/hts/linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetDWHHTSPOSByCountyQuery)
 export class GetDWHHTSPOSByCountyHandler
     implements IQueryHandler<GetDWHHTSPOSByCountyQuery> {
     constructor(
-        @InjectRepository(FactHtsUptakeAgeGender)
-        private readonly repository: Repository<FactHtsUptakeAgeGender>,
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>,
     ) {}
 
     async execute(query: GetDWHHTSPOSByCountyQuery): Promise<any> {
         const params = [];
         let uptakeBySexSql = `SELECT 
             County, SUM(Positive) positive, SUM(Tested) tested
-            FROM fact_hts_agegender a WHERE Tested IS NOT NULL `;
+            FROM
+                NDWH.dbo.FactHTSClientTests AS link
+                INNER JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
+                INNER JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
+                INNER JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
+                INNER JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
+                INNER JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
+            WHERE Tested IS NOT NULL `;
 
         if (query.county) {
-            uptakeBySexSql = `${uptakeBySexSql} and County IN (?)`;
-            params.push(query.county);
+            uptakeBySexSql = `${uptakeBySexSql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
         if (query.subCounty) {
-            uptakeBySexSql = `${uptakeBySexSql} and SubCounty IN (?)`;
-            params.push(query.subCounty);
+            uptakeBySexSql = `${uptakeBySexSql} and SubCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
         if (query.facility) {
-            uptakeBySexSql = `${uptakeBySexSql} and FacilityName IN (?)`;
-            params.push(query.facility);
+            uptakeBySexSql = `${uptakeBySexSql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
         if (query.partner) {
-            uptakeBySexSql = `${uptakeBySexSql} and CTPartner IN (?)`;
-            params.push(query.partner);
+            uptakeBySexSql = `${uptakeBySexSql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
         if (query.month) {
-            uptakeBySexSql = `${uptakeBySexSql} and month=?`;
-            params.push(query.month);
+            uptakeBySexSql = `${uptakeBySexSql} and month(DateTestedKey) = ${query.month}`;
         }
 
         if (query.year) {
-            uptakeBySexSql = `${uptakeBySexSql} and year=?`;
-            params.push(query.year);
+            uptakeBySexSql = `${uptakeBySexSql} and year(DateTestedKey) = ${query.year}`;
         }
 
         if (query.datimAgeGroup) {
-            uptakeBySexSql = `${uptakeBySexSql} and EXISTS (SELECT 1 FROM dimagegroups WHERE a.DATIM_AgeGroup = dimagegroups.DATIM_AgeGroup and MOH_AgeGroup IN (?))`;
+            uptakeBySexSql = `${uptakeBySexSql} and MOHAgeGroup IN('${query.datimAgeGroup
+                .toString()
+                .replace(/,/g, "','")}')`;
             params.push(query.datimAgeGroup);
         }
-
         // if (query.fromDate) {
         //     uptakeBySexSql = `${uptakeBySexSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
         //     params.push(query.fromDate);

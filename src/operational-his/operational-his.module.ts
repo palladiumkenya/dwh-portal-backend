@@ -47,6 +47,8 @@ import { GetKhisHTSTESTByFacilityHandler } from './khis/queries/handlers/get-khi
 import { GetKhisHTSTESTHandler } from './khis/queries/handlers/get-khis-htstest.handler';
 import { GetDWHHTSTestTrendsHandler } from './khis/queries/handlers/get-dwh-htstest-trends.handler';
 import { AggregateTXCurr } from 'src/care-treatment/current-on-art/entities/aggregate-txcurr.model';
+import { AggregateCohortRetention } from 'src/care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
+import { FactHTSClientTests } from 'src/hts/linkage/entities/fact-hts-client-tests.model';
 
 @Module({
     imports: [
@@ -60,7 +62,9 @@ import { AggregateTXCurr } from 'src/care-treatment/current-on-art/entities/aggr
                 FactCtDhis2,
                 FactHtsDhis2,
 
-                AggregateTXCurr
+                AggregateTXCurr,
+                AggregateCohortRetention,
+                FactHTSClientTests,
             ],
             'mssql',
         ),

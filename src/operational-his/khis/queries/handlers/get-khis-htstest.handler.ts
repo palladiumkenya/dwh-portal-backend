@@ -93,13 +93,13 @@ export class GetKhisHTSTESTHandler
         }
 
         if (query.partner) {
-            htsPOS.andWhere('SDP IN (:...partners)', {
+            htsPOS.andWhere('PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            htsPOS.andWhere('[SDP Agency] IN (:...agencies)', {
+            htsPOS.andWhere('[AgencyName] IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
