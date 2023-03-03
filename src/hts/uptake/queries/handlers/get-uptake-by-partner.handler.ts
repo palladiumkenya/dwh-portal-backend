@@ -48,7 +48,7 @@ export class GetUptakeByPartnerHandler
         }
 
         if (query.partner) {
-            uptakeByPartnerSql = `${uptakeByPartnerSql} and PartnerName IN (?)`;
+            uptakeByPartnerSql = `${uptakeByPartnerSql} and Partner IN (?)`;
             params.push(query.partner);
         }
 
@@ -70,7 +70,7 @@ export class GetUptakeByPartnerHandler
         //     params.push(query.year);
         // }
 
-        uptakeByPartnerSql = `${uptakeByPartnerSql} GROUP BY PartnerName ORDER BY SUM(Tested) DESC`;
+        uptakeByPartnerSql = `${uptakeByPartnerSql} GROUP BY Partner ORDER BY SUM(Tested) DESC`;
 
         return await this.repository.query(uptakeByPartnerSql, params);
     }
