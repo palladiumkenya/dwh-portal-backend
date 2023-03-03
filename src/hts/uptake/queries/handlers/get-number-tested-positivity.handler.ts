@@ -56,23 +56,6 @@ export class GetNumberTestedPositivityHandler
             params.push(query.partner);
         }
 
-        // if(query.month) {
-        //     numberTestedPositivitySql = `${numberTestedPositivitySql} and month=?`;
-        //     params.push(query.month);
-        // }
-
-        // if(query.year) {
-        //     const dateVal = new Date();
-        //     const yearVal = dateVal.getFullYear();
-
-        //     if(query.year == yearVal) {
-        //         numberTestedPositivitySql = `${numberTestedPositivitySql} and  (YEAR >= YEAR(DATE_SUB(NOW(), INTERVAL 11 MONTH)))`;
-        //     } else {
-        //         numberTestedPositivitySql = `${numberTestedPositivitySql} and year=?`;
-        //     }
-
-        //     params.push(query.year);
-        // }
 
         if (query.fromDate) {
             numberTestedPositivitySql = `${numberTestedPositivitySql} and DateTestedKey >= ${query.fromDate}01`;
