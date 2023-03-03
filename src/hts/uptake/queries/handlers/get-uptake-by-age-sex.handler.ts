@@ -47,7 +47,9 @@ export class GetUptakeByAgeSexHandler
         }
 
         if (query.partner) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and PartnerName IN (?)`;
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;`;
             params.push(query.partner);
         }
 

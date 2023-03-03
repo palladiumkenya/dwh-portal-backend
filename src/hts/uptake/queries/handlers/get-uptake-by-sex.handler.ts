@@ -48,7 +48,9 @@ export class GetUptakeBySexHandler
         }
 
         if (query.partner) {
-            uptakeBySexSql = `${uptakeBySexSql} and PartnerName IN (?)`;
+            uptakeBySexSql = `${uptakeBySexSql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;`;
             params.push(query.partner);
         }
 
