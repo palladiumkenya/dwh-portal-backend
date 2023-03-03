@@ -68,7 +68,7 @@ export class GetUptakeByCountyHandler
         if (query.partner) {
             uptakeByCountySql = `${uptakeByCountySql} and PartnerName IN ('${query.partner
                 .toString()
-                .replace(/,/g, "','")}')`;`;
+                .replace(/,/g, "','")}')`;
             params.push(query.partner);
         }
 

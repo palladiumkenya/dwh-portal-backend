@@ -52,7 +52,7 @@ export class GetNumberTestedPositivityHandler
         if (query.partner) {
             numberTestedPositivitySql = `${numberTestedPositivitySql} and PartnerName IN ('${query.partner
                 .toString()
-                .replace(/,/g, "','")}')`;`;
+                .replace(/,/g, "','")}')`;
             params.push(query.partner);
         }
 
