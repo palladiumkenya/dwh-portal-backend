@@ -48,7 +48,9 @@ export class GetUptakeByTestedasHandler
         }
 
         if (query.partner) {
-            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and PartnerName IN (?)`;
+            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;`;
             params.push(query.partner);
         }
 
