@@ -49,8 +49,7 @@ export class GetUptakeByClientSelfTestedHandler
         if (query.partner) {
             uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and PartnerName IN ('${query.partner
                 .toString()
-                .replace(/,/g, "','")}')`;`;
-            params.push(query.partner);
+                .replace(/,/g, "','")}')`;
         }
 
 

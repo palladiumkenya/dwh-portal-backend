@@ -50,7 +50,7 @@ export class GetUptakeByPartnerHandler
         if (query.partner) {
             uptakeByPartnerSql = `${uptakeByPartnerSql} and PartnerName IN ('${query.partner
                 .toString()
-                .replace(/,/g, "','")}')`;`;
+                .replace(/,/g, "','")}')`;
             params.push(query.partner);
         }
 
