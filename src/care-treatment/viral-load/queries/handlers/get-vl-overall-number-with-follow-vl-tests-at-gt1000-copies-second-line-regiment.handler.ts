@@ -24,7 +24,7 @@ export class GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegiment
         const vlOverallNumberFollowSecondlineRegiment = this.repository
             .createQueryBuilder('cohort')
             .select([
-                `cohort.SiteCode,cohort.PatientID,cohort.County,cohort.SubCounty,DOB,cohort.Gender,LatestVL1 as LastVL,LatestVLDate2Key,LatestVLDate1Key,ARTOutcome,CurrentRegimenLine As CurrentARTLine,
+                `cohort.SiteCode,cohort.PatientIDHash,cohort.County,cohort.SubCounty,DOB,cohort.Gender,LatestVL1 as LastVL,LatestVLDate2Key,LatestVLDate1Key,ARTOutcome,CurrentRegimenLine As CurrentARTLine,
                 CASE
                     WHEN ISNUMERIC(LatestVL1)=1 THEN
                         CASE
@@ -51,7 +51,7 @@ export class GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegiment
             .leftJoin(
                 'LineListViralLoad',
                 'c',
-                'cohort.Patientid= c.PatientID AND cohort.PatientPK= c.PatientPK  AND cohort.SiteCode= c.MFLCode ',
+                'cohort.PatientidHash= c.PatientID AND cohort.PatientPKHash= c.PatientPK  AND cohort.SiteCode= c.MFLCode ',
             );
 
         if (query.county) {

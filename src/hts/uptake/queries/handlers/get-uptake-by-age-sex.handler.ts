@@ -47,19 +47,13 @@ export class GetUptakeByAgeSexHandler
         }
 
         if (query.partner) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and PartnerName IN (?)`;
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;`;
             params.push(query.partner);
         }
 
-        // if(query.month) {
-        //     uptakeByAgeSexSql = `${uptakeByAgeSexSql} and month=?`;
-        //     params.push(query.month);
-        // }
 
-        // if(query.year) {
-        //     uptakeByAgeSexSql = `${uptakeByAgeSexSql} and year=?`;
-        //     params.push(query.year);
-        // }
 
         if (query.fromDate) {
             uptakeByAgeSexSql = `${uptakeByAgeSexSql} and DateTestedKey >= ${query.fromDate}01`;

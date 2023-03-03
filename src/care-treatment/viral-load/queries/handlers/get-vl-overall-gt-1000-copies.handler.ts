@@ -26,7 +26,7 @@ export class GetVlOverallGt1000CopiesHandler
                     'ELSE NULL END AS [Last12MVLResult]',
             ])
             .where(
-                "ARTOutcome='V' and DATEDIFF(MONTH,lastVLDate,GETDATE())<= 14 ",
+                "ARTOutcome='V'",
             );
 
         if (query.county) {

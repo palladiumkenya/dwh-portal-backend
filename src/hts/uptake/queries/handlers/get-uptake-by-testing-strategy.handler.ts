@@ -48,7 +48,9 @@ export class GetUptakeByTestingStrategyHandler
         }
 
         if (query.partner) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and PartnerName IN (?)`;
+            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;`;
             params.push(query.partner);
         }
 

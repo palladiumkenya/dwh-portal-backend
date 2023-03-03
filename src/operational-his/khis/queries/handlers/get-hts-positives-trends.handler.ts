@@ -34,12 +34,12 @@ export class GetHtsPositivesTrendsHandler implements IQueryHandler<GetHtsPositiv
 
         if (query.agency) {
             htsPositives
-                .andWhere('[SDP Agency] IN (:...agencies)', { agencies: query.agency });
+                .andWhere('[AgencyName] IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.partner) {
             htsPositives
-                .andWhere('SDP IN (:...partners)', { partners: query.partner });
+                .andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.year) {

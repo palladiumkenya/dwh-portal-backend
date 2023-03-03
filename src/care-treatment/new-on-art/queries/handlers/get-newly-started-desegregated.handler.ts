@@ -48,14 +48,14 @@ export class GetNewlyStartedDesegregatedHandler implements IQueryHandler<GetNewl
 
         if (query.year) {
             newlyStartedDesegregated.andWhere(
-                `YEAR (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) = :year`,
+                `YEAR(CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) = :year`,
                 { year: query.year },
             );
         }
 
         if (query.month) {
             newlyStartedDesegregated.andWhere(
-                `MONTH (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) = :month`,
+                `MONTH(CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) = :month`,
                 { month: query.month },
             );
         }

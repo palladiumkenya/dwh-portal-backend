@@ -47,19 +47,12 @@ export class GetUptakeByClientSelfTestedHandler
         }
 
         if (query.partner) {
-            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and PartnerName IN (?)`;
+            uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;`;
             params.push(query.partner);
         }
 
-        // if(query.month) {
-        //     uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and month=?`;
-        //     params.push(query.month);
-        // }
-
-        // if(query.year) {
-        //     uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and year=?`;
-        //     params.push(query.year);
-        // }
 
         if (query.fromDate) {
             uptakeByClientSelfTestedSql = `${uptakeByClientSelfTestedSql} and DateTestedKey >= ${query.fromDate}01`;

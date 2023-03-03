@@ -47,8 +47,9 @@ export class GetUptakeByPositivityHandler
         }
 
         if (query.partner) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and PartnerName IN (?)`;
-            params.push(query.partner);
+            numberTestedPositivitySql = `${numberTestedPositivitySql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
         // if(query.month) {
