@@ -48,7 +48,9 @@ export class GetUptakeByEntrypointHandler
         }
 
         if (query.partner) {
-            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and PartnerName IN (?)`;
+            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;`;
             params.push(query.partner);
         }
 

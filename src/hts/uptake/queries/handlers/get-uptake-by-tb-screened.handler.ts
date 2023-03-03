@@ -48,7 +48,9 @@ export class GetUptakeByTbScreenedHandler
         }
 
         if (query.partner) {
-            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and PartnerName IN (?)`;
+            uptakeByTBScreenedSql = `${uptakeByTBScreenedSql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;`;
             params.push(query.partner);
         }
 
