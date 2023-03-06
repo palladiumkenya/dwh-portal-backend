@@ -16,10 +16,10 @@ export class GetRegimenDistributionBasedOnWeightBandsHandler implements IQueryHa
         const regimenDistributionBasedOnWeight = this.repository
             .createQueryBuilder('f')
             .select([
-                'LastRegimenClean Lastregimen,\n' +
-                    "'<20Kgs' = ISNULL((SELECT SUM([TxCurr]) FROM [dbo].[AggregateOptimizeCurrentRegimens] y WHERE y.LastRegimenClean = f.[LastRegimenClean] and WeightBands = '<20Kgs' AND AgeBands in ('10-14 Years','5-9 Years','2-4 Years','<2 Years')), 0),\n" +
-                    "'20-35Kgs' = ISNULL((SELECT SUM([TxCurr]) FROM [dbo].[AggregateOptimizeCurrentRegimens] WHERE LastRegimenClean = f.[LastRegimenClean] and WeightBands = '20-35Kgs' AND AgeBands in ('10-14 Years','5-9 Years','2-4 Years','<2 Years')), 0),\n" +
-                    "'>35Kgs' = ISNULL((SELECT SUM([TxCurr]) FROM [dbo].[AggregateOptimizeCurrentRegimens] WHERE LastRegimenClean = f.[LastRegimenClean] and WeightBands = '>35Kgs' AND AgeBands in ('10-14 Years','5-9 Years','2-4 Years','<2 Years')), 0)",
+                `LastRegimenClean Lastregimen,
+                '<20Kgs' = ISNULL((SUM(CASE WHEN WeightBands = '<20Kgs' AND AgeBands IN ('10-14 Years','5-9 Years','2-4 Years','<2 Years') THEN [TxCurr] END)), 0),
+                '20-35Kgs' = ISNULL((SUM(CASE WHEN WeightBands = '20-35Kgs' AND AgeBands IN ('10-14 Years','5-9 Years','2-4 Years','<2 Years') THEN [TxCurr] END)), 0),
+                '>35Kgs' = ISNULL((SUM(CASE WHEN WeightBands = '>35Kgs' AND AgeBands IN ('10-14 Years','5-9 Years','2-4 Years','<2 Years') THEN [TxCurr] END)), 0)`,
             ])
             .where(
                 "f.RegimenLine = 'First Regimen Line' AND f.LastRegimenClean is not null AND f.AgeBands in ('10-14 Years','5-9 Years','2-4 Years','<2 Years')",
