@@ -50,7 +50,7 @@ export class GetUptakeBySexHandler
         if (query.partner) {
             uptakeBySexSql = `${uptakeBySexSql} and PartnerName IN ('${query.partner
                 .toString()
-                .replace(/,/g, "','")}')`;`;
+                .replace(/,/g, "','")}')`;
             params.push(query.partner);
         }
 
