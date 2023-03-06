@@ -17,12 +17,12 @@ export class GetRegimenDistributionBasedOnAgeBandsHandler implements IQueryHandl
         const regimenDistributionBasedOnAgeBands = this.repository
             .createQueryBuilder('f')
             .select([
-                '[LastRegimenClean] Lastregimen,' +
-                    "'<2 Years' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[AggregateOptimizeCurrentRegimens] y WHERE y.LastRegimenClean = f.[LastRegimenClean] and [AgeBands] = '<2 Years'), 0)," +
-                    "'2-4 Years' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[AggregateOptimizeCurrentRegimens] WHERE LastRegimenClean = f.[LastRegimenClean] and [AgeBands] = '2-4 Years'), 0)," +
-                    "'5-9 Years' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[AggregateOptimizeCurrentRegimens] WHERE LastRegimenClean = f.[LastRegimenClean] and [AgeBands] = '5-9 Years'), 0)," +
-                    "'10-14 Years' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[AggregateOptimizeCurrentRegimens] WHERE LastRegimenClean = f.[LastRegimenClean] and [AgeBands] = '10-14 Years'), 0)," +
-                    "'Grand Total' = ISNULL((SELECT SUM([TXCurr]) FROM [dbo].[AggregateOptimizeCurrentRegimens] WHERE LastRegimenClean = f.[LastRegimenClean] and [AgeBands] IN ('<2 Years', '2-4 Years', '5-9 Years', '10-14 Years')), 0)",
+                `[LastRegimenClean] Lastregimen,
+                '<2 Years' = ISNULL((SUM(CASE WHEN [AgeBands] = '<2 Years' THEN [TXCurr] END)), 0),
+                '2-4 Years' = ISNULL((SUM(CASE WHEN [AgeBands] = '2-4 Years' THEN [TXCurr] END)), 0),
+                '5-9 Years' = ISNULL((SUM(CASE WHEN [AgeBands] = '5-9 Years' THEN [TXCurr] END)), 0),
+                '10-14 Years' = ISNULL((SUM(CASE WHEN [AgeBands] = '10-14 Years' THEN [TXCurr] END)), 0),
+                'Grand Total' = ISNULL((SUM(CASE WHEN [AgeBands] IN ('<2 Years', '2-4 Years', '5-9 Years', '10-14 Years') THEN [TXCurr] END)), 0)`,
             ])
             .where(
                 "f.RegimenLine = 'First Regimen Line' AND f.LastRegimenClean is not null AND f.AgeBands in ('10-14 Years','5-9 Years','2-4 Years','<2 Years')",
