@@ -91,29 +91,29 @@ export class GetNupiDatasetHandler
             --Groupings of clients with Nupi in DWH per site---
             dwh_nupi_by_facility as (
                 select
-                cast (MFLCode as nvarchar) As MFLCode,
-                    sum ( number_nupi) as count_patients
+                cast (SiteCode as nvarchar) As MFLCode,
+                    sum ( numnupi) as count_patients
                 from REPORTING.dbo.AggregateNupi
                 group by
-                    MFLCode
+                    SiteCode
             ),
             --Obtain records of children < 18 years with Nupi in DWH per site--
             dwh_nupi_by_facility_children as (
                 select
-                    cast (MFLCode as nvarchar) As MFLCode,
-                    sum ( number_children) as count_patients
+                    cast (SiteCode as nvarchar) As MFLCode,
+                    sum ( children) as count_patients
                 from REPORTING.dbo.AggregateNupi(nolock)
                 group by
-                    MFLCode
+                    SiteCode
             ),
             --Obtain records of Adults > 18 years with Nupi in DWH per site
             dwh_nupi_by_facility_adults as (
                 select
-                    cast (MFLCode as nvarchar) As MFLCode,
-                    sum (number_adults) as count_patients
+                    cast (SiteCode as nvarchar) As MFLCode,
+                    sum (adults) as count_patients
                 from REPORTING.dbo.AggregateNupi (nolock)
                 group by
-                    MFLCode
+                    SiteCode
             ),
             --Obtain Adults TXCurr for adults in DWH per site----
             dwh_by_facility_adults as (
