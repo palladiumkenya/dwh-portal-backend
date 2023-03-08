@@ -16,7 +16,7 @@ export class GetCtTxCurrVerifiedBySexHandler
     async execute(query: GetCtTxCurrVerifiedByAgeAndSexQuery): Promise<any> {
         let txCurrBySex = this.repository
             .createQueryBuilder('f')
-            .select(['Gender, AgeGroup, sum (number_nupi) NumNupi'])
+            .select(['Gender, AgeGroup, sum (numnupi) NumNupi'])
             .where('f.[Gender] IS NOT NULL and AgeGroup is not NULL');
 
         if (query.datimAgePopulations) {
@@ -27,12 +27,12 @@ export class GetCtTxCurrVerifiedBySexHandler
             } else if (query.datimAgePopulations.includes('>18'))
                 txCurrBySex = this.repository
                     .createQueryBuilder('f')
-                    .select(['Gender, AgeGroup, sum (number_adults) NumNupi'])
+                    .select(['Gender, AgeGroup, sum (adults) NumNupi'])
                     .where('f.[Gender] IS NOT NULL and AgeGroup is not NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurrBySex = this.repository
                     .createQueryBuilder('f')
-                    .select(['Gender, AgeGroup, sum (number_children) NumNupi'])
+                    .select(['Gender, AgeGroup, sum (children) NumNupi'])
                     .where(
                         'f.[Gender] IS NOT NULL and AgeGroup is not NULL',
                     );
