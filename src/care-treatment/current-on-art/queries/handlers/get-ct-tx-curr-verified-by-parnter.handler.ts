@@ -15,7 +15,7 @@ export class GetCtTxCurrVerifiedByPartnerHandler
     async execute(query: GetCtTxCurrVerifiedByPartnerQuery): Promise<any> {
         let txCurrByPartner = this.repository
             .createQueryBuilder('f')
-            .select(['PartnerName CTPartner, sum (number_nupi) NumNupi'])
+            .select(['PartnerName CTPartner, sum (numnupi) NumNupi'])
             .where('f.[Gender] IS NOT NULL');
 
         if (query.datimAgePopulations) {
@@ -27,14 +27,14 @@ export class GetCtTxCurrVerifiedByPartnerHandler
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
                     .select([
-                        'PartnerName CTPartner, sum (number_adults) NumNupi',
+                        'PartnerName CTPartner, sum (adults) NumNupi',
                     ])
                     .where('f.[Gender] IS NOT NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
                     .select([
-                        'PartnerName CTPartner, sum (number_children) NumNupi',
+                        'PartnerName CTPartner, sum (children) NumNupi',
                     ])
                     .where('f.[Gender] IS NOT NULL');
         }
