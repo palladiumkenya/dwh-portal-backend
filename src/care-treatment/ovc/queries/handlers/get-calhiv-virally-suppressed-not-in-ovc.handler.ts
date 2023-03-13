@@ -32,7 +32,7 @@ export class GetCalhivVirallySuppressedNotInOvcHandler implements IQueryHandler<
         }
 
         if (query.partner) {
-            CALHIVVLSuppressed.andWhere('f.PartnerNameme IN (:...partners)', { partners: query.partner });
+            CALHIVVLSuppressed.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
