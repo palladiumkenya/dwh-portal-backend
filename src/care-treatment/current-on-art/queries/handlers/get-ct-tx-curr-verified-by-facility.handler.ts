@@ -16,7 +16,7 @@ export class GetCtTxCurrVerifiedByFacilityHandler
         let txCurrByPartner = this.repository
             .createQueryBuilder('f')
             .select([
-                'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, MFLCode, sum (number_nupi) NumNupi',
+                'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, MFLCode, sum (numnupi) NumNupi',
             ])
             .where('f.[Gender] IS NOT NULL');
 
@@ -29,14 +29,14 @@ export class GetCtTxCurrVerifiedByFacilityHandler
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
                     .select([
-                        'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, MFLCode, sum (number_adults) NumNupi',
+                        'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, MFLCode, sum (adults) NumNupi',
                     ])
                     .where('f.[Gender] IS NOT NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
                     .select([
-                        'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, MFLCode, sum (number_children) NumNupi',
+                        'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, MFLCode, sum (children) NumNupi',
                     ])
                     .where('f.[Gender] IS NOT NULL');
         }
