@@ -375,9 +375,7 @@ export class OperationalHisController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);

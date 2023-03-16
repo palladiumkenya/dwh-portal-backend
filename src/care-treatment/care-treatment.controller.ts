@@ -789,9 +789,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(agegrp =>
-                agegrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -836,9 +834,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(agegrp =>
-                agegrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         if (gender) {
@@ -1908,9 +1904,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -1972,9 +1966,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -2963,9 +2955,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -3032,9 +3022,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -3101,9 +3089,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -3170,9 +3156,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -3239,9 +3223,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -3308,9 +3290,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -3377,9 +3357,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -3513,9 +3491,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -3582,9 +3558,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -3651,9 +3625,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -3720,9 +3692,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -3789,9 +3759,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -3989,9 +3957,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -4053,9 +4019,7 @@ export class CareTreatmentController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -10720,9 +10684,7 @@ export class CareTreatmentController {
         }
 
         if (ageGroup) {
-            query.ageGroup = ageGroup.map(agegrp =>
-                agegrp.replace(' to ', '-'),
-            );
+            query.ageGroup = ageGroup;
         }
 
         return this.queryBus.execute(query);
