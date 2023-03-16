@@ -30,7 +30,7 @@ export class GetCalhivDeadHandler implements IQueryHandler<GetCalhivDeadQuery> {
         }
 
         if (query.partner) {
-            CALHIVonART.andWhere('f.PartnerNameme IN (:...partners)', { partners: query.partner });
+            CALHIVonART.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
