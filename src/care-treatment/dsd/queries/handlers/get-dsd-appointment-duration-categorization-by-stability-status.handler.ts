@@ -15,8 +15,11 @@ export class GetDsdAppointmentDurationCategorizationByStabilityStatusHandler imp
     }
 
     async execute(query: GetDsdAppointmentDurationCategorizationByStabilityStatusQuery): Promise<any> {
-        const dsdAppointmentCategorization = this.repository.createQueryBuilder('f')
-            .select(['SUM(patients_number) AS patients, AppointmentsCategory, Stability, CAST((cast(SUM(patients_number) as decimal (9,2))/ (SUM(SUM(patients_number)) OVER (PARTITION BY Stability ORDER BY Stability))*100) as decimal(8,2))  AS proportionByStability'])
+        const dsdAppointmentCategorization = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'SUM(patients_number) AS patients, AppointmentsCategory, StabilityAssessment Stability, CAST((cast(SUM(patients_number) as decimal (9,2))/ (SUM(SUM(patients_number)) OVER (PARTITION BY StabilityAssessment ORDER BY StabilityAssessment))*100) as decimal(8,2))  AS proportionByStability',
+            ])
             .where('f.[AppointmentsCategory] IS NOT NULL');
 
         if (query.county) {
@@ -48,8 +51,8 @@ export class GetDsdAppointmentDurationCategorizationByStabilityStatusHandler imp
         }
 
         return await dsdAppointmentCategorization
-            .groupBy('[Stability], [AppointmentsCategory]')
-            .orderBy('AppointmentsCategory, Stability')
+            .groupBy('[StabilityAssessment], [AppointmentsCategory]')
+            .orderBy('AppointmentsCategory, StabilityAssessment')
             .getRawMany();
     }
 }

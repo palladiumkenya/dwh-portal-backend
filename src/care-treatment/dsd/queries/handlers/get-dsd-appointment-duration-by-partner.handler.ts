@@ -20,7 +20,7 @@ export class GetDsdAppointmentDurationByPartnerHandler implements IQueryHandler<
             .select([' SUM(f.TxCurr) patients, f.AgeGroup ageGroup, SUM(df.patients_number) stablePatients, f.PartnerName partner, (CAST(SUM(f.Stability) as float)/CAST(SUM(f.TxCurr) as float)) percentStable'])
             .innerJoin(AggregateDSDApptsByStability, 'df', 'df.MFLCode = f.MFLCode')
             .where('f.MFLCode > 1')
-            .andWhere('CAST(f.Stability AS NVARCHAR(10)) = :stability', { stability: "Stable"})
+            .andWhere('CAST(f.StabilityAssessment AS NVARCHAR(10)) = :stability', { stability: "Stable"})
             
         if (query.county) {
             dsdAppointmentDuration.andWhere('f.County IN (:...counties)', { counties: query.county });
