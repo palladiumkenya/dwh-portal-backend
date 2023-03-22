@@ -15,7 +15,7 @@ export class GetCtTxCurrVerifiedByCountyHandler
     async execute(query: GetCtTxCurrVerifiedByCountyQuery): Promise<any> {
         let txCurrByCounty = this.repository
             .createQueryBuilder('f')
-            .select(['County, sum (number_nupi) NumNupi'])
+            .select(['County, sum (numnupi) NumNupi'])
             .where('f.[County] IS NOT NULL');
 
         if (query.datimAgePopulations) {
@@ -26,12 +26,12 @@ export class GetCtTxCurrVerifiedByCountyHandler
             } else if (query.datimAgePopulations.includes('>18'))
                 txCurrByCounty = this.repository
                     .createQueryBuilder('f')
-                    .select(['County, sum (number_adults) NumNupi'])
+                    .select(['County, sum (adults) NumNupi'])
                     .where('f.[County] IS NOT NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurrByCounty = this.repository
                     .createQueryBuilder('f')
-                    .select(['County, sum (number_children) NumNupi'])
+                    .select(['County, sum (children) NumNupi'])
                     .where('f.[County] IS NOT NULL');
         }
 

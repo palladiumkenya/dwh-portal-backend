@@ -3,15 +3,16 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { GetVlOverallUptakeGt1000CopiesReceivedEacQuery } from '../impl/get-vl-overall-uptake-gt-1000-copies-received-eac.query';
+import { LinelistFACTART } from 'src/care-treatment/common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetVlOverallUptakeGt1000CopiesReceivedEacQuery)
 export class GetVlOverallGt1000CopiesReceivedEacHandler
     implements IQueryHandler<GetVlOverallUptakeGt1000CopiesReceivedEacQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>,
+        @InjectRepository(LinelistFACTART, 'mssql')
+        private readonly repository: Repository<LinelistFACTART>,
     ) {}
-
+    //TODO::Add fact Enhanced Ahearacnce counceling
     async execute(
         query: GetVlOverallUptakeGt1000CopiesReceivedEacQuery,
     ): Promise<any> {
@@ -21,31 +22,40 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
                 "EACVisitDate_1, EACVisitDate_2, EACVisitDate_3, CASE WHEN ISNUMERIC(LastVL)=1 AND CAST(Replace(LastVL,',','')AS FLOAT) >=1000.00 THEN '>1000 Copies' ELSE NULL END AS Last12MVLResult",
             ])
             .leftJoin(
-                '( SELECT * FROM ( SELECT SiteCode, PatientID, PatientPk, val,\n' +
-                    'CASE\n' +
-                    "\t\t\tWHEN cols = 'EAC_VisitDate' THEN\n" +
-                    "\t\t\t'EACVisitDate_' \n" +
-                    "\t\t\t\t\t\tWHEN cols = 'SessionNumber' THEN\n" +
-                    "\t\t\t\t\t\t'SessionNumber_' \n" +
-                    "\t\t\t\t\t\tWHEN cols = 'EACRecievedVL' THEN\n" +
-                    "\t\t\t\t\t\t'EACReceivedVL_' \n" +
-                    '\t\t\t\t\tEND + CAST ( DENSE_RANK ( ) OVER ( partition BY PatientID, SiteCode, PatientPK ORDER BY VisitDate ASC ) AS VARCHAR ) AS NUM \n' +
-                    '\t\t\tFROM ( SELECT\n' +
-                    '\t\t\t\t\tSiteCode,\n' +
-                    '\t\t\t\t\tPatientID,\n' +
-                    '\t\t\t\t\tPatientPk,\n' +
-                    '\t\t\t\t\tVisitDate,\n' +
-                    '\t\t\t\t\tCONVERT ( VARCHAR ( 255 ), CAST ( VisitDate AS DATE ) ) AS EAC_VisitDate,\n' +
-                    '\t\t\t\t\tCONVERT ( VARCHAR ( 255 ), [SessionNumber] ) AS [SessionNumber],\n' +
-                    '\t\t\t\t\tCONVERT ( VARCHAR ( 255 ), [EACRecievedVL] ) AS [EACRecievedVL] \n' +
-                    '\t\t\t\tFROM\n' +
-                    '\t\t\t\t\tPortalDev.dbo.FACT_Trans_EnhancedAdherenceCounselling \n' +
-                    '\t\t\t\tWHERE YEAR ( VisitDate ) > 1900 \n' +
-                    '\t\t\t\t) AS Source UNPIVOT ( val FOR cols IN ( EAC_VisitDate, SessionNumber, EACRecievedVL ) ) AS unpiv \n' +
-                    '\t\t\t) src PIVOT ( MAX ( val ) FOR NUM IN ( EACVisitDate_1, SessionNumber_1, EACReceivedVL_1, EACVisitDate_2, SessionNumber_2, EACReceivedVL_2, EACVisitDate_3, SessionNumber_3, EACReceivedVL_3 ) ) piv \n' +
-                    '\t\t)',
+                `( SELECT
+                    * 
+                FROM
+                    (
+                    SELECT
+                        SiteCode,
+                        PatientIDHash,
+                        PatientPkHash,
+                        val,
+                    CASE
+                            WHEN cols = 'EAC_VisitDate' THEN
+                            'EACVisitDate_' 
+                            WHEN cols = 'SessionNumber' THEN
+                            'SessionNumber_' 
+                            WHEN cols = 'EACRecievedVL' THEN
+                            'EACReceivedVL_' 
+                    END + CAST ( DENSE_RANK ( ) OVER ( partition BY PatientIDHash, SiteCode, PatientPkHash ORDER BY VisitDate ASC ) AS VARCHAR ) AS NUM 
+                FROM
+                    (
+                    SELECT
+                        SiteCode,
+                        PatientIDHash,
+                        PatientPkHash,
+                        VisitDate,
+                        CONVERT ( VARCHAR ( 255 ), CAST ( VisitDate AS DATE ) ) AS EAC_VisitDate,
+                        CONVERT ( VARCHAR ( 255 ), [SessionNumber] ) AS [SessionNumber],
+                        CONVERT ( VARCHAR ( 255 ), [EACRecievedVL] ) AS [EACRecievedVL]
+                        FROM ODS.dbo.CT_EnhancedAdherenceCounselling 
+                        WHERE YEAR ( VisitDate ) > 1900 
+                    ) AS Source UNPIVOT ( val FOR cols IN ( EAC_VisitDate, SessionNumber, EACRecievedVL ) ) AS unpiv 
+                    ) src PIVOT ( MAX ( val ) FOR NUM IN ( EACVisitDate_1, SessionNumber_1, EACReceivedVL_1, EACVisitDate_2, SessionNumber_2, EACReceivedVL_2, EACVisitDate_3, SessionNumber_3, EACReceivedVL_3 ) ) piv
+                    )`,
                 'H',
-                'H.PatientPK= c.PatientPK AND H.PatientID= c.PatientID AND H.SiteCode= c.MFLCode',
+                'H.PatientPKHash= c.PatientPKHash AND H.PatientIDHash= c.PatientIDHash AND H.SiteCode= c.SiteCode',
             )
 
             .where(
@@ -91,7 +101,7 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
                 },
             );
         }
-        
+
         if (query.gender) {
             vlOverallUptakeGt1000.andWhere('c.Gender IN (:...genders)', {
                 genders: query.gender,
