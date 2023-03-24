@@ -2553,7 +2553,7 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('ageGroup') ageGroup,
+        @Query('datimAgeGroup') ageGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationBySexQuery();
         if (county) {
@@ -2610,7 +2610,7 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('ageGroup') ageGroup,
+        @Query('datimAgeGroup') ageGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationByAgeQuery();
         if (county) {
@@ -2667,7 +2667,7 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('ageGroup') ageGroup,
+        @Query('datimAgeGroup') ageGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationByCountyQuery();
         if (county) {
@@ -2724,7 +2724,7 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('ageGroup') ageGroup,
+        @Query('datimAgeGroup') ageGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationByPartnerQuery();
         if (county) {
@@ -2781,7 +2781,7 @@ export class CareTreatmentController {
         @Query('agency') agency,
         @Query('project') project,
         @Query('gender') gender,
-        @Query('ageGroup') ageGroup,
+        @Query('datimAgeGroup') ageGroup,
     ): Promise<any> {
         const query = new GetDsdAppointmentDurationCategorizationByStabilityStatusQuery();
         if (county) {
