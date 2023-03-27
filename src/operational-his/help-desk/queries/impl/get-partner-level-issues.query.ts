@@ -1,4 +1,4 @@
-export class GetOpenTicketsQuery {
+export class GetPartnerLevelIssuesQuery {
     county?: string[];
     subCounty?: string[];
     facility?: string[];
