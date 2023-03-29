@@ -19,6 +19,7 @@ export class GetPartnerLevelIssuesHandler
             [Issue Type] type,
             Category product,
             [Created On] date,
+            status,
             Description`,
         );
 
