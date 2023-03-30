@@ -42,7 +42,7 @@ export class GetCtSiteGpsHandler implements IQueryHandler<GetCtSiteGpsQuery> {
         }
 
         if (query.partner) {
-            facilities.andWhere('q.ParnterName IN (:...partner)', { partner: query.partner });
+            facilities.andWhere('q.PartnerName IN (:...partner)', { partner: query.partner });
         }
 
         if (query.agency) {

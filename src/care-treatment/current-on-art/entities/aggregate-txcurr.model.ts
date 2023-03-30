@@ -15,7 +15,7 @@ export class AggregateTXCurr {
     Subcounty: string;
 
     @Column('text')
-    ParnterName: string;
+    PartnerName: string;
 
     @Column('text')
     CTAgency: string;
