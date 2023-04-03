@@ -16,7 +16,7 @@ export class GetPnsSexualContactsCascadeHandler implements IQueryHandler<GetPnsS
 
     async execute(query: GetPnsSexualContactsCascadeQuery): Promise<any> {
         let pnsSexualContactsCascade = `Select 
-                Sum(Case WHEN PatientPK is not null then 1 ELSE 0 End) elicited,
+                Sum(Case WHEN PatientPKHash is not null then 1 ELSE 0 End) elicited,
                 SUM(Tested)   tested,
                 
                 sum(Case WHEN FinalTestResult = 'Positive' then 1 ELSE 0 End ) positive,
