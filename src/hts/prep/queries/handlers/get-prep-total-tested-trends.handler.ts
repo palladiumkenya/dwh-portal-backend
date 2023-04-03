@@ -16,8 +16,8 @@ export class GetPrepTotalTestedTrendsHandler implements IQueryHandler<GetPrepTot
     async execute(query: GetPrepTotalTestedTrendsQuery): Promise<any> {
         const params = [];
         let newOnPrep = ` SELECT
-        	test.month,
-        	test.year,
+            test.month,
+            test.year,
         Count(*) As TotalTested
         from NDWH.dbo.FactPrep prep
         LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
@@ -72,11 +72,17 @@ export class GetPrepTotalTestedTrendsHandler implements IQueryHandler<GetPrepTot
                 .replace(/,/g, "','")}')`;
         }
 
+        if (query.year) {
+            newOnPrep = `${newOnPrep} and test.year = ${query.year}`;
+        }
+
+        if (query.month) {
+            newOnPrep = `${newOnPrep} and test.month = ${query.month}`;
+        }
+
         newOnPrep = `${newOnPrep} 
         GROUP BY test.month, test.year
         ORDER BY test.year Desc, test.month DESC`
-
-    
 
         return await this.repository.query(newOnPrep, params);
     }
