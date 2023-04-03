@@ -43,7 +43,7 @@ export class GetCtTxCurrAgeGroupDistributionByPartnerHandler implements IQueryHa
 
         if (query.partner) {
             txCurrAgeGroupDistributionByPartner
-                .andWhere('f.ParnterName IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {

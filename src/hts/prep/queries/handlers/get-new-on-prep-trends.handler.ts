@@ -73,6 +73,14 @@ export class GetNewOnPrepTrendsHandler
                 .replace(/,/g, "','")}')`;
         }
 
+        if (query.year) {
+            newOnPrep = `${newOnPrep} and enrol.year = ${query.year}`;
+        }
+
+        if (query.month) {
+            newOnPrep = `${newOnPrep} and enrol.month = ${query.month}`;
+        }
+
         newOnPrep = `${newOnPrep} GROUP BY enrol.month, enrol.year
 						ORDER BY enrol.year Desc, enrol.month DESC`;
 

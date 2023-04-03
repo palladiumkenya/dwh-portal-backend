@@ -27,7 +27,7 @@ export class GetPrepSTIScreenedOutcomeHandler
             LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
             LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
             
-            WHERE DATEDIFF(month, visit.Date, GETDATE()) = 1
+            WHERE visit.Date is not null
         `;
 
         if (query.county) {
@@ -70,6 +70,14 @@ export class GetPrepSTIScreenedOutcomeHandler
             newOnPrep = `${newOnPrep} and DATIMAgeGroup IN ('${query.datimAgeGroup
                 .toString()
                 .replace(/,/g, "','")}')`;
+        }
+
+        if (query.year) {
+            newOnPrep = `${newOnPrep} and visit.year = ${query.year}`;
+        }
+
+        if (query.month) {
+            newOnPrep = `${newOnPrep} and visit.month = ${query.month}`;
         }
 
         return await this.repository.query(newOnPrep, params);

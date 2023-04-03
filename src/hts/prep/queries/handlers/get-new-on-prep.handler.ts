@@ -33,14 +33,14 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
             LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
             LEFT JOIN NDWH.dbo.DimDate enrol ON enrol.DateKey = PrepEnrollmentDateKey 
 
-            where DATEDIFF(month, enrol.Date, GETDATE()) = 1
+            where enrol.Date is not null
         `; 
-        this.repository
-            .createQueryBuilder('f')
-            .select([
-                'Sitecode, FacilityName, County, SubCounty, CTPartner, CTAgency, VisitMonth, VisitYear, Count (distinct (concat(PrepNumber,PatientPk,SiteCode))) As StartedPrep',
-            ])
-            .where('DATEDIFF(month, PrepEnrollmentDate, GETDATE()) = 2');
+        // this.repository
+        //     .createQueryBuilder('f')
+        //     .select([
+        //         'Sitecode, FacilityName, County, SubCounty, CTPartner, CTAgency, VisitMonth, VisitYear, Count (distinct (concat(PrepNumber,PatientPk,SiteCode))) As StartedPrep',
+        //     ])
+        //     .where('DATEDIFF(month, PrepEnrollmentDate, GETDATE()) = 2');
 
         if (query.county) {
             newOnPrep = `${newOnPrep} and County IN ('${query.county
@@ -82,6 +82,14 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
             newOnPrep = `${newOnPrep} and DATIMAgeGroup IN ('${query.datimAgeGroup
                 .toString()
                 .replace(/,/g, "','")}')`;
+        }
+
+        if (query.year) {
+            newOnPrep = `${newOnPrep} and enrol.year = ${query.year}`;
+        }
+
+        if (query.month) {
+            newOnPrep = `${newOnPrep} and enrol.month = ${query.month}`;
         }
 
         newOnPrep = `${newOnPrep} GROUP BY MFLCode, FacilityName, County, SubCounty, PartnerName, AgencyName, visit.month, visit.year`;
