@@ -17,7 +17,7 @@ export class GetPnsSexualContactsByAgeSexHandler implements IQueryHandler<GetPns
     async execute(query: GetPnsSexualContactsByAgeSexQuery): Promise<any> {
         let pnsSexualContactsByAgeSex = `Select DATIMAgegroup age,
                 Gender gender,
-                Sum(Case WHEN PatientPK is not null then 1 ELSE 0 End) elicited,
+                Sum(Case WHEN PatientPKHash is not null then 1 ELSE 0 End) elicited,
                 SUM(Tested)   tested,
                 
                 sum(Case WHEN FinalTestResult = 'Positive' then 1 ELSE 0 End ) positive,
