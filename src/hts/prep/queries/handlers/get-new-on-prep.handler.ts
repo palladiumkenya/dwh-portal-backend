@@ -20,8 +20,8 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
                 SubCounty, 
                 PartnerName CTPartner, 
                 Agencyname CTAgency, 
-                visit.month VisitMonth, 
-                Visit.year VisitYear,
+                enrol.month VisitMonth, 
+                enrol.year VisitYear,
                 Count (distinct (concat(PrepNumber,PatientPKHash,MFLCode))) As StartedPrep
             from NDWH.dbo.FactPrep prep
 
@@ -30,17 +30,17 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
             LEFT JOIN NDWH.dbo.DimPartner p ON p.PartnerKey = prep.PartnerKey
             LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
             LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
-            LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
+            LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey
             LEFT JOIN NDWH.dbo.DimDate enrol ON enrol.DateKey = PrepEnrollmentDateKey 
 
-            where DATEDIFF(month, enrol.Date, GETDATE()) = 1
+            where enrol.Date is not null
         `; 
-        this.repository
-            .createQueryBuilder('f')
-            .select([
-                'Sitecode, FacilityName, County, SubCounty, CTPartner, CTAgency, VisitMonth, VisitYear, Count (distinct (concat(PrepNumber,PatientPk,SiteCode))) As StartedPrep',
-            ])
-            .where('DATEDIFF(month, PrepEnrollmentDate, GETDATE()) = 2');
+        // this.repository
+        //     .createQueryBuilder('f')
+        //     .select([
+        //         'Sitecode, FacilityName, County, SubCounty, CTPartner, CTAgency, VisitMonth, VisitYear, Count (distinct (concat(PrepNumber,PatientPk,SiteCode))) As StartedPrep',
+        //     ])
+        //     .where('DATEDIFF(month, PrepEnrollmentDate, GETDATE()) = 2');
 
         if (query.county) {
             newOnPrep = `${newOnPrep} and County IN ('${query.county
@@ -84,7 +84,15 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
                 .replace(/,/g, "','")}')`;
         }
 
-        newOnPrep = `${newOnPrep} GROUP BY MFLCode, FacilityName, County, SubCounty, PartnerName, AgencyName, visit.month, visit.year`;
+        if (query.year) {
+            newOnPrep = `${newOnPrep} and enrol.year = ${query.year}`;
+        }
+
+        if (query.month) {
+            newOnPrep = `${newOnPrep} and enrol.month = ${query.month}`;
+        }
+
+        newOnPrep = `${newOnPrep} GROUP BY MFLCode, FacilityName, County, SubCounty, PartnerName, AgencyName, enrol.month, enrol.year`;
 
         return await this.repository.query(newOnPrep, params);
     }

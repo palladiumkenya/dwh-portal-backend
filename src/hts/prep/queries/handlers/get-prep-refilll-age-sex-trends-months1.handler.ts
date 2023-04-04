@@ -18,17 +18,17 @@ export class GetPrepRefillAgeSexTrendsmonth1Handler implements IQueryHandler<Get
     async execute(query: GetPrepRefillAgeSexMonth1Query): Promise<any> {
         const params = [];
         let newOnPrep = `SELECT
-         DATIMAgeGroup,
-         sum(case when RefilMonth1 is not null then 1 else 0 end) tested
-         from NDWH.dbo.FactPrep prep
-         LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
-         LEFT JOIN NDWH.dbo.DimFacility fac ON fac.FacilityKey = prep.FacilityKey
-         LEFT JOIN NDWH.dbo.DimPartner p ON p.PartnerKey = prep.PartnerKey
-         LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
-         LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
-         LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
-         LEFT JOIN NDWH.dbo.DimDate test ON test.DateKey = DateTestMonth1Key COLLATE Latin1_General_CI_AS
-         WHERE DATEDIFF(month, visit.Date, GETDATE()) = 1 and RefilMonth1 is not null
+                DATIMAgeGroup,
+                sum(case when RefilMonth1 is not null then 1 else 0 end) tested
+            from NDWH.dbo.FactPrep prep
+            LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
+            LEFT JOIN NDWH.dbo.DimFacility fac ON fac.FacilityKey = prep.FacilityKey
+            LEFT JOIN NDWH.dbo.DimPartner p ON p.PartnerKey = prep.PartnerKey
+            LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
+            LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
+            LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
+            LEFT JOIN NDWH.dbo.DimDate test ON test.DateKey = DateTestMonth1Key COLLATE Latin1_General_CI_AS
+            WHERE visit.Date is not null and RefilMonth1 is not null
         `;
 
         if (query.county) {
@@ -73,12 +73,17 @@ export class GetPrepRefillAgeSexTrendsmonth1Handler implements IQueryHandler<Get
                 .replace(/,/g, "','")}')`;
         }
 
-        newOnPrep = `${newOnPrep} 
-         GROUP BY DATIMAgeGroup
-         Order by DATIMAgeGroup
-`
+        if (query.year) {
+            newOnPrep = `${newOnPrep} and visit.year = ${query.year}`;
+        }
 
-    
+        if (query.month) {
+            newOnPrep = `${newOnPrep} and visit.month = ${query.month}`;
+        }
+
+        newOnPrep = `${newOnPrep} 
+            GROUP BY DATIMAgeGroup
+            Order by DATIMAgeGroup`
 
         return await this.repository.query(newOnPrep, params);
     }

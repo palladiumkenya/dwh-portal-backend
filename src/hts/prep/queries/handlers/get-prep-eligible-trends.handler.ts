@@ -71,6 +71,14 @@ export class GetPrepEligibleTrendsHandler
                 .replace(/,/g, "','")}')`;
         }
 
+        if (query.year) {
+            newOnPrep = `${newOnPrep} and visit.year = ${query.year}`;
+        }
+
+        if (query.month) {
+            newOnPrep = `${newOnPrep} and visit.month = ${query.month}`;
+        }
+
         newOnPrep = `${newOnPrep} GROUP BY visit.month, visit.year
 						ORDER BY visit.year Desc, visit.month DESC`;
 

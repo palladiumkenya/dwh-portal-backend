@@ -70,6 +70,14 @@ export class GetCTPrepTrendHandler implements IQueryHandler<GetCTPrepTrendQuery>
                 .replace(/,/g, "','")}')`;
         }
 
+        if (query.year) {
+            newOnPrep = `${newOnPrep} and visit.year = ${query.year}`;
+        }
+
+        if (query.month) {
+            newOnPrep = `${newOnPrep} and visit.month = ${query.month}`;
+        }
+
         newOnPrep = `${newOnPrep} 
         Group BY visit.year, visit.month
         Order by visit.year DESC, visit.month DESC`

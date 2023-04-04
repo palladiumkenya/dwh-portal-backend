@@ -25,7 +25,7 @@ export class GetNewOnPrepTrendsHandler
             LEFT JOIN NDWH.dbo.DimPartner p ON p.PartnerKey = prep.PartnerKey
             LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
             LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
-            LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
+            LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey
             LEFT JOIN NDWH.dbo.DimDate enrol ON enrol.DateKey = PrepEnrollmentDateKey 
 
             WHERE PrepEnrollmentDateKey IS NOT NULL
@@ -71,6 +71,14 @@ export class GetNewOnPrepTrendsHandler
             newOnPrep = `${newOnPrep} and DATIMAgeGroup IN ('${query.datimAgeGroup
                 .toString()
                 .replace(/,/g, "','")}')`;
+        }
+
+        if (query.year) {
+            newOnPrep = `${newOnPrep} and enrol.year = ${query.year}`;
+        }
+
+        if (query.month) {
+            newOnPrep = `${newOnPrep} and enrol.month = ${query.month}`;
         }
 
         newOnPrep = `${newOnPrep} GROUP BY enrol.month, enrol.year

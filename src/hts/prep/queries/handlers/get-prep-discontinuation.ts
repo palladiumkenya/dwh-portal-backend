@@ -25,7 +25,7 @@ export class GetPrepDiscontinuationHandler
             LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
             LEFT JOIN NDWH.dbo.DimDate ex ON ex.DateKey = ExitDateKey COLLATE Latin1_General_CI_AS
 
-            where ExitDateKey is not null and  DATEDIFF(month, ex.Date, GETDATE()) = 1`;
+            where ExitDateKey is not null`;
 
         if (query.county) {
             prepDiscontinuation = `${prepDiscontinuation} and County IN ('${query.county
