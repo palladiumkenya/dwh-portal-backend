@@ -20,8 +20,8 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
                 SubCounty, 
                 PartnerName CTPartner, 
                 Agencyname CTAgency, 
-                visit.month VisitMonth, 
-                Visit.year VisitYear,
+                enrol.month VisitMonth, 
+                enrol.year VisitYear,
                 Count (distinct (concat(PrepNumber,PatientPKHash,MFLCode))) As StartedPrep
             from NDWH.dbo.FactPrep prep
 
@@ -30,7 +30,7 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
             LEFT JOIN NDWH.dbo.DimPartner p ON p.PartnerKey = prep.PartnerKey
             LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
             LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
-            LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
+            LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey
             LEFT JOIN NDWH.dbo.DimDate enrol ON enrol.DateKey = PrepEnrollmentDateKey 
 
             where enrol.Date is not null
@@ -92,7 +92,7 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
             newOnPrep = `${newOnPrep} and enrol.month = ${query.month}`;
         }
 
-        newOnPrep = `${newOnPrep} GROUP BY MFLCode, FacilityName, County, SubCounty, PartnerName, AgencyName, visit.month, visit.year`;
+        newOnPrep = `${newOnPrep} GROUP BY MFLCode, FacilityName, County, SubCounty, PartnerName, AgencyName, enrol.month, enrol.year`;
 
         return await this.repository.query(newOnPrep, params);
     }
