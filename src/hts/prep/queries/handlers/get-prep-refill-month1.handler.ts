@@ -17,8 +17,8 @@ export class GetPrepRefillMonth1Handler implements IQueryHandler<GetPrepRefillMo
         const params = [];
         let newOnPrep = `
         SELECT
-            sum(case when RefilMonth1 is not null then 1 else 0 end) tested,
-            sum(case when RefilMonth1 is null then 1 else 0 end) nottested
+            sum(case when Refil1DiffInDays is not null then 1 else 0 end) tested,
+            sum(case when Refil3DiffInDays is null then 1 else 0 end) nottested
         from NDWH.dbo.FactPrep prep
         LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
         LEFT JOIN NDWH.dbo.DimFacility fac ON fac.FacilityKey = prep.FacilityKey
