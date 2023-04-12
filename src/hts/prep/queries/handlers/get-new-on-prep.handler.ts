@@ -35,12 +35,6 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
 
             where enrol.Date is not null
         `; 
-        // this.repository
-        //     .createQueryBuilder('f')
-        //     .select([
-        //         'Sitecode, FacilityName, County, SubCounty, CTPartner, CTAgency, VisitMonth, VisitYear, Count (distinct (concat(PrepNumber,PatientPk,SiteCode))) As StartedPrep',
-        //     ])
-        //     .where('DATEDIFF(month, PrepEnrollmentDate, GETDATE()) = 2');
 
         if (query.county) {
             newOnPrep = `${newOnPrep} and County IN ('${query.county

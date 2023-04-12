@@ -19,7 +19,7 @@ export class GetPrepRefillAgeSexTrendsmonth3Handler implements IQueryHandler<Get
         const params = [];
         let newOnPrep = ` SELECT
             DATIMAgeGroup,
-            sum(case when RefilMonth3 is not null then 1 else 0 end) tested
+            sum(case when Refil3DiffInDays is not null then 1 else 0 end) tested
         from NDWH.dbo.FactPrep prep
         LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
         LEFT JOIN NDWH.dbo.DimFacility fac ON fac.FacilityKey = prep.FacilityKey
@@ -28,7 +28,7 @@ export class GetPrepRefillAgeSexTrendsmonth3Handler implements IQueryHandler<Get
         LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
         LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
         LEFT JOIN NDWH.dbo.DimDate test ON test.DateKey = DateTestMonth3Key COLLATE Latin1_General_CI_AS
-        WHERE visit.Date is not null and RefilMonth3 is not null
+        WHERE visit.Date is not null and Refil3DiffInDays is not null
         `;
 
         if (query.county) {
