@@ -30,7 +30,7 @@ export class GetUptakeByCountyHandler
                     INNER JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
                     INNER JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
                     INNER JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-                WHERE SubCounty IS NOT NULL`;
+                WHERE SubCounty IS NOT NULL and TestType='Initial Test'`;
         } else {
             uptakeByCountySql = `SELECT
                     County AS County,
@@ -44,7 +44,7 @@ export class GetUptakeByCountyHandler
                     INNER JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
                     INNER JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
                     INNER JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-                WHERE County IS NOT NULL`;
+                WHERE County IS NOT NULL and TestType='Initial Test'`;
         }
 
         if (query.county) {
