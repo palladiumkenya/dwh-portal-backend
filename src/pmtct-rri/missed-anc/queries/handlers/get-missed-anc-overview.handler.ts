@@ -78,9 +78,6 @@ export class GetMissedANCOverviewHandler
             );
         }
 
-        console.log(missedANC.getQuery());
-
-
         return await missedANC.getRawOne();
     }
 }
