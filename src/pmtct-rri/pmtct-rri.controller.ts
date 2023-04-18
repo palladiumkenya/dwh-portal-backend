@@ -9,6 +9,10 @@ import { GetMissedHAARTOverviewQuery } from './missed-haart/queries/impl/get-mis
 import { GetMissedHAARTByCountyQuery } from './missed-haart/queries/impl/get-missed-haart-by-county.query';
 import { GetMissedHAARTBySDPQuery } from './missed-haart/queries/impl/get-missed-haart-by-sdp.query';
 import { GetMissedHAARTByFacilityQuery } from './missed-haart/queries/impl/get-missed-haart-by-facility.query';
+import { GetMissedEIDOverviewQuery } from './missed-eid/queries/impl/get-missed-eid-overview.query';
+import { GetMissedEIDAgeFirstPCRCountyQuery } from './missed-eid/queries/impl/get-missed-eid-age-first-pcr-county.query';
+import { GetMissedEIDAgeFirstPCRSDPQuery } from './missed-eid/queries/impl/get-missed-eid-age-first-pcr-sdp.query';
+import { GetMissedEIDAgeFirstPCRQuery } from './missed-eid/queries/impl/get-missed-eid-age-first-pcr.query';
 
 @Controller('pmtct-rri')
 export class PmtctRRIController {
@@ -430,4 +434,211 @@ export class PmtctRRIController {
         return this.queryBus.execute(query);
     }
 
+    @Get('getMissedEIDOverview')
+    async getMissedEIDOverview(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('emr') emr,
+    ): Promise<any> {
+        const query = new GetMissedEIDOverviewQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (emr) {
+            query.emr = emr;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getMissedEIDAgeFirstPCRCounty')
+    async getMissedEIDAgeFirstPCRCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('emr') emr,
+    ): Promise<any> {
+        const query = new GetMissedEIDAgeFirstPCRCountyQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (emr) {
+            query.emr = emr;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getMissedEIDAgeFirstPCRSDP')
+    async getMissedEIDAgeFirstPCRSDP(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('emr') emr,
+    ): Promise<any> {
+        const query = new GetMissedEIDAgeFirstPCRSDPQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (emr) {
+            query.emr = emr;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getMissedEIDAgeFirstPCR')
+    async getMissedEIDAgeFirstPCR(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('emr') emr,
+    ): Promise<any> {
+        const query = new GetMissedEIDAgeFirstPCRQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (emr) {
+            query.emr = emr;
+        }
+
+        return this.queryBus.execute(query);
+    }
 }
