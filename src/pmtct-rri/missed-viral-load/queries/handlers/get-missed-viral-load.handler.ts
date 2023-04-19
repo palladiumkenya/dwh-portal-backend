@@ -32,19 +32,19 @@ export class GetMissedViralLoadHandler
         }
 
         if (query.facility) {
-            missedProf.andWhere('f.Facility_Name IN (:...facility)', {
+            missedProf.andWhere('f.FacilityName IN (:...facility)', {
                 facility: query.facility,
             });
         }
 
         if (query.partner) {
-            missedProf.andWhere('f.SDP IN (:...partner)', {
+            missedProf.andWhere('f.PartnerName IN (:...partner)', {
                 partner: query.partner,
             });
         }
 
         if (query.agency) {
-            missedProf.andWhere('f.Agency IN (:...agency)', {
+            missedProf.andWhere('f.AgencyName IN (:...agency)', {
                 agency: query.agency,
             });
         }
@@ -55,23 +55,29 @@ export class GetMissedViralLoadHandler
             });
         }
 
-        if (query.year) {
-            missedProf.andWhere(
-                `YEAR(TRY_CONVERT(date, period + '-01')) = :year`,
-                {
-                    year: query.year,
-                },
-            );
+        if (query.datimAgeGroup) {
+            missedProf.andWhere('f.AgeGroup IN (:...ageGroups)', {
+                ageGroups: query.datimAgeGroup,
+            });
         }
 
-        if (query.month) {
-            missedProf.andWhere(
-                `MONTH(TRY_CONVERT(date, period + '-01')) = :month`,
-                {
-                    month: query.month,
-                },
-            );
-        }
+        // if (query.year) {
+        //     missedProf.andWhere(
+        //         `YEAR(TRY_CONVERT(date, period + '-01')) = :year`,
+        //         {
+        //             year: query.year,
+        //         },
+        //     );
+        // }
+
+        // if (query.month) {
+        //     missedProf.andWhere(
+        //         `MONTH(TRY_CONVERT(date, period + '-01')) = :month`,
+        //         {
+        //             month: query.month,
+        //         },
+        //     );
+        // }
 
         return await missedProf.getRawMany();
     }

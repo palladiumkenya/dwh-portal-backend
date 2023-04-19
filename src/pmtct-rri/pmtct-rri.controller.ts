@@ -755,11 +755,10 @@ export class PmtctRRIController {
         @Query('subCounty') subCounty,
         @Query('facility') facility,
         @Query('partner') partner,
-        @Query('year') year,
-        @Query('month') month,
         @Query('agency') agency,
         @Query('project') project,
         @Query('emr') emr,
+        @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetMissedViralLoadQuery();
         if (county) {
@@ -778,14 +777,6 @@ export class PmtctRRIController {
             query.partner = partner;
         }
 
-        if (year) {
-            query.year = year;
-        }
-
-        if (month) {
-            query.month = month;
-        }
-
         if (agency) {
             query.agency = agency;
         }
@@ -796,6 +787,10 @@ export class PmtctRRIController {
 
         if (emr) {
             query.emr = emr;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
