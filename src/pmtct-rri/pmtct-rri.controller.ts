@@ -15,6 +15,7 @@ import { GetMissedEIDAgeFirstPCRSDPQuery } from './missed-eid/queries/impl/get-m
 import { GetMissedEIDAgeFirstPCRQuery } from './missed-eid/queries/impl/get-missed-eid-age-first-pcr.query';
 import { GetMissedInfantProphylaxisQuery } from './missed-infant-prophylaxis/queries/impl/get-missed-infant-prophylaxis.query';
 import { GetMissedEIDMissingPCRQuery } from './missed-eid/queries/impl/get-missed-eid-missing-pcr.query';
+import { GetMissedViralLoadQuery } from './missed-viral-load/queries/impl/get-missed-viral-load.query';
 
 @Controller('pmtct-rri')
 export class PmtctRRIController {
@@ -743,6 +744,53 @@ export class PmtctRRIController {
 
         if (emr) {
             query.emr = emr;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getMissedViralLoad')
+    async getMissedViralLoad(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('emr') emr,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetMissedViralLoadQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (emr) {
+            query.emr = emr;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
