@@ -28,7 +28,7 @@ export class GetLinkageByCountyHandler
                 INNER JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
                 INNER JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
                 INNER JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE County IS NOT NULL AND positive > 0 and TestType='Initial Test'`;
+            WHERE County IS NOT NULL AND positive > 0`;
 
         if (query.county) {
             linkageByCountySql = `${linkageByCountySql} and County IN ('${query.county

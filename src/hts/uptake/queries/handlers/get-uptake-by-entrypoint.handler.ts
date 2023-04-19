@@ -27,7 +27,7 @@ export class GetUptakeByEntrypointHandler
                 INNER JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
                 INNER JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
                 INNER JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE EntryPoint IS NOT NULL and TestType='Initial Test'`;
+            WHERE EntryPoint IS NOT NULL`;
 
         if (query.county) {
             uptakeByEntryPointSql = `${uptakeByEntryPointSql} and County IN ('${query.county
