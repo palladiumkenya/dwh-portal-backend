@@ -24,6 +24,7 @@ import { GetMissedEIDAgeFirstPCRHandler } from './missed-eid/queries/handlers/ge
 import { GetMissedEIDAgeFirstPCRCountyHandler } from './missed-eid/queries/handlers/get-missed-eid-age-first-pcr-county.handler';
 import { GetMissedEIDAgeFirstPCRSDPHandler } from './missed-eid/queries/handlers/get-missed-eid-age-first-pcr-sdp.handler';
 import { GetMissedInfantProphylaxisHandler } from './missed-infant-prophylaxis/queries/handlers/get-missed-infant-prophylaxis.handler';
+import { GetMissedEIDMissngPCRHandler } from './missed-eid/queries/handlers/get-missed-eid-missing-pcr.handler';
 
 @Module({
     imports: [
@@ -55,10 +56,10 @@ import { GetMissedInfantProphylaxisHandler } from './missed-infant-prophylaxis/q
         GetMissedEIDAgeFirstPCRHandler,
         GetMissedEIDAgeFirstPCRCountyHandler,
         GetMissedEIDAgeFirstPCRSDPHandler,
+        GetMissedEIDMissngPCRHandler,
 
         GetMissedInfantProphylaxisHandler,
 
-        
     ],
     controllers: [PmtctRRIController],
 })

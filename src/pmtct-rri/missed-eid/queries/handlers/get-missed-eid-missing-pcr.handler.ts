@@ -2,21 +2,21 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MissedEIDTesting } from '../../entities/missed-eid-testing.model';
-import { GetMissedEIDAgeFirstPCRSDPQuery } from '../impl/get-missed-eid-age-first-pcr-sdp.query';
+import { GetMissedEIDMissingPCRQuery } from './../impl/get-missed-eid-missing-pcr.query';
 
-@QueryHandler(GetMissedEIDAgeFirstPCRSDPQuery)
-export class GetMissedEIDAgeFirstPCRSDPHandler
-    implements IQueryHandler<GetMissedEIDAgeFirstPCRSDPQuery> {
+@QueryHandler(GetMissedEIDMissingPCRQuery)
+export class GetMissedEIDMissngPCRHandler
+    implements IQueryHandler<GetMissedEIDMissingPCRQuery> {
     constructor(
         @InjectRepository(MissedEIDTesting, 'mssql')
         private readonly repository: Repository<MissedEIDTesting>,
     ) {}
 
-    async execute(query: GetMissedEIDAgeFirstPCRSDPQuery): Promise<any> {
+    async execute(query: GetMissedEIDMissingPCRQuery): Promise<any> {
         let missedEID = this.repository
             .createQueryBuilder('f')
             .select(
-                `SUM(Lessthan2Months) lesst2Months, SUM(Within12Months) within12Months, SUM(Above1Year) above1Year, SUM(MissingAge) missingPCRTests, SDP`,
+                `Facility_Name, SubCounty, County, SDP, Agency, MissingPCRTests`,
             );
 
         if (query.county) {
@@ -67,9 +67,6 @@ export class GetMissedEIDAgeFirstPCRSDPHandler
             });
         }
 
-        return await missedEID
-            .groupBy('SDP')
-            .orderBy('SUM(Lessthan2Months)', 'DESC')
-            .getRawMany();
+        return await missedEID.getRawMany();
     }
 }

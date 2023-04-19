@@ -17,7 +17,7 @@ export class GetMissedEIDAgeFirstPCRCountyHandler
         let missedEID = this.repository
             .createQueryBuilder('f')
             .select(
-                `SUM(Lessthan2Months) lesst2Months, SUM(Within12Months) within12Months, SUM(Above1Year) above1Year, SUM(MissingPCRTests) missingPCRTests, County`,
+                `SUM(Lessthan2Months) lesst2Months, SUM(Within12Months) within12Months, SUM(Above1Year) above1Year, SUM(MissingAge) missingPCRTests, County`,
             );
 
         if (query.county) {
