@@ -16,6 +16,7 @@ import { GetMissedEIDAgeFirstPCRQuery } from './missed-eid/queries/impl/get-miss
 import { GetMissedInfantProphylaxisQuery } from './missed-infant-prophylaxis/queries/impl/get-missed-infant-prophylaxis.query';
 import { GetMissedEIDMissingPCRQuery } from './missed-eid/queries/impl/get-missed-eid-missing-pcr.query';
 import { GetMissedViralLoadQuery } from './missed-viral-load/queries/impl/get-missed-viral-load.query';
+import { GetMissedDTGQuery } from './missed-dtg/queries/impl/get-missed-dtg.query';
 
 @Controller('pmtct-rri')
 export class PmtctRRIController {
@@ -792,6 +793,49 @@ export class PmtctRRIController {
         if (datimAgeGroup) {
             query.datimAgeGroup = datimAgeGroup;
         }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getMissedDTG')
+    async getMissedDTG(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('emr') emr,
+    ): Promise<any> {
+        const query = new GetMissedDTGQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (emr) {
+            query.emr = emr;
+        }
+
 
         return this.queryBus.execute(query);
     }

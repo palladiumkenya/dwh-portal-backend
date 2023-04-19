@@ -4,6 +4,10 @@ import { Repository } from 'typeorm';
 import { FactTransRetention } from '../../entities/fact-trans-retention.model';
 import { GetVlSuppressionByYearQuery } from '../impl/get-vl-suppression-by-year.query';
 
+
+// NOT IN USE
+//TODO:: Add aggregate
+
 @QueryHandler(GetVlSuppressionByYearQuery)
 export class GetVlSuppressionByYearHandler implements IQueryHandler<GetVlSuppressionByYearQuery> {
     constructor(
