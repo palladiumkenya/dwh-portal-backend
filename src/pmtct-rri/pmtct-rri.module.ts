@@ -9,6 +9,7 @@ import { AggregateTXCurr } from 'src/care-treatment/current-on-art/entities/aggr
 import { MissedTestingFirstANC } from './missed-anc/entities/missed-testing-first-anc.model';
 import { MissedMaternalHaart } from './missed-haart/entities/missed-maternal-haart.model';
 import { MissedEIDTesting } from './missed-eid/entities/missed-eid-testing.model';
+import { MissedInfantProphylaxis } from './missed-infant-prophylaxis/entities/missed-infact-prophylaxis.model';
 
 import { GetMissedANCOverviewHandler } from './missed-anc/queries/handlers/get-missed-anc-overview.handler';
 import { GetMissedANCByCountyHandler } from './missed-anc/queries/handlers/get-missed-anc-by-county.handler';
@@ -22,6 +23,7 @@ import { GetMissedEIDOverviewHandler } from './missed-eid/queries/handlers/get-m
 import { GetMissedEIDAgeFirstPCRHandler } from './missed-eid/queries/handlers/get-missed-eid-age-first-pcr.handler';
 import { GetMissedEIDAgeFirstPCRCountyHandler } from './missed-eid/queries/handlers/get-missed-eid-age-first-pcr-county.handler';
 import { GetMissedEIDAgeFirstPCRSDPHandler } from './missed-eid/queries/handlers/get-missed-eid-age-first-pcr-sdp.handler';
+import { GetMissedInfantProphylaxisHandler } from './missed-infant-prophylaxis/queries/handlers/get-missed-infant-prophylaxis.handler';
 
 @Module({
     imports: [
@@ -33,6 +35,7 @@ import { GetMissedEIDAgeFirstPCRSDPHandler } from './missed-eid/queries/handlers
                 MissedTestingFirstANC,
                 MissedMaternalHaart,
                 MissedEIDTesting,
+                MissedInfantProphylaxis,
             ],
             'mssql',
         ),
@@ -52,6 +55,10 @@ import { GetMissedEIDAgeFirstPCRSDPHandler } from './missed-eid/queries/handlers
         GetMissedEIDAgeFirstPCRHandler,
         GetMissedEIDAgeFirstPCRCountyHandler,
         GetMissedEIDAgeFirstPCRSDPHandler,
+
+        GetMissedInfantProphylaxisHandler,
+
+        
     ],
     controllers: [PmtctRRIController],
 })
