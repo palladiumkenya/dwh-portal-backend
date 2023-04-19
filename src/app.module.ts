@@ -10,6 +10,7 @@ import { ManifestsModule } from './manifests/manifests.module';
 import { HtsModule } from './hts/hts.module';
 import { CareTreatmentModule } from './care-treatment/care-treatment.module';
 import { OperationalHisModule } from './operational-his/operational-his.module';
+import { PmtctRRIModule } from './pmtct-rri/pmtct-rri.module';
 // import { SelfServiceModule } from './self-service/self-service.module';
 
 @Module({
@@ -17,7 +18,11 @@ import { OperationalHisModule } from './operational-his/operational-his.module';
         ConfigModule.forRoot({
             isGlobal: true,
             envFilePath: [
-                `.env.${process.env.NODE_ENV ? process.env.NODE_ENV.trim() : 'development'}`,
+                `.env.${
+                    process.env.NODE_ENV
+                        ? process.env.NODE_ENV.trim()
+                        : 'development'
+                }`,
             ],
         }),
         TypeOrmModule.forRootAsync({
@@ -33,8 +38,14 @@ import { OperationalHisModule } from './operational-his/operational-his.module';
                     'DATABASE_PORT',
                     Number(dbConfig.port),
                 ),
-                username: configService.get<string>('DATABASE_USER', dbConfig.username),
-                password: configService.get<string>('DATABASE_PASS', dbConfig.password),
+                username: configService.get<string>(
+                    'DATABASE_USER',
+                    dbConfig.username,
+                ),
+                password: configService.get<string>(
+                    'DATABASE_PASS',
+                    dbConfig.password,
+                ),
                 database: configService.get<string>(
                     'DATABASE_SCHEMA',
                     dbConfig.database,
@@ -43,7 +54,7 @@ import { OperationalHisModule } from './operational-his/operational-his.module';
                 migrationsTableName: 'custom_migration_table',
                 migrations: ['migration/*.js'],
                 cli: {
-                    'migrationsDir': 'migration',
+                    migrationsDir: 'migration',
                 },
             }),
         }),
@@ -56,15 +67,24 @@ import { OperationalHisModule } from './operational-his/operational-his.module';
                 dbConfig: DatabaseConnectionService,
             ) => ({
                 type: 'mssql' as 'mssql',
-                host: configService.get<string>('DATABASE_HOST_MSSQL', dbConfig.hostMssql),
-                username: configService.get<string>('DATABASE_USER_MSSQL', dbConfig.usernameMssql),
-                password: configService.get<string>('DATABASE_PASSWORD_MSSQL', dbConfig.passwordMssql),
+                host: configService.get<string>(
+                    'DATABASE_HOST_MSSQL',
+                    dbConfig.hostMssql,
+                ),
+                username: configService.get<string>(
+                    'DATABASE_USER_MSSQL',
+                    dbConfig.usernameMssql,
+                ),
+                password: configService.get<string>(
+                    'DATABASE_PASSWORD_MSSQL',
+                    dbConfig.passwordMssql,
+                ),
                 database: configService.get<string>(
                     'DATABASE_DB_MSSQL',
                     dbConfig.databaseMssql,
                 ),
                 requestTimeout: 300000000,
-                entities: [__dirname + '/**/*.model{.ts,.js}']
+                entities: [__dirname + '/**/*.model{.ts,.js}'],
             }),
         }),
         ConfigurationModule,
@@ -73,10 +93,10 @@ import { OperationalHisModule } from './operational-his/operational-his.module';
         HtsModule,
         CareTreatmentModule,
         OperationalHisModule,
+        PmtctRRIModule,
         // SelfServiceModule,
     ],
     controllers: [AppController],
     providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}

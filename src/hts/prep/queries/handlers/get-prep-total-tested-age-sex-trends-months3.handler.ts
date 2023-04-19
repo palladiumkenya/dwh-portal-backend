@@ -26,8 +26,8 @@ export class GetPrepTotalTestedAgeSexTrendsmonth3Handler implements IQueryHandle
         LEFT JOIN NDWH.dbo.DimPartner p ON p.PartnerKey = prep.PartnerKey
         LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
         LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey      
-        LEFT JOIN NDWH.dbo.DimDate test ON test.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
-        WHERE DATEDIFF(month, test.Date, GETDATE()) = 1
+        LEFT JOIN NDWH.dbo.DimDate test ON test.DateKey = prep.VisitDateKey
+        WHERE test.Date is not null
         `;
 
         if (query.county) {
@@ -72,10 +72,16 @@ export class GetPrepTotalTestedAgeSexTrendsmonth3Handler implements IQueryHandle
                 .replace(/,/g, "','")}')`;
         }
 
+        if (query.year) {
+            newOnPrep = `${newOnPrep} and test.year = ${query.year}`;
+        }
+
+        if (query.month) {
+            newOnPrep = `${newOnPrep} and test.month = ${query.month}`;
+        }
+
         newOnPrep = `${newOnPrep} Group BY  age.DATIMAgeGroup
         Order by age.DATIMAgeGroup`
-
-    
 
         return await this.repository.query(newOnPrep, params);
     }

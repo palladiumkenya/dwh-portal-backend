@@ -68,7 +68,6 @@ export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQu
         //         txNewBySex.andWhere('a.Start_Year = :startYear', { startYear: query.year });
         //     }
         // }
-        console.log(txNewBySex.getQuery());
 
         return await txNewBySex
             .groupBy('a.FacilityName, a.County, a.SubCounty, MFLCode,AgencyName, PartnerName')

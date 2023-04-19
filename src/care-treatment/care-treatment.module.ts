@@ -335,6 +335,9 @@ import { AggregateTimeToVL } from './viral-load/entities/aggregate-time-to-vl.mo
 import { AggregateTimeToVL12M } from './viral-load/entities/aggregate-time-to-vl-last-12m.model';
 import { AggregateTreatmentOutcomes } from './treatment-outcomes/entities/aggregate-treatment-outcomes.model';
 import { LineListViralLoad } from './viral-load/entities/linelist-viral-load.model';
+import { GetAppointmentKeepingWaterfallHandler } from './treatment-outcomes/queries/handlers/get-appointment-keeping-waterfall.handler';
+import { GetQuaterlyIITHandler } from './treatment-outcomes/queries/handlers/get-quaterly-iit.handler';
+import { AggregateAppointments } from './treatment-outcomes/entities/aggregate-appointments.model';
 
 
 @Module({
@@ -380,6 +383,7 @@ import { LineListViralLoad } from './viral-load/entities/linelist-viral-load.mod
                 AggregateTimeToVL,
 
                 AggregateTreatmentOutcomes,
+                AggregateAppointments,
                 LineListViralLoad,
 
                 AllEmrSites,
@@ -484,6 +488,8 @@ import { LineListViralLoad } from './viral-load/entities/linelist-viral-load.mod
         GetTreatmentOutcomesRetention12mHandler,
         GetTreatmentOutcomesRetention24mHandler,
         GetTreatmentOutcomesUndocumentedByFacilityHandler,
+        GetAppointmentKeepingWaterfallHandler,
+        GetQuaterlyIITHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
         GetCtTxCurrAgeGroupDistributionByCountyHandler,
         GetCtTxCurrAgeGroupDistributionByPartnerHandler,

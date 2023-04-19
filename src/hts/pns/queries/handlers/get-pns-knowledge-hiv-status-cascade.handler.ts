@@ -16,7 +16,7 @@ export class GetPnsKnowledgeHivStatusCascadeHandler implements IQueryHandler<Get
 
     async execute(query: GetPnsKnowledgeHivStatusCascadeQuery): Promise<any> {
         let pnsKnowledgeHivStatusCascade = `Select 
-                Sum(Case WHEN PatientPK is not null then 1 ELSE 0 End) elicited,
+                Sum(Case WHEN PatientPKHash is not null then 1 ELSE 0 End) elicited,
                 SUM(Tested)   tested,
                 
                 sum(Case WHEN FinalTestResult = 'Positive' then 1 ELSE 0 End ) positive,

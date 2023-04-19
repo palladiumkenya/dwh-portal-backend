@@ -22,7 +22,7 @@ export class GetCTPrepHandler implements IQueryHandler<GetCTPrepQuery> {
                     LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
                     LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
                     LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
-                where VisitDateKey is not null and VisitDateKey <> PrepEnrollmentDateKey and DATEDIFF(month, visit.Date, GETDATE()) = 1
+                where VisitDateKey is not null and VisitDateKey <> PrepEnrollmentDateKey
         `;
 
         if (query.county) {
@@ -65,6 +65,14 @@ export class GetCTPrepHandler implements IQueryHandler<GetCTPrepQuery> {
             newOnPrep = `${newOnPrep} and DATIMAgeGroup IN ('${query.datimAgeGroup
                 .toString()
                 .replace(/,/g, "','")}')`;
+        }
+
+        if (query.year) {
+            newOnPrep = `${newOnPrep} and visit.year = ${query.year}`;
+        }
+
+        if (query.month) {
+            newOnPrep = `${newOnPrep} and visit.month = ${query.month}`;
         }
 
         // newOnPrep = `${newOnPrep} GROUP BY enrol.month, enrol.year
