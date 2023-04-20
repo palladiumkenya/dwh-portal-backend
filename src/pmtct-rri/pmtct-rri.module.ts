@@ -11,6 +11,7 @@ import { MissedMaternalHaart } from './missed-haart/entities/missed-maternal-haa
 import { MissedEIDTesting } from './missed-eid/entities/missed-eid-testing.model';
 import { MissedInfantProphylaxis } from './missed-infant-prophylaxis/entities/missed-infact-prophylaxis.model';
 import { MissedViralLoad } from './missed-viral-load/entities/missed-viral-load.model';
+import { MissedDTGOptimization } from './missed-dtg/entities/missed-dtg-optimization.model';
 
 import { GetMissedANCOverviewHandler } from './missed-anc/queries/handlers/get-missed-anc-overview.handler';
 import { GetMissedANCByCountyHandler } from './missed-anc/queries/handlers/get-missed-anc-by-county.handler';
@@ -27,6 +28,7 @@ import { GetMissedEIDAgeFirstPCRSDPHandler } from './missed-eid/queries/handlers
 import { GetMissedInfantProphylaxisHandler } from './missed-infant-prophylaxis/queries/handlers/get-missed-infant-prophylaxis.handler';
 import { GetMissedEIDMissngPCRHandler } from './missed-eid/queries/handlers/get-missed-eid-missing-pcr.handler';
 import { GetMissedViralLoadHandler } from './missed-viral-load/queries/handlers/get-missed-viral-load.handler';
+import { GetMissedDTGHandler } from './missed-dtg/queries/handlers/get-missed-dtg.handler';
 
 @Module({
     imports: [
@@ -40,6 +42,7 @@ import { GetMissedViralLoadHandler } from './missed-viral-load/queries/handlers/
                 MissedEIDTesting,
                 MissedInfantProphylaxis,
                 MissedViralLoad,
+                MissedDTGOptimization,
             ],
             'mssql',
         ),
@@ -64,6 +67,8 @@ import { GetMissedViralLoadHandler } from './missed-viral-load/queries/handlers/
         GetMissedInfantProphylaxisHandler,
 
         GetMissedViralLoadHandler,
+
+        GetMissedDTGHandler,
     ],
     controllers: [PmtctRRIController],
 })
