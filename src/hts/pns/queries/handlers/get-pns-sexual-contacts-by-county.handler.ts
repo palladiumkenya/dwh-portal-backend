@@ -16,22 +16,14 @@ export class GetPnsSexualContactsByCountyHandler implements IQueryHandler<GetPns
 
     async execute(query: GetPnsSexualContactsByCountyQuery): Promise<any> {
         let pnsSexualContactsByCounty = `Select County county,
-                Sum(Case WHEN PatientPKHash is not null then 1 ELSE 0 End) elicited,
-                SUM(Tested)   tested,
+                Sum(PartnersElicited) elicited,
+                sum(PartnerTested) tested,
+                Sum(Positive) positive,
+                sum(Linked) linked,
                 
-                sum(Case WHEN FinalTestResult = 'Positive' then 1 ELSE 0 End ) positive,
-                SUM(Case WHEN (ReportedCCCNumber  is not null) then 1 ELSE 0 End ) linked,
-                
-                SUM(Case WHEN (KnowledgeOfHivStatus='Positive') then 1 ELSE 0 End)  knownPositive
-            From NDWH.dbo.FactHTSPartnerNotificationServices pns
-            LEFT JOIN NDWH.dbo.FactHTSClientTests test on test.PatientKey = pns.PatientKey
-            LEFT JOIN NDWH.dbo.DimPatient pat on pns.PatientKey = pat.PatientKey
-            LEFT JOIN NDWH.dbo.DimFacility f on f.FacilityKey = pns.FacilityKey
-            LEFT JOIN NDWH.dbo.DimAgeGroup age on pns.AgeGroupKey = age.AgeGroupKey
-            LEFT JOIN NDWH.dbo.DimAgency a on pns.AgencyKey = a.AgencyKey
-            LEFT JOIN NDWH.dbo.DimPartner p on pns.PartnerKey = p.PartnerKey
-
-            where RelationsipToIndexClient in ('Partner','Spouse','Co-Wife','cowife','Sexual Partner','Sexual Network')
+                Sum(KnownPositive) knownPositive
+            FROM [dbo].[AggregateHTSPNSSexualPartner]
+            where MFLCode is not null
             `;
         
         // this.repository.createQueryBuilder('q')
@@ -83,16 +75,22 @@ export class GetPnsSexualContactsByCountyHandler implements IQueryHandler<GetPns
         // }
 
         if (query.fromDate) {
-            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2)) >= ${query.fromDate}`;
+            const year = parseInt(query.fromDate.substring(0, 4));
+            const month = parseInt(query.fromDate.substring(4));
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and year >= ${year}`;
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and month >= ${month}`;
         }
 
         if (query.toDate) {
-            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2))<= ${query.toDate}`;
+            const year = parseInt(query.toDate.substring(0, 4));
+            const month = parseInt(query.toDate.substring(4));
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and year <= ${year}`;
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and month <= ${month}`;
         }
 
         pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} GROUP BY County`;
 
-        pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} ORDER BY SUM(Tested) Desc`;
+        pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} ORDER BY SUM(PartnerTested) Desc`;
 
         return await this.repository.query(pnsSexualContactsByCounty, []);
     }
