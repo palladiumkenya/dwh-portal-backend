@@ -15,22 +15,15 @@ export class GetPnsChildrenCascadeHandler
 
     async execute(query: GetPnsChildrenCascadeQuery): Promise<any> {
         let pnsChildrenCascade = `Select 
-                Sum(Case WHEN PatientPKHash is not null then 1 ELSE 0 End) elicited,
-                SUM(Tested)   tested,
+                Sum(ChildrenElicited) elicited,
+                sum(ChildrenTested) tested,
+                Sum(ChildrenPositive) positive,
+                sum(ChildrenLiked) linked,
                 
-                sum(Case WHEN FinalTestResult = 'Positive' then 1 ELSE 0 End ) positive,
-                SUM(Case WHEN (ReportedCCCNumber  is not null) then 1 ELSE 0 End ) linked,
-                
-                SUM(Case WHEN (KnowledgeOfHivStatus='Positive') then 1 ELSE 0 End)  knownPositive
-            From NDWH.dbo.FactHTSPartnerNotificationServices pns
-            LEFT JOIN NDWH.dbo.FactHTSClientTests test on test.PatientKey = pns.PatientKey
-            LEFT JOIN NDWH.dbo.DimPatient pat on pns.PatientKey = pat.PatientKey
-            LEFT JOIN NDWH.dbo.DimFacility f on f.FacilityKey = pns.FacilityKey
-            LEFT JOIN NDWH.dbo.DimAgeGroup age on pns.AgeGroupKey = age.AgeGroupKey
-            LEFT JOIN NDWH.dbo.DimAgency a on pns.AgencyKey = a.AgencyKey
-            LEFT JOIN NDWH.dbo.DimPartner p on pns.PartnerKey = p.PartnerKey
+                Sum(ChildrenKnownPositive) knownPositive
+            From REPORTING.dbo.AggregateHTSPNSChildren pns
 
-            where RelationsipToIndexClient in ('Child') 
+            where MFLCode is not null
         `;
 
         // this.repository.createQueryBuilder('q')
@@ -43,7 +36,7 @@ export class GetPnsChildrenCascadeHandler
                 .replace(/,/g, "','")}')`;
         }
 
-        if (query.subCounty) {
+        if (query.subCounty) { 
             pnsChildrenCascade = `${pnsChildrenCascade} and subCounty IN ('${query.subCounty
                 .toString()
                 .replace(/,/g, "','")}')`;
@@ -76,13 +69,18 @@ export class GetPnsChildrenCascadeHandler
         // }
 
         if (query.fromDate) {
-            pnsChildrenCascade = `${pnsChildrenCascade} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2)) >= ${query.fromDate}`;
+            const year = parseInt(query.fromDate.substring(0, 4));
+            const month = parseInt(query.fromDate.substring(4));
+            pnsChildrenCascade = `${pnsChildrenCascade} and year >= ${year}`;
+            pnsChildrenCascade = `${pnsChildrenCascade} and month >= ${month}`;
         }
 
         if (query.toDate) {
-            pnsChildrenCascade = `${pnsChildrenCascade} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2))<= ${query.toDate}`;
+            const year = parseInt(query.toDate.substring(0, 4));
+            const month = parseInt(query.toDate.substring(4));
+            pnsChildrenCascade = `${pnsChildrenCascade} and year <= ${year}`;
+            pnsChildrenCascade = `${pnsChildrenCascade} and month <= ${month}`;
         }
-
         return await this.repository.query(pnsChildrenCascade, []);
 
         // return await pnsChildrenCascade.getRawOne();

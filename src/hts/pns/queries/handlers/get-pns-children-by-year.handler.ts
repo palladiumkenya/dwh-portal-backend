@@ -14,24 +14,17 @@ export class GetPnsChildrenByYearHandler
     ) {}
 
     async execute(query: GetPnsChildrenByYearQuery): Promise<any> {
-        let pnsChildrenByYear = `Select year(DateTestedKey) year,
-                month(DateTestedKey) month,
-                Sum(Case WHEN PatientPKHash is not null then 1 ELSE 0 End) elicited,
-                SUM(Tested)   tested,
+        let pnsChildrenByYear = `Select year,
+                month,
+                Sum(ChildrenElicited) elicited,
+                sum(ChildrenTested) tested,
+                Sum(ChildrenPositive) positive,
+                sum(ChildrenLiked) linked,
                 
-                sum(Case WHEN FinalTestResult = 'Positive' then 1 ELSE 0 End ) positive,
-                SUM(Case WHEN (ReportedCCCNumber  is not null) then 1 ELSE 0 End ) linked,
-                
-                SUM(Case WHEN (KnowledgeOfHivStatus='Positive') then 1 ELSE 0 End)  knownPositive
-            From NDWH.dbo.FactHTSPartnerNotificationServices pns
-            LEFT JOIN NDWH.dbo.FactHTSClientTests test on test.PatientKey = pns.PatientKey
-            LEFT JOIN NDWH.dbo.DimPatient pat on pns.PatientKey = pat.PatientKey
-            LEFT JOIN NDWH.dbo.DimFacility f on f.FacilityKey = pns.FacilityKey
-            LEFT JOIN NDWH.dbo.DimAgeGroup age on pns.AgeGroupKey = age.AgeGroupKey
-            LEFT JOIN NDWH.dbo.DimAgency a on pns.AgencyKey = a.AgencyKey
-            LEFT JOIN NDWH.dbo.DimPartner p on pns.PartnerKey = p.PartnerKey
+                Sum(ChildrenKnownPositive) knownPositive
+            From REPORTING.dbo.AggregateHTSPNSChildren pns
 
-            where RelationsipToIndexClient in ('Child') 
+            where MFLCode is not null
             `;
         // this.repository.createQueryBuilder('q')
         //     .select(['q.year, q.month, SUM(q.ChildrenElicited) elicited, SUM(q.ChildTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
@@ -78,16 +71,22 @@ export class GetPnsChildrenByYearHandler
         // }
 
         if (query.fromDate) {
-            pnsChildrenByYear = `${pnsChildrenByYear} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2)) >= ${query.fromDate}`;
+            const year = parseInt(query.fromDate.substring(0, 4));
+            const month = parseInt(query.fromDate.substring(4));
+            pnsChildrenByYear = `${pnsChildrenByYear} and year >= ${year}`;
+            pnsChildrenByYear = `${pnsChildrenByYear} and month >= ${month}`;
         }
 
         if (query.toDate) {
-            pnsChildrenByYear = `${pnsChildrenByYear} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2))<= ${query.toDate}`;
+            const year = parseInt(query.toDate.substring(0, 4));
+            const month = parseInt(query.toDate.substring(4));
+            pnsChildrenByYear = `${pnsChildrenByYear} and year <= ${year}`;
+            pnsChildrenByYear = `${pnsChildrenByYear} and month <= ${month}`;
         }
 
-        pnsChildrenByYear = `${pnsChildrenByYear} GROUP BY year(DateTestedKey), month(DateTestedKey)`;
+        pnsChildrenByYear = `${pnsChildrenByYear} GROUP BY year, month`;
 
-        pnsChildrenByYear = `${pnsChildrenByYear} ORDER BY year(DateTestedKey), month(DateTestedKey)`;
+        pnsChildrenByYear = `${pnsChildrenByYear} ORDER BY year, month`;
 
         return await this.repository.query(pnsChildrenByYear, []);
         // return await pnsChildrenByYear
