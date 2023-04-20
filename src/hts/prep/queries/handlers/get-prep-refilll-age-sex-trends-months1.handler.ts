@@ -59,8 +59,8 @@ export class GetPrepRefillAgeSexTrendsmonth1Handler implements IQueryHandler<Get
                 .replace(/,/g, "','")}')`;
         }
 
-        if (query.datimAgeGroup) {
-            newOnPrep = `${newOnPrep} and DATIMAgeGroup IN ('${query.datimAgeGroup
+        if (query.ageGroup) {
+            newOnPrep = `${newOnPrep} and ageGroup IN ('${query.ageGroup
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
@@ -74,8 +74,8 @@ export class GetPrepRefillAgeSexTrendsmonth1Handler implements IQueryHandler<Get
         }
 
         newOnPrep = `${newOnPrep} 
-            GROUP BY DATIMAgeGroup
-            Order by DATIMAgeGroup`
+            GROUP BY ageGroup
+            Order by ageGroup`
 
         return await this.repository.query(newOnPrep, params);
     }

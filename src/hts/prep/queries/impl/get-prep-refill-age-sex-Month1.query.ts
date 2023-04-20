@@ -7,6 +7,6 @@ export class GetPrepRefillAgeSexMonth1Query {
     month?: number;
     project?: string[];
     gender?: string[];
-    datimAgeGroup?: string[];
+    ageGroup?: string[];
     agency?: string[];
 }

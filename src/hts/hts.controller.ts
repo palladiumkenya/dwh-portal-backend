@@ -2990,7 +2990,7 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('ageGroup') ageGroup,
     ): Promise<any> {
         const query = new GetPrepRefillAgeSexMonth1Query();
 
@@ -3030,8 +3030,8 @@ export class HtsController {
             query.gender = gender;
         }
 
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+        if (ageGroup) {
+            query.ageGroup = ageGroup;
         }
 
         return this.queryBus.execute(query);
@@ -3048,7 +3048,7 @@ export class HtsController {
         @Query('year') year,
         @Query('month') month,
         @Query('gender') gender,
-        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('ageGroup') ageGroup,
     ): Promise<any> {
         const query = new GetPrepRefillAgeSexMonth3Query();
 
@@ -3088,8 +3088,8 @@ export class HtsController {
             query.gender = gender;
         }
 
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
+        if (ageGroup) {
+            query.ageGroup = ageGroup;
         }
 
         return this.queryBus.execute(query);
