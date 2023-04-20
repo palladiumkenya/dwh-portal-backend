@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MissedDTGOptimization } from '../../entities/missed-dtg-optimization.model';
 import { GetMissedDTGQuery } from '../impl/get-missed-dtg.query';
+import { groupBy } from 'lodash';
 
 @QueryHandler(GetMissedDTGQuery)
 export class GetMissedDTGHandler
@@ -16,7 +17,7 @@ export class GetMissedDTGHandler
         let missedProf = this.repository
             .createQueryBuilder('f')
             .select(
-                `Facility_Name, SubCounty, County,SDP, Agency, CalHIV, CalHIVOnDTG, CalHIVNotOnDTG`,
+                `Facility_Name, SubCounty, County,SDP, Agency, SUM(CalHIV) CalHIV, SUM(CalHIVOnDTG) CalHIVOnDTG, SUM(CalHIVNotOnDTG) CalHIVNotOnDTG`,
             );
 
         if (query.county) {
@@ -79,6 +80,8 @@ export class GetMissedDTGHandler
         //     );
         // }
 
-        return await missedProf.getRawMany();
+        return await missedProf
+            .groupBy(`Facility_Name, SubCounty, County,SDP, Agency`)
+            .getRawMany();
     }
 }
