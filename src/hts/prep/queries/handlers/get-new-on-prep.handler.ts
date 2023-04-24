@@ -20,20 +20,11 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
                 SubCounty, 
                 PartnerName CTPartner, 
                 Agencyname CTAgency, 
-                enrol.month VisitMonth, 
-                enrol.year VisitYear,
-                Count (distinct (concat(PrepNumber,PatientPKHash,MFLCode))) As StartedPrep
-            from NDWH.dbo.FactPrep prep
-
-            LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
-            LEFT JOIN NDWH.dbo.DimFacility fac ON fac.FacilityKey = prep.FacilityKey
-            LEFT JOIN NDWH.dbo.DimPartner p ON p.PartnerKey = prep.PartnerKey
-            LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
-            LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
-            LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey
-            LEFT JOIN NDWH.dbo.DimDate enrol ON enrol.DateKey = PrepEnrollmentDateKey 
-
-            where enrol.Date is not null
+                month VisitMonth, 
+                year VisitYear,
+                SUM(StartedPrep) As StartedPrep
+            from AggregatePrepCascade prep
+            where year is not null
         `; 
 
         if (query.county) {
@@ -73,20 +64,20 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
         }
 
         if (query.datimAgeGroup) {
-            newOnPrep = `${newOnPrep} and DATIMAgeGroup IN ('${query.datimAgeGroup
+            newOnPrep = `${newOnPrep} and AgeGroup IN ('${query.datimAgeGroup
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and enrol.year = ${query.year}`;
+            newOnPrep = `${newOnPrep} and year = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and enrol.month = ${query.month}`;
+            newOnPrep = `${newOnPrep} and month = ${query.month}`;
         }
 
-        newOnPrep = `${newOnPrep} GROUP BY MFLCode, FacilityName, County, SubCounty, PartnerName, AgencyName, enrol.month, enrol.year`;
+        newOnPrep = `${newOnPrep} GROUP BY MFLCode, FacilityName, County, SubCounty, PartnerName, AgencyName, month, year`;
 
         return await this.repository.query(newOnPrep, params);
     }

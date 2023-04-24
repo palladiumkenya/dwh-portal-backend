@@ -15,26 +15,18 @@ export class GetPrepDiscontinuationReasonHandler
     async execute(query: GetPrepDiscontinuationReasonQuery): Promise<any> {
         let params = []
         let prepDiscontinuation = `SELECT
-                COUNT ( DISTINCT ( concat ( PrepNumber, PatientPKHash, MFLCode ) )  )AS PrepDiscontinuations, 
+                SUM(PrepDiscontinuations) AS PrepDiscontinuations, 
                 ExitReason
-            from NDWH.dbo.FactPrep prep
-
-            LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
-            LEFT JOIN NDWH.dbo.DimFacility fac ON fac.FacilityKey = prep.FacilityKey
-            LEFT JOIN NDWH.dbo.DimPartner p ON p.PartnerKey = prep.PartnerKey
-            LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
-            LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
-            LEFT JOIN NDWH.dbo.DimDate ex ON ex.DateKey = ExitDateKey COLLATE Latin1_General_CI_AS
-
-            where ExitDateKey is not null `;
-        this.repository
-            .createQueryBuilder('f')
-            .select([
-                'COUNT ( DISTINCT ( concat ( PrepNumber, PatientPk, SiteCode ) )  )AS PrepDiscontinuations, ExitReason',
-            ])
-            .where(
-                'ExitDate is not null and  DATEDIFF(month, ExitDate, GETDATE()) = 2',
-            );
+            FROM [AggregatePrepDiscontinuation]
+            where ExitYear is not null`;
+        // this.repository
+        //     .createQueryBuilder('f')
+        //     .select([
+        //         'COUNT ( DISTINCT ( concat ( PrepNumber, PatientPk, SiteCode ) )  )AS PrepDiscontinuations, ExitReason',
+        //     ])
+        //     .where(
+        //         'ExitDate is not null and  DATEDIFF(month, ExitDate, GETDATE()) = 2',
+        //     );
 
         if (query.county) {
             prepDiscontinuation = `${prepDiscontinuation} and County IN ('${query.county
@@ -73,17 +65,17 @@ export class GetPrepDiscontinuationReasonHandler
         }
 
         if (query.datimAgeGroup) {
-            prepDiscontinuation = `${prepDiscontinuation} and DATIMAgeGroup IN ('${query.datimAgeGroup
+            prepDiscontinuation = `${prepDiscontinuation} and AgeGroup IN ('${query.datimAgeGroup
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
 
         if (query.year) {
-            prepDiscontinuation = `${prepDiscontinuation} and ex.year = ${query.year}`;
+            prepDiscontinuation = `${prepDiscontinuation} and ExitYear = ${query.year}`;
         }
 
         if (query.month) {
-            prepDiscontinuation = `${prepDiscontinuation} and ex.month = ${query.month}`;
+            prepDiscontinuation = `${prepDiscontinuation} and ExitMonth = ${query.month}`;
         }
 
         prepDiscontinuation = `${prepDiscontinuation} GROUP BY ExitReason
