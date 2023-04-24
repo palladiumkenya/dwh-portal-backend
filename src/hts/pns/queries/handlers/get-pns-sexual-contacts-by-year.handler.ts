@@ -14,24 +14,16 @@ export class GetPnsSexualContactsByYearHandler
     ) {}
 
     async execute(query: GetPnsSexualContactsByYearQuery): Promise<any> {
-        let pnsSexualContactsByYear = `Select year(DateTestedKey) year,
-                month(DateTestedKey) month,
-                Sum(Case WHEN PatientPKHash is not null then 1 ELSE 0 End) elicited,
-                SUM(Tested)   tested,
+        let pnsSexualContactsByYear = `Select year,
+                month,
+                Sum(PartnersElicited) elicited,
+                sum(PartnerTested) tested,
+                Sum(Positive) positive,
+                sum(Linked) linked,
                 
-                sum(Case WHEN FinalTestResult = 'Positive' then 1 ELSE 0 End ) positive,
-                SUM(Case WHEN (ReportedCCCNumber  is not null) then 1 ELSE 0 End ) linked,
-                
-                SUM(Case WHEN (KnowledgeOfHivStatus='Positive') then 1 ELSE 0 End)  knownPositive
-            From NDWH.dbo.FactHTSPartnerNotificationServices pns
-            LEFT JOIN NDWH.dbo.FactHTSClientTests test on test.PatientKey = pns.PatientKey
-            LEFT JOIN NDWH.dbo.DimPatient pat on pns.PatientKey = pat.PatientKey
-            LEFT JOIN NDWH.dbo.DimFacility f on f.FacilityKey = pns.FacilityKey
-            LEFT JOIN NDWH.dbo.DimAgeGroup age on pns.AgeGroupKey = age.AgeGroupKey
-            LEFT JOIN NDWH.dbo.DimAgency a on pns.AgencyKey = a.AgencyKey
-            LEFT JOIN NDWH.dbo.DimPartner p on pns.PartnerKey = p.PartnerKey
-
-            where RelationsipToIndexClient in ('Partner','Spouse','Co-Wife','cowife','Sexual Partner','Sexual Network') 
+                Sum(KnownPositive) knownPositive
+            FROM [dbo].[AggregateHTSPNSSexualPartner]
+            where MFLCode is not null
             `;
 
         // this.repository.createQueryBuilder('q')
@@ -77,18 +69,21 @@ export class GetPnsSexualContactsByYearHandler
         // if(query.year) {
         //     pnsSexualContactsByYear.andWhere('q.year = :year', { year: query.year});
         // }
-
         if (query.fromDate) {
-            pnsSexualContactsByYear = `${pnsSexualContactsByYear} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2)) >= ${query.fromDate}`;
+            const fromYear = parseInt(query.fromDate.substring(0, 4));
+            const fromMonth = parseInt(query.fromDate.substring(4));
+            pnsSexualContactsByYear = `${pnsSexualContactsByYear} and (year > ${fromYear} or (year = ${fromYear} and month >= ${fromMonth}))`;
         }
 
         if (query.toDate) {
-            pnsSexualContactsByYear = `${pnsSexualContactsByYear} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2))<= ${query.toDate}`;
+            const toYear = parseInt(query.toDate.substring(0, 4));
+            const toMonth = parseInt(query.toDate.substring(4));
+            pnsSexualContactsByYear = `${pnsSexualContactsByYear} and (year < ${toYear} or (year = ${toYear} and month <= ${toMonth}))`;
         }
 
-        pnsSexualContactsByYear = `${pnsSexualContactsByYear} GROUP BY year(DateTestedKey), month(DateTestedKey)`;
+        pnsSexualContactsByYear = `${pnsSexualContactsByYear} GROUP BY year, month`;
 
-        pnsSexualContactsByYear = `${pnsSexualContactsByYear} ORDER BY year(DateTestedKey), month(DateTestedKey)`;
+        pnsSexualContactsByYear = `${pnsSexualContactsByYear} ORDER BY year, month`;
 
         return await this.repository.query(pnsSexualContactsByYear, []);
     }

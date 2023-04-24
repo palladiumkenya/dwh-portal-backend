@@ -16,24 +16,9 @@ export class GetPnsKnowledgeHivStatusCascadeHandler implements IQueryHandler<Get
 
     async execute(query: GetPnsKnowledgeHivStatusCascadeQuery): Promise<any> {
         let pnsKnowledgeHivStatusCascade = `Select 
-                Sum(Case WHEN PatientPKHash is not null then 1 ELSE 0 End) elicited,
-                SUM(Tested)   tested,
-                
-                sum(Case WHEN FinalTestResult = 'Positive' then 1 ELSE 0 End ) positive,
-                SUM(Case WHEN (ReportedCCCNumber  is not null) then 1 ELSE 0 End ) linked,
-								SUM(Case  WHEN (FinalTestResult='Positive' ) then 1 ELSE 0 End)  newPositives,
-								SUM(Case WHEN (FinalTestResult ='Negative' ) then 1 ELSE 0 End)  newNegatives,
-								SUM(Case WHEN (KnowledgeOfHivStatus='Unknown' or KnowledgeOfHivStatus='1067') then 1 ELSE 0 End)  unknownStatus,
-                
-                SUM(Case WHEN (KnowledgeOfHivStatus='Positive') then 1 ELSE 0 End)  knownPositive
-            From NDWH.dbo.FactHTSPartnerNotificationServices pns
-            LEFT JOIN NDWH.dbo.FactHTSClientTests test on test.PatientKey = pns.PatientKey
-            LEFT JOIN NDWH.dbo.DimPatient pat on pns.PatientKey = pat.PatientKey
-            LEFT JOIN NDWH.dbo.DimFacility f on f.FacilityKey = pns.FacilityKey
-            LEFT JOIN NDWH.dbo.DimAgeGroup age on pns.AgeGroupKey = age.AgeGroupKey
-            LEFT JOIN NDWH.dbo.DimAgency a on pns.AgencyKey = a.AgencyKey
-            LEFT JOIN NDWH.dbo.DimPartner p on pns.PartnerKey = p.PartnerKey
-            Where MFLCode is not Null`;
+                SUM(q.ContactElicited) elicited, SUM(q.ContactTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive, SUM(q.NewNegatives) newNegatives, SUM(q.NewPositives) newPositives, SUM(q.UnknownStatus) unknownStatus
+                FROM REPORTING.[dbo].[AggregateHTSPNSKnowledgeHIVStatus] q
+                WHERE MFLCode IS NOT NULL`;
         // this.repository.createQueryBuilder('q')
         //     .select(['SUM(q.ContactElicited) elicited, SUM(q.ContactTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive, SUM(q.NewNegatives) newNegatives, SUM(q.NewPositives) newPositives, SUM(q.UnknownStatus) unknownStatus'])
         //     .where('q.Mflcode IS NOT NULL');
@@ -81,11 +66,15 @@ export class GetPnsKnowledgeHivStatusCascadeHandler implements IQueryHandler<Get
         // }
 
         if (query.fromDate) {
-            pnsKnowledgeHivStatusCascade = `${pnsKnowledgeHivStatusCascade} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2)) >= ${query.fromDate}`;
+            const fromYear = parseInt(query.fromDate.substring(0, 4));
+            const fromMonth = parseInt(query.fromDate.substring(4));
+            pnsKnowledgeHivStatusCascade = `${pnsKnowledgeHivStatusCascade} and (year > ${fromYear} or (year = ${fromYear} and month >= ${fromMonth}))`;
         }
 
         if (query.toDate) {
-            pnsKnowledgeHivStatusCascade = `${pnsKnowledgeHivStatusCascade} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2))<= ${query.toDate}`;
+            const toYear = parseInt(query.toDate.substring(0, 4));
+            const toMonth = parseInt(query.toDate.substring(4));
+            pnsKnowledgeHivStatusCascade = `${pnsKnowledgeHivStatusCascade} and (year < ${toYear} or (year = ${toYear} and month <= ${toMonth}))`;
         }
 
         return await this.repository.query(

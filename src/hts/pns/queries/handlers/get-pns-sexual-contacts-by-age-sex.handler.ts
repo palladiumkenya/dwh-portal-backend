@@ -15,24 +15,16 @@ export class GetPnsSexualContactsByAgeSexHandler implements IQueryHandler<GetPns
     }
 
     async execute(query: GetPnsSexualContactsByAgeSexQuery): Promise<any> {
-        let pnsSexualContactsByAgeSex = `Select DATIMAgegroup age,
+        let pnsSexualContactsByAgeSex = `Select Agegroup age,
                 Gender gender,
-                Sum(Case WHEN PatientPKHash is not null then 1 ELSE 0 End) elicited,
-                SUM(Tested)   tested,
+                Sum(PartnersElicited) elicited,
+                sum(PartnerTested) tested,
+                Sum(Positive) positive,
+                sum(Linked) linked,
                 
-                sum(Case WHEN FinalTestResult = 'Positive' then 1 ELSE 0 End ) positive,
-                SUM(Case WHEN (ReportedCCCNumber  is not null) then 1 ELSE 0 End ) linked,
-                
-                SUM(Case WHEN (KnowledgeOfHivStatus='Positive') then 1 ELSE 0 End)  knownPositive
-            From NDWH.dbo.FactHTSPartnerNotificationServices pns
-            LEFT JOIN NDWH.dbo.FactHTSClientTests test on test.PatientKey = pns.PatientKey
-            LEFT JOIN NDWH.dbo.DimPatient pat on pns.PatientKey = pat.PatientKey
-            LEFT JOIN NDWH.dbo.DimFacility f on f.FacilityKey = pns.FacilityKey
-            LEFT JOIN NDWH.dbo.DimAgeGroup age on pns.AgeGroupKey = age.AgeGroupKey
-            LEFT JOIN NDWH.dbo.DimAgency a on pns.AgencyKey = a.AgencyKey
-            LEFT JOIN NDWH.dbo.DimPartner p on pns.PartnerKey = p.PartnerKey
-
-            where RelationsipToIndexClient in ('Partner','Spouse','Co-Wife','cowife','Sexual Partner','Sexual Network')
+                Sum(KnownPositive) knownPositive
+            FROM [dbo].[AggregateHTSPNSSexualPartner]
+            where MFLCode is not null
             `;
         
         // this.repository.createQueryBuilder('q')
@@ -80,16 +72,20 @@ export class GetPnsSexualContactsByAgeSexHandler implements IQueryHandler<GetPns
         // }
 
         if (query.fromDate) {
-            pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2)) >= ${query.fromDate}`;
+            const fromYear = parseInt(query.fromDate.substring(0, 4));
+            const fromMonth = parseInt(query.fromDate.substring(4));
+            pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} and (year > ${fromYear} or (year = ${fromYear} and month >= ${fromMonth}))`;
         }
 
         if (query.toDate) {
-            pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} and CONCAT(year(DateTestedKey), RIGHT('00' + CONVERT(VARCHAR(2), month(DateTestedKey)), 2))<= ${query.toDate}`;
+            const toYear = parseInt(query.toDate.substring(0, 4));
+            const toMonth = parseInt(query.toDate.substring(4));
+            pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} and (year < ${toYear} or (year = ${toYear} and month <= ${toMonth}))`;
         }
 
-        pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} GROUP BY Gender, DATIMAgegroup`;
+        pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} GROUP BY Gender,Agegroup`;
 
-        pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} ORDER BY DATIMAgegroup, Gender`;
+        pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} ORDER BY Agegroup, Gender`;
 
 
         return await this.repository.query(
