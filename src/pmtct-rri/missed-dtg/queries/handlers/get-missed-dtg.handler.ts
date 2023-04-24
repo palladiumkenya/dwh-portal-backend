@@ -17,7 +17,7 @@ export class GetMissedDTGHandler
         let missedProf = this.repository
             .createQueryBuilder('f')
             .select(
-                `Facility_Name, SubCounty, County,SDP, Agency, SUM(CalHIV) CalHIV, SUM(CalHIVOnDTG) CalHIVOnDTG, SUM(CalHIVNotOnDTG) CalHIVNotOnDTG`,
+                `Facility_Name, SubCounty, County, SDP, Agency, SUM(CalHIV) CalHIV, SUM(CalHIVOnDTG) CalHIVOnDTG, SUM(CalHIVNotOnDTG) CalHIVNotOnDTG`,
             );
 
         if (query.county) {
@@ -33,19 +33,19 @@ export class GetMissedDTGHandler
         }
 
         if (query.facility) {
-            missedProf.andWhere('f.FacilityName IN (:...facility)', {
+            missedProf.andWhere('f.Facility_Name IN (:...facility)', {
                 facility: query.facility,
             });
         }
 
         if (query.partner) {
-            missedProf.andWhere('f.PartnerName IN (:...partner)', {
+            missedProf.andWhere('f.SDP IN (:...partner)', {
                 partner: query.partner,
             });
         }
 
         if (query.agency) {
-            missedProf.andWhere('f.AgencyName IN (:...agency)', {
+            missedProf.andWhere('f.Agency IN (:...agency)', {
                 agency: query.agency,
             });
         }
@@ -56,11 +56,11 @@ export class GetMissedDTGHandler
             });
         }
 
-        if (query.datimAgeGroup) {
-            missedProf.andWhere('f.AgeGroup IN (:...ageGroups)', {
-                ageGroups: query.datimAgeGroup,
-            });
-        }
+        // if (query.datimAgeGroup) {
+        //     missedProf.andWhere('f.AgeGroup IN (:...ageGroups)', {
+        //         ageGroups: query.datimAgeGroup,
+        //     });
+        // }
 
         // if (query.year) {
         //     missedProf.andWhere(
