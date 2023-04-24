@@ -71,17 +71,15 @@ export class GetPnsChildrenByYearHandler
         // }
 
         if (query.fromDate) {
-            const year = parseInt(query.fromDate.substring(0, 4));
-            const month = parseInt(query.fromDate.substring(4));
-            pnsChildrenByYear = `${pnsChildrenByYear} and year >= ${year}`;
-            pnsChildrenByYear = `${pnsChildrenByYear} and month >= ${month}`;
+            const fromYear = parseInt(query.fromDate.substring(0, 4));
+            const fromMonth = parseInt(query.fromDate.substring(4));
+            pnsChildrenByYear = `${pnsChildrenByYear} and (year > ${fromYear} or (year = ${fromYear} and month >= ${fromMonth}))`;
         }
 
         if (query.toDate) {
-            const year = parseInt(query.toDate.substring(0, 4));
-            const month = parseInt(query.toDate.substring(4));
-            pnsChildrenByYear = `${pnsChildrenByYear} and year <= ${year}`;
-            pnsChildrenByYear = `${pnsChildrenByYear} and month <= ${month}`;
+            const toYear = parseInt(query.toDate.substring(0, 4));
+            const toMonth = parseInt(query.toDate.substring(4));
+            pnsChildrenByYear = `${pnsChildrenByYear} and (year < ${toYear} or (year = ${toYear} and month <= ${toMonth}))`;
         }
 
         pnsChildrenByYear = `${pnsChildrenByYear} GROUP BY year, month`;

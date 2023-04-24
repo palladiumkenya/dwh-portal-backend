@@ -15,16 +15,9 @@ export class GetPnsIndexHandler implements IQueryHandler<GetPnsIndexQuery> {
     async execute(query: GetPnsIndexQuery): Promise<any> {
         let params = [];
         let pnsIndex = `SELECT 
-                Count(*) indexClients
-            FROM 
-                NDWH.[dbo].[FactHTSPartnerNotificationServices] link
-                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-                LEFT JOIN NDWH.dbo.FactHTSClientTests test on test.PatientKey = link.PatientKey
-            WHERE FinalTestResult = 'Positive'`;
+                SUM(q.positive) indexClients
+                FROM [dbo].[AggregateHTSUptake] q
+                WHERE q.positive > 0`;
 
         if (query.county) {
             pnsIndex = `${pnsIndex}  and County IN ('${query.county
@@ -59,11 +52,15 @@ export class GetPnsIndexHandler implements IQueryHandler<GetPnsIndexQuery> {
         // }
 
         if (query.fromDate) {
-            pnsIndex = `${pnsIndex}  and DateTestedKey >= ${query.fromDate}01`;
+            const fromYear = parseInt(query.fromDate.substring(0, 4));
+            const fromMonth = parseInt(query.fromDate.substring(4));
+            pnsIndex = `${pnsIndex} and (year > ${fromYear} or (year = ${fromYear} and month >= ${fromMonth}))`;
         }
 
         if (query.toDate) {
-            pnsIndex = `${pnsIndex}  and DateTestedKey <= EOMONTH('${query.toDate}01')`;
+            const toYear = parseInt(query.toDate.substring(0, 4));
+            const toMonth = parseInt(query.toDate.substring(4));
+            pnsIndex = `${pnsIndex} and (year < ${toYear} or (year = ${toYear} and month <= ${toMonth}))`;
         }
 
         return await this.repository.query(pnsIndex, params);

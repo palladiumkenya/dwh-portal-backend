@@ -69,17 +69,15 @@ export class GetPnsChildrenCascadeHandler
         // }
 
         if (query.fromDate) {
-            const year = parseInt(query.fromDate.substring(0, 4));
-            const month = parseInt(query.fromDate.substring(4));
-            pnsChildrenCascade = `${pnsChildrenCascade} and year >= ${year}`;
-            pnsChildrenCascade = `${pnsChildrenCascade} and month >= ${month}`;
+            const fromYear = parseInt(query.fromDate.substring(0, 4));
+            const fromMonth = parseInt(query.fromDate.substring(4));
+            pnsChildrenCascade = `${pnsChildrenCascade} and (year > ${fromYear} or (year = ${fromYear} and month >= ${fromMonth}))`;
         }
 
         if (query.toDate) {
-            const year = parseInt(query.toDate.substring(0, 4));
-            const month = parseInt(query.toDate.substring(4));
-            pnsChildrenCascade = `${pnsChildrenCascade} and year <= ${year}`;
-            pnsChildrenCascade = `${pnsChildrenCascade} and month <= ${month}`;
+            const toYear = parseInt(query.toDate.substring(0, 4));
+            const toMonth = parseInt(query.toDate.substring(4));
+            pnsChildrenCascade = `${pnsChildrenCascade} and (year < ${toYear} or (year = ${toYear} and month <= ${toMonth}))`;
         }
         return await this.repository.query(pnsChildrenCascade, []);
 
