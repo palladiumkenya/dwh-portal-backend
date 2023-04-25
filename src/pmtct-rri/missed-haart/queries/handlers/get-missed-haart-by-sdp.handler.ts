@@ -16,7 +16,7 @@ export class GetMissedHAARTBySDPHandler
         let missedHAART = this.repository
             .createQueryBuilder('f')
             .select(
-                `SUM(KnownPositives) known, SUM(New) new, sum(NotonArt) not, SDP`,
+                `SUM(KnownPositives) known, SUM(New) new, sum(NotonArt) notart, SDP`,
             );
 
         if (query.county) {
@@ -69,7 +69,7 @@ export class GetMissedHAARTBySDPHandler
 
         return await missedHAART
             .groupBy('SDP')
-            .orderBy('SUM(KnownPositives)', 'DESC')
+            .orderBy('SUM(NotonArt)', 'DESC')
             .getRawMany();
     }
 }
