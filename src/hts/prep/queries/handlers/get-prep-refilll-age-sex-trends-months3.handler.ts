@@ -59,8 +59,8 @@ export class GetPrepRefillAgeSexTrendsmonth3Handler implements IQueryHandler<Get
                 .replace(/,/g, "','")}')`;
         }
 
-        if (query.ageGroup) {
-            newOnPrep = `${newOnPrep} and ageGroup IN ('${query.ageGroup
+        if (query.datimAgeGroup) {
+            newOnPrep = `${newOnPrep} and ageGroup IN ('${query.datimAgeGroup
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
