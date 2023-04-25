@@ -18,7 +18,7 @@ export class GetPrepRefillAgeSexTrendsmonth1Handler implements IQueryHandler<Get
     async execute(query: GetPrepRefillAgeSexMonth1Query): Promise<any> {
         const params = [];
         let newOnPrep = ` SELECT
-            sum(Tested) tested, Sum(nottested) nottested 
+            sum(Tested) tested, Sum(nottested) nottested, AgeGroup DATIMAgeGroup
         FROM [dbo].[AggegateTestingAt1MonthRefill]
         WHERE MFLCode is not null
         `;
@@ -59,8 +59,8 @@ export class GetPrepRefillAgeSexTrendsmonth1Handler implements IQueryHandler<Get
                 .replace(/,/g, "','")}')`;
         }
 
-        if (query.ageGroup) {
-            newOnPrep = `${newOnPrep} and ageGroup IN ('${query.ageGroup
+        if (query.datimAgeGroup) {
+            newOnPrep = `${newOnPrep} and ageGroup IN ('${query.datimAgeGroup
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
