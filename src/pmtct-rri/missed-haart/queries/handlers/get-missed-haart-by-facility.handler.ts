@@ -16,7 +16,7 @@ export class GetMissedHAARTByFacilityHandler
         let missedHAART = this.repository
             .createQueryBuilder('f')
             .select(
-                `Facility_Name, County, SubCounty, SDP, Agency, KnownPositives, New`,
+                `Facility_Name, County, SubCounty, SDP, Agency, KnownPositives, New, NotonArt`,
             );
 
         if (query.county) {
