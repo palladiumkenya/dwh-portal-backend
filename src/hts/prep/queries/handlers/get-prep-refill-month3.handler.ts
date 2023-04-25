@@ -59,17 +59,17 @@ export class GetPrepRefillMonth3Handler implements IQueryHandler<GetPrepRefillMo
         }
 
         if (query.datimAgeGroup) {
-            newOnPrep = `${newOnPrep} and DATIMAgeGroup IN ('${query.datimAgeGroup
+            newOnPrep = `${newOnPrep} and AgeGroup IN ('${query.datimAgeGroup
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and visit.year = ${query.year}`;
+            newOnPrep = `${newOnPrep} and year = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and visit.month = ${query.month}`;
+            newOnPrep = `${newOnPrep} and month = ${query.month}`;
         }
 
         return await this.repository.query(newOnPrep, params);
