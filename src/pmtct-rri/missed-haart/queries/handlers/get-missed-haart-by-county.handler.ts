@@ -15,7 +15,7 @@ export class GetMissedHAARTByCountyHandler
     async execute(query: GetMissedHAARTByCountyQuery): Promise<any> {
         let missedHAART = this.repository
             .createQueryBuilder('f')
-            .select(`SUM(KnownPositives) known, SUM(New) new, County`);
+            .select(`SUM(KnownPositives) known, SUM(New) new, sum(NotonArt) not, County`);
 
         if (query.county) {
             missedHAART.andWhere('f.County IN (:...county)', {
