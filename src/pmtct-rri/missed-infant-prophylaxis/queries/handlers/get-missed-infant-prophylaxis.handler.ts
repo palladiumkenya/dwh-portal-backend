@@ -16,7 +16,7 @@ export class GetMissedInfantProphylaxisHandler
         let missedProf = this.repository
             .createQueryBuilder('f')
             .select(
-                `Facility_Name, SubCounty, County, SDP, Agency, NoOfInfantsGivenProphylaxis, NoOfInfantsNotGivenProphylaxisKnownPos, NoOfInfantsNotGivenProphylaxisNewPos`,
+                `Facility_Name, SubCounty, County, SDP, Agency, NoOfInfantsGivenProphylaxis, NoOfInfantsNotGivenProphylaxis, NoOfPositiveMothers, NoOfInfantsNotGivenProphylaxisKnownPosANC NoOfInfantsNotGivenProphylaxisKnownPos, NoOfInfantsNotGivenProphylaxisNewPosANC NoOfInfantsNotGivenProphylaxisNewPos`,
             );
 
         if (query.county) {
