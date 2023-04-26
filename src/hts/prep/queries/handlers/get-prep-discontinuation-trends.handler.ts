@@ -16,20 +16,10 @@ export class GetPrepDiscontinuationTrendHandler
     async execute(query: GetPrepDiscontinuationTrendsQuery): Promise<any> {
         let params = []
         let prepDiscontinuation = `SELECT
-        ex.month,
-        ex.year,
-        COUNT ( DISTINCT ( concat ( PrepNumber, PatientPKHash, MFLCode ) )  )AS PrepDiscontinuations
-    from NDWH.dbo.FactPrep prep
-
-    LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
-    LEFT JOIN NDWH.dbo.DimFacility fac ON fac.FacilityKey = prep.FacilityKey
-    LEFT JOIN NDWH.dbo.DimPartner p ON p.PartnerKey = prep.PartnerKey
-    LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
-    LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
-    LEFT JOIN NDWH.dbo.DimDate ex ON ex.DateKey = ExitDateKey COLLATE Latin1_General_CI_AS
-
-    where ExitDateKey is not null 
-
+            ExitYear year, ExitMonth month,
+            SUM(PrepDiscontinuations) AS PrepDiscontinuations
+        FROM [AggregatePrepDiscontinuation]
+        where ExitYear is not null 
 `;
 
         if (query.county) {
@@ -69,22 +59,22 @@ export class GetPrepDiscontinuationTrendHandler
         }
 
         if (query.datimAgeGroup) {
-            prepDiscontinuation = `${prepDiscontinuation} and DATIMAgeGroup IN ('${query.datimAgeGroup
+            prepDiscontinuation = `${prepDiscontinuation} and AgeGroup IN ('${query.datimAgeGroup
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
 
         if (query.year) {
-            prepDiscontinuation = `${prepDiscontinuation} and ex.year = ${query.year}`;
+            prepDiscontinuation = `${prepDiscontinuation} and ExitYear = ${query.year}`;
         }
 
         if (query.month) {
-            prepDiscontinuation = `${prepDiscontinuation} and ex.month = ${query.month}`;
+            prepDiscontinuation = `${prepDiscontinuation} and ExitMonth = ${query.month}`;
         }
 
         prepDiscontinuation = `${prepDiscontinuation} 
-            Group BY ex.year, ex.month
-            Order by ex.year DESC, ex.month DESC`
+            Group BY ExitYear, ExitMonth
+            Order by ExitYear DESC, ExitMonth DESC`;
 
         return await this.repository.query(prepDiscontinuation, params);
     }
