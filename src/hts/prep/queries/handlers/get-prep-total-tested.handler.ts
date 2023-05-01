@@ -15,64 +15,74 @@ export class GetPrepTotalTestedHandler implements IQueryHandler<GetPrepTotalTest
     async execute(query: GetPrepTotalTestedQuery): Promise<any> {
         const params = [];
         let newOnPrep = `SELECT
-            Count(*) As TotalTested
-        from NDWH.dbo.FactPrep prep LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
-        LEFT JOIN NDWH.dbo.DimFacility fac ON fac.FacilityKey = prep.FacilityKey
-        LEFT JOIN NDWH.dbo.DimPartner p ON p.PartnerKey = prep.PartnerKey
-        LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
-        LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
-        LEFT JOIN NDWH.dbo.DimDate test ON test.DateKey = DateTestMonth1Key COLLATE Latin1_General_CI_AS
-        WHERE test.Date is not null
+            SUM(s.tested) + SUM(p.tested) TotalTested
+        from AggregatePrepTestingAt1MonthRefill s
+        FULL OUTER JOIN AggregatePrepTestingAt3MonthRefill p on p.MFLCode = s.MFLCode and s.FacilityName = p.FacilityName and s.County = p.County and s.SubCounty = p.SubCounty and s.PartnerName = p.PartnerName and s.AgencyName = p.AgencyName and s.Gender = p.Gender and s.AgeGroup = s.AgeGroup and s.Month = p.Month and s.Year = p.Year
+        WHERE s.MFLCode is not null
         `;
 
         if (query.county) {
-            newOnPrep = `${newOnPrep} and County IN ('${query.county
+            newOnPrep = `${newOnPrep} and (s.County IN ('${query.county
                 .toString()
-                .replace(/,/g, "','")}')`;
+                .replace(/,/g, "','")}') or p.County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}'))`;
         }
 
         if (query.subCounty) {
-            newOnPrep = `${newOnPrep} and SubCounty IN ('${query.subCounty
+            newOnPrep = `${newOnPrep} and (s.SubCounty IN ('${query.subCounty
                 .toString()
-                .replace(/,/g, "','")}')`;
+                .replace(/,/g, "','")}') or p.SubCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}'))`;
         }
 
         if (query.facility) {
-            newOnPrep = `${newOnPrep} and FacilityName IN ('${query.facility
+            newOnPrep = `${newOnPrep} and (s.FacilityName IN ('${query.facility
                 .toString()
-                .replace(/,/g, "','")}')`;
+                .replace(/,/g, "','")}') or p.FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}'))`;
         }
 
         if (query.partner) {
-            newOnPrep = `${newOnPrep} and PartnerName IN ('${query.partner
+            newOnPrep = `${newOnPrep} and (s.PartnerName IN ('${query.partner
                 .toString()
-                .replace(/,/g, "','")}')`;
+                .replace(/,/g, "','")}') or p.PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}'))`;
         }
 
         if (query.agency) {
-            newOnPrep = `${newOnPrep} and AgencyName IN ('${query.agency
+            newOnPrep = `${newOnPrep} and (s.AgencyName IN ('${query.agency
                 .toString()
-                .replace(/,/g, "','")}')`;
+                .replace(/,/g, "','")}') or p.AgencyName IN ('${query.agency
+                .toString()
+                .replace(/,/g, "','")}'))`;
         }
 
         if (query.gender) {
-            newOnPrep = `${newOnPrep} and Gender IN ('${query.gender
+            newOnPrep = `${newOnPrep} and (s.Gender IN ('${query.gender
                 .toString()
-                .replace(/,/g, "','")}')`;
+                .replace(/,/g, "','")}') or p.Gender IN ('${query.gender
+                .toString()
+                .replace(/,/g, "','")}'))`;
         }
 
         if (query.datimAgeGroup) {
-            newOnPrep = `${newOnPrep} and DATIMAgeGroup IN ('${query.datimAgeGroup
+            newOnPrep = `${newOnPrep} and (s.AgeGroup IN ('${query.datimAgeGroup
                 .toString()
-                .replace(/,/g, "','")}')`;
+                .replace(/,/g, "','")}') or p.AgeGroup IN ('${query.datimAgeGroup
+                .toString()
+                .replace(/,/g, "','")}'))`;
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and test.year = ${query.year}`;
+            newOnPrep = `${newOnPrep} and (s.year = ${query.year} or p.year = ${query.year})`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and test.month = ${query.month}`;
+            newOnPrep = `${newOnPrep} and (s.month = ${query.month} or p.month = ${query.month})`;
         }
 
         return await this.repository.query(newOnPrep, params);

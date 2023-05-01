@@ -17,8 +17,8 @@ export class GetPrepRefillMonth3Handler implements IQueryHandler<GetPrepRefillMo
         const params = [];
         let newOnPrep = `
         SELECT
-            sum(Tested) tested, Sum(nottested) nottested 
-        FROM [dbo].[AggegateTestingAt3MonthRefill]
+            sum(Tested) tested, Sum(nottested) nottested, sum(refilled) refilled 
+        FROM [dbo].[AggregatePrepTestingAt3MonthRefill]
         WHERE MFLCode is not null
         `;
 
