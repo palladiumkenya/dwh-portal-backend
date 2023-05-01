@@ -49,10 +49,10 @@ export class GetNupiDatasetHandler
                 from NDWH.dbo.FACT_CT_DHIS2 as khis
                 where CurrentOnART_Total is not null
                     and datediff(
-                      mm,
-                      cast(concat(ReportMonth_Year, '01') as date),
-                      (select max(cast(concat(ReportMonth_Year, '01') as date)
-                      ) from All_Staging_2016_2.dbo.FACT_CT_DHIS2)    
+                        mm,
+                        cast(concat(ReportMonth_Year, '01') as date),
+                        (select max(cast(concat(ReportMonth_Year, '01') as date)
+                        ) from NDWH.dbo.FACT_CT_DHIS2)    
                     ) <= 6
                 group by SiteCode
             ),
@@ -195,9 +195,9 @@ export class GetNupiDatasetHandler
 					coalesce(verified_but_with_survey.count_of_patients,0) as patients_verified_but_with_survey
                 from EnrichedFullfacilitylist
                 left join khis on cast (khis.SiteCode as nvarchar) = cast (EnrichedFullfacilitylist.MFLCode as nvarchar)
-                left join dwh_nupi_by_facility on dwh_nupi_by_facility.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-                left join dwh_nupi_by_facility_adults on dwh_nupi_by_facility_adults.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-                left join dwh_nupi_by_facility_children on dwh_nupi_by_facility_children.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                full outer join dwh_nupi_by_facility on dwh_nupi_by_facility.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                full outer join dwh_nupi_by_facility_adults on dwh_nupi_by_facility_adults.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                full outer join dwh_nupi_by_facility_children on dwh_nupi_by_facility_children.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
                 left join latest_upload on latest_upload.SiteCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
                 left join Grouping_Paeds on Grouping_Paeds.MFLCode=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
                 left join dwh_by_facility_adults on dwh_by_facility_adults.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
