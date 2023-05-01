@@ -18,8 +18,8 @@ export class GetPrepRefillAgeSexTrendsmonth1Handler implements IQueryHandler<Get
     async execute(query: GetPrepRefillAgeSexMonth1Query): Promise<any> {
         const params = [];
         let newOnPrep = ` SELECT
-            sum(Tested) tested, Sum(nottested) nottested, AgeGroup DATIMAgeGroup
-        FROM [dbo].[AggegateTestingAt1MonthRefill]
+            sum(Tested) tested, Sum(nottested) nottested, AgeGroup DATIMAgeGroup, sum(refilled) refilled 
+        FROM [dbo].[AggregatePrepTestingAt1MonthRefill]
         WHERE MFLCode is not null
         `;
 
