@@ -38,7 +38,7 @@ export class Get12MonthViralSuppressionByYearOfArtStartHandler implements IQuery
         }
 
         if (query.agency) {
-            twelveMonthViralSupByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            twelveMonthViralSupByYearOfArtStart.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

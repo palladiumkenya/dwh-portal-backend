@@ -68,7 +68,7 @@ export class GetVlMedianTimeToFirstVlByYearHandler implements IQueryHandler<GetV
         if (query.partner) {
             medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
                 .select(['StartYr year, MedianTimeToFirstVL_year medianTime'])
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
 
             return await medianTimeToFirstVlSql
                 .groupBy('StartYr, MedianTimeToFirstVL_year')
@@ -79,7 +79,7 @@ export class GetVlMedianTimeToFirstVlByYearHandler implements IQueryHandler<GetV
         if (query.agency) {
             medianTimeToFirstVlSql = this.repository.createQueryBuilder('f')
                 .select(['StartYr year, MedianTimeToFirstVL_year medianTime'])
-                .andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+                .andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
 
             return await medianTimeToFirstVlSql
                 .groupBy('StartYr, MedianTimeToFirstVL_year')
