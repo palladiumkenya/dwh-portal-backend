@@ -20,7 +20,7 @@ export class GetUptakeByPopulationTypeHandler implements IQueryHandler<GetUptake
             '((SUM(CASE WHEN `positive` IS NULL THEN 0 ELSE `positive` END)/SUM(`Tested`))*100) AS positivity\n' +
             '\n' +
             'FROM `fact_hts_populationtype` \n' +
-            'WHERE `Tested` > 0 ';
+            'WHERE `Tested` > 0 and TestType IN (\'Initial\', \'Initial Test\')';
 
         if(query.county) {
             uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and County IN ('${query.county

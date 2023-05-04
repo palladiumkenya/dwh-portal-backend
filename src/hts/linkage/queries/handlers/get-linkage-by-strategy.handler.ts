@@ -28,7 +28,7 @@ export class GetLinkageByStrategyHandler
                 INNER JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
                 INNER JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
                 INNER JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE TestStrategy IS NOT NULL AND TestStrategy <> 'NULL' AND positive > 0`;
+            WHERE TestStrategy IS NOT NULL AND TestStrategy <> 'NULL' AND positive > 0 and TestType IN ('Initial', 'Initial Test')`;
 
         if (query.county) {
             linkageByStrategySql = `${linkageByStrategySql} and County IN ('${query.county

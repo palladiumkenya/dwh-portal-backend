@@ -28,7 +28,7 @@ export class GetLinkageByEntryPointHandler
                 INNER JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
                 INNER JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
                 INNER JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE EntryPoint IS NOT NULL AND EntryPoint <> '' AND positive IS NOT NULL AND positive > 0`;
+            WHERE EntryPoint IS NOT NULL AND EntryPoint <> '' AND positive IS NOT NULL AND positive > 0 and TestType IN ('Initial', 'Initial Test')`;
 
         if (query.county) {
             linkageByEntryPointSql = `${linkageByEntryPointSql} and County IN ('${query.county
