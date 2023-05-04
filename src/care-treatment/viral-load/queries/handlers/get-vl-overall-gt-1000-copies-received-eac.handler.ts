@@ -82,20 +82,20 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
         }
 
         if (query.partner) {
-            vlOverallUptakeGt1000.andWhere('c.CTPartner IN (:...partners)', {
+            vlOverallUptakeGt1000.andWhere('c.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            vlOverallUptakeGt1000.andWhere('c.CTAgency IN (:...agencies)', {
+            vlOverallUptakeGt1000.andWhere('c.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
 
         if (query.datimAgeGroup) {
             vlOverallUptakeGt1000.andWhere(
-                'c.DATIM_AgeGroup IN (:...ageGroups)',
+                'c.AgeGroup IN (:...ageGroups)',
                 {
                     ageGroups: query.datimAgeGroup,
                 },

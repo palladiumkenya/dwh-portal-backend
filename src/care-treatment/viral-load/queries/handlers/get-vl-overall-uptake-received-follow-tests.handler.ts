@@ -72,21 +72,21 @@ export class GetVlOverallUptakeReceivedFollowTestsHandler implements IQueryHandl
         
         if (query.partner) {
             vlOverallUptakeReceivedFollow.andWhere(
-                'cohort.CTPartner IN (:...partners)',
+                'cohort.PartnerName IN (:...partners)',
                 { partners: query.partner },
             );
         }
         
         if (query.agency) {
             vlOverallUptakeReceivedFollow.andWhere(
-                'cohort.CTAgency IN (:...agencies)',
+                'cohort.AgencyName IN (:...agencies)',
                 { agencies: query.agency },
             );
         }
         
         if (query.datimAgeGroup) {
             vlOverallUptakeReceivedFollow.andWhere(
-                'cohort.DATIM_AgeGroup IN (:...ageGroups)',
+                'cohort.AgeGroup IN (:...ageGroups)',
                 { ageGroups: query.datimAgeGroup },
             );
         }

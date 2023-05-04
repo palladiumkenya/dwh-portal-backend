@@ -76,7 +76,7 @@ export class GetVlMedianTimeToFirstVlByPartnerHandler
                 .select([
                     'PartnerName Partner, MedianTimeToFirstVL_Partner medianTime',
                 ])
-                .andWhere('f.CTAgency IN (:...agencies)', {
+                .andWhere('f.AgencyName IN (:...agencies)', {
                     agencies: query.agency,
                 });
 
@@ -85,13 +85,13 @@ export class GetVlMedianTimeToFirstVlByPartnerHandler
                 .orderBy('f.MedianTimeToFirstVL_Partner', 'DESC')
                 .getRawMany();
         }
-
-        if (query.datimAgeGroup) {
-            medianTimeToFirstVlSql.andWhere(
-                'f.DATIM_AgeGroup IN (:...ageGroups)',
-                { ageGroups: query.datimAgeGroup },
-            );
-        }
+//TODO:: ADD AGE GROUP
+        // if (query.datimAgeGroup) {
+        //     medianTimeToFirstVlSql.andWhere(
+        //         'f.AgeGroup IN (:...ageGroups)',
+        //         { ageGroups: query.datimAgeGroup },
+        //     );
+        // }
 
         if (query.gender) {
             medianTimeToFirstVlSql.andWhere('f.Gender IN (:...genders)', {
