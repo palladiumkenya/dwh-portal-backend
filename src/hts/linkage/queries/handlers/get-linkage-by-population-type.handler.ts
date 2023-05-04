@@ -22,7 +22,7 @@ export class GetLinkageByPopulationTypeHandler
             'SUM(CASE WHEN Linked IS NULL THEN 0 ELSE Linked END) linked, ' +
             '((SUM(CASE WHEN Linked IS NULL THEN 0 ELSE Linked END)/SUM(positive))*100) AS linkage ' +
             'FROM fact_hts_populationtype ' +
-            'WHERE PopulationType IS NOT NULL AND positive > 0';
+            'WHERE PopulationType IS NOT NULL AND positive > 0 and TestType IN (\'Initial\', \'Initial Test\')';
 
         if (query.county) {
             linkageByPopulationTypeSql = `${linkageByPopulationTypeSql} and County IN ('${query.county
