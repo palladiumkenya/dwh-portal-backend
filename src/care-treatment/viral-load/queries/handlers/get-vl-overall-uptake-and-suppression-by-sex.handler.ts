@@ -31,11 +31,11 @@ export class GetVlOverallUptakeAndSuppressionBySexHandler implements IQueryHandl
         }
 
         if (query.partner) {
-            vlOverallUptakeAndSuppressionBySex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlOverallUptakeAndSuppressionBySex.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlOverallUptakeAndSuppressionBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlOverallUptakeAndSuppressionBySex.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
