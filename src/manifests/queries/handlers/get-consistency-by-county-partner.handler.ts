@@ -40,10 +40,16 @@ export class GetConsistencyByCountyPartnerHandler implements IQueryHandler<GetCo
                 consistencyResult = consistencyResult.filter(x => query.agency.indexOf(x.agency) !== -1);
             }
             if (query.reportingType == 'county') {
+                consistencyResult = consistencyResult.map(e => {
+                    return {...e, county: e.county.toUpperCase()} 
+                });
                 consistencyValue =  countBy(consistencyResult, 'county');
                 consistencyValue = fromPairs(sortBy(toPairs(consistencyValue), 1).reverse());
             }
             else if(query.reportingType == 'partner') {
+                consistencyResult = consistencyResult.map(e => {
+                    return { ...e, partner: e.partner.toUpperCase() };
+                });
                 consistencyValue = countBy(consistencyResult, 'partner');
                 consistencyValue = fromPairs(sortBy(toPairs(consistencyValue), 1).reverse());
             }

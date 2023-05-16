@@ -27,7 +27,7 @@ export class GetUptakeByTBScreeningHandler
                 INNER JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
                 INNER JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
                 INNER JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE TBScreening IS NOT NULL`;
+            WHERE TBScreening IS NOT NULL and TestType IN ('Initial', 'Initial Test')`;
 
         if (query.county) {
             uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and County IN ('${query.county

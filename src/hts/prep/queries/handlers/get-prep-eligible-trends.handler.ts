@@ -15,18 +15,11 @@ export class GetPrepEligibleTrendsHandler
     async execute(query: GetPrepEligibleTrendsQuery): Promise<any> {
         const params = [];
         let newOnPrep = `SELECT
-                visit.month,
-                visit.year,
+                month,
+                year,
                 Sum(EligiblePrep) As EligiblePrep
-            from NDWH.dbo.FactPrep prep
-
-            LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
-            LEFT JOIN NDWH.dbo.DimFacility fac ON fac.FacilityKey = prep.FacilityKey
-            LEFT JOIN NDWH.dbo.DimPartner p ON p.PartnerKey = prep.PartnerKey
-            LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
-            LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey
-            LEFT JOIN NDWH.dbo.DimDate visit ON visit.DateKey = prep.VisitDateKey COLLATE Latin1_General_CI_AS
-            WHERE EligiblePrep is not null
+            from AggregatePrepCascade prep
+            where year is not null
         `;
 
         if (query.county) {
@@ -66,21 +59,21 @@ export class GetPrepEligibleTrendsHandler
         }
 
         if (query.datimAgeGroup) {
-            newOnPrep = `${newOnPrep} and DATIMAgeGroup IN ('${query.datimAgeGroup
+            newOnPrep = `${newOnPrep} and AgeGroup IN ('${query.datimAgeGroup
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and visit.year = ${query.year}`;
+            newOnPrep = `${newOnPrep} and year = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and visit.month = ${query.month}`;
+            newOnPrep = `${newOnPrep} and month = ${query.month}`;
         }
 
-        newOnPrep = `${newOnPrep} GROUP BY visit.month, visit.year
-						ORDER BY visit.year Desc, visit.month DESC`;
+        newOnPrep = `${newOnPrep} GROUP BY month, year
+						ORDER BY year Desc, month DESC`;
 
         return await this.repository.query(newOnPrep, params);
     }
