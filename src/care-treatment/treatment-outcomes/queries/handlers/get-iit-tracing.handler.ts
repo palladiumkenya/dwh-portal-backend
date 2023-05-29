@@ -2,23 +2,26 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { GetAppointmentKeepingWaterfallQuery } from './../impl/get-appointment-keeping-waterfall.query';
-import { AggregateAppointments } from './../../entities/aggregate-appointments.model';
+import { GetIITTracingQuery } from '../impl/get-iit-tracing.query';
+import { AggregateDefaulterTracingOutcome } from '../../entities/aggregate-defaulter-tracing-outcome.model';
 
-@QueryHandler(GetAppointmentKeepingWaterfallQuery)
-export class GetAppointmentKeepingWaterfallHandler
-    implements IQueryHandler<GetAppointmentKeepingWaterfallQuery> {
+@QueryHandler(GetIITTracingQuery)
+export class GetIITTracingHandler
+    implements IQueryHandler<GetIITTracingQuery> {
     constructor(
-        @InjectRepository(AggregateAppointments, 'mssql')
-        private readonly repository: Repository<AggregateAppointments>,
+        @InjectRepository(AggregateDefaulterTracingOutcome, 'mssql')
+        private readonly repository: Repository<
+            AggregateDefaulterTracingOutcome
+        >,
     ) {}
 
-    async execute(query: GetAppointmentKeepingWaterfallQuery): Promise<any> {
+    async execute(query: GetIITTracingQuery): Promise<any> {
         const treatmentOutcomes = this.repository
             .createQueryBuilder('f')
             .select([
-                'AppointmentStatus, sum(NumOfPatients) NumOfPatients',
+                'SUM(patients) patients, Year, Month, TracingOutcome',
             ])
+            .where(`TracingOutcome IN ('Contact', 'no contact')`);
 
         if (query.county) {
             treatmentOutcomes.andWhere('f.County IN (:...counties)', {
@@ -62,32 +65,20 @@ export class GetAppointmentKeepingWaterfallHandler
             });
         }
 
-        if (query.month) {
-            treatmentOutcomes.andWhere('MONTH(f.AsOfDate) = :month', {
-                month: query.month,
-            });
-        }
-
         if (query.year) {
-            treatmentOutcomes.andWhere('YEAR(f.AsOfDate) = :year', {
+            treatmentOutcomes.andWhere('YEAR = :year', {
                 year: query.year,
             });
         }
 
-        if (query.fromDate) {
-            treatmentOutcomes.andWhere('f.AsOfDate >= :fromDate', {
-                fromDate: query.fromDate,
-            });
-        }
-
-        if (query.toDate) {
-            treatmentOutcomes.andWhere('f.AsOfDate <= :toDate', {
-                toDate: query.toDate,
+        if (query.month) {
+            treatmentOutcomes.andWhere('MONTH = :month', {
+                month: query.month,
             });
         }
 
         return await treatmentOutcomes
-            .groupBy('f.AppointmentStatus')
+            .groupBy('Year, Month, TracingOutcome')
             .getRawMany();
     }
 }

@@ -266,6 +266,7 @@ import { GetArtVerificationPendingSurveysByCountyQuery } from './art-verificatio
 import { GetArtVerificationReasonsQuery } from './art-verification/queries/impl/get-art-verification-reasons.query';
 import { GetQuaterlyIITQuery } from './treatment-outcomes/queries/impl/get-quaterly-iit.query';
 import { GetAppointmentKeepingWaterfallQuery } from './treatment-outcomes/queries/impl/get-appointment-keeping-waterfall.query';
+import { GetIITTracingQuery } from './treatment-outcomes/queries/impl/get-iit-tracing.query';
 
 
 @Controller('care-treatment')
@@ -3944,6 +3945,66 @@ export class CareTreatmentController {
 
         if (fromDate) {
             query.fromDate = fromDate;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getIITTracing')
+    async GetIITTracing(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('fromDate') fromDate,
+        @Query('toDate') toDate,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetIITTracingQuery();
+
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
         }
 
         if (month) {

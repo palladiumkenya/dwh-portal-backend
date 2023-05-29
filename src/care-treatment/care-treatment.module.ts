@@ -338,6 +338,8 @@ import { LineListViralLoad } from './viral-load/entities/linelist-viral-load.mod
 import { GetAppointmentKeepingWaterfallHandler } from './treatment-outcomes/queries/handlers/get-appointment-keeping-waterfall.handler';
 import { GetQuaterlyIITHandler } from './treatment-outcomes/queries/handlers/get-quaterly-iit.handler';
 import { AggregateAppointments } from './treatment-outcomes/entities/aggregate-appointments.model';
+import { AggregateDefaulterTracingOutcome } from './treatment-outcomes/entities/aggregate-defaulter-tracing-outcome.model';
+import { GetIITTracingHandler } from './treatment-outcomes/queries/handlers/get-iit-tracing.handler';
 
 
 @Module({
@@ -384,6 +386,8 @@ import { AggregateAppointments } from './treatment-outcomes/entities/aggregate-a
 
                 AggregateTreatmentOutcomes,
                 AggregateAppointments,
+                AggregateDefaulterTracingOutcome,
+
                 LineListViralLoad,
 
                 AllEmrSites,
@@ -490,6 +494,7 @@ import { AggregateAppointments } from './treatment-outcomes/entities/aggregate-a
         GetTreatmentOutcomesUndocumentedByFacilityHandler,
         GetAppointmentKeepingWaterfallHandler,
         GetQuaterlyIITHandler,
+        GetIITTracingHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
         GetCtTxCurrAgeGroupDistributionByCountyHandler,
         GetCtTxCurrAgeGroupDistributionByPartnerHandler,
