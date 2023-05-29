@@ -62,6 +62,18 @@ export class GetAppointmentKeepingWaterfallHandler
             });
         }
 
+        if (query.month) {
+            treatmentOutcomes.andWhere('MONTH(f.AsOfDate) = :month', {
+                month: query.month,
+            });
+        }
+
+        if (query.year) {
+            treatmentOutcomes.andWhere('YEAR(f.AsOfDate) = :year', {
+                year: query.year,
+            });
+        }
+
         if (query.fromDate) {
             treatmentOutcomes.andWhere('f.AsOfDate >= :fromDate', {
                 fromDate: query.fromDate,
