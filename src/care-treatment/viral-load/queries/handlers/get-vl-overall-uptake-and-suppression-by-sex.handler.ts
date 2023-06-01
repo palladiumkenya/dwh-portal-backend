@@ -13,9 +13,13 @@ export class GetVlOverallUptakeAndSuppressionBySexHandler implements IQueryHandl
     }
 
     async execute(query: GetVlOverallUptakeAndSuppressionBySexQuery): Promise<any> {
-        const vlOverallUptakeAndSuppressionBySex = this.repository.createQueryBuilder('f')
-            .select(['Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed'])
-            .where('f.MFLCode > 0')
+        const vlOverallUptakeAndSuppressionBySex = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed',
+            ])
+            // .where('f.MFLCode > 0')
+            .where('f.TXCurr > 0')
             .andWhere('f.Gender IS NOT NULL');
 
         if (query.county) {

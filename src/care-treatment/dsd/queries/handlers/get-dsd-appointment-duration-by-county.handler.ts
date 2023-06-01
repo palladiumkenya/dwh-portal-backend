@@ -2,7 +2,6 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetDsdAppointmentDurationByCountyQuery } from '../impl/get-dsd-appointment-duration-by-county.query';
-import { FactTransDsdAppointmentByStabilityStatus } from '../../entities/fact-trans-dsd-appointment-by-stability-status.model';
 import {AggregateDSD} from "../../entities/aggregate-dsd.model";
 import {AggregateDSDApptsByStability} from "../../entities/aggregate-dsd-appts-by-stability.model";
 
