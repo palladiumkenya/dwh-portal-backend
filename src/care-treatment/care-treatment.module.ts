@@ -340,6 +340,8 @@ import { GetQuaterlyIITHandler } from './treatment-outcomes/queries/handlers/get
 import { AggregateAppointments } from './treatment-outcomes/entities/aggregate-appointments.model';
 import { AggregateDefaulterTracingOutcome } from './treatment-outcomes/entities/aggregate-defaulter-tracing-outcome.model';
 import { GetIITTracingHandler } from './treatment-outcomes/queries/handlers/get-iit-tracing.handler';
+import { GetIITTracingOutcomesHandler } from './treatment-outcomes/queries/handlers/get-iit-tracing-outcomes.handler';
+import { AggregateIITTracingStatus } from './treatment-outcomes/entities/aggregate-iit-tracing-status.model';
 
 
 @Module({
@@ -387,6 +389,7 @@ import { GetIITTracingHandler } from './treatment-outcomes/queries/handlers/get-
                 AggregateTreatmentOutcomes,
                 AggregateAppointments,
                 AggregateDefaulterTracingOutcome,
+                AggregateIITTracingStatus,
 
                 LineListViralLoad,
 
@@ -495,6 +498,7 @@ import { GetIITTracingHandler } from './treatment-outcomes/queries/handlers/get-
         GetAppointmentKeepingWaterfallHandler,
         GetQuaterlyIITHandler,
         GetIITTracingHandler,
+        GetIITTracingOutcomesHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
         GetCtTxCurrAgeGroupDistributionByCountyHandler,
         GetCtTxCurrAgeGroupDistributionByPartnerHandler,
