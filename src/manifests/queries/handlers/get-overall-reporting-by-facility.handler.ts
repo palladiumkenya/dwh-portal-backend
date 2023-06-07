@@ -46,7 +46,7 @@ export class GetOverallReportingByFacilityHandler
             params.push(month);
         }
 
-        let overAllReportingByFacilitySql;
+        let overAllReportingByFacilitySql = '';
         if (query.docket.toLowerCase() === 'hts') {
             overAllReportingByFacilitySql = `SELECT * 
                 from 

@@ -2,22 +2,23 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { GetIITTracingQuery } from '../impl/get-iit-tracing.query';
-import { AggregateIITTracingStatus } from '../../entities/aggregate-iit-tracing-status.model';
+import { AggregateDefaulterTracingOutcome } from '../../entities/aggregate-defaulter-tracing-outcome.model';
+import { GetIITTracingOutcomesQuery } from '../impl/get-iit-tracing-outcomes.query';
 
-@QueryHandler(GetIITTracingQuery)
-export class GetIITTracingHandler implements IQueryHandler<GetIITTracingQuery> {
+@QueryHandler(GetIITTracingOutcomesQuery)
+export class GetIITTracingOutcomesHandler
+    implements IQueryHandler<GetIITTracingOutcomesQuery> {
     constructor(
-        @InjectRepository(AggregateIITTracingStatus, 'mssql')
-        private readonly repository: Repository<AggregateIITTracingStatus>,
+        @InjectRepository(AggregateDefaulterTracingOutcome, 'mssql')
+        private readonly repository: Repository<
+            AggregateDefaulterTracingOutcome
+        >,
     ) {}
 
-    async execute(query: GetIITTracingQuery): Promise<any> {
+    async execute(query: GetIITTracingOutcomesQuery): Promise<any> {
         const treatmentOutcomes = this.repository
             .createQueryBuilder('f')
-            .select([
-                'SUM(DefaulterTracedClients) tracedPatients, SUM(DefaulterNotTracedClients) nottracedPatients, YearIIT, MonthIIT',
-            ]);
+            .select(['SUM(patients) patients, Year, Month, TracingOutcome']);
 
         if (query.county) {
             treatmentOutcomes.andWhere('f.County IN (:...counties)', {
@@ -62,19 +63,19 @@ export class GetIITTracingHandler implements IQueryHandler<GetIITTracingQuery> {
         }
 
         if (query.year) {
-            treatmentOutcomes.andWhere('YearIIT = :year', {
+            treatmentOutcomes.andWhere('Year = :year', {
                 year: query.year,
             });
         }
 
         if (query.month) {
-            treatmentOutcomes.andWhere('MonthIIT = :month', {
+            treatmentOutcomes.andWhere('Month = :month', {
                 month: query.month,
             });
         }
 
         return await treatmentOutcomes
-            .groupBy('YearIIT, MonthIIT')
+            .groupBy('Year, Month, TracingOutcome')
             .getRawMany();
     }
 }
