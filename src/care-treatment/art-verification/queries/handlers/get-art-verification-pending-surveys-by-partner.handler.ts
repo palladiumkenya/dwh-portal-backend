@@ -49,9 +49,14 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
                 select distinct
                     cast (SiteCode as nvarchar) SiteCode,
                     max(ReportMonth_Year) as reporting_month
-                from All_Staging_2016_2.dbo.FACT_CT_DHIS2 as khis
+                from NDWH.dbo.FACT_CT_DHIS2 as khis
                 where CurrentOnART_Total is not null
-                    and (select max(cast(ReportMonth_Year as int)) from All_Staging_2016_2.dbo.FACT_CT_DHIS2)  - cast(ReportMonth_Year as int) <= 6
+                    and datediff(
+                        mm,
+                        cast(concat(ReportMonth_Year, '01') as date),
+                        (select max(cast(concat(ReportMonth_Year, '01') as date)
+                        ) from NDWH.dbo.FACT_CT_DHIS2)    
+                    ) <= 6
                 group by SiteCode
             ),
             --
@@ -60,7 +65,7 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
             cast (khis.SiteCode as nvarchar) As SiteCode,
                     latest_reporting_month.reporting_month,
                     sum(CurrentOnART_Total) as TXCurr_khis
-                from All_Staging_2016_2.dbo.FACT_CT_DHIS2 as khis
+                from NDWH.dbo.FACT_CT_DHIS2 as khis
                 inner join latest_reporting_month on latest_reporting_month.SiteCode = khis.SiteCode
                     and khis.ReportMonth_Year = latest_reporting_month.reporting_month
             where CurrentOnART_Total is not null
@@ -89,39 +94,39 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
             --Groupings of clients with Nupi in DWH per site---
             dwh_nupi_by_facility as (
                 select
-                cast (MFLCode as nvarchar) As MFLCode,
-                    sum ( NumNUPI) as count_patients
-                from PortalDevTest.dbo.FACT_NUPI
+                cast (SiteCode as nvarchar) As MFLCode,
+                    sum ( numnupi) as count_patients
+                from REPORTING.dbo.AggregateNupi
                 group by
-                    MFLCode
+                    SiteCode
             ),
             --Obtain records of children < 18 years with Nupi in DWH per site--
             dwh_nupi_by_facility_children as (
                 select
-                    cast (MFLCode as nvarchar) As MFLCode,
-                    sum ( Children) as count_patients
-                from PortalDevTest.dbo.FACT_NUPI(nolock)
+                    cast (SiteCode as nvarchar) As MFLCode,
+                    sum ( children) as count_patients
+                from REPORTING.dbo.AggregateNupi(nolock)
                 group by
-                    MFLCode
+                    SiteCode
             ),
             --Obtain records of Adults > 18 years with Nupi in DWH per site
             dwh_nupi_by_facility_adults as (
                 select
-                    cast (MFLCode as nvarchar) As MFLCode,
-                    sum (Adults) as count_patients
-                from PortalDevTest.dbo.FACT_NUPI (nolock)
+                    cast (SiteCode as nvarchar) As MFLCode,
+                    sum (adults) as count_patients
+                from REPORTING.dbo.AggregateNupi (nolock)
                 group by
-                    MFLCode
+                    SiteCode
             ),
             --Obtain Adults TXCurr for adults in DWH per site----
             dwh_by_facility_adults as (
                 select
-                    cast (MFLCode as nvarchar) As MFLCode,
-                    count(distinct concat(Patientid, PatientPK, MFLCode)) as count_AdultsTXCurDWH
-                from PortalDev.dbo.Fact_Trans_New_Cohort (nolock)
-                where  ARTOutcome ='V' and ageLV >= 18 and ageLV <= 120
+                    cast (SiteCode as nvarchar) As MFLCode,
+                    count(distinct concat(PatientIDHash, PatientPKHash, SiteCode)) as count_AdultsTXCurDWH
+                from REPORTING.dbo.Linelist_FACTART (nolock)
+                where  ARTOutcome ='V' and age >= 18 and age <= 120
                 group by
-                    MFLCode
+                    SiteCode
             ),
             --Obtain the latest upload date for each site--
             latest_upload as (
@@ -134,12 +139,12 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
             --Obtain the Paeds TXCurr per site in DWH--
             Children As (
                 select
-                    cast (MFLCode as nvarchar) As MFLCode,
-                    count(distinct concat(Patientid, PatientPK, MFLCode)) as count_Paeds
-                from PortalDev.dbo.Fact_Trans_New_Cohort (nolock)
-                where  ARTOutcome ='V' and ageLV < 18
+                    cast (SiteCode as nvarchar) As MFLCode,
+                    count(distinct concat(PatientIDHash, PatientPKHash, SiteCode)) as count_Paeds
+                from REPORTING.dbo.Linelist_FACTART (nolock)
+                where  ARTOutcome ='V' and age < 18
                 group by
-                    MFLCode
+                    SiteCode
             ),
             Grouping_Paeds As (
             Select
@@ -155,7 +160,7 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
                 count (distinct survey_id) AS SurveysReceived
                 FROM [pSurvey].[dbo].[stg_questionnaire_responses]
                 Group by mfl_code
-             ),
+            ),
 			verified_but_with_survey as (
 				select
 					origin_facility_kmfl_code as mfl_code,
@@ -193,9 +198,9 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
 					coalesce(verified_but_with_survey.count_of_patients,0) as patients_verified_but_with_survey
                 from EnrichedFullfacilitylist
                 left join khis on cast (khis.SiteCode as nvarchar) = cast (EnrichedFullfacilitylist.MFLCode as nvarchar)
-                left join dwh_nupi_by_facility on dwh_nupi_by_facility.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-                left join dwh_nupi_by_facility_adults on dwh_nupi_by_facility_adults.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-                left join dwh_nupi_by_facility_children on dwh_nupi_by_facility_children.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                full outer join dwh_nupi_by_facility on dwh_nupi_by_facility.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                full outer join dwh_nupi_by_facility_adults on dwh_nupi_by_facility_adults.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
+                full outer join dwh_nupi_by_facility_children on dwh_nupi_by_facility_children.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
                 left join latest_upload on latest_upload.SiteCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
                 left join Grouping_Paeds on Grouping_Paeds.MFLCode=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
                 left join dwh_by_facility_adults on dwh_by_facility_adults.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
