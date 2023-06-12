@@ -13,10 +13,27 @@ export class GetCtTxCurrVerifiedHandler
     ) {}
 
     async execute(query: GetCtTxCurrVerifiedQuery): Promise<any> {
-        const txCurr = this.repository
+        let txCurr = this.repository
             .createQueryBuilder('f')
             .select(['sum (NumNUPI) NumNupi'])
             .where('f.[Gender] IS NOT NULL');
+
+        if (query.datimAgePopulations) {
+            if (
+                query.datimAgePopulations.includes('>18') &&
+                query.datimAgePopulations.includes('<18')
+            ) {
+            } else if (query.datimAgePopulations.includes('>18'))
+                txCurr = this.repository
+                    .createQueryBuilder('f')
+                    .select(['sum (Adults) NumNupi'])
+                    .where('f.[Gender] IS NOT NULL');
+            else if (query.datimAgePopulations.includes('<18'))
+                txCurr = this.repository
+                    .createQueryBuilder('f')
+                    .select(['sum (Children) NumNupi'])
+                    .where('f.[Gender] IS NOT NULL');
+        }
 
         if (query.county) {
             txCurr.andWhere('f.County IN (:...counties)', {

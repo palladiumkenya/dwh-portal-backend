@@ -8,5 +8,6 @@ export class GetCtTxCurrDistributionByPartnerQuery {
     project?: string[];
     gender?: string[];
     datimAgeGroup?: string[];
+    datimAgePopulations?: string[];
     agency?: string[];
 }

@@ -294,11 +294,24 @@ import { GetOtzEnrollmentTrentHandler } from './otz/queries/handlers/get-otz-enr
 import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-age-sex.handler';
 import { GetOtzNotEnrolledByPartnerHandler } from './otz/queries/handlers/get-otz-not-enrolled-by-partner.handler';
 import { GetOtzNotEnrolledByCountyHandler } from './otz/queries/handlers/get-otz-not-enrolled-by-county.handler';
+import { GetAlhivWithReSuppressionHandler } from './otz/queries/handlers/get-alhiv-with-re-suppression.handler';
+import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-age.handler';
+import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-sex.handler';
+import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-partner.handler';
+import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-county.handler';
+import { GetCtTxCurrVerifiedByFacilityHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-verified-by-facility.handler';
+import { GetCtTxCurrByFacilityHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-by-facility.handler';
+import { GetNupiDatasetHandler } from './current-on-art/queries/handlers/get-nupi-dataset.handler';
+import { GetCtTxCurrHandler } from './current-on-art/queries/handlers/get-ct-tx-curr.handler';
+
+import { GetArtVerificationPendingSurveysByPartnerHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-partner.handler';
+import { GetArtVerificationPendingSurveysByCountyHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-county.handler';
+import { GetArtVerificationReasonsHandler } from './art-verification/queries/handlers/get-art-verification-reasons.handler';
 
 
 @Module({
     imports: [
-    CqrsModule,
+        CqrsModule,
         ConfigurationModule,
         TypeOrmModule.forFeature(
             [
@@ -338,10 +351,10 @@ import { GetOtzNotEnrolledByCountyHandler } from './otz/queries/handlers/get-otz
                 FactTransCohortRetention,
                 FactTransCovidVaccines,
                 DimAgeGroups,
-                FactNUPI
+                FactNUPI,
             ],
-            'mssql'
-        )
+            'mssql',
+        ),
     ],
     providers: [
         GetCtCountyHandler,
@@ -492,6 +505,11 @@ import { GetOtzNotEnrolledByCountyHandler } from './otz/queries/handlers/get-otz
         GetOtzTotalWithVlResultsHandler,
         GetOtzTotalWithVlLessThan1000Handler,
         GetOtzEnrollmentTrentHandler,
+        GetAlhivWithReSuppressionHandler,
+        GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeHandler,
+        GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexHandler,
+        GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerHandler,
+        GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler,
         GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexHandler,
         GetOtzNotEnrolledByPartnerHandler,
         GetOtzNotEnrolledByCountyHandler,
@@ -572,7 +590,15 @@ import { GetOtzNotEnrolledByCountyHandler } from './otz/queries/handlers/get-otz
         GetCtTxCurrVerifiedByCountyHandler,
         GetCtTxCurrVerifiedByPartnerHandler,
         GetCtTxCurrVerifiedBySexHandler,
+        GetCtTxCurrVerifiedByFacilityHandler,
+        GetCtTxCurrByFacilityHandler,
+        GetNupiDatasetHandler,
+        GetCtTxCurrHandler,
+
+        GetArtVerificationPendingSurveysByPartnerHandler,
+        GetArtVerificationPendingSurveysByCountyHandler,
+        GetArtVerificationReasonsHandler
     ],
-    controllers: [CareTreatmentController]
+    controllers: [CareTreatmentController],
 })
 export class CareTreatmentModule {}

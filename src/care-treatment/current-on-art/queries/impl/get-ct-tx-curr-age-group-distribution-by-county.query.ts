@@ -7,6 +7,7 @@ export class GetCtTxCurrAgeGroupDistributionByCountyQuery {
     month?: number;
     project?: string[];
     gender?: string[];
+    datimAgePopulations?: string[];
     datimAgeGroup?: string[];
     agency?: string[];
 }

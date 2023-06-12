@@ -13,8 +13,11 @@ export class GetOtzOutcomesByAgeGroupsHandler implements IQueryHandler<GetOtzOut
     }
 
     async execute(query: GetOtzOutcomesByAgeGroupsQuery): Promise<any> {
-        const otzOutcomesByAgeGroups = this.repository.createQueryBuilder('f')
-            .select(['[AgeGroup], CASE WHEN [Outcome] IS NULL THEN \'Active\' ELSE [Outcome] END as Outcome, SUM([Total_OutCome]) outcomesByAgeGroup'])
+        const otzOutcomesByAgeGroups = this.repository
+            .createQueryBuilder('f')
+            .select([
+                "[AgeGroup], CASE WHEN [Outcome] IS NULL THEN 'Active' WHEN [Outcome] = 'Died' THEN 'Dead' ELSE [Outcome] END as Outcome, SUM([Total_OutCome]) outcomesByAgeGroup",
+            ])
             .andWhere('f.MFLCode IS NOT NULL');
 
         if (query.county) {
@@ -46,7 +49,7 @@ export class GetOtzOutcomesByAgeGroupsHandler implements IQueryHandler<GetOtzOut
         }
 
         return await otzOutcomesByAgeGroups
-            .groupBy('[AgeGroup], [Outcome]')
+            .groupBy('[AgeGroup], CASE WHEN [Outcome] IS NULL THEN \'Active\' WHEN [Outcome] = \'Died\' THEN \'Dead\' ELSE [Outcome] END')
             .getRawMany();
     }
 }
