@@ -3,38 +3,64 @@ import { GetPnsChildrenByYearQuery } from '../impl/get-pns-children-by-year.quer
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactPNSChildren } from '../../entities/fact-pns-children.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetPnsChildrenByYearQuery)
-export class GetPnsChildrenByYearHandler implements IQueryHandler<GetPnsChildrenByYearQuery> {
+export class GetPnsChildrenByYearHandler
+    implements IQueryHandler<GetPnsChildrenByYearQuery> {
     constructor(
-        @InjectRepository(FactPNSChildren)
-        private readonly repository: Repository<FactPNSChildren>
-    ) {
-
-    }
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>,
+    ) {}
 
     async execute(query: GetPnsChildrenByYearQuery): Promise<any> {
-        const pnsChildrenByYear = this.repository.createQueryBuilder('q')
-            .select(['q.year, q.month, SUM(q.ChildrenElicited) elicited, SUM(q.ChildTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
-            .where('q.Mflcode IS NOT NULL')
-            .andWhere('q.year IS NOT NULL')
-            .andWhere('q.month IS NOT NULL');
+        let pnsChildrenByYear = `Select year,
+                month,
+                Sum(ChildrenElicited) elicited,
+                sum(ChildrenTested) tested,
+                Sum(ChildrenPositive) positive,
+                sum(ChildrenLiked) linked,
+                
+                Sum(ChildrenKnownPositive) knownPositive
+            From REPORTING.dbo.AggregateHTSPNSChildren pns
 
-        if(query.county) {
-            pnsChildrenByYear.andWhere('q.County IN (:...county)', { county: query.county });
+            where MFLCode is not null
+            `;
+        // this.repository.createQueryBuilder('q')
+        //     .select(['q.year, q.month, SUM(q.ChildrenElicited) elicited, SUM(q.ChildTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
+        //     .where('q.Mflcode IS NOT NULL')
+        //     .andWhere('q.year IS NOT NULL')
+        //     .andWhere('q.month IS NOT NULL');
+
+        if (query.county) {
+            pnsChildrenByYear = `${pnsChildrenByYear} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.subCounty) {
-            pnsChildrenByYear.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: query.subCounty });
+        if (query.subCounty) {
+            pnsChildrenByYear = `${pnsChildrenByYear} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.facility) {
-            pnsChildrenByYear.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
+        if (query.facility) {
+            pnsChildrenByYear = `${pnsChildrenByYear} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.partner) {
-            pnsChildrenByYear.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
+        if (query.partner) {
+            pnsChildrenByYear = `${pnsChildrenByYear} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
+
+        // if (query.agency) {
+        //     pnsChildrenByYear = `${pnsChildrenByYear} and agencyName IN ('${query.agency
+        //         .toString()
+        //         .replace(/,/g, "','")}')`;
+        // }
 
         // if(query.month) {
         //     pnsChildrenByYear.andWhere('q.month = :month', { month: query.month });
@@ -45,22 +71,25 @@ export class GetPnsChildrenByYearHandler implements IQueryHandler<GetPnsChildren
         // }
 
         if (query.fromDate) {
-            pnsChildrenByYear.andWhere(
-                `CONCAT(year, LPAD(month, 2, '0'))>= :fromDate`,
-                { fromDate: query.fromDate },
-            );
+            const fromYear = parseInt(query.fromDate.substring(0, 4));
+            const fromMonth = parseInt(query.fromDate.substring(4));
+            pnsChildrenByYear = `${pnsChildrenByYear} and (year > ${fromYear} or (year = ${fromYear} and month >= ${fromMonth}))`;
         }
 
         if (query.toDate) {
-            pnsChildrenByYear.andWhere(
-                `CONCAT(year, LPAD(month, 2, '0'))<= :toDate`,
-                { toDate: query.toDate },
-            );
+            const toYear = parseInt(query.toDate.substring(0, 4));
+            const toMonth = parseInt(query.toDate.substring(4));
+            pnsChildrenByYear = `${pnsChildrenByYear} and (year < ${toYear} or (year = ${toYear} and month <= ${toMonth}))`;
         }
 
-        return await pnsChildrenByYear
-            .groupBy('q.year, q.month')
-            .orderBy('q.year, q.month')
-            .getRawMany();
+        pnsChildrenByYear = `${pnsChildrenByYear} GROUP BY year, month`;
+
+        pnsChildrenByYear = `${pnsChildrenByYear} ORDER BY year, month`;
+
+        return await this.repository.query(pnsChildrenByYear, []);
+        // return await pnsChildrenByYear
+        //     .groupBy('q.year, q.month')
+        //     .orderBy('q.year, q.month')
+        //     .getRawMany();
     }
 }

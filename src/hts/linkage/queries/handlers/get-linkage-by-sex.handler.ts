@@ -3,42 +3,55 @@ import { GetLinkageBySexQuery } from '../impl/get-linkage-by-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FactHtsUptakeAgeGender } from '../../entities/fact-htsuptake-agegender.entity';
+import { FactHTSClientTests } from './../../entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetLinkageBySexQuery)
-export class GetLinkageBySexHandler implements IQueryHandler<GetLinkageBySexQuery> {
+export class GetLinkageBySexHandler
+    implements IQueryHandler<GetLinkageBySexQuery> {
     constructor(
-        @InjectRepository(FactHtsUptakeAgeGender)
-        private readonly repository: Repository<FactHtsUptakeAgeGender>
-    ){}
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>,
+    ) {}
 
     async execute(query: GetLinkageBySexQuery): Promise<any> {
         const params = [];
-        let linkageBySexSql = 'SELECT Gender gender, ' +
-            'SUM(Tested) tested, ' +
-            'SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive, ' +
-            '((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity, ' +
-            'SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END) linked, ' +
-            '((SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END)/SUM(positive))*100) AS linkage ' +
-            'FROM fact_hts_agegender WHERE positive > 0 ';
+        let linkageBySexSql = `SELECT
+                CASE WHEN Gender = 'M' THEN 'Male' WHEN Gender = 'F' THEN 'Female' ELSE Gender END gender,
+                SUM(Tested) tested,
+                SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive,
+                SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END) linked,
+                ((CAST(SUM(linked) AS FLOAT)/NULLIF(CAST(SUM(positive)AS FLOAT), 0))*100) AS linkage
+            FROM
+                NDWH.dbo.FactHTSClientTests AS link
+                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
+                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
+                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
+                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
+                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
+            WHERE positive > 0 and TestType IN ('Initial', 'Initial Test')`;
 
-        if(query.county) {
-            linkageBySexSql = `${linkageBySexSql} and County IN (?)`;
-            params.push(query.county);
+        if (query.county) {
+            linkageBySexSql = `${linkageBySexSql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.subCounty) {
-            linkageBySexSql = `${linkageBySexSql} and SubCounty IN (?)`;
-            params.push(query.subCounty);
+        if (query.subCounty) {
+            linkageBySexSql = `${linkageBySexSql} and SubCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.facility) {
-            linkageBySexSql = `${linkageBySexSql} and FacilityName IN (?)`;
-            params.push(query.facility);
+        if (query.facility) {
+            linkageBySexSql = `${linkageBySexSql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.partner) {
-            linkageBySexSql = `${linkageBySexSql} and CTPartner IN (?)`;
-            params.push(query.partner);
+        if (query.partner) {
+            linkageBySexSql = `${linkageBySexSql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         // if(query.year) {
@@ -52,17 +65,15 @@ export class GetLinkageBySexHandler implements IQueryHandler<GetLinkageBySexQuer
         // }
 
         if (query.fromDate) {
-            linkageBySexSql = `${linkageBySexSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
-            params.push(query.fromDate);
+            linkageBySexSql = `${linkageBySexSql} and DateTestedKey >= ${query.fromDate}01`;
         }
 
         if (query.toDate) {
-            linkageBySexSql = `${linkageBySexSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
-            params.push(query.toDate);
+            linkageBySexSql = `${linkageBySexSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
-        linkageBySexSql = `${linkageBySexSql} GROUP BY Gender`;
+        linkageBySexSql = `${linkageBySexSql} GROUP BY CASE WHEN Gender = 'M' THEN 'Male' WHEN Gender = 'F' THEN 'Female' ELSE Gender END`;
 
-        return  await this.repository.query(linkageBySexSql, params);
+        return await this.repository.query(linkageBySexSql, params);
     }
 }

@@ -1,24 +1,29 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetRegimenDistributionBasedOnWeightBandsQuery } from '../impl/get-regimen-distribution-based-on-weight-bands.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOptimizeRegLines } from '../../entities/fact-trans-optimize-reg-lines.model';
 import { Repository } from 'typeorm';
+import { AggregateOptimizeCurrentRegimens } from './../../entities/aggregate-optimize-current-regimens.model';
 
 @QueryHandler(GetRegimenDistributionBasedOnWeightBandsQuery)
 export class GetRegimenDistributionBasedOnWeightBandsHandler implements IQueryHandler<GetRegimenDistributionBasedOnWeightBandsQuery> {
     constructor(
-        @InjectRepository(FactTransOptimizeRegLines, 'mssql')
-        private readonly repository: Repository<FactTransOptimizeRegLines>
+        @InjectRepository(AggregateOptimizeCurrentRegimens, 'mssql')
+        private readonly repository: Repository<AggregateOptimizeCurrentRegimens>
     ) {
     }
 
     async execute(query: GetRegimenDistributionBasedOnWeightBandsQuery): Promise<any> {
-        const regimenDistributionBasedOnWeight = this.repository.createQueryBuilder('f')
-            .select(['LastRegimenClean Lastregimen,\n' +
-            '\'<20Kgs\' = ISNULL((SELECT SUM([TxCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] y WHERE y.LastRegimenClean = f.[LastRegimenClean] and WeightBands = \'<20Kgs\' AND AgeBands in (\'10-14 Years\',\'5-9 Years\',\'2-4 Years\',\'<2 Years\')), 0),\n' +
-            '\'20-35Kgs\' = ISNULL((SELECT SUM([TxCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE LastRegimenClean = f.[LastRegimenClean] and WeightBands = \'20-35Kgs\' AND AgeBands in (\'10-14 Years\',\'5-9 Years\',\'2-4 Years\',\'<2 Years\')), 0),\n' +
-            '\'>35Kgs\' = ISNULL((SELECT SUM([TxCurr]) FROM [dbo].[FACT_TRANS_Optimize_RegLines] WHERE LastRegimenClean = f.[LastRegimenClean] and WeightBands = \'>35Kgs\' AND AgeBands in (\'10-14 Years\',\'5-9 Years\',\'2-4 Years\',\'<2 Years\')), 0)'])
-            .where('f.RegimenLine = \'First Regimen Line\' AND f.LastRegimenClean is not null AND f.AgeBands in (\'10-14 Years\',\'5-9 Years\',\'2-4 Years\',\'<2 Years\')');
+        const regimenDistributionBasedOnWeight = this.repository
+            .createQueryBuilder('f')
+            .select([
+                `LastRegimenClean Lastregimen,
+                '<20Kgs' = ISNULL((SUM(CASE WHEN WeightBands = '<20Kgs' AND AgeBands IN ('10-14 Years','5-9 Years','2-4 Years','<2 Years') THEN [TxCurr] END)), 0),
+                '20-35Kgs' = ISNULL((SUM(CASE WHEN WeightBands = '20-35Kgs' AND AgeBands IN ('10-14 Years','5-9 Years','2-4 Years','<2 Years') THEN [TxCurr] END)), 0),
+                '>35Kgs' = ISNULL((SUM(CASE WHEN WeightBands = '>35Kgs' AND AgeBands IN ('10-14 Years','5-9 Years','2-4 Years','<2 Years') THEN [TxCurr] END)), 0)`,
+            ])
+            .where(
+                "f.RegimenLine = 'First Regimen Line' AND f.LastRegimenClean is not null AND f.AgeBands in ('10-14 Years','5-9 Years','2-4 Years','<2 Years')",
+            );
 
         if (query.county) {
             regimenDistributionBasedOnWeight.andWhere('f.County IN (:...county)', { county: query.county });
@@ -33,11 +38,11 @@ export class GetRegimenDistributionBasedOnWeightBandsHandler implements IQueryHa
         }
 
         if (query.partner) {
-            regimenDistributionBasedOnWeight.andWhere('f.CTPartner IN (:...partner)', { partner: query.partner });
+            regimenDistributionBasedOnWeight.andWhere('f.PartnerName IN (:...partner)', { partner: query.partner });
         }
 
         if (query.agency) {
-            regimenDistributionBasedOnWeight.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            regimenDistributionBasedOnWeight.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -45,7 +50,7 @@ export class GetRegimenDistributionBasedOnWeightBandsHandler implements IQueryHa
         }
 
         if (query.datimAgeGroup) {
-            regimenDistributionBasedOnWeight.andWhere('f.DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+            regimenDistributionBasedOnWeight.andWhere('f.DATIMAgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
         }
 
         if (query.populationType) {

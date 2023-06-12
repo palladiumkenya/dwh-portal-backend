@@ -3,38 +3,65 @@ import { GetPnsSexualContactsByAgeSexQuery } from '../impl/get-pns-sexual-contac
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactPNSSexualPartner } from '../../entities/fact-pns-sexual-partner.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetPnsSexualContactsByAgeSexQuery)
 export class GetPnsSexualContactsByAgeSexHandler implements IQueryHandler<GetPnsSexualContactsByAgeSexQuery> {
     constructor(
-        @InjectRepository(FactPNSSexualPartner)
-        private readonly repository: Repository<FactPNSSexualPartner>
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>
     ) {
 
     }
 
     async execute(query: GetPnsSexualContactsByAgeSexQuery): Promise<any> {
-        const pnsSexualContactsByAgeSex = this.repository.createQueryBuilder('q')
-            .select(['q.Agegroup age, q.Gender gender, SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
-            .where('q.Mflcode IS NOT NULL')
-            .andWhere('q.Agegroup IS NOT NULL')
-            .andWhere('q.Gender IS NOT NULL');
+        let pnsSexualContactsByAgeSex = `Select Agegroup age,
+                Gender gender,
+                Sum(PartnersElicited) elicited,
+                sum(PartnerTested) tested,
+                Sum(Positive) positive,
+                sum(Linked) linked,
+                
+                Sum(KnownPositive) knownPositive
+            FROM [dbo].[AggregateHTSPNSSexualPartner]
+            where MFLCode is not null
+            `;
+        
+        // this.repository.createQueryBuilder('q')
+        //     .select(['q.Agegroup age, q.Gender gender, SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
+        //     .where('q.Mflcode IS NOT NULL')
+        //     .andWhere('q.Agegroup IS NOT NULL')
+        //     .andWhere('q.Gender IS NOT NULL');
 
-        if(query.county) {
-            pnsSexualContactsByAgeSex.andWhere('q.County IN (:...county)', { county: query.county });
+        if (query.county) {
+            pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.subCounty) {
-            pnsSexualContactsByAgeSex.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: query.subCounty });
+        if (query.subCounty) {
+            pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.facility) {
-            pnsSexualContactsByAgeSex.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
+        if (query.facility) {
+            pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.partner) {
-            pnsSexualContactsByAgeSex.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
+        if (query.partner) {
+            pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
+
+        // if (query.agency) {
+        //     pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} and agencyName IN ('${query.agency
+        //         .toString()
+        //         .replace(/,/g, "','")}')`;
+        // }
 
         // if(query.month) {
         //     pnsSexualContactsByAgeSex.andWhere('q.month = :month', { month: query.month });
@@ -45,26 +72,25 @@ export class GetPnsSexualContactsByAgeSexHandler implements IQueryHandler<GetPns
         // }
 
         if (query.fromDate) {
-            pnsSexualContactsByAgeSex.andWhere(
-                `CONCAT(year, LPAD(month, 2, '0'))>= :fromDate`,
-                {
-                    fromDate: query.fromDate,
-                },
-            );
+            const fromYear = parseInt(query.fromDate.substring(0, 4));
+            const fromMonth = parseInt(query.fromDate.substring(4));
+            pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} and (year > ${fromYear} or (year = ${fromYear} and month >= ${fromMonth}))`;
         }
 
         if (query.toDate) {
-            pnsSexualContactsByAgeSex.andWhere(
-                `CONCAT(year, LPAD(month, 2, '0'))<= :toDate`,
-                {
-                    toDate: query.toDate,
-                },
-            );
+            const toYear = parseInt(query.toDate.substring(0, 4));
+            const toMonth = parseInt(query.toDate.substring(4));
+            pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} and (year < ${toYear} or (year = ${toYear} and month <= ${toMonth}))`;
         }
 
-        return await pnsSexualContactsByAgeSex
-            .groupBy('q.Agegroup, q.Gender')
-            .orderBy('q.Agegroup, q.Gender')
-            .getRawMany();
+        pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} GROUP BY Gender,Agegroup`;
+
+        pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} ORDER BY Agegroup, Gender`;
+
+
+        return await this.repository.query(
+            pnsSexualContactsByAgeSex,
+            [],
+        )
     }
 }

@@ -23,13 +23,7 @@ import {FactTransNewlyStarted} from "../care-treatment/new-on-art/entities/fact-
 import {GetTxNewBySexDwhHandler} from "./khis/queries/handlers/get-tx-new-by-sex-dwh.handler";
 import {GetTxCurrBySexDwhHandler} from "./khis/queries/handlers/get-tx-curr-by-sex-dwh.handler";
 import { GetCtTxCurrAgeGroupDistributionByCountyHandler } from './khis/queries/handlers/get-ct-tx-curr-age-group-distribution-by-county.handler';
-import { GetClosedTicketsHandler } from './help-desk/queries/handlers/get-closed-tickets.handler';
-import { GetOpenIssuesByTypeHandler } from './help-desk/queries/handlers/get-open-issues-by-type.handler';
-import { GetCreatedTicketsHandler } from './help-desk/queries/handlers/get-created-tickets.handler';
-import { GetTicketsByCategoryHandler } from './help-desk/queries/handlers/get-tickets-by-category.handler';
-import { GetOpenTicketsHandler } from './help-desk/queries/handlers/get-open-tickets.handler';
-import { GetTicketsBySDPHandler } from './help-desk/queries/handlers/get-tickets-by-sdp.handler';
-import { GetOpenIssuesByTypeAndSDPHandler } from './help-desk/queries/handlers/get-open-issues-by-type-and-sdp.handler';
+import { GetTicketsOverviewHandler } from './help-desk/queries/handlers/get-tickets-overview.handler';
 import { GetDWHHTSPOSPositiveHandler } from './khis/queries/handlers/get-dwh-htspos.handler';
 import { FactHtsUptakeAgeGender } from 'src/hts/uptake/entities/fact-htsuptake-agegender.entity';
 import { GetKhisHTSPOSHandler } from './khis/queries/handlers/get-khis-htspos.handler';
@@ -46,6 +40,18 @@ import { GetKhisHTSTESTByPartnerHandler } from './khis/queries/handlers/get-khis
 import { GetKhisHTSTESTByFacilityHandler } from './khis/queries/handlers/get-khis-htstest-by-facility.handler';
 import { GetKhisHTSTESTHandler } from './khis/queries/handlers/get-khis-htstest.handler';
 import { GetDWHHTSTestTrendsHandler } from './khis/queries/handlers/get-dwh-htstest-trends.handler';
+import { GetIssueStatusByProductHandler } from './help-desk/queries/handlers/get-issue-status-by-product.handler';
+import { GetOpenIssuesByProductHandler } from './help-desk/queries/handlers/get-open-issues-by-product.handler';
+import { GetOpenIssuesByPartnerHandler } from './help-desk/queries/handlers/get-open-issues-by-partner.handler';
+import { GetOpenIssuesByCountyHandler } from './help-desk/queries/handlers/get-open-issues-by-county.handler';
+import { GetOpenIssuesByMonthHandler } from './help-desk/queries/handlers/get-open-issues-by-month.handler';
+import { GetIssueStatusByMonthHandler } from './help-desk/queries/handlers/get-issue-status-by-month.handler';
+import { GetPartnerLevelIssuesHandler } from './help-desk/queries/handlers/get-partner-level-issues.handler';
+
+import { AggregateTXCurr } from 'src/care-treatment/current-on-art/entities/aggregate-txcurr.model';
+import { AggregateCohortRetention } from 'src/care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
+import { FactHTSClientTests } from 'src/hts/linkage/entities/fact-hts-client-tests.model';
+import { LinelistTicketExport } from './help-desk/entities/linelist-ticket-export.model';
 
 @Module({
     imports: [
@@ -58,6 +64,11 @@ import { GetDWHHTSTestTrendsHandler } from './khis/queries/handlers/get-dwh-htst
                 FactTransNewlyStarted,
                 FactCtDhis2,
                 FactHtsDhis2,
+
+                AggregateTXCurr,
+                AggregateCohortRetention,
+                FactHTSClientTests,
+                LinelistTicketExport,
             ],
             'mssql',
         ),
@@ -74,13 +85,6 @@ import { GetDWHHTSTestTrendsHandler } from './khis/queries/handlers/get-dwh-htst
         GetTxNewBySexDwhHandler,
         GetTxCurrBySexDwhHandler,
         GetCtTxCurrAgeGroupDistributionByCountyHandler,
-        GetClosedTicketsHandler,
-        GetOpenIssuesByTypeHandler,
-        GetCreatedTicketsHandler,
-        GetTicketsByCategoryHandler,
-        GetOpenTicketsHandler,
-        GetTicketsBySDPHandler,
-        GetOpenIssuesByTypeAndSDPHandler,
         GetDWHHTSPOSPositiveHandler,
         GetKhisHTSPOSHandler,
         GetKhisHTSPOSByCountyHandler,
@@ -96,6 +100,15 @@ import { GetDWHHTSTestTrendsHandler } from './khis/queries/handlers/get-dwh-htst
         GetKhisHTSTESTByFacilityHandler,
         GetKhisHTSTESTHandler,
         GetDWHHTSTestTrendsHandler,
+
+        GetTicketsOverviewHandler,
+        GetIssueStatusByProductHandler,
+        GetIssueStatusByMonthHandler,
+        GetOpenIssuesByProductHandler,
+        GetOpenIssuesByPartnerHandler,
+        GetOpenIssuesByCountyHandler,
+        GetOpenIssuesByMonthHandler,
+        GetPartnerLevelIssuesHandler,
     ],
     controllers: [OperationalHisController],
 })

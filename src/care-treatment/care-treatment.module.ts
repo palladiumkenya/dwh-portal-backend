@@ -307,6 +307,41 @@ import { GetCtTxCurrHandler } from './current-on-art/queries/handlers/get-ct-tx-
 import { GetArtVerificationPendingSurveysByPartnerHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-partner.handler';
 import { GetArtVerificationPendingSurveysByCountyHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-county.handler';
 import { GetArtVerificationReasonsHandler } from './art-verification/queries/handlers/get-art-verification-reasons.handler';
+import { AggregateOtz } from './otz/entities/aggregate-otz.model';
+import { AggregateOTZOutcome } from './otz/entities/aggregate-otz-outcome.model';
+import { LineListOTZ } from './otz/entities/line-list-otz.model';
+import { LineListOTZEligibilityAndEnrollments } from './otz/entities/line-list-otz-eligibility-and-enrollments.model';
+import { AggregateDSDApptsByStability } from './dsd/entities/aggregate-dsd-appts-by-stability.model';
+import { AggregateDSDStable } from './dsd/entities/aggregate-dsd-stable.model';
+import { AggregateNupi } from './current-on-art/entities/aggregate-nupi.model';
+import { AggregateTXCurr } from './current-on-art/entities/aggregate-txcurr.model';
+import { AggregateDSDUnstable } from './dsd/entities/AggregateDSDUnstable.model';
+import { AggregateDSD } from './dsd/entities/AggregateDSD.model';
+import { AggregateCovid } from './covid/entities/aggregate-covid.model';
+import { LineListCovid } from './covid/entities/linelist-covid.model';
+import { AggregateOVCCount } from './ovc/entities/aggregate-ovc-count.model';
+import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.model';
+import { LinelistFACTART } from './common/entities/linelist-fact-art.model';
+import { AggregateAdverseEvents } from './adverse-events/entities/aggregate-adverse-events.model';
+import { AggregateTimeToARTLast12M } from './new-on-art/entities/aggregate-time-to-art-last-12-m.model';
+import { AggregateCohortRetention } from './new-on-art/entities/aggregate-cohort-retention.model';
+import { AggregateTimeToART } from './new-on-art/entities/aggregate-time-to-art.model';
+import { AggregateTimeToARTGrp } from './new-on-art/entities/aggregate-time-to-art-grp.model';
+import { AggregateOptimizeCurrentRegimens } from './art-optimization/entities/aggregate-optimize-current-regimens.model';
+import { AggregateOptimizeStartRegimens } from './art-optimization/entities/aggregate-optimize-start-regimens.model';
+import { AggregateVLUptakeOutcome } from './viral-load/entities/aggregate-vl-uptake-outcome.model';
+import { AggregateTimeToFirstVLGrp } from './viral-load/entities/aggregate-time-to-first-vl-grp.model';
+import { AggregateTimeToVL } from './viral-load/entities/aggregate-time-to-vl.model';
+import { AggregateTimeToVL12M } from './viral-load/entities/aggregate-time-to-vl-last-12m.model';
+import { AggregateTreatmentOutcomes } from './treatment-outcomes/entities/aggregate-treatment-outcomes.model';
+import { LineListViralLoad } from './viral-load/entities/linelist-viral-load.model';
+import { GetAppointmentKeepingWaterfallHandler } from './treatment-outcomes/queries/handlers/get-appointment-keeping-waterfall.handler';
+import { GetQuaterlyIITHandler } from './treatment-outcomes/queries/handlers/get-quaterly-iit.handler';
+import { AggregateAppointments } from './treatment-outcomes/entities/aggregate-appointments.model';
+import { AggregateDefaulterTracingOutcome } from './treatment-outcomes/entities/aggregate-defaulter-tracing-outcome.model';
+import { GetIITTracingHandler } from './treatment-outcomes/queries/handlers/get-iit-tracing.handler';
+import { GetIITTracingOutcomesHandler } from './treatment-outcomes/queries/handlers/get-iit-tracing-outcomes.handler';
+import { AggregateIITTracingStatus } from './treatment-outcomes/entities/aggregate-iit-tracing-status.model';
 
 
 @Module({
@@ -315,7 +350,51 @@ import { GetArtVerificationReasonsHandler } from './art-verification/queries/han
         ConfigurationModule,
         TypeOrmModule.forFeature(
             [
+                AggregateOtz,
+                AggregateOTZOutcome,
+                LineListOTZ,
+                LineListOTZEligibilityAndEnrollments,
+
+                AggregateNupi,
+                AggregateTXCurr,
+
+                AggregateDSDUnstable,
+                AggregateDSD,
+                AggregateDSDStable,
+                AggregateDSDApptsByStability,
+
+                AggregateCovid,
+                LineListCovid,
+
+                AggregateOVCCount,
+                LineListOVCEnrollments,
+
+                LinelistFACTART,
+
+                AggregateAdverseEvents,
+
+                AggregateTimeToARTLast12M,
+                AggregateCohortRetention,
+                AggregateTimeToART,
+                AggregateTimeToARTGrp,
+
+                AggregateOptimizeCurrentRegimens,
+                AggregateOptimizeStartRegimens,
+
+                AggregateVLUptakeOutcome,
+                AggregateTimeToFirstVLGrp,
+                AggregateTimeToVL12M,
+                AggregateTimeToVL,
+
+                AggregateTreatmentOutcomes,
+                AggregateAppointments,
+                AggregateDefaulterTracingOutcome,
+                AggregateIITTracingStatus,
+
+                LineListViralLoad,
+
                 AllEmrSites,
+
                 FactTransHmisStatsTxcurr,
                 FactTransNewlyStarted,
                 FactCTTimeToArt,
@@ -416,6 +495,10 @@ import { GetArtVerificationReasonsHandler } from './art-verification/queries/han
         GetTreatmentOutcomesRetention12mHandler,
         GetTreatmentOutcomesRetention24mHandler,
         GetTreatmentOutcomesUndocumentedByFacilityHandler,
+        GetAppointmentKeepingWaterfallHandler,
+        GetQuaterlyIITHandler,
+        GetIITTracingHandler,
+        GetIITTracingOutcomesHandler,
         GetDsdAppointmentDurationCategorizationByStabilityStatusHandler,
         GetCtTxCurrAgeGroupDistributionByCountyHandler,
         GetCtTxCurrAgeGroupDistributionByPartnerHandler,
@@ -597,7 +680,7 @@ import { GetArtVerificationReasonsHandler } from './art-verification/queries/han
 
         GetArtVerificationPendingSurveysByPartnerHandler,
         GetArtVerificationPendingSurveysByCountyHandler,
-        GetArtVerificationReasonsHandler
+        GetArtVerificationReasonsHandler,
     ],
     controllers: [CareTreatmentController],
 })

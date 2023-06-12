@@ -14,7 +14,7 @@ export class GetKhisHTSPOSByPartnerHandler
 
     async execute(query: GetKhisHTSPOSByPartnerQuery): Promise<any> {
         let htsPOS = this.repository.createQueryBuilder('f').select(
-            `SDP,
+            `PartnerName,
             SUM ( Positive_Total ) Positive_Total,
             SUM ( Positive_10_14_M ) + SUM ( Positive_15_19_M ) + SUM ( Positive_20_24_M ) + SUM ( Positive_25_Plus_M ) Positive_Male,
             SUM ( Positive_10_14_F ) + SUM ( Positive_15_19_F ) + SUM ( Positive_20_24_F ) + SUM ( Positive_25_Plus_F ) Positive_Female,
@@ -37,7 +37,7 @@ export class GetKhisHTSPOSByPartnerHandler
             // No action
         } else if (query.gender && query.gender.includes('Female')) {
             htsPOS = this.repository.createQueryBuilder('f').select(
-                `SDP,
+                `PartnerName,
                 SUM ( Positive_10_14_F ) + SUM ( Positive_15_19_F ) + SUM ( Positive_20_24_F ) + SUM ( Positive_25_Plus_F ) Positive_Total,
                 SUM ( Positive_10_14_F ) + SUM ( Positive_15_19_F ) + SUM ( Positive_20_24_F ) + SUM ( Positive_25_Plus_F ) Positive_Female, 0 Positive_Male,
                 0 Positive_1_9,
@@ -52,7 +52,7 @@ export class GetKhisHTSPOSByPartnerHandler
             );
         } else if (query.gender && query.gender.includes('Male')) {
             htsPOS = this.repository.createQueryBuilder('f').select(
-                `SDP,
+                `PartnerName,
                 SUM ( Positive_10_14_M ) + SUM ( Positive_15_19_M ) + SUM ( Positive_20_24_M ) + SUM ( Positive_25_Plus_M ) Positive_Total,
                 SUM ( Positive_10_14_M ) + SUM ( Positive_15_19_M ) + SUM ( Positive_20_24_M ) + SUM ( Positive_25_Plus_M ) Positive_Male, 0 Positive_Female,
                 0 Positive_1_9,
@@ -86,13 +86,13 @@ export class GetKhisHTSPOSByPartnerHandler
         }
 
         if (query.partner) {
-            htsPOS.andWhere('SDP IN (:...partners)', {
+            htsPOS.andWhere('PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            htsPOS.andWhere('[SDP Agency] IN (:...agencies)', {
+            htsPOS.andWhere('[AgencyName] IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
@@ -103,6 +103,6 @@ export class GetKhisHTSPOSByPartnerHandler
             });
         }
 
-        return await htsPOS.groupBy('SDP').getRawMany();
+        return await htsPOS.groupBy('PartnerName').getRawMany();
     }
 }

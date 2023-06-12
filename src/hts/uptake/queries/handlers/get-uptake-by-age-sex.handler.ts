@@ -3,61 +3,67 @@ import { GetUptakeByAgeSexQuery } from '../impl/get-uptake-by-age-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FactHtsUptakeAgeGender } from '../../entities/fact-htsuptake-agegender.entity';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetUptakeByAgeSexQuery)
-export class GetUptakeByAgeSexHandler implements IQueryHandler<GetUptakeByAgeSexQuery> {
+export class GetUptakeByAgeSexHandler
+    implements IQueryHandler<GetUptakeByAgeSexQuery> {
     constructor(
-        @InjectRepository(FactHtsUptakeAgeGender)
-        private readonly repository: Repository<FactHtsUptakeAgeGender>
-    ){}
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>,
+    ) {}
 
     async execute(query: GetUptakeByAgeSexQuery): Promise<any> {
         const params = [];
-        let uptakeByAgeSexSql = 'SELECT DATIM_AgeGroup AS AgeGroup, Gender, ' +
-            'SUM(Tested) Tested ' +
-            'FROM fact_hts_agegender WHERE Tested IS NOT NULL ';
+        let uptakeByAgeSexSql = `SELECT
+                DATIMAgeGroup AgeGroup,
+                CASE WHEN Gender = 'M' THEN 'Male' WHEN Gender = 'F' THEN 'Female' ELSE Gender END Gender,
+                SUM(Tested) Tested
+            FROM
+                NDWH.dbo.FactHTSClientTests AS link
+                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
+                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
+                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
+                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
+                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
+            WHERE Tested is not null and TestType IN ('Initial', 'Initial Test')`;
 
-        if(query.county) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and County IN (?)`;
-            params.push(query.county);
+        if (query.county) {
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.subCounty) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and SubCounty IN (?)`;
-            params.push(query.subCounty);
+        if (query.subCounty) {
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and SubCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.facility) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and FacilityName IN (?)`;
-            params.push(query.facility);
+        if (query.facility) {
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.partner) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and CTPartner IN (?)`;
+        if (query.partner) {
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
             params.push(query.partner);
         }
 
-        // if(query.month) {
-        //     uptakeByAgeSexSql = `${uptakeByAgeSexSql} and month=?`;
-        //     params.push(query.month);
-        // }
 
-        // if(query.year) {
-        //     uptakeByAgeSexSql = `${uptakeByAgeSexSql} and year=?`;
-        //     params.push(query.year);
-        // }
 
         if (query.fromDate) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
-            params.push(query.fromDate);
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and DateTestedKey >= ${query.fromDate}01`;
         }
 
         if (query.toDate) {
-            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
-            params.push(query.toDate);
+            uptakeByAgeSexSql = `${uptakeByAgeSexSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
-        uptakeByAgeSexSql = `${uptakeByAgeSexSql} GROUP BY DATIM_AgeGroup, Gender`;
-        return  await this.repository.query(uptakeByAgeSexSql, params);
+        uptakeByAgeSexSql = `${uptakeByAgeSexSql} GROUP BY DATIMAgeGroup, CASE WHEN Gender = 'M' THEN 'Male' WHEN Gender = 'F' THEN 'Female' ELSE Gender END`;
+        return await this.repository.query(uptakeByAgeSexSql, params);
     }
 }

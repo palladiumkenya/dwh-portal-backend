@@ -3,37 +3,61 @@ import { GetPnsSexualContactsByPartnerQuery } from '../impl/get-pns-sexual-conta
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactPNSSexualPartner } from '../../entities/fact-pns-sexual-partner.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetPnsSexualContactsByPartnerQuery)
-export class GetPnsSexualContactsByPartnerHandler implements IQueryHandler<GetPnsSexualContactsByPartnerQuery> {
+export class GetPnsSexualContactsByPartnerHandler
+    implements IQueryHandler<GetPnsSexualContactsByPartnerQuery> {
     constructor(
-        @InjectRepository(FactPNSSexualPartner)
-        private readonly repository: Repository<FactPNSSexualPartner>
-    ) {
-
-    }
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>,
+    ) {}
 
     async execute(query: GetPnsSexualContactsByPartnerQuery): Promise<any> {
-        const pnsSexualContactsByPartner = this.repository.createQueryBuilder('q')
-            .select(['q.CTPartner partner, SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
-            .where('q.Mflcode IS NOT NULL')
-            .andWhere('q.CTPartner IS NOT NULL');
+        let pnsSexualContactsByPartner = `Select PartnerName partner,
+                Sum(PartnersElicited) elicited,
+                sum(PartnerTested) tested,
+                Sum(Positive) positive,
+                sum(Linked) linked,
+                
+                Sum(KnownPositive) knownPositive
+            FROM [dbo].[AggregateHTSPNSSexualPartner]
+            where MFLCode is not null
+            `;
+        // this.repository.createQueryBuilder('q')
+        //     .select(['q.CTPartner partner, SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
+        //     .where('q.Mflcode IS NOT NULL')
+        //     .andWhere('q.CTPartner IS NOT NULL');
 
-        if(query.county) {
-            pnsSexualContactsByPartner.andWhere('q.County IN (:...county)', { county: query.county });
+        if (query.county) {
+            pnsSexualContactsByPartner = `${pnsSexualContactsByPartner} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.subCounty) {
-            pnsSexualContactsByPartner.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: query.subCounty });
+        if (query.subCounty) {
+            pnsSexualContactsByPartner = `${pnsSexualContactsByPartner} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.facility) {
-            pnsSexualContactsByPartner.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
+        if (query.facility) {
+            pnsSexualContactsByPartner = `${pnsSexualContactsByPartner} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.partner) {
-            pnsSexualContactsByPartner.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
+        if (query.partner) {
+            pnsSexualContactsByPartner = `${pnsSexualContactsByPartner} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
+
+        // if (query.agency) {
+        //     pnsSexualContactsByPartner = `${pnsSexualContactsByPartner} and agencyName IN ('${query.agency
+        //         .toString()
+        //         .replace(/,/g, "','")}')`;
+        // }
 
         // if(query.month) {
         //     pnsSexualContactsByPartner.andWhere('q.month = :month', { month: query.month });
@@ -44,26 +68,26 @@ export class GetPnsSexualContactsByPartnerHandler implements IQueryHandler<GetPn
         // }
 
         if (query.fromDate) {
-            pnsSexualContactsByPartner.andWhere(
-                `CONCAT(year, LPAD(month, 2, '0'))>= :fromDate`,
-                {
-                    fromDate: query.fromDate,
-                },
-            );
+            const fromYear = parseInt(query.fromDate.substring(0, 4));
+            const fromMonth = parseInt(query.fromDate.substring(4));
+            pnsSexualContactsByPartner = `${pnsSexualContactsByPartner} and (year > ${fromYear} or (year = ${fromYear} and month >= ${fromMonth}))`;
         }
 
         if (query.toDate) {
-            pnsSexualContactsByPartner.andWhere(
-                `CONCAT(year, LPAD(month, 2, '0'))<= :toDate`,
-                {
-                    toDate: query.toDate,
-                },
-            );
+            const toYear = parseInt(query.toDate.substring(0, 4));
+            const toMonth = parseInt(query.toDate.substring(4));
+            pnsSexualContactsByPartner = `${pnsSexualContactsByPartner} and (year < ${toYear} or (year = ${toYear} and month <= ${toMonth}))`;
         }
 
-        return await pnsSexualContactsByPartner
-            .groupBy('q.CTPartner')
-            .orderBy('SUM(q.PartnerTested)', 'DESC')
-            .getRawMany();
+        pnsSexualContactsByPartner = `${pnsSexualContactsByPartner} GROUP BY PartnerName`;
+
+        pnsSexualContactsByPartner = `${pnsSexualContactsByPartner} ORDER BY SUM(PartnerTested) DESC`;
+
+        return await this.repository.query(pnsSexualContactsByPartner, []);
+
+        // return await pnsSexualContactsByPartner
+        //     .groupBy('q.CTPartner')
+        //     .orderBy('SUM(q.PartnerTested)', 'DESC')
+        //     .getRawMany();
     }
 }

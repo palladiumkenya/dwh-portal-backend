@@ -1,15 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfOvcClientsEnrolledInCpimsOverallQuery } from '../impl/get-proportion-of-ovc-clients-enrolled-in-cpims-overall.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetProportionOfOvcClientsEnrolledInCpimsOverallQuery)
 export class GetProportionOfOvcClientsEnrolledInCpimsOverallHandler implements IQueryHandler<GetProportionOfOvcClientsEnrolledInCpimsOverallQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
@@ -31,11 +30,11 @@ export class GetProportionOfOvcClientsEnrolledInCpimsOverallHandler implements I
         }
 
         if (query.partner) {
-            enrolledInCIPMS.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            enrolledInCIPMS.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            enrolledInCIPMS.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            enrolledInCIPMS.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -43,7 +42,7 @@ export class GetProportionOfOvcClientsEnrolledInCpimsOverallHandler implements I
         }
 
         if (query.datimAgeGroup) {
-            enrolledInCIPMS.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            enrolledInCIPMS.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await enrolledInCIPMS

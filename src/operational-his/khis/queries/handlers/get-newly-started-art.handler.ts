@@ -88,13 +88,13 @@ export class GetNewlyStartedArtHandler
         }
 
         if (query.agency) {
-            newlyStartArt.andWhere('Agency IN (:...agencies)', {
+            newlyStartArt.andWhere('AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
 
         if (query.partner) {
-            newlyStartArt.andWhere('SDP IN (:...partners)', {
+            newlyStartArt.andWhere('PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }

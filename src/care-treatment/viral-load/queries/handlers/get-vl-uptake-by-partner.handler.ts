@@ -3,20 +3,21 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { FactTransVLOverallUptake } from '../../entities/fact-trans-vl-overall-uptake.model';
 import { GetVlUptakeByPartnerQuery } from '../impl/get-vl-uptake-by-partner.query';
+import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlUptakeByPartnerQuery)
 export class GetVlUptakeByPartnerHandler implements IQueryHandler<GetVlUptakeByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransVLOverallUptake, 'mssql')
-        private readonly repository: Repository<FactTransVLOverallUptake>
+        @InjectRepository(AggregateVLUptakeOutcome, 'mssql')
+        private readonly repository: Repository<AggregateVLUptakeOutcome>
     ) {
     }
 
     async execute(query: GetVlUptakeByPartnerQuery): Promise<any> {
         const vlUptakeByPartner = this.repository.createQueryBuilder('f')
-            .select(['f.CTPartner partner, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed'])
+            .select(['f.PartnerName partner, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed'])
             .where('f.MFLCode > 0')
-            .andWhere('f.CTPartner IS NOT NULL');
+            .andWhere('f.PartnerName IS NOT NULL');
 
         if (query.county) {
             vlUptakeByPartner.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -31,11 +32,11 @@ export class GetVlUptakeByPartnerHandler implements IQueryHandler<GetVlUptakeByP
         }
 
         if (query.partner) {
-            vlUptakeByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlUptakeByPartner.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlUptakeByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlUptakeByPartner.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
@@ -47,7 +48,7 @@ export class GetVlUptakeByPartnerHandler implements IQueryHandler<GetVlUptakeByP
         }
 
         return await vlUptakeByPartner
-            .groupBy('f.CTPartner')
+            .groupBy('f.PartnerName')
             .orderBy('SUM(f.VLDone)', 'DESC')
             .getRawMany();
     }

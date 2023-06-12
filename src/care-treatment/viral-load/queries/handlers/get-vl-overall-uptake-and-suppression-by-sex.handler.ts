@@ -1,21 +1,25 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransVLOverallUptake } from '../../entities/fact-trans-vl-overall-uptake.model';
 import { GetVlOverallUptakeAndSuppressionBySexQuery } from '../impl/get-vl-overall-uptake-and-suppression-by-sex.query';
+import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlOverallUptakeAndSuppressionBySexQuery)
 export class GetVlOverallUptakeAndSuppressionBySexHandler implements IQueryHandler<GetVlOverallUptakeAndSuppressionBySexQuery> {
     constructor(
-        @InjectRepository(FactTransVLOverallUptake, 'mssql')
-        private readonly repository: Repository<FactTransVLOverallUptake>
+        @InjectRepository(AggregateVLUptakeOutcome, 'mssql')
+        private readonly repository: Repository<AggregateVLUptakeOutcome>
     ) {
     }
 
     async execute(query: GetVlOverallUptakeAndSuppressionBySexQuery): Promise<any> {
-        const vlOverallUptakeAndSuppressionBySex = this.repository.createQueryBuilder('f')
-            .select(['Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed'])
-            .where('f.MFLCode > 0')
+        const vlOverallUptakeAndSuppressionBySex = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed',
+            ])
+            // .where('f.MFLCode > 0')
+            .where('f.TXCurr > 0')
             .andWhere('f.Gender IS NOT NULL');
 
         if (query.county) {
@@ -31,11 +35,11 @@ export class GetVlOverallUptakeAndSuppressionBySexHandler implements IQueryHandl
         }
 
         if (query.partner) {
-            vlOverallUptakeAndSuppressionBySex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlOverallUptakeAndSuppressionBySex.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlOverallUptakeAndSuppressionBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlOverallUptakeAndSuppressionBySex.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

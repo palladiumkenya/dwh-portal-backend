@@ -1,22 +1,22 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetDsdStableOverallQuery } from '../impl/get-dsd-stable-overall.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransDsdAppointmentByStabilityStatus } from '../../entities/fact-trans-dsd-appointment-by-stability-status.model';
 import { Repository } from 'typeorm';
+import { AggregateDSD } from './../../entities/AggregateDSD.model';
 
 @QueryHandler(GetDsdStableOverallQuery)
 export class GetDsdStableOverallHandler implements IQueryHandler<GetDsdStableOverallQuery> {
     constructor(
-        @InjectRepository(FactTransDsdAppointmentByStabilityStatus, 'mssql')
-        private readonly repository: Repository<FactTransDsdAppointmentByStabilityStatus>
+        @InjectRepository(AggregateDSD, 'mssql')
+        private readonly repository: Repository<AggregateDSD>
     ) {
     }
 
     async execute(query: GetDsdStableOverallQuery): Promise<any> {
         const dsdMmdStable = this.repository.createQueryBuilder('f')
-            .select(['SUM([StabilityAssessment]) Stable, SUM([NumPatients])TXCurr, DATIM_AgeGroup ageGroup'])
+            .select(['SUM([Stability]) Stable, SUM([TXCurr])TXCurr, AgeGroup ageGroup'])
             .where('f.MFLCode > 1')
-            .andWhere('f.Stability = :stability', { stability: "Stable"});
+            .andWhere('f.StabilityAssessment = :stability', { stability: "Stable"});
 
         if (query.county) {
             dsdMmdStable.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -31,15 +31,15 @@ export class GetDsdStableOverallHandler implements IQueryHandler<GetDsdStableOve
         }
 
         if (query.partner) {
-            dsdMmdStable.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdMmdStable.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdMmdStable.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdMmdStable.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            dsdMmdStable.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            dsdMmdStable.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
@@ -47,7 +47,8 @@ export class GetDsdStableOverallHandler implements IQueryHandler<GetDsdStableOve
         }
 
         return await dsdMmdStable
-            .groupBy('DATIM_AgeGroup')
+            .groupBy('AgeGroup')
+            .orderBy('AgeGroup', 'ASC')
             .getRawMany();
     }
 }

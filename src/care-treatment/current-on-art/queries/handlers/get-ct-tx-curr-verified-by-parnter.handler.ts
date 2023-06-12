@@ -1,21 +1,21 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactNUPI } from '../../entities/fact-nupi.model';
 import { GetCtTxCurrVerifiedByPartnerQuery } from '../impl/get-ct-tx-curr-verified-partner.query';
+import { AggregateNupi } from './../../entities/aggregate-nupi.model';
 
 @QueryHandler(GetCtTxCurrVerifiedByPartnerQuery)
 export class GetCtTxCurrVerifiedByPartnerHandler
     implements IQueryHandler<GetCtTxCurrVerifiedByPartnerQuery> {
     constructor(
-        @InjectRepository(FactNUPI, 'mssql')
-        private readonly repository: Repository<FactNUPI>,
+        @InjectRepository(AggregateNupi, 'mssql')
+        private readonly repository: Repository<AggregateNupi>,
     ) {}
 
     async execute(query: GetCtTxCurrVerifiedByPartnerQuery): Promise<any> {
         let txCurrByPartner = this.repository
             .createQueryBuilder('f')
-            .select(['CTPartner, sum (NumNUPI) NumNupi'])
+            .select(['PartnerName CTPartner, sum (numnupi) NumNupi'])
             .where('f.[Gender] IS NOT NULL');
 
         if (query.datimAgePopulations) {
@@ -26,12 +26,16 @@ export class GetCtTxCurrVerifiedByPartnerHandler
             } else if (query.datimAgePopulations.includes('>18'))
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
-                    .select(['CTPartner, sum (Adults) NumNupi'])
+                    .select([
+                        'PartnerName CTPartner, sum (adults) NumNupi',
+                    ])
                     .where('f.[Gender] IS NOT NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
-                    .select(['CTPartner, sum (Children) NumNupi'])
+                    .select([
+                        'PartnerName CTPartner, sum (children) NumNupi',
+                    ])
                     .where('f.[Gender] IS NOT NULL');
         }
 
@@ -54,19 +58,19 @@ export class GetCtTxCurrVerifiedByPartnerHandler
         }
 
         if (query.partner) {
-            txCurrByPartner.andWhere('f.CTPartner IN (:...partners)', {
+            txCurrByPartner.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            txCurrByPartner.andWhere('f.CTAgency IN (:...agencies)', {
+            txCurrByPartner.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
 
         if (query.datimAgeGroup) {
-            txCurrByPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', {
+            txCurrByPartner.andWhere('f.AgeGroup IN (:...ageGroups)', {
                 ageGroups: query.datimAgeGroup,
             });
         }
@@ -78,7 +82,7 @@ export class GetCtTxCurrVerifiedByPartnerHandler
         }
 
         return await txCurrByPartner
-            .groupBy('CTPartner')
+            .groupBy('PartnerName')
             .orderBy('NumNupi', 'DESC')
             .getRawMany();
     }

@@ -3,20 +3,21 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetCtTxCurrVerifiedByAgeAndSexQuery } from './../impl/get-ct-tx-curr-verified-age-group-sex.query';
 import { FactNUPI } from '../../entities/fact-nupi.model';
+import { AggregateNupi } from './../../entities/aggregate-nupi.model';
 
 @QueryHandler(GetCtTxCurrVerifiedByAgeAndSexQuery)
 export class GetCtTxCurrVerifiedBySexHandler
     implements IQueryHandler<GetCtTxCurrVerifiedByAgeAndSexQuery> {
     constructor(
-        @InjectRepository(FactNUPI, 'mssql')
-        private readonly repository: Repository<FactNUPI>,
+        @InjectRepository(AggregateNupi, 'mssql')
+        private readonly repository: Repository<AggregateNupi>,
     ) {}
 
     async execute(query: GetCtTxCurrVerifiedByAgeAndSexQuery): Promise<any> {
         let txCurrBySex = this.repository
             .createQueryBuilder('f')
-            .select(['Gender, DATIM_AgeGroup, sum (NumNUPI) NumNupi'])
-            .where('f.[Gender] IS NOT NULL and DATIM_AgeGroup is not NULL');
+            .select(['Gender, AgeGroup, sum (numnupi) NumNupi'])
+            .where('f.[Gender] IS NOT NULL and AgeGroup is not NULL');
 
         if (query.datimAgePopulations) {
             if (
@@ -26,14 +27,14 @@ export class GetCtTxCurrVerifiedBySexHandler
             } else if (query.datimAgePopulations.includes('>18'))
                 txCurrBySex = this.repository
                     .createQueryBuilder('f')
-                    .select(['Gender, DATIM_AgeGroup, sum (Adults) NumNupi'])
-                    .where('f.[Gender] IS NOT NULL and DATIM_AgeGroup is not NULL');
+                    .select(['Gender, AgeGroup, sum (adults) NumNupi'])
+                    .where('f.[Gender] IS NOT NULL and AgeGroup is not NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurrBySex = this.repository
                     .createQueryBuilder('f')
-                    .select(['Gender, DATIM_AgeGroup, sum (Children) NumNupi'])
+                    .select(['Gender, AgeGroup, sum (children) NumNupi'])
                     .where(
-                        'f.[Gender] IS NOT NULL and DATIM_AgeGroup is not NULL',
+                        'f.[Gender] IS NOT NULL and AgeGroup is not NULL',
                     );
         }
 
@@ -56,19 +57,19 @@ export class GetCtTxCurrVerifiedBySexHandler
         }
 
         if (query.partner) {
-            txCurrBySex.andWhere('f.CTPartner IN (:...partners)', {
+            txCurrBySex.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            txCurrBySex.andWhere('f.CTAgency IN (:...agencies)', {
+            txCurrBySex.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
 
         if (query.datimAgeGroup) {
-            txCurrBySex.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', {
+            txCurrBySex.andWhere('f.AgeGroup IN (:...ageGroups)', {
                 ageGroups: query.datimAgeGroup,
             });
         }
@@ -80,8 +81,8 @@ export class GetCtTxCurrVerifiedBySexHandler
         }
 
         return await txCurrBySex
-            .groupBy('Gender, DATIM_AgeGroup')
-            .orderBy('DATIM_AgeGroup')
+            .groupBy('Gender, AgeGroup')
+            .orderBy('AgeGroup')
             .getRawMany();
     }
 }

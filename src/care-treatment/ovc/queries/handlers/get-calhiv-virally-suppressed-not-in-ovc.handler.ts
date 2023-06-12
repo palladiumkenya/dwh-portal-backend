@@ -4,18 +4,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
 import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetCalhivVirallySuppressedQuery)
 export class GetCalhivVirallySuppressedNotInOvcHandler implements IQueryHandler<GetCalhivVirallySuppressedQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
     async execute(query: GetCalhivVirallySuppressedQuery): Promise<any> {
         const CALHIVVLSuppressed = this.repository.createQueryBuilder('f')
-            .select(['Count (*)CALHIVVLSuppressed'])
+            .select(['Count (*) CALHIVVLSuppressed'])
             .andWhere('f.TXCurr=1 and VirallySuppressed=1 and f.OVCEnrollmentDate IS NULL');
 
         if (query.county) {
@@ -31,11 +32,11 @@ export class GetCalhivVirallySuppressedNotInOvcHandler implements IQueryHandler<
         }
 
         if (query.partner) {
-            CALHIVVLSuppressed.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            CALHIVVLSuppressed.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            CALHIVVLSuppressed.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            CALHIVVLSuppressed.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -43,7 +44,7 @@ export class GetCalhivVirallySuppressedNotInOvcHandler implements IQueryHandler<
         }
 
         if (query.datimAgeGroup) {
-            CALHIVVLSuppressed.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            CALHIVVLSuppressed.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await CALHIVVLSuppressed.getRawOne();

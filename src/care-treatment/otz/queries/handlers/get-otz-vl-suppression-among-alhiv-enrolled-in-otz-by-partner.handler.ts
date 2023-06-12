@@ -1,14 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerQuery } from '../impl/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { LineListOTZ } from './../../entities/line-list-otz.model';
 
 @QueryHandler(GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerQuery)
 export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler implements IQueryHandler<GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListOTZ, 'mssql')
+        private readonly repository: Repository<LineListOTZ>
     ) {
     }
 
@@ -16,11 +16,9 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler implemen
         const vlSuppressionOtzByPartner = this.repository
             .createQueryBuilder('f')
             .select([
-                '[CTPartner], Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
+                '[PartnerName] CTPartner, Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
             ])
-            .andWhere(
-                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL  AND OTZEnrollmentDate IS NOT NULL',
-            );
+            .andWhere('f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL');
 
         if (query.county) {
             vlSuppressionOtzByPartner.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -35,15 +33,15 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler implemen
         }
 
         if (query.partner) {
-            vlSuppressionOtzByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlSuppressionOtzByPartner.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlSuppressionOtzByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlSuppressionOtzByPartner.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            vlSuppressionOtzByPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            vlSuppressionOtzByPartner.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
@@ -51,8 +49,8 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler implemen
         }
 
         return await vlSuppressionOtzByPartner
-            .groupBy('[CTPartner], Last12MVLResult')
-            .orderBy('[CTPartner]')
+            .groupBy('[PartnerName], Last12MVLResult')
+            .orderBy('[PartnerName]')
             .getRawMany();
     }
 }

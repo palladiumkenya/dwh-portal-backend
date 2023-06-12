@@ -1,21 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetVlUptakeAmongAlhivEnrolledInOtzByPartnerQuery } from '../impl/get-vl-uptake-among-alhiv-enrolled-in-otz-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { LineListOTZ } from './../../entities/line-list-otz.model';
 
 @QueryHandler(GetVlUptakeAmongAlhivEnrolledInOtzByPartnerQuery)
 export class GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler implements IQueryHandler<GetVlUptakeAmongAlhivEnrolledInOtzByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListOTZ, 'mssql')
+        private readonly repository: Repository<LineListOTZ>
     ) {
     }
 
     async execute(query: GetVlUptakeAmongAlhivEnrolledInOtzByPartnerQuery): Promise<any> {
         const vlUptakeAmongAlHivEnrolledInOtzByCounty = this.repository.createQueryBuilder('f')
-            .select(['[CTPartner] partner, COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent'])
-            .andWhere('f.OTZEnrollmentDate IS NOT NULL');
+            .select(['[PartnerName] partner, COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent']);
 
         if (query.county) {
             vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -30,15 +29,15 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler implements IQuer
         }
 
         if (query.partner) {
-            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
@@ -46,7 +45,7 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler implements IQuer
         }
 
         return await vlUptakeAmongAlHivEnrolledInOtzByCounty
-            .groupBy('CTPartner')
+            .groupBy('PartnerName')
             .getRawMany();
     }
 }

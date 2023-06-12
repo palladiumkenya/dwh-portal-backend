@@ -3,43 +3,56 @@ import { GetLinkageNumberPositiveByTypeQuery } from '../impl/get-linkage-number-
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from '../../entities/fact-hts-client-tests.model';
 
 
 @QueryHandler(GetLinkageNumberPositiveByTypeQuery)
-export class GetLinkageNumberPositiveByTypeHandler implements IQueryHandler<GetLinkageNumberPositiveByTypeQuery> {
+export class GetLinkageNumberPositiveByTypeHandler
+    implements IQueryHandler<GetLinkageNumberPositiveByTypeQuery> {
     constructor(
-        @InjectRepository(FactHtsUptake)
-        private readonly repository: Repository<FactHtsUptake>
-    ) {
-
-    }
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>,
+    ) {}
 
     async execute(query: GetLinkageNumberPositiveByTypeQuery): Promise<any> {
         const params = [];
-        let linkageNumberPositiveByTypeSql = 'SELECT year, month, TestedBefore,' +
-            'SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive, ' +
-            'SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END) linked, ' +
-            '((SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END)/SUM(positive))*100) AS linkage ' +
-            'FROM fact_htsuptake WHERE positive > 0 ';
+        let linkageNumberPositiveByTypeSql = `SELECT
+                year(DateTestedKey) year, month(DateTestedKey) month, TestedBefore,
+                SUM(Tested) tested,
+                SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive,
+                SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END) linked,
+                ((CAST(SUM(linked) AS FLOAT)/NULLIF(CAST(SUM(positive)AS FLOAT), 0))*100) AS linkage
+            FROM
+                NDWH.dbo.FactHTSClientTests AS link
+                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
+                left JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
+                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
+                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
+                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
+            WHERE positive > 0 and TestType IN ('Initial', 'Initial Test')`;
 
-        if(query.county) {
-            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and County IN (?)`;
-            params.push(query.county);
+        if (query.county) {
+            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.subCounty) {
-            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and SubCounty IN (?)`;
-            params.push(query.subCounty);
+        if (query.subCounty) {
+            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and SubCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.facility) {
-            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and FacilityName IN (?)`;
-            params.push(query.facility);
+        if (query.facility) {
+            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.partner) {
-            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and CTPartner IN (?)`;
-            params.push(query.partner);
+        if (query.partner) {
+            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         // if(query.year) {
@@ -57,19 +70,20 @@ export class GetLinkageNumberPositiveByTypeHandler implements IQueryHandler<GetL
         // }
 
         if (query.fromDate) {
-            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
-            params.push(query.fromDate);
+            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and DateTestedKey >= ${query.fromDate}01`;
         }
 
         if (query.toDate) {
-            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
-            params.push(query.toDate);
+            linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
-        linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} GROUP BY TestedBefore, year, month`;
+        linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} GROUP BY TestedBefore, year(DateTestedKey), month(DateTestedKey)`;
 
-        linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} ORDER BY TestedBefore, year, month`;
+        linkageNumberPositiveByTypeSql = `${linkageNumberPositiveByTypeSql} ORDER BY TestedBefore, year(DateTestedKey), month(DateTestedKey)`;
 
-        return  await this.repository.query(linkageNumberPositiveByTypeSql, params);
+        return await this.repository.query(
+            linkageNumberPositiveByTypeSql,
+            params,
+        );
     }
 }

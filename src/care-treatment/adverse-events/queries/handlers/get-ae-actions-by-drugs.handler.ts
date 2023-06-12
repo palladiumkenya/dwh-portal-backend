@@ -3,18 +3,22 @@ import { GetAeActionsByDrugsQuery } from '../impl/get-ae-actions-by-drugs.query'
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransAeCauses } from '../../entities/fact-trans-ae-causes.model';
 import { Repository } from 'typeorm';
+import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetAeActionsByDrugsQuery)
 export class GetAeActionsByDrugsHandler implements IQueryHandler<GetAeActionsByDrugsQuery> {
     constructor(
-        @InjectRepository(FactTransAeCauses, 'mssql')
-        private readonly repository: Repository<FactTransAeCauses>
+        @InjectRepository(AggregateAdverseEvents, 'mssql')
+        private readonly repository: Repository<AggregateAdverseEvents>
     ) {
     }
 
     async execute(query: GetAeActionsByDrugsQuery): Promise<any> {
-        const aeActionsByDrugs = this.repository.createQueryBuilder('f')
-            .select('[Severity], [AdverseEventCause], SUM([Total_AdverseEventCause]) total, DATIM_AgeGroup ageGroup')
+        const aeActionsByDrugs = this.repository
+            .createQueryBuilder('f')
+            .select(
+                '[Severity], [AdverseEventCause], SUM([AdverseEventCount]) total, DATIMAgeGroup ageGroup',
+            )
             .where('[AdverseEventCause] IS NOT NULL');
 
         if (query.county) {
@@ -34,24 +38,25 @@ export class GetAeActionsByDrugsHandler implements IQueryHandler<GetAeActionsByD
 
         if (query.partner) {
             aeActionsByDrugs
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            aeActionsByDrugs.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            aeActionsByDrugs.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            aeActionsByDrugs.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            aeActionsByDrugs.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
-            // lacking gender
-            // aeActionsByDrugs.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            aeActionsByDrugs.andWhere('f.Gender IN (:...genders)', {
+                genders: query.gender,
+            });
         }
 
         return await aeActionsByDrugs
-            .groupBy('[Severity], [AdverseEventCause], DATIM_AgeGroup')
+            .groupBy('[Severity], [AdverseEventCause], DATIMAgeGroup')
             .getRawMany();
     }
 }

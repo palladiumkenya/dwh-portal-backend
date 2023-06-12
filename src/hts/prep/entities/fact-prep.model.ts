@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('FACT_Prep')
+@Entity('NDWH.dbo.FactPrep')
 export class FactPrep {
     @PrimaryColumn('text')
     PrepNumber: string;

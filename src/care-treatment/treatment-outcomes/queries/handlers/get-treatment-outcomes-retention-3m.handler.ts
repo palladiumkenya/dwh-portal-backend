@@ -31,15 +31,15 @@ export class GetTreatmentOutcomesRetention3mHandler implements IQueryHandler<Get
         }
 
         if (query.partner) {
-            retention.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            retention.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            retention.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            retention.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            retention.andWhere('f.AgeGroupCleaned IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            retention.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

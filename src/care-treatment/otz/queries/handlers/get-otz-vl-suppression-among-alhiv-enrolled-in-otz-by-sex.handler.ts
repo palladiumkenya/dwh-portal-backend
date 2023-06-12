@@ -3,12 +3,13 @@ import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexQuery } from '../impl/ge
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { LineListOTZ } from './../../entities/line-list-otz.model';
 
 @QueryHandler(GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexQuery)
 export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler implements IQueryHandler<GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListOTZ, 'mssql')
+        private readonly repository: Repository<LineListOTZ>
     ) {
     }
 
@@ -19,7 +20,7 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler implements I
                 '[Gender], Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
             ])
             .andWhere(
-                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL and OTZEnrollmentDate IS NOT Null',
+                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL',
             );
 
         if (query.county) {
@@ -35,15 +36,15 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler implements I
         }
 
         if (query.partner) {
-            vlSuppressionOtzBySex.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlSuppressionOtzBySex.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlSuppressionOtzBySex.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlSuppressionOtzBySex.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            vlSuppressionOtzBySex.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            vlSuppressionOtzBySex.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

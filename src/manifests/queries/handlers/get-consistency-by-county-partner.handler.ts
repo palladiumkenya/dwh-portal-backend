@@ -8,7 +8,7 @@ import { countBy, fromPairs, sortBy, toPairs } from 'lodash';
 @QueryHandler(GetConsistencyByCountyPartnerQuery)
 export class GetConsistencyByCountyPartnerHandler implements IQueryHandler<GetConsistencyByCountyPartnerQuery> {
     constructor(
-        @InjectRepository(FactManifest)
+        @InjectRepository(FactManifest, 'mssql')
         private readonly repository: Repository<FactManifest>
     ) {
 
@@ -16,12 +16,14 @@ export class GetConsistencyByCountyPartnerHandler implements IQueryHandler<GetCo
 
     async execute(query: GetConsistencyByCountyPartnerQuery): Promise<any> {
         const params = [query.getDatePeriod(), query.docket];
-        const consistencySql = 'call generate_consistency_uploads(?,?)';
+        const consistencySql = `EXEC generate_consistency_uploads @PERIOD = '${query.getDatePeriod()}', @docketName ='${
+            query.docket
+        }'`;
         const results = await this.repository.query(consistencySql, params);
         let consistencyResult = [];
         let consistencyValue = {};
-        if(results && results[0].length > 0) {
-            consistencyResult = results[0];
+        if(results) {
+            consistencyResult = results;
             if (query.county) {
                 consistencyResult = consistencyResult.filter(x => query.county.indexOf(x.county) !== -1);
             }
@@ -38,10 +40,16 @@ export class GetConsistencyByCountyPartnerHandler implements IQueryHandler<GetCo
                 consistencyResult = consistencyResult.filter(x => query.agency.indexOf(x.agency) !== -1);
             }
             if (query.reportingType == 'county') {
+                consistencyResult = consistencyResult.map(e => {
+                    return {...e, county: e.county.toUpperCase()} 
+                });
                 consistencyValue =  countBy(consistencyResult, 'county');
                 consistencyValue = fromPairs(sortBy(toPairs(consistencyValue), 1).reverse());
             }
             else if(query.reportingType == 'partner') {
+                consistencyResult = consistencyResult.map(e => {
+                    return { ...e, partner: e.partner.toUpperCase() };
+                });
                 consistencyValue = countBy(consistencyResult, 'partner');
                 consistencyValue = fromPairs(sortBy(toPairs(consistencyValue), 1).reverse());
             }

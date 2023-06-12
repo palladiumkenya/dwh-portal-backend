@@ -4,6 +4,10 @@ import { Repository } from 'typeorm';
 import { FactTransRetention } from '../../entities/fact-trans-retention.model';
 import { GetVlSuppressionByYearQuery } from '../impl/get-vl-suppression-by-year.query';
 
+
+// NOT IN USE
+//TODO:: Add aggregate
+
 @QueryHandler(GetVlSuppressionByYearQuery)
 export class GetVlSuppressionByYearHandler implements IQueryHandler<GetVlSuppressionByYearQuery> {
     constructor(
@@ -33,11 +37,11 @@ export class GetVlSuppressionByYearHandler implements IQueryHandler<GetVlSuppres
         }
 
         if (query.partner) {
-            vlSuppressionByYear.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlSuppressionByYear.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlSuppressionByYear.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlSuppressionByYear.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

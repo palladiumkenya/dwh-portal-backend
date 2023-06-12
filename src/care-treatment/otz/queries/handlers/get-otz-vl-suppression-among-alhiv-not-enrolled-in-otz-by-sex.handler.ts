@@ -1,16 +1,18 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
 import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexQuery } from '../impl/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-sex.query';
+import { LineListOTZEligibilityAndEnrollments } from './../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexQuery)
 export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexHandler
     implements
         IQueryHandler<GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>,
+        @InjectRepository(LineListOTZEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<
+            LineListOTZEligibilityAndEnrollments
+        >,
     ) {}
 
     async execute(
@@ -22,7 +24,7 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexHandler
                 '[Gender], Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
             ])
             .andWhere(
-                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL AND OTZEnrollmentDate IS NULL',
+                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL AND Enrolled = 0',
             );
 
         if (query.county) {
@@ -45,22 +47,21 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexHandler
         }
 
         if (query.partner) {
-            vlSuppressionOtzBySex.andWhere('f.CTPartner IN (:...partners)', {
+            vlSuppressionOtzBySex.andWhere('f.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            vlSuppressionOtzBySex.andWhere('f.CTAgency IN (:...agencies)', {
+            vlSuppressionOtzBySex.andWhere('f.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
 
         if (query.datimAgeGroup) {
-            vlSuppressionOtzBySex.andWhere(
-                'f.DATIM_AgeGroup IN (:...ageGroups)',
-                { ageGroups: query.datimAgeGroup },
-            );
+            vlSuppressionOtzBySex.andWhere('f.AgeGroup IN (:...ageGroups)', {
+                ageGroups: query.datimAgeGroup,
+            });
         }
 
         if (query.gender) {

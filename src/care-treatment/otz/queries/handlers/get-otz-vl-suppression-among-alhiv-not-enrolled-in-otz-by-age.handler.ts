@@ -3,75 +3,83 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
 import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeQuery } from '../impl/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-age.query';
+import { LineListOTZEligibilityAndEnrollments } from './../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeQuery)
 export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeHandler
     implements
         IQueryHandler<GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeQuery> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>,
+        @InjectRepository(LineListOTZEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOTZEligibilityAndEnrollments>,
     ) {}
-
+    // TODO:: Move to correct table
     async execute(
         query: GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeQuery,
     ): Promise<any> {
-        const vlSuppressionOtzByAge = this.repository
+        let vlSuppressionOtzByAgeAlhiv = this.repository
             .createQueryBuilder('f')
             .select([
-                '[DATIM_AgeGroup] ageGroup, Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
+                '[AgeGroup] ageGroup, Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
             ])
-            .andWhere(
-                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL and OTZEnrollmentDate is Null',
-            );
+            .andWhere('f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL AND Enrolled = 0');
 
         if (query.county) {
-            vlSuppressionOtzByAge.andWhere('f.County IN (:...counties)', {
+            vlSuppressionOtzByAgeAlhiv.andWhere('f.County IN (:...counties)', {
                 counties: query.county,
             });
         }
 
         if (query.subCounty) {
-            vlSuppressionOtzByAge.andWhere('f.SubCounty IN (:...subCounties)', {
-                subCounties: query.subCounty,
-            });
+            vlSuppressionOtzByAgeAlhiv.andWhere(
+                'f.SubCounty IN (:...subCounties)',
+                {
+                    subCounties: query.subCounty,
+                },
+            );
         }
 
         if (query.facility) {
-            vlSuppressionOtzByAge.andWhere(
+            vlSuppressionOtzByAgeAlhiv.andWhere(
                 'f.FacilityName IN (:...facilities)',
                 { facilities: query.facility },
             );
         }
 
         if (query.partner) {
-            vlSuppressionOtzByAge.andWhere('f.CTPartner IN (:...partners)', {
-                partners: query.partner,
-            });
+            vlSuppressionOtzByAgeAlhiv.andWhere(
+                'f.PartnerName IN (:...partners)',
+                {
+                    partners: query.partner,
+                },
+            );
         }
 
         if (query.agency) {
-            vlSuppressionOtzByAge.andWhere('f.CTAgency IN (:...agencies)', {
-                agencies: query.agency,
-            });
+            vlSuppressionOtzByAgeAlhiv.andWhere(
+                'f.AgencyName IN (:...agencies)',
+                {
+                    agencies: query.agency,
+                },
+            );
         }
 
         if (query.datimAgeGroup) {
-            vlSuppressionOtzByAge.andWhere(
-                'f.DATIM_AgeGroup IN (:...ageGroups)',
+            vlSuppressionOtzByAgeAlhiv.andWhere(
+                'f.AgeGroup IN (:...ageGroups)',
                 { ageGroups: query.datimAgeGroup },
             );
         }
 
         if (query.gender) {
-            vlSuppressionOtzByAge.andWhere('f.Gender IN (:...genders)', {
+            vlSuppressionOtzByAgeAlhiv.andWhere('f.Gender IN (:...genders)', {
                 genders: query.gender,
             });
         }
 
-        return await vlSuppressionOtzByAge
-            .groupBy('[DATIM_AgeGroup], Last12MVLResult')
-            .orderBy('[DATIM_AgeGroup]')
+        return await vlSuppressionOtzByAgeAlhiv
+            .groupBy('[AgeGroup], Last12MVLResult')
+            .orderBy('[AgeGroup]')
             .getRawMany();
     }
 }

@@ -3,36 +3,62 @@ import { GetPnsChildrenCascadeQuery } from '../impl/get-pns-children-cascade.que
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactPNSChildren } from '../../entities/fact-pns-children.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetPnsChildrenCascadeQuery)
-export class GetPnsChildrenCascadeHandler implements IQueryHandler<GetPnsChildrenCascadeQuery> {
+export class GetPnsChildrenCascadeHandler
+    implements IQueryHandler<GetPnsChildrenCascadeQuery> {
     constructor(
-        @InjectRepository(FactPNSChildren)
-        private readonly repository: Repository<FactPNSChildren>
-    ) {
-
-    }
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>,
+    ) {}
 
     async execute(query: GetPnsChildrenCascadeQuery): Promise<any> {
-        const pnsChildrenCascade = this.repository.createQueryBuilder('q')
-            .select(['SUM(q.ChildrenElicited) elicited, SUM(q.ChildTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
-            .where('q.Mflcode IS NOT NULL');
+        let pnsChildrenCascade = `Select 
+                Sum(ChildrenElicited) elicited,
+                sum(ChildrenTested) tested,
+                Sum(ChildrenPositive) positive,
+                sum(ChildrenLiked) linked,
+                
+                Sum(ChildrenKnownPositive) knownPositive
+            From REPORTING.dbo.AggregateHTSPNSChildren pns
 
-        if(query.county) {
-            pnsChildrenCascade.andWhere('q.County IN (:...county)', { county: query.county });
+            where MFLCode is not null
+        `;
+
+        // this.repository.createQueryBuilder('q')
+        //     .select(['SUM(q.ChildrenElicited) elicited, SUM(q.ChildTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
+        //     .where('q.Mflcode IS NOT NULL');
+
+        if (query.county) {
+            pnsChildrenCascade = `${pnsChildrenCascade} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.subCounty) {
-            pnsChildrenCascade.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: query.subCounty });
+        if (query.subCounty) { 
+            pnsChildrenCascade = `${pnsChildrenCascade} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.facility) {
-            pnsChildrenCascade.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
+        if (query.facility) {
+            pnsChildrenCascade = `${pnsChildrenCascade} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.partner) {
-            pnsChildrenCascade.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
+        if (query.partner) {
+            pnsChildrenCascade = `${pnsChildrenCascade} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
+
+        // if (query.agency) {
+        //     pnsChildrenCascade = `${pnsChildrenCascade} and agencyName IN ('${query.agency
+        //         .toString()
+        //         .replace(/,/g, "','")}')`;
+        // }
 
         // if(query.month) {
         //     pnsChildrenCascade.andWhere('q.month = :month', { month: query.month });
@@ -43,13 +69,18 @@ export class GetPnsChildrenCascadeHandler implements IQueryHandler<GetPnsChildre
         // }
 
         if (query.fromDate) {
-            pnsChildrenCascade.andWhere( `CONCAT(year, LPAD(month, 2, '0'))>= :fromDate`, {fromDate: query.fromDate});
+            const fromYear = parseInt(query.fromDate.substring(0, 4));
+            const fromMonth = parseInt(query.fromDate.substring(4));
+            pnsChildrenCascade = `${pnsChildrenCascade} and (year > ${fromYear} or (year = ${fromYear} and month >= ${fromMonth}))`;
         }
 
         if (query.toDate) {
-            pnsChildrenCascade.andWhere(`CONCAT(year, LPAD(month, 2, '0'))<= :toDate`, { toDate: query.toDate });
+            const toYear = parseInt(query.toDate.substring(0, 4));
+            const toMonth = parseInt(query.toDate.substring(4));
+            pnsChildrenCascade = `${pnsChildrenCascade} and (year < ${toYear} or (year = ${toYear} and month <= ${toMonth}))`;
         }
+        return await this.repository.query(pnsChildrenCascade, []);
 
-        return await pnsChildrenCascade.getRawOne();
+        // return await pnsChildrenCascade.getRawOne();
     }
 }

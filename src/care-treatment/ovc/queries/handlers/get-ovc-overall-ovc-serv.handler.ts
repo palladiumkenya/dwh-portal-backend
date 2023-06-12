@@ -1,15 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOvcOverallOvcServQuery } from '../impl/get-ovc-overall-ovc-serv.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
 import { Repository } from 'typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetOvcOverallOvcServQuery)
 export class GetOvcOverallOvcServHandler implements IQueryHandler<GetOvcOverallOvcServQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
@@ -31,11 +30,11 @@ export class GetOvcOverallOvcServHandler implements IQueryHandler<GetOvcOverallO
         }
 
         if (query.partner) {
-            overOvcServ.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            overOvcServ.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            overOvcServ.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            overOvcServ.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -43,7 +42,7 @@ export class GetOvcOverallOvcServHandler implements IQueryHandler<GetOvcOverallO
         }
 
         if (query.datimAgeGroup) {
-            overOvcServ.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            overOvcServ.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await overOvcServ.getRawOne();

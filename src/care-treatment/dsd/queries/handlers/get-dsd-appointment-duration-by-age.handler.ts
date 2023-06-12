@@ -3,20 +3,25 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetDsdAppointmentDurationByAgeQuery } from '../impl/get-dsd-appointment-duration-by-age.query';
 import { FactTransDsdMmdUptake } from '../../entities/fact-trans-dsd-mmd-uptake.model';
+import {AggregateDSD} from "../../entities/aggregate-dsd.model";
+import {DimAgeGroups} from "../../../common/entities/dim-age-groups.model";
 
 @QueryHandler(GetDsdAppointmentDurationByAgeQuery)
 export class GetDsdAppointmentDurationByAgeHandler implements IQueryHandler<GetDsdAppointmentDurationByAgeQuery> {
     constructor(
-        @InjectRepository(FactTransDsdMmdUptake, 'mssql')
-        private readonly repository: Repository<FactTransDsdMmdUptake>
+        @InjectRepository(AggregateDSD, 'mssql')
+        private readonly repository: Repository<AggregateDSD>
     ) {
 
     }
 
     async execute(query: GetDsdAppointmentDurationByAgeQuery): Promise<any> {
         const dsdAppointmentDuration = this.repository.createQueryBuilder('f')
-            .select(['SUM(MMD) MMD, SUM(NonMMD) NonMMD, DATIM_AgeGroup AgeGroup'])
-            .where('f.MFLCode > 1');
+            .select(['SUM(f.patients_onMMD) MMD, SUM(f.patients_nonMMD) NonMMD, f.AgeGroup'])
+            .where('f.MFLCode > 1')
+                .groupBy('f.MFLCode,f.AgeGroup')
+            // .innerJoin(AggregateDSD, 'df', 'df.MFLCode = f.MFLCode')
+        ;
 
         if (query.county) {
             dsdAppointmentDuration.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -31,15 +36,15 @@ export class GetDsdAppointmentDurationByAgeHandler implements IQueryHandler<GetD
         }
 
         if (query.partner) {
-            dsdAppointmentDuration.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdAppointmentDuration.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdAppointmentDuration.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdAppointmentDuration.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
-        if (query.datimAgeGroup) {
-            dsdAppointmentDuration.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        if (query.ageGroup) {
+            dsdAppointmentDuration.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.ageGroup });
         }
 
         if (query.gender) {
@@ -47,8 +52,8 @@ export class GetDsdAppointmentDurationByAgeHandler implements IQueryHandler<GetD
         }
 
         return await dsdAppointmentDuration
-            .groupBy('DATIM_AgeGroup')
-            .orderBy('DATIM_AgeGroup')
+            .groupBy('AgeGroup')
+            .orderBy('AgeGroup')
             .getRawMany();
     }
 }

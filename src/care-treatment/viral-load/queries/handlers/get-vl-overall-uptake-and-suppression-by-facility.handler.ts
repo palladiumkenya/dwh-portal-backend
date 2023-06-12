@@ -3,18 +3,22 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { FactTransVLOverallUptake } from '../../entities/fact-trans-vl-overall-uptake.model';
 import { GetVlOverallUptakeAndSuppressionByFacilityQuery } from '../impl/get-vl-overall-uptake-and-suppression-by-facility.query';
+import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlOverallUptakeAndSuppressionByFacilityQuery)
 export class GetVlOverallUptakeAndSuppressionByFacilityHandler implements IQueryHandler<GetVlOverallUptakeAndSuppressionByFacilityQuery> {
     constructor(
-        @InjectRepository(FactTransVLOverallUptake, 'mssql')
-        private readonly repository: Repository<FactTransVLOverallUptake>
+        @InjectRepository(AggregateVLUptakeOutcome, 'mssql')
+        private readonly repository: Repository<AggregateVLUptakeOutcome>
     ) {
     }
 
     async execute(query: GetVlOverallUptakeAndSuppressionByFacilityQuery): Promise<any> {
-        const vlOverallUptakeAndSuppression = this.repository.createQueryBuilder('f')
-            .select(['f.FacilityName facility, f.County county, f.SubCounty subCounty, f.CTPartner partner, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed'])
+        const vlOverallUptakeAndSuppression = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'f.FacilityName facility, f.County county, f.SubCounty subCounty, f.PartnerName partner, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed',
+            ])
             .where('f.MFLCode > 0')
             .andWhere('f.FacilityName IS NOT NULL');
 
@@ -31,11 +35,11 @@ export class GetVlOverallUptakeAndSuppressionByFacilityHandler implements IQuery
         }
 
         if (query.partner) {
-            vlOverallUptakeAndSuppression.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlOverallUptakeAndSuppression.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlOverallUptakeAndSuppression.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlOverallUptakeAndSuppression.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
@@ -47,7 +51,7 @@ export class GetVlOverallUptakeAndSuppressionByFacilityHandler implements IQuery
         }
 
         return await vlOverallUptakeAndSuppression
-            .groupBy('f.FacilityName, f.SubCounty, f.County, f.CTPartner')
+            .groupBy('f.FacilityName, f.SubCounty, f.County, f.PartnerName')
             .orderBy('f.FacilityName')
             .getRawMany();
     }

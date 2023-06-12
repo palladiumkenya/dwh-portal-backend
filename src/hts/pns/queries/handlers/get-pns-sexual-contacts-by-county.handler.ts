@@ -3,37 +3,68 @@ import { GetPnsSexualContactsByCountyQuery } from '../impl/get-pns-sexual-contac
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactPNSSexualPartner } from '../../entities/fact-pns-sexual-partner.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetPnsSexualContactsByCountyQuery)
 export class GetPnsSexualContactsByCountyHandler implements IQueryHandler<GetPnsSexualContactsByCountyQuery> {
     constructor(
-        @InjectRepository(FactPNSSexualPartner)
-        private readonly repository: Repository<FactPNSSexualPartner>
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>
     ) {
 
     }
 
     async execute(query: GetPnsSexualContactsByCountyQuery): Promise<any> {
-        const pnsSexualContactsByCounty = this.repository.createQueryBuilder('q')
-            .select(['q.County county, SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
-            .where('q.Mflcode IS NOT NULL')
-            .andWhere('q.County IS NOT NULL');
+        let pnsSexualContactsByCounty = `Select County county,
+                Sum(PartnersElicited) elicited,
+                sum(PartnerTested) tested,
+                Sum(Positive) positive,
+                sum(Linked) linked,
+                
+                Sum(KnownPositive) knownPositive
+            FROM [dbo].[AggregateHTSPNSSexualPartner]
+            where MFLCode is not null
+            `;
+        
+        // this.repository.createQueryBuilder('q')
+        //     .select(['q.County county, SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
+        //     .where('q.Mflcode IS NOT NULL')
+        //     .andWhere('q.County IS NOT NULL');
 
-        if(query.county) {
-            pnsSexualContactsByCounty.andWhere('q.County IN (:...county)', { county: query.county });
+        
+        if (query.county) {
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.subCounty) {
-            pnsSexualContactsByCounty.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: query.subCounty });
+        if (query.subCounty) {
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.facility) {
-            pnsSexualContactsByCounty.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
+        if (query.facility) {
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.partner) {
-            pnsSexualContactsByCounty.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
+        if (query.partner) {
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
+
+        // if (query.agency) {
+        //     pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and agencyName IN ('${query.agency
+        //         .toString()
+        //         .replace(/,/g, "','")}')`;
+        // }
+
+        // if(query.project) {
+        //     pnsSexualContactsByCounty.andWhere('q.project IN (:...project)', { project: query.project });
+        // }
 
         // if(query.month) {
         //     pnsSexualContactsByCounty.andWhere('q.month = :month', { month: query.month });
@@ -44,26 +75,21 @@ export class GetPnsSexualContactsByCountyHandler implements IQueryHandler<GetPns
         // }
 
         if (query.fromDate) {
-            pnsSexualContactsByCounty.andWhere(
-                `CONCAT(year, LPAD(month, 2, '0'))>= :fromDate`,
-                {
-                    fromDate: query.fromDate,
-                },
-            );
+            const fromYear = parseInt(query.fromDate.substring(0, 4));
+            const fromMonth = parseInt(query.fromDate.substring(4));
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and (year > ${fromYear} or (year = ${fromYear} and month >= ${fromMonth}))`;
         }
 
         if (query.toDate) {
-            pnsSexualContactsByCounty.andWhere(
-                `CONCAT(year, LPAD(month, 2, '0'))<= :toDate`,
-                {
-                    toDate: query.toDate,
-                },
-            );
+            const toYear = parseInt(query.toDate.substring(0, 4));
+            const toMonth = parseInt(query.toDate.substring(4));
+            pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and (year < ${toYear} or (year = ${toYear} and month <= ${toMonth}))`;
         }
 
-        return await pnsSexualContactsByCounty
-            .groupBy('q.County')
-            .orderBy('SUM(q.PartnerTested)', 'DESC')
-            .getRawMany();
+        pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} GROUP BY County`;
+
+        pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} ORDER BY SUM(PartnerTested) Desc`;
+
+        return await this.repository.query(pnsSexualContactsByCounty, []);
     }
 }

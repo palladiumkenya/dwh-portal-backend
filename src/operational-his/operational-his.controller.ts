@@ -12,13 +12,6 @@ import { GetTxNewBySexQuery } from './khis/queries/impl/get-tx-new-by-sex.query'
 import {GetTxNewBySexDwhQuery} from "./khis/queries/impl/get-tx-new-by-sex-dwh.query";
 import {GetTxCurrBySexDwhQuery} from "./khis/queries/impl/get-tx-curr-by-sex-dwh.query";
 import { GetCtTxCurrAgeGroupDistributionByCountyQuery } from './khis/queries/impl/get-ct-tx-curr-age-group-distribution-by-county.query';
-import { GetClosedTicketsQuery } from './help-desk/queries/impl/get-closed-tickets.query';
-import { GetOpenIssuesByTypeQuery } from './help-desk/queries/impl/get-open-issues-by-type.query';
-import { GetCreatedTicketsQuery } from './help-desk/queries/impl/get-created-tickets.query';
-import { GetTicketsByCategoryQuery } from './help-desk/queries/impl/get-tickets-by-category.query';
-import { GetOpenTicketsQuery } from './help-desk/queries/impl/get-open-tickets.query';
-import { GetTicketsBySDPQuery } from './help-desk/queries/impl/get-tickets-by-sdp.query';
-import { GetOpenIssuesByTypeAndSDPQuery } from './help-desk/queries/impl/get-open-issues-by-type-and-sdp.query';
 import { GetDWHHTSPOSPositiveQuery } from './khis/queries/impl/get-dwh-htspos-positive.query';
 import { GetKhisHTSPOSQuery } from './khis/queries/impl/get-khis-htspos.query';
 import { GetKhisHTSPOSByPartnerQuery } from './khis/queries/impl/get-khis-htspos-by-partner.query';
@@ -34,6 +27,14 @@ import { GetKhisHTSTESTByCountyQuery } from './khis/queries/impl/get-khis-htstes
 import { GetKhisHTSTESTByPartnerQuery } from './khis/queries/impl/get-khis-htstest-by-partner.query';
 import { GetKhisHTSTESTByFacilityQuery } from './khis/queries/impl/get-khis-htstest-by-facility.query';
 import { GetDWHHTSTestTrendsQuery } from './khis/queries/impl/get-dwh-htstest-trends.query';
+import { GetIssueStatusByProductQuery } from './help-desk/queries/impl/get-issue-status-by-product.query';
+import { GetOpenIssuesByProductQuery } from './help-desk/queries/impl/get-open-issues-by-product.query';
+import { GetOpenIssuesByPartnerQuery } from './help-desk/queries/impl/get-open-issues-by-partner.query';
+import { GetOpenIssuesByCountyQuery } from './help-desk/queries/impl/get-open-issues-by-county.query';
+import { GetOpenIssuesByMonthQuery } from './help-desk/queries/impl/get-open-issues-by-month.query';
+import { GetIssueStatusByMonthQuery } from './help-desk/queries/impl/get-issue-status-by-month.query';
+import { GetPartnerLevelIssuesQuery } from './help-desk/queries/impl/get-partner-level-issues.query';
+import { GetTicketsOverviewQuery } from './help-desk/queries/impl/get-tickets-overview.query';
 
 @Controller('operational-his')
 export class OperationalHisController {
@@ -375,9 +376,7 @@ export class OperationalHisController {
         }
 
         if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup.map(ageGrp =>
-                ageGrp.replace(' to ', '-'),
-            );
+            query.datimAgeGroup = datimAgeGroup;
         }
 
         return this.queryBus.execute(query);
@@ -1523,8 +1522,8 @@ export class OperationalHisController {
         return this.queryBus.execute(query);
     }
 
-    @Get('getClosedTickets')
-    async getClosedTickets(
+    @Get('getTicketsOverview')
+    async getTicketsOverview(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -1534,7 +1533,7 @@ export class OperationalHisController {
         @Query('agency') agency,
         @Query('project') project,
     ): Promise<any> {
-        const query = new GetClosedTicketsQuery();
+        const query = new GetTicketsOverviewQuery();
         if (county) {
             query.county = county;
         }
@@ -1570,8 +1569,8 @@ export class OperationalHisController {
         return this.queryBus.execute(query);
     }
 
-    @Get('getOpenIssuesByType')
-    async getOpenIssuesByType(
+    @Get('getIssueStatusByProduct')
+    async getIssueStatusByProduct(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -1581,7 +1580,7 @@ export class OperationalHisController {
         @Query('agency') agency,
         @Query('project') project,
     ): Promise<any> {
-        const query = new GetOpenIssuesByTypeQuery();
+        const query = new GetIssueStatusByProductQuery();
         if (county) {
             query.county = county;
         }
@@ -1617,8 +1616,8 @@ export class OperationalHisController {
         return this.queryBus.execute(query);
     }
 
-    @Get('getCreatedTickets')
-    async getCreatedTickets(
+    @Get('getIssueStatusByMonth')
+    async getIssueStatusByMonth(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -1628,7 +1627,7 @@ export class OperationalHisController {
         @Query('agency') agency,
         @Query('project') project,
     ): Promise<any> {
-        const query = new GetCreatedTicketsQuery();
+        const query = new GetIssueStatusByMonthQuery();
         if (county) {
             query.county = county;
         }
@@ -1664,8 +1663,8 @@ export class OperationalHisController {
         return this.queryBus.execute(query);
     }
 
-    @Get('getTicketsByCategory')
-    async getTicketsByCategory(
+    @Get('getOpenIssuesByProduct')
+    async getOpenIssuesByProduct(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -1675,7 +1674,7 @@ export class OperationalHisController {
         @Query('agency') agency,
         @Query('project') project,
     ): Promise<any> {
-        const query = new GetTicketsByCategoryQuery();
+        const query = new GetOpenIssuesByProductQuery();
         if (county) {
             query.county = county;
         }
@@ -1711,8 +1710,8 @@ export class OperationalHisController {
         return this.queryBus.execute(query);
     }
 
-    @Get('getOpenTickets')
-    async getOpenTickets(
+    @Get('getOpenIssuesByPartner')
+    async getOpenIssuesByPartner(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -1722,7 +1721,7 @@ export class OperationalHisController {
         @Query('agency') agency,
         @Query('project') project,
     ): Promise<any> {
-        const query = new GetOpenTicketsQuery();
+        const query = new GetOpenIssuesByPartnerQuery();
         if (county) {
             query.county = county;
         }
@@ -1758,8 +1757,8 @@ export class OperationalHisController {
         return this.queryBus.execute(query);
     }
 
-    @Get('getTicketsBySPD')
-    async getTicketsBySPD(
+    @Get('getOpenIssuesByCounty')
+    async getOpenIssuesByCounty(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -1769,7 +1768,7 @@ export class OperationalHisController {
         @Query('agency') agency,
         @Query('project') project,
     ): Promise<any> {
-        const query = new GetTicketsBySDPQuery();
+        const query = new GetOpenIssuesByCountyQuery();
         if (county) {
             query.county = county;
         }
@@ -1805,8 +1804,8 @@ export class OperationalHisController {
         return this.queryBus.execute(query);
     }
 
-    @Get('getOpenIssuesByTypeAndSDP')
-    async getOpenIssuesByTypeAndSDP(
+    @Get('getOpenIssuesByMonth')
+    async getOpenIssuesByMonth(
         @Query('county') county,
         @Query('subCounty') subCounty,
         @Query('facility') facility,
@@ -1816,7 +1815,54 @@ export class OperationalHisController {
         @Query('agency') agency,
         @Query('project') project,
     ): Promise<any> {
-        const query = new GetOpenIssuesByTypeAndSDPQuery();
+        const query = new GetOpenIssuesByMonthQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('getPartnerLevelIssues')
+    async getPartnerLevelIssues(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('agency') agency,
+        @Query('project') project,
+    ): Promise<any> {
+        const query = new GetPartnerLevelIssuesQuery();
         if (county) {
             query.county = county;
         }

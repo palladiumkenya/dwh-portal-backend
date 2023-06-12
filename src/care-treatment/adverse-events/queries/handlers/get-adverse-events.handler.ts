@@ -1,21 +1,24 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetAdverseEventsQuery } from '../impl/get-adverse-events.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAdverseEvents } from '../../entities/fact-trans-adverse-events.model';
 import { Repository } from 'typeorm';
+import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetAdverseEventsQuery)
 export class GetAdverseEventsHandler implements IQueryHandler<GetAdverseEventsQuery> {
     constructor(
-        @InjectRepository(FactTransAdverseEvents, 'mssql')
-        private readonly repository: Repository<FactTransAdverseEvents>
+        @InjectRepository(AggregateAdverseEvents, 'mssql')
+        private readonly repository: Repository<AggregateAdverseEvents>
     ) {
     }
 
     async execute(query: GetAdverseEventsQuery): Promise<any> {
-        const adultsAEs = this.repository.createQueryBuilder('f')
-            .select('SUM([AdverseEvent_Total]) total, AgeGroup, Gender, CAST((cast(SUM([AdverseEvent_Total]) as decimal (9,2))/ (SUM(SUM([AdverseEvent_Total])) OVER (PARTITION BY AgeGroup ORDER BY AgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup')
-            .where('[AgeGroup] IS NOT NULL');
+        const adultsAEs = this.repository
+            .createQueryBuilder('f')
+            .select(
+                'SUM([AdverseEventCount]) total, DATIMAgeGroup, Gender, CAST((cast(SUM([AdverseEventCount]) as decimal (9,2))/ (SUM(SUM([AdverseEventCount])) OVER (PARTITION BY DATIMAgeGroup ORDER BY DATIMAgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup',
+            )
+            .where('[DATIMAgeGroup] IS NOT NULL');
 
         if (query.county) {
             adultsAEs
@@ -34,15 +37,15 @@ export class GetAdverseEventsHandler implements IQueryHandler<GetAdverseEventsQu
 
         if (query.partner) {
             adultsAEs
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            adultsAEs.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            adultsAEs.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            adultsAEs.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            adultsAEs.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
@@ -50,7 +53,7 @@ export class GetAdverseEventsHandler implements IQueryHandler<GetAdverseEventsQu
         }
 
         return await adultsAEs
-            .groupBy('AgeGroup, Gender')
+            .groupBy('DATIMAgeGroup, Gender')
             .getRawMany();
     }
 }

@@ -3,18 +3,19 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { FactTransVLOutcome } from '../../entities/fact-trans-vl-outcome.model';
 import { GetVlOutcomesHvlByFacilityQuery } from '../impl/get-vl-outcomes-hvl-by-facility.query';
+import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlOutcomesHvlByFacilityQuery)
 export class GetVlOutcomesHvlByFacilityHandler implements IQueryHandler<GetVlOutcomesHvlByFacilityQuery> {
     constructor(
-        @InjectRepository(FactTransVLOutcome, 'mssql')
-        private readonly repository: Repository<FactTransVLOutcome>
+        @InjectRepository(AggregateVLUptakeOutcome, 'mssql')
+        private readonly repository: Repository<AggregateVLUptakeOutcome>
     ) {
     }
 
     async execute(query: GetVlOutcomesHvlByFacilityQuery): Promise<any> {
         const vlOutcomeHvlByFacility = this.repository.createQueryBuilder('f')
-            .select(['MFLCode mfl, FacilityName facility, County county, SubCounty subCounty, CTPartner partner, SUM(Total_Last12MVL) patients'])
+            .select(['MFLCode mfl, FacilityName facility, County county, SubCounty subCounty, PartnerName partner, SUM(TotalLast12MVL) patients'])
             .where('MFLCode > 0')
             .andWhere('FacilityName IS NOT NULL')
             .andWhere("Last12MVLResult = 'HVL'");
@@ -32,11 +33,11 @@ export class GetVlOutcomesHvlByFacilityHandler implements IQueryHandler<GetVlOut
         }
 
         if (query.partner) {
-            vlOutcomeHvlByFacility.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
+            vlOutcomeHvlByFacility.andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlOutcomeHvlByFacility.andWhere('CTAgency IN (:...agency)', { agency: query.agency });
+            vlOutcomeHvlByFacility.andWhere('AgencyName IN (:...agency)', { agency: query.agency });
         }
 
         // if (query.project) {
@@ -60,7 +61,7 @@ export class GetVlOutcomesHvlByFacilityHandler implements IQueryHandler<GetVlOut
         // }
 
         return await vlOutcomeHvlByFacility
-            .groupBy('FacilityName, MFLCode, County, SubCounty, CTPartner')
+            .groupBy('FacilityName, MFLCode, County, SubCounty, PartnerName')
             .orderBy('FacilityName')
             .getRawMany();
     }

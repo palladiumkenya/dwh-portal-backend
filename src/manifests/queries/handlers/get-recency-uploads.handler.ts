@@ -6,46 +6,54 @@ import { GetRecencyUploadsQuery } from '../impl/get-recency-uploads.query';
 import { RecencyUploadsTileDto } from '../../entities/dtos/recency-uploads-tile.dto';
 
 @QueryHandler(GetRecencyUploadsQuery)
-export class GetRecencyUploadsHandler implements IQueryHandler<GetRecencyUploadsQuery> {
+export class GetRecencyUploadsHandler
+    implements IQueryHandler<GetRecencyUploadsQuery> {
     constructor(
-        @InjectRepository(FactManifest)
+        @InjectRepository(FactManifest, 'mssql')
         private readonly repository: Repository<FactManifest>,
-    ) {
+    ) {}
 
-    }
-
-    async execute(query: GetRecencyUploadsQuery): Promise<RecencyUploadsTileDto> {
+    async execute(
+        query: GetRecencyUploadsQuery,
+    ): Promise<RecencyUploadsTileDto> {
         const params = [];
         params.push(query.docket);
-        let recencySql = 'select sum(recency) as totalrecency from recency_uploads where docket=?';
+        let recencySql = `select sum(recency) as totalrecency from AggregateRecencyUploads where docket='${query.docket}'`;
         if (query.county) {
-            recencySql = `${recencySql} and county IN (?)`;
-            params.push(query.county);
+            recencySql = `${recencySql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
         if (query.subCounty) {
-            recencySql = `${recencySql} and subCounty IN (?)`;
-            params.push(query.subCounty);
+            recencySql = `${recencySql} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
         // if (query.facility) {
         //     recencySql = `${recencySql} and facility IN (?)`;
         //     params.push(query.facility);
         // }
         if (query.partner) {
-            recencySql = `${recencySql} and partner IN (?)`;
-            params.push(query.partner);
+            recencySql = `${recencySql} and Partner IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
         if (query.agency) {
-            recencySql = `${recencySql} and agency IN (?)`;
-            params.push(query.agency);
+            recencySql = `${recencySql} and agency IN ('${query.agency
+                .toString()
+                .replace(/,/g, "','")}')`
         }
         if (query.period) {
-            const year=query.period.split(',')[0];
-            const month=query.period.split(',')[1];
-            recencySql = `${recencySql} and year=? and month=?`;
+            const year = query.period.split(',')[0];
+            const month = query.period.split(',')[1];
+            recencySql = `${recencySql} and year=${year} and month=${month}`;
             params.push(year);
             params.push(month);
         }
         const overallResult = await this.repository.query(recencySql, params);
-        return new RecencyUploadsTileDto(query.docket,+overallResult[0].totalrecency);
+        return new RecencyUploadsTileDto(
+            query.docket,
+            +overallResult[0].totalrecency,
+        );
     }
 }
