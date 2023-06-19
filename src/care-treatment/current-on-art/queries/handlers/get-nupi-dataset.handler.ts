@@ -85,7 +85,7 @@ export class GetNupiDatasetHandler
                     cast (origin_facility_kmfl_code as  nvarchar) As facility_code,
                     count(*) as nupi_non_art_clients
                 from tmp_and_adhoc.dbo.nupi_dataset as nupi_dataset
-                where (ccc_no is null or ccc_no = 'nan')
+                where (ccc_no is null or ccc_no = 'nan' or ccc_no = 'NA')
                 group by origin_facility_kmfl_code
             ),
             --Groupings of clients with Nupi in DWH per site---
