@@ -16,7 +16,13 @@ export class GetCtViralLoadCascadeActiveArtClientsHandler implements IQueryHandl
         const viralLoadCascade = this.repository
             .createQueryBuilder('f')
             .select([
-                'SUM([ISTxCurr]) TX_CURR, SUM([Eligible4VL]) Eligible4VL, SUM([Last12MonthVL]) Last12MonthVL, SUM([Last12MVLSup]) Last12MVLSup, SUM([HighViremia]) HighViremia, SUM([LowViremia]) LowViremia',
+                `SUM([ISTxCurr]) TX_CURR, SUM([Eligible4VL]) Eligible4VL, SUM([HasValidVL]) Last12MonthVL, 
+                SUM([ValidVLSup]) Last12MVLSup, SUM([HighViremia]) HighViremia, SUM([LowViremia]) LowViremia, 
+                SUM(CASE WHEN ValidVLResultCategory2 = 'High Risk LLV ' THEN 1 END) HighRisk, 
+                SUM(CASE WHEN ValidVLResultCategory2 = 'LDL' THEN 1 END) LDL, 
+                SUM(CASE WHEN ValidVLResultCategory2 = 'Low Risk LLV' THEN 1 END) LowRisk, 
+                SUM(CASE WHEN ValidVLResultCategory2 = 'UNSUPPRESSED' THEN 1 END) Unsuppressed
+                `,
             ])
             .where('f.[ISTxCurr] > 0');
 

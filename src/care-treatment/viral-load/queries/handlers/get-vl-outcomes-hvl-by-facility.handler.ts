@@ -14,11 +14,14 @@ export class GetVlOutcomesHvlByFacilityHandler implements IQueryHandler<GetVlOut
     }
 
     async execute(query: GetVlOutcomesHvlByFacilityQuery): Promise<any> {
-        const vlOutcomeHvlByFacility = this.repository.createQueryBuilder('f')
-            .select(['MFLCode mfl, FacilityName facility, County county, SubCounty subCounty, PartnerName partner, SUM(TotalLast12MVL) patients'])
+        const vlOutcomeHvlByFacility = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'MFLCode mfl, FacilityName facility, County county, SubCounty subCounty, PartnerName partner, SUM(TotalValidVLResultCategory) patients',
+            ])
             .where('MFLCode > 0')
             .andWhere('FacilityName IS NOT NULL')
-            .andWhere("Last12MVLResult = 'HVL'");
+            .andWhere("ValidVLResultCategory = 'UNSUPPRESSED'");
 
         if (query.county) {
             vlOutcomeHvlByFacility.andWhere('County IN (:...counties)', { counties: query.county });

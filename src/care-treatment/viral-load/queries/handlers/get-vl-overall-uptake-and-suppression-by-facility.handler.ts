@@ -17,7 +17,7 @@ export class GetVlOverallUptakeAndSuppressionByFacilityHandler implements IQuery
         const vlOverallUptakeAndSuppression = this.repository
             .createQueryBuilder('f')
             .select([
-                'f.FacilityName facility, f.County county, f.SubCounty subCounty, f.PartnerName partner, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed',
+                'f.FacilityName facility, f.County county, f.SubCounty subCounty, f.PartnerName partner, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(HasValidVL) vlDone, SUM(VirallySuppressed) suppressed',
             ])
             .where('f.MFLCode > 0')
             .andWhere('f.FacilityName IS NOT NULL');

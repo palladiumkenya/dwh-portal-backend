@@ -14,8 +14,11 @@ export class GetVlUptakeByPartnerHandler implements IQueryHandler<GetVlUptakeByP
     }
 
     async execute(query: GetVlUptakeByPartnerQuery): Promise<any> {
-        const vlUptakeByPartner = this.repository.createQueryBuilder('f')
-            .select(['f.PartnerName partner, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed'])
+        const vlUptakeByPartner = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'f.PartnerName partner, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(HasValidVL) vlDone, SUM(VirallySuppressed) suppressed',
+            ])
             .where('f.MFLCode > 0')
             .andWhere('f.PartnerName IS NOT NULL');
 
@@ -49,7 +52,7 @@ export class GetVlUptakeByPartnerHandler implements IQueryHandler<GetVlUptakeByP
 
         return await vlUptakeByPartner
             .groupBy('f.PartnerName')
-            .orderBy('SUM(f.VLDone)', 'DESC')
+            .orderBy('SUM(f.HasValidVL)', 'DESC')
             .getRawMany();
     }
 }
