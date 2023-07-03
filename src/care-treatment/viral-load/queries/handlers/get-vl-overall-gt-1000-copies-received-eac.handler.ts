@@ -1,7 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { GetVlOverallUptakeGt1000CopiesReceivedEacQuery } from '../impl/get-vl-overall-uptake-gt-1000-copies-received-eac.query';
 import { LinelistFACTART } from 'src/care-treatment/common/entities/linelist-fact-art.model';
 
@@ -19,7 +18,7 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
         const vlOverallUptakeGt1000 = this.repository
             .createQueryBuilder('c')
             .select([
-                "EACVisitDate_1, EACVisitDate_2, EACVisitDate_3, CASE WHEN ISNUMERIC(LastVL)=1 AND CAST(Replace(LastVL,',','')AS FLOAT) >=1000.00 THEN '>1000 Copies' ELSE NULL END AS Last12MVLResult",
+                "EACVisitDate_1, EACVisitDate_2, EACVisitDate_3, CASE WHEN ISNUMERIC(ValidVLResult)=1 AND CAST(Replace(ValidVLResult,',','')AS FLOAT) >=1000.00 THEN '>1000 Copies' ELSE NULL END AS Last12MVLResult",
             ])
             .leftJoin(
                 `( SELECT
@@ -59,7 +58,7 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
             )
 
             .where(
-                "ARTOutcome='V' and DATEDIFF(MONTH,lastVLDate,GETDATE())<= 14 and Last12MVLResult is not null",
+                "ARTOutcome='V' and DATEDIFF(MONTH,lastVLDate,GETDATE())<= 14 and ValidVLResult is not null",
             );
 
         if (query.county) {
