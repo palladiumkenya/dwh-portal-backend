@@ -19,8 +19,8 @@ export class GetAlhivWithReSuppressionHandler
             .select([
                 'DISTINCT ' +
                     "AlHivWithVlGreaterThan1000 = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] b WHERE (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000)," +
-                    "ALHivWithVLLessThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] b WHERE (CASE WHEN [Last12MonthVLResults] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [Last12MonthVLResults]) END) < 1000 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000)," +
-                    "ALHivWithVLGreaterThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] b WHERE (CASE WHEN [Last12MonthVLResults] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [Last12MonthVLResults]) END) >= 1000 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000 )",
+                    "ALHivWithVLLessThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] b WHERE (CASE WHEN [ValidVLResult] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [ValidVLResult]) END) < 1000 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000)," +
+                    "ALHivWithVLGreaterThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] b WHERE (CASE WHEN [ValidVLResult] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [ValidVLResult]) END) >= 1000 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000 )",
             ]);
 
         if (query.county) {
