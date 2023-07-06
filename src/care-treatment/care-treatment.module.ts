@@ -1,4 +1,4 @@
-import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigurationModule } from '../config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -343,7 +343,6 @@ import { GetIITTracingHandler } from './treatment-outcomes/queries/handlers/get-
 import { GetIITTracingOutcomesHandler } from './treatment-outcomes/queries/handlers/get-iit-tracing-outcomes.handler';
 import { AggregateIITTracingStatus } from './treatment-outcomes/entities/aggregate-iit-tracing-status.model';
 
-import { AgeGroupMappingMiddleware } from './ageGroupMapping.middleware';
 
 @Module({
     imports: [
@@ -685,10 +684,4 @@ import { AgeGroupMappingMiddleware } from './ageGroupMapping.middleware';
     ],
     controllers: [CareTreatmentController],
 })
-export class CareTreatmentModule {
-    configure(consumer: MiddlewareConsumer) {
-        consumer
-            .apply(AgeGroupMappingMiddleware)
-            .forRoutes({ path: '*', method: RequestMethod.ALL });
-    }
-}
+export class CareTreatmentModule {}

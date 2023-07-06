@@ -10,7 +10,6 @@ export class AgeGroupMappingMiddleware implements NestMiddleware {
                 this.mapAgeGroup(ageGroup)
             );
             req.query.datimAgeGroup = mappedAgeGroups;
-            console.log(mappedAgeGroups);
         }
         next();
     }
