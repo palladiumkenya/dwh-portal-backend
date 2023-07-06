@@ -22,7 +22,7 @@ export class GetNewlyStartedDesegregatedHandler implements IQueryHandler<GetNewl
                     "SUM(CASE When Gender='Female'  or Gender = 'F' Then [patients_startedART] Else 0 End ) as FemalesStartedOnART,\n" +
                     "SUM(CASE When AgeGroup IN('15 to 19', '20 to 24', '25 to 29', '30 to 34', '35 to 39', '40 to 44', '45 to 49', '50 to 54', '55 to 59', '60 to 64', '65+') Then [patients_startedART] Else 0 End ) as AdultsStartedOnART,\n" +
                     "SUM(CASE When AgeGroup IN('10 to 14', '15 to 19') Then [patients_startedART] Else 0 End ) as AdolescentsStartedOnART,\n" +
-                    "SUM(CASE When AgeGroup IN('Under 1', '1 to 4', '5 to 9', '10 to 14') Then [patients_startedART] Else 0 End ) as ChildrenStartedOnART",
+                    "SUM(CASE When AgeGroup IN(' Under 1', '01 to 04', '05 to 09', '10 to 14') Then [patients_startedART] Else 0 End ) as ChildrenStartedOnART",
             )
             .where('patients_startedART IS NOT NULL');
 
