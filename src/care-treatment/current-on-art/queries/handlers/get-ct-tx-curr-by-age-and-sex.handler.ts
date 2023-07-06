@@ -82,9 +82,9 @@ export class GetCtTxCurrByAgeAndSexHandler
 
         const returnedVal = [];
         const groupings = [
-            'Under 1',
-            '1 to 4',
-            '5 to 9',
+            ' Under 1',
+            '01 to 04',
+            '05 to 09',
             '10 to 14',
             '15 to 19',
             '20 to 24',

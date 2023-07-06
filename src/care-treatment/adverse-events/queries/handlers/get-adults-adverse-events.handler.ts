@@ -19,7 +19,7 @@ export class GetAdultsAdverseEventsHandler implements IQueryHandler<GetAdultsAdv
                 'SUM([AdverseEventCount]) total, DATIMAgeGroup, Gender, CAST((cast(SUM([AdverseEventCount]) as decimal (9,2))/ (SUM(SUM([AdverseEventCount])) OVER (PARTITION BY DATIMAgeGroup ORDER BY DATIMAgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup',
             )
             .where(
-                "[DATIMAgeGroup] NOT IN ('Under 1', '1 to 4', '5 to 9', '10 to 14')",
+                "[DATIMAgeGroup] NOT IN (' Under 1', '01 to 04', '05 to 09', '10 to 14')",
             );
 
         if (query.county) {

@@ -13,9 +13,12 @@ export class GetCalhivVldoneNotInOvcHandler implements IQueryHandler<GetCalhivVl
     }
 
     async execute(query: GetCalhivVldoneQuery): Promise<any> {
-        const CALHIVVLDone = this.repository.createQueryBuilder('f')
+        const CALHIVVLDone = this.repository
+            .createQueryBuilder('f')
             .select(['Count (*) CALHIVVLDone'])
-            .andWhere('f.TXCurr=1 and VLDone=1 and f.OVCEnrollmentDate IS NULL');
+            .andWhere(
+                'f.TXCurr=1 and HasValidVL=1 and f.OVCEnrollmentDate IS NULL',
+            );
 
         if (query.county) {
             CALHIVVLDone.andWhere('f.County IN (:...counties)', { counties: query.county });

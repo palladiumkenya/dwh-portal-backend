@@ -23,10 +23,10 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerHandler
         const vlSuppressionOtzByPartner = this.repository
             .createQueryBuilder('f')
             .select([
-                '[PartnerName] CTPartner, Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
+                '[PartnerName] CTPartner, ValidVLResultCategory Last12MVLResult, SUM([HasValidVL]) AS vlSuppression',
             ])
             .andWhere(
-                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL AND Enrolled = 0',
+                'f.MFLCode IS NOT NULL AND ValidVLResultCategory IS NOT NULL AND Enrolled = 0',
             );
 
         if (query.county) {
@@ -79,7 +79,7 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerHandler
         }
 
         return await vlSuppressionOtzByPartner
-            .groupBy('[PartnerName], Last12MVLResult')
+            .groupBy('[PartnerName], ValidVLResultCategory')
             .orderBy('[PartnerName]')
             .getRawMany();
     }
