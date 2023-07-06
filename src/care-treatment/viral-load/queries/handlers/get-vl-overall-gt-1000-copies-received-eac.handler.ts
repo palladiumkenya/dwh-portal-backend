@@ -16,85 +16,46 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
         query: GetVlOverallUptakeGt1000CopiesReceivedEacQuery,
     ): Promise<any> {
         const vlOverallUptakeGt1000 = this.repository
-            .createQueryBuilder('c')
-            .select([
-                "EACVisitDate_1, EACVisitDate_2, EACVisitDate_3, CASE WHEN ISNUMERIC(ValidVLResult)=1 AND CAST(Replace(ValidVLResult,',','')AS FLOAT) >=1000.00 THEN '>1000 Copies' ELSE NULL END AS Last12MVLResult",
-            ])
-            .leftJoin(
-                `( SELECT
-                    * 
-                FROM
-                    (
-                    SELECT
-                        SiteCode,
-                        PatientIDHash,
-                        PatientPkHash,
-                        val,
-                    CASE
-                            WHEN cols = 'EAC_VisitDate' THEN
-                            'EACVisitDate_' 
-                            WHEN cols = 'SessionNumber' THEN
-                            'SessionNumber_' 
-                            WHEN cols = 'EACRecievedVL' THEN
-                            'EACReceivedVL_' 
-                    END + CAST ( DENSE_RANK ( ) OVER ( partition BY PatientIDHash, SiteCode, PatientPkHash ORDER BY VisitDate ASC ) AS VARCHAR ) AS NUM 
-                FROM
-                    (
-                    SELECT
-                        SiteCode,
-                        PatientIDHash,
-                        PatientPkHash,
-                        VisitDate,
-                        CONVERT ( VARCHAR ( 255 ), CAST ( VisitDate AS DATE ) ) AS EAC_VisitDate,
-                        CONVERT ( VARCHAR ( 255 ), [SessionNumber] ) AS [SessionNumber],
-                        CONVERT ( VARCHAR ( 255 ), [EACRecievedVL] ) AS [EACRecievedVL]
-                        FROM ODS.dbo.CT_EnhancedAdherenceCounselling 
-                        WHERE YEAR ( VisitDate ) > 1900 
-                    ) AS Source UNPIVOT ( val FOR cols IN ( EAC_VisitDate, SessionNumber, EACRecievedVL ) ) AS unpiv 
-                    ) src PIVOT ( MAX ( val ) FOR NUM IN ( EACVisitDate_1, SessionNumber_1, EACReceivedVL_1, EACVisitDate_2, SessionNumber_2, EACReceivedVL_2, EACVisitDate_3, SessionNumber_3, EACReceivedVL_3 ) ) piv
-                    )`,
-                'H',
-                'H.PatientPKHash= c.PatientPKHash AND H.PatientIDHash= c.PatientIDHash AND H.SiteCode= c.SiteCode',
-            )
-
+            .createQueryBuilder('art')
+            .select([`art.SiteCode, art.PatientPKHash, ValidVLResultCategory1`])
             .where(
-                "ARTOutcome='V' and DATEDIFF(MONTH,lastVLDate,GETDATE())<= 14 and ValidVLResult is not null",
+                `art.ARTOutcome = 'V' AND DATEDIFF( MONTH, lastVLDate, GETDATE( ) ) <= 14 AND ValidVLResult IS NOT NULL`,
             );
 
         if (query.county) {
-            vlOverallUptakeGt1000.andWhere('c.County IN (:...counties)', {
+            vlOverallUptakeGt1000.andWhere('art.County IN (:...counties)', {
                 counties: query.county,
             });
         }
 
         if (query.subCounty) {
-            vlOverallUptakeGt1000.andWhere('c.SubCounty IN (:...subCounties)', {
+            vlOverallUptakeGt1000.andWhere('art.SubCounty IN (:...subCounties)', {
                 subCounties: query.subCounty,
             });
         }
 
         if (query.facility) {
             vlOverallUptakeGt1000.andWhere(
-                'c.FacilityName IN (:...facilities)',
+                'art.FacilityName IN (:...facilities)',
                 { facilities: query.facility },
             );
         }
 
         if (query.partner) {
-            vlOverallUptakeGt1000.andWhere('c.PartnerName IN (:...partners)', {
+            vlOverallUptakeGt1000.andWhere('art.PartnerName IN (:...partners)', {
                 partners: query.partner,
             });
         }
 
         if (query.agency) {
-            vlOverallUptakeGt1000.andWhere('c.AgencyName IN (:...agencies)', {
+            vlOverallUptakeGt1000.andWhere('art.AgencyName IN (:...agencies)', {
                 agencies: query.agency,
             });
         }
 
         if (query.datimAgeGroup) {
             vlOverallUptakeGt1000.andWhere(
-                'c.AgeGroup IN (:...ageGroups)',
+                'art.AgeGroup IN (:...ageGroups)',
                 {
                     ageGroups: query.datimAgeGroup,
                 },
@@ -102,7 +63,7 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
         }
 
         if (query.gender) {
-            vlOverallUptakeGt1000.andWhere('c.Gender IN (:...genders)', {
+            vlOverallUptakeGt1000.andWhere('art.Gender IN (:...genders)', {
                 genders: query.gender,
             });
         }
@@ -111,7 +72,58 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
         const originalParams = vlOverallUptakeGt1000.getParameters;
         vlOverallUptakeGt1000.getQuery = () => {
             const a = originalQuery.call(vlOverallUptakeGt1000);
-            return `WITH VL AS (${a}) SELECT count (EACVisitDate_1) AS EACVisitDate_1, Count (EACVisitDate_2) AS EACVisitDate_2, count (EACVisitDate_3) As EACVisitDate_3 FROM VL WHERE Last12MVLResult in ('>1000 Copies') Group by Last12MVLResult`;
+            return `WITH linelistart AS (${a}),
+                eac_source as (
+                    SELECT
+                        SiteCode,
+                        PatientIDHash,
+                        PatientPkHash,
+                        val,
+                        CASE        
+                            WHEN cols = 'EAC_VisitDate' THEN 'EACVisitDate_' 
+                            WHEN cols = 'SessionNumber' THEN 'SessionNumber_' 
+                            WHEN cols = 'EACRecievedVL' THEN 'EACReceivedVL_' 
+                        END + CAST(DENSE_RANK () OVER (partition BY SiteCode, PatientPkHash ORDER BY VisitDate ASC ) AS VARCHAR ) AS NUM 
+                    FROM
+                    (
+                        SELECT
+                            SiteCode,
+                            PatientIDHash,
+                            PatientPkHash,
+                            VisitDate,
+                            CONVERT ( VARCHAR ( 255 ), CAST ( VisitDate AS DATE ) ) AS EAC_VisitDate,
+                            CONVERT ( VARCHAR ( 255 ), [SessionNumber] ) AS [SessionNumber],
+                            CONVERT ( VARCHAR ( 255 ), [EACRecievedVL] ) AS [EACRecievedVL] 
+                        FROM
+                            ODS.dbo.CT_EnhancedAdherenceCounselling 
+                        WHERE
+                            YEAR(VisitDate) > 1900 
+                    ) AS Source 
+                    UNPIVOT ( val FOR cols IN ( EAC_VisitDate, SessionNumber, EACRecievedVL)) AS unpiv 
+                ),
+                eac_source_enriched as  (
+                    select 
+                        *
+                    from eac_source as src 
+                    PIVOT ( MAX ( val ) FOR NUM IN ( EACVisitDate_1, SessionNumber_1, EACReceivedVL_1, EACVisitDate_2, SessionNumber_2, EACReceivedVL_2, EACVisitDate_3, SessionNumber_3, EACReceivedVL_3 ) ) piv 
+                ),
+                combined_dataset as (
+                    select 
+                        EACVisitDate_1,
+                        EACVisitDate_2,
+                        EACVisitDate_3,
+                        ValidVLResultCategory1
+                    from linelistart as art
+                    left join eac_source_enriched as eac_source_enriched on eac_source_enriched.PatientPkHash = art.PatientPKHash
+                        and eac_source_enriched.SiteCode = art.SiteCode
+                )
+                SELECT 
+                    COUNT(EACVisitDate_1) AS EACVisitDate_1,
+                    COUNT(EACVisitDate_2) AS EACVisitDate_2,
+                    COUNT(EACVisitDate_3) AS EACVisitDate_3 
+                FROM combined_dataset 
+                WHERE ValidVLResultCategory1 IN ('>1000') 
+                GROUP BY ValidVLResultCategory1;`;
         };
         vlOverallUptakeGt1000.getParameters = () => {
             return originalParams.call(vlOverallUptakeGt1000);
