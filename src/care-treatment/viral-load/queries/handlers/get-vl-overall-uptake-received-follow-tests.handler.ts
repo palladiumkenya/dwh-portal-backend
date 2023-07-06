@@ -21,26 +21,16 @@ export class GetVlOverallUptakeReceivedFollowTestsHandler implements IQueryHandl
                     CASE
                         WHEN ISNUMERIC(LatestVL1)=1 THEN
                             CASE
-                                WHEN CAST(Replace(LatestVL1,',','')AS FLOAT) <=50.90 THEN '<1000 Copies'
-                                WHEN CAST(Replace(LatestVL1,',','') AS FLOAT) between 51.00 and 399.00 THEN '<1000 Copies'
-                                WHEN CAST(Replace(LatestVL1,',','')AS FLOAT) between 400.00 and 999.00 THEN '<1000 Copies'
                                 WHEN CAST(Replace(LatestVL1,',','')AS FLOAT) >=1000 THEN '>1000 Copies'
-                        END
-                            WHEN LatestVL1 IN ('undetectable','NOT DETECTED','0 copies/ml','LDL','ND','Target Not Detected',' Not detected','Target Not Detected.','Less than Low Detectable Level') THEN '<1000 Copies'
-                        ELSE NULL 
+                        END 
                     END AS [LastVLResult],
                     LatestVLDate1Key as DateLAstVL,
                     LatestVL2,
                     CASE
                         WHEN ISNUMERIC(LatestVL2)=1 THEN
                             CASE
-                                WHEN CAST(Replace(LatestVL2,',','')AS FLOAT) <=50.90 THEN '<1000 Copies'
-                                WHEN CAST(Replace(LatestVL2,',','') AS FLOAT) between 51.00 and 399.00 THEN '<1000 Copies'
-                                WHEN CAST(Replace(LatestVL2,',','')AS FLOAT) between 400.00 and 999.00 THEN '<1000 Copies'
                                 WHEN CAST(Replace(LatestVL2,',','')AS FLOAT) >=1000 THEN '>1000 Copies'
                         END
-                            WHEN LatestVL2 IN ('undetectable','NOT DETECTED','0 copies/ml','LDL','ND','Target Not Detected',' Not detected','Target Not Detected.','Less than Low Detectable Level') THEN '<1000 Copies'
-                        ELSE NULL 
                     END AS [VL2Result]`,
             ])
             .leftJoin(
