@@ -21,7 +21,7 @@ export class GetVlOverallGt1000CopiesHandler
                     END
                     ELSE NULL END AS [Last12MVLResult]`,
             ])
-            .where("ARTOutcome='V'");
+            .where("ARTOutcomeDescription ='Active'");
 
         if (query.county) {
             vlOverallUptakeGt1000.andWhere('f.County IN (:...counties)', {

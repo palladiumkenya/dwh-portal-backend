@@ -13,9 +13,12 @@ export class GetOvcIITHandler implements IQueryHandler<GetOvcIITQuery> {
     }
 
     async execute(query: GetOvcIITQuery): Promise<any> {
-        const OVCIIT = this.repository.createQueryBuilder('f')
+        const OVCIIT = this.repository
+            .createQueryBuilder('f')
             .select(['Count (*) OVCIIT'])
-            .andWhere('f.OVCEnrollmentDate IS NOT NULL and ARTOutcome=\'uL\'');
+            .andWhere(
+                `f.OVCEnrollmentDate IS NOT NULL and ARTOutcomeDescription ='Undocumented Loss'`,
+            );
 
         if (query.county) {
             OVCIIT.andWhere('f.County IN (:...counties)', { counties: query.county });

@@ -37,7 +37,7 @@ export class GetVlOverallUptakeAndSuppressionReferedLessIntenseHandler
                 DifferentiatedCare`,
             ])
             .where(
-                "ARTOutcome='V' and DATEDIFF(MONTH,lastVLDate,GETDATE())<= 14 and DifferentiatedCare<>'Not Documented'",
+                "ARTOutcomeDescription ='Active' and DATEDIFF(MONTH,lastVLDate,GETDATE())<= 14 and DifferentiatedCare<>'Not Documented'",
             );
 
         if (query.county) {

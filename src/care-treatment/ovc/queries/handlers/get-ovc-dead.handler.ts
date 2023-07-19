@@ -13,9 +13,12 @@ export class GetOvcDeadHandler implements IQueryHandler<GetOvcDeadQuery> {
     }
 
     async execute(query: GetOvcDeadQuery): Promise<any> {
-        const OVCDead = this.repository.createQueryBuilder('f')
+        const OVCDead = this.repository
+            .createQueryBuilder('f')
             .select(['Count (*) OVCDead'])
-            .andWhere('f.OVCEnrollmentDate IS NOT NULL and ARTOutcome=\'D\'');
+            .andWhere(
+                "f.OVCEnrollmentDate IS NOT NULL and ARTOutcomeDescription='Dead'",
+            );
 
         if (query.county) {
             OVCDead.andWhere('f.County IN (:...counties)', { counties: query.county });

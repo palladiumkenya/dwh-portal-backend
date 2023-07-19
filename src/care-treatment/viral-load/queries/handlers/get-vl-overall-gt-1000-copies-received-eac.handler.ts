@@ -19,7 +19,7 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
             .createQueryBuilder('art')
             .select([`art.SiteCode, art.PatientPKHash, ValidVLResultCategory1`])
             .where(
-                `art.ARTOutcome = 'V' AND DATEDIFF( MONTH, lastVLDate, GETDATE( ) ) <= 14 AND ValidVLResult IS NOT NULL`,
+                `art.ARTOutcomeDescription ='Active' AND DATEDIFF( MONTH, lastVLDate, GETDATE( ) ) <= 14 AND ValidVLResult IS NOT NULL`,
             );
 
         if (query.county) {

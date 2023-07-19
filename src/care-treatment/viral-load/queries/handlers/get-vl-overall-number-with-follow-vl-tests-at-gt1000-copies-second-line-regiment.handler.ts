@@ -24,7 +24,7 @@ export class GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegiment
         const vlOverallNumberFollowSecondlineRegiment = this.repository
             .createQueryBuilder('cohort')
             .select([
-                `cohort.SiteCode,cohort.PatientIDHash,cohort.County,cohort.SubCounty,DOB,cohort.Gender,LatestVL1 as LastVL,LatestVLDate2Key,LatestVLDate1Key,ARTOutcome,CurrentRegimenLine As CurrentARTLine,
+                `cohort.SiteCode,cohort.PatientIDHash,cohort.County,cohort.SubCounty,DOB,cohort.Gender,LatestVL1 as LastVL,LatestVLDate2Key,LatestVLDate1Key,ARTOutcomeDescription,CurrentRegimenLine As CurrentARTLine,
                 CASE
                     WHEN ISNUMERIC(LatestVL1)=1 THEN
                         CASE
@@ -98,7 +98,7 @@ export class GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegiment
             const a = originalQuery.call(
                 vlOverallNumberFollowSecondlineRegiment,
             );
-            return `WITH VL AS (${a}) SELECT VL2Result, Count (*) Num FROM VL WHERE ARTOutcome='V' and  VL2Result in ('>1000 Copies')  and DATEDIFF(MONTH,LatestVLDate2Key,GETDATE())<= 14 and currentARTline='Second Line' Group by VL2Result`;
+            return `WITH VL AS (${a}) SELECT VL2Result, Count (*) Num FROM VL WHERE ARTOutcomeDescription ='Active' and  VL2Result in ('>1000 Copies')  and DATEDIFF(MONTH,LatestVLDate2Key,GETDATE())<= 14 and currentARTline='Second Line' Group by VL2Result`;
         };
 
         vlOverallNumberFollowSecondlineRegiment.getParameters = () => {

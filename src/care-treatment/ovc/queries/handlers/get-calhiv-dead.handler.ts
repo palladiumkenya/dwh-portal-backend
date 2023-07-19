@@ -13,9 +13,10 @@ export class GetCalhivDeadHandler implements IQueryHandler<GetCalhivDeadQuery> {
     }
 //todo:: Something about linlist and agg dont match up
     async execute(query: GetCalhivDeadQuery): Promise<any> {
-        const CALHIVonART = this.repository.createQueryBuilder('f')
+        const CALHIVonART = this.repository
+            .createQueryBuilder('f')
             .select(['COUNT (*) CALHIVDead'])
-            .andWhere('f.ARTOutcome=\'D\'');
+            .andWhere("f.ARTOutcomeDescription='Dead'");
 
         if (query.county) {
             CALHIVonART.andWhere('f.County IN (:...counties)', { counties: query.county });

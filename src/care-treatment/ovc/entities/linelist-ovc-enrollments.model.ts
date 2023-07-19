@@ -81,7 +81,7 @@ export class LineListOVCEnrollments {
     onMMD: number;
 
     @Column('text')
-    ARTOutcome: string;
+    ARTOutcomeDescription: string;
 
     @Column('int')
     EligibleVL: number;
