@@ -17,7 +17,7 @@ export class GetVlOverallUptakeReceivedFollowTestsAllHandler implements IQueryHa
         const vlOverallUptakeReceivedFollowAll = this.repository
             .createQueryBuilder('cohort')
             .select([
-                `SiteCode, cohort.PatientIDHash,cohort.County,cohort.SubCounty,DOB,cohort.Gender, c.LatestVL1 as LastVL,c.LatestVLDate2Key,c.LatestVLDate1Key,ARTOutcome,
+                `SiteCode, cohort.PatientIDHash,cohort.County,cohort.SubCounty,DOB,cohort.Gender, c.LatestVL1 as LastVL,c.LatestVLDate2Key,c.LatestVLDate1Key,ARTOutcomeDescription,
                 CASE
                     WHEN ISNUMERIC(LatestVL1)=1 THEN
                         CASE
@@ -92,7 +92,7 @@ export class GetVlOverallUptakeReceivedFollowTestsAllHandler implements IQueryHa
         const originalParams = vlOverallUptakeReceivedFollowAll.getParameters;
         vlOverallUptakeReceivedFollowAll.getQuery = () => {
             const a = originalQuery.call(vlOverallUptakeReceivedFollowAll);
-            return `WITH VL AS (${a}) SELECT Count (*) Num FROM VL WHERE  ARTOutcome='V' and  VL2Result in ('>1000 Copies') and LastVLResult is not null  and DATEDIFF(MONTH,LatestVLDate2Key,GETDATE())<= 14`;
+            return `WITH VL AS (${a}) SELECT Count (*) Num FROM VL WHERE  ARTOutcomeDescription='Active' and  VL2Result in ('>1000 Copies') and LastVLResult is not null  and DATEDIFF(MONTH,LatestVLDate2Key,GETDATE())<= 14`;
         };
 
         vlOverallUptakeReceivedFollowAll.getParameters = () => {

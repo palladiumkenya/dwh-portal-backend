@@ -27,7 +27,7 @@ export class AggregateOVCCount {
     DATIMAgeGroup: string;
 
     @Column('text')
-    ARTOutcome: string;
+    ARTOutcomeDescription: string;
 
     @Column('int')
     TXCurr: number;

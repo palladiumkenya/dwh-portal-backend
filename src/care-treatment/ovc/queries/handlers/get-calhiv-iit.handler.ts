@@ -13,9 +13,10 @@ export class GetCalhivIitHandler implements IQueryHandler<GetCalhivIitQuery> {
     }
 
     async execute(query: GetCalhivIitQuery): Promise<any> {
-        const CALHIVonART = this.repository.createQueryBuilder('f')
+        const CALHIVonART = this.repository
+            .createQueryBuilder('f')
             .select(['Count (*) CALHIVIIT'])
-            .andWhere('f.ARTOutcome=\'uL\'');
+            .andWhere(`f.ARTOutcomeDescription ='Undocumented Loss'`);
 
         if (query.county) {
             CALHIVonART.andWhere('f.County IN (:...counties)', { counties: query.county });

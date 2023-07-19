@@ -30,7 +30,7 @@ export class FactTransTreatmentOutcomes {
     StartMonth: number;
 
     @Column('text')
-    ARTOutcome: string;
+    ARTOutcomeDescription: string;
 
     @Column('int')
     TotalOutcomes: number;
