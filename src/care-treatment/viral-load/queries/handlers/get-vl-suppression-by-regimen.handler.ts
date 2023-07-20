@@ -18,11 +18,11 @@ export class GetVlSuppressionByRegimenHandler implements IQueryHandler<GetVlSupp
         const vlSuppressionByRegimen = this.repository
             .createQueryBuilder('f')
             .select([
-                'f.StartRegimen regimen, Last12MVLResult, count(Last12MVLResult) count',
+                'f.StartRegimen regimen, ValidVLResultCategory Last12MVLResult, count(ValidVLResultCategory) count',
             ])
             .where('f.SiteCode > 0')
             .andWhere('f.StartRegimen IS NOT NULL')
-            .andWhere('f.Last12MVLResult IS NOT NULL');
+            .andWhere('f.ValidVLResultCategory IS NOT NULL');
 
         if (query.county) {
             vlSuppressionByRegimen.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -52,6 +52,9 @@ export class GetVlSuppressionByRegimenHandler implements IQueryHandler<GetVlSupp
             vlSuppressionByRegimen.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
         }
 
-        return await vlSuppressionByRegimen.groupBy('f.StartRegimen, f.Last12MVLResult').orderBy('f.StartRegimen').getRawMany();
+        return await vlSuppressionByRegimen
+            .groupBy('f.StartRegimen, f.ValidVLResultCategory')
+            .orderBy('f.StartRegimen')
+            .getRawMany();
     }
 }

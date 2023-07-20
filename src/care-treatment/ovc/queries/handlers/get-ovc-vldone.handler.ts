@@ -15,7 +15,7 @@ export class GetOvcVldoneHandler implements IQueryHandler<GetOvcVldoneQuery> {
     async execute(query: GetOvcVldoneQuery): Promise<any> {
         const OVCVLDone = this.repository.createQueryBuilder('f')
             .select(['Count (*) OVCVLDone'])
-            .andWhere('f.TXCurr=1 and VLDone=1 and OVCEnrollmentDate IS NOT NULL');
+            .andWhere('f.TXCurr=1 and HasValidVL=1 and OVCEnrollmentDate IS NOT NULL');
 
         if (query.county) {
             OVCVLDone.andWhere('f.County IN (:...counties)', { counties: query.county });

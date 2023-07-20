@@ -16,7 +16,7 @@ export class GetVlOverallUptakeAndSuppressionBySexHandler implements IQueryHandl
         const vlOverallUptakeAndSuppressionBySex = this.repository
             .createQueryBuilder('f')
             .select([
-                'Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed',
+                'Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(HasValidVL) vlDone, SUM(VirallySuppressed) suppressed',
             ])
             // .where('f.MFLCode > 0')
             .where('f.TXCurr > 0')

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,6 +13,7 @@ import { OperationalHisModule } from './operational-his/operational-his.module';
 import { PmtctRRIModule } from './pmtct-rri/pmtct-rri.module';
 // import { SelfServiceModule } from './self-service/self-service.module';
 
+import { AgeGroupMappingMiddleware } from './ageGroupMapping.middleware';
 @Module({
     imports: [
         ConfigModule.forRoot({
@@ -99,4 +100,10 @@ import { PmtctRRIModule } from './pmtct-rri/pmtct-rri.module';
     controllers: [AppController],
     providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer
+            .apply(AgeGroupMappingMiddleware)
+            .forRoutes({ path: '*', method: RequestMethod.ALL });
+    }
+}

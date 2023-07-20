@@ -1,7 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { GetVlOverallUptakeGt1000CopiesQuery } from '../impl/get-vl-overall-uptake-gt-1000-copies.query';
 import { LinelistFACTART } from './../../../common/entities/linelist-fact-art.model';
 
@@ -17,15 +16,12 @@ export class GetVlOverallGt1000CopiesHandler
         const vlOverallUptakeGt1000 = this.repository
             .createQueryBuilder('f')
             .select([
-                'LastVL, lastVLDate, CASE WHEN ISNUMERIC(Last12MonthVLResults)=1 THEN CASE ' +
-                    "WHEN CAST(Replace(Last12MonthVLResults,',','')AS FLOAT) <=50.90 THEN '<50 Copies' " +
-                    "WHEN CAST(Replace(Last12MonthVLResults,',','') AS FLOAT) between 51.00 and 399.00 THEN '51-399' " +
-                    "WHEN CAST(Replace(Last12MonthVLResults,',','')AS FLOAT) between 400.00 and 999.00 THEN '400-999' " +
-                    "WHEN CAST(Replace(Last12MonthVLResults,',','')AS FLOAT) >= 1000 THEN '>1000 Copies' " +
-                    "END WHEN Last12MonthVLResults IN ('undetectable','NOT DETECTED','0 copies/ml','LDL','ND','Target Not Detected',' Not detected','Target Not Detected.','Less than Low Detectable Level') THEN '<50 Copies' " +
-                    'ELSE NULL END AS [Last12MVLResult]',
+                `LastVL, lastVLDate, CASE WHEN ISNUMERIC(ValidVLResult)=1 THEN CASE 
+                    WHEN CAST(Replace(ValidVLResult,',','')AS FLOAT) >= 1000 THEN '>1000 Copies' 
+                    END
+                    ELSE NULL END AS [Last12MVLResult]`,
             ])
-            .where("ARTOutcome='V'");
+            .where("ARTOutcomeDescription ='Active'");
 
         if (query.county) {
             vlOverallUptakeGt1000.andWhere('f.County IN (:...counties)', {
