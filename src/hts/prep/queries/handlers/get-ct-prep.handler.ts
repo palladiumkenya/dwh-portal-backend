@@ -16,7 +16,7 @@ export class GetCTPrepHandler implements IQueryHandler<GetCTPrepQuery> {
         let newOnPrep = `Select 
                     SUM(PrepCT) As PrepCT
                 from AggregatePrepCascade prep
-                where year is not null
+                where AssYear is not null
         `;
 
         if (query.county) {
@@ -62,11 +62,11 @@ export class GetCTPrepHandler implements IQueryHandler<GetCTPrepQuery> {
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and year = ${query.year}`;
+            newOnPrep = `${newOnPrep} and AssYear = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and month = ${query.month}`;
+            newOnPrep = `${newOnPrep} and AssMonth = ${query.month}`;
         }
 
         return await this.repository.query(newOnPrep, params);

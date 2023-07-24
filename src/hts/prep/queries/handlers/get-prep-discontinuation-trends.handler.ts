@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FactPrep } from '../../entities/fact-prep.model';
 import { GetPrepDiscontinuationTrendsQuery } from '../impl/get-prep-discontinuation-trends.query';
-import { GetPrepDiscontinuationQuery } from '../impl/get-prep-discontinuation.query';
 
 @QueryHandler(GetPrepDiscontinuationTrendsQuery)
 export class GetPrepDiscontinuationTrendHandler
