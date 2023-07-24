@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FactPrep } from '../../entities/fact-prep.model';
 import { GetPrepEligibleAgegroupQuery } from '../impl/get-prep-eligible-agegroup.query';
-import { GetPrepEligibleTrendsQuery } from '../impl/get-prep-eligible-trends.query';
 
 @QueryHandler(GetPrepEligibleAgegroupQuery)
 export class GetPrepEligibleByAgegroupHandler
@@ -19,7 +18,7 @@ export class GetPrepEligibleByAgegroupHandler
                 AgeGroup DATIMAgeGroup,
                 Sum(EligiblePrep) As EligiblePrep
             from AggregatePrepCascade prep
-            where year is not null
+            where AssYear is not null
         `;
 
         if (query.county) {
@@ -65,11 +64,11 @@ export class GetPrepEligibleByAgegroupHandler
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and year = ${query.year}`;
+            newOnPrep = `${newOnPrep} and AssYear = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and month = ${query.month}`;
+            newOnPrep = `${newOnPrep} and AssMonth = ${query.month}`;
         }
 
         newOnPrep = `${newOnPrep} GROUP BY AgeGroup`;

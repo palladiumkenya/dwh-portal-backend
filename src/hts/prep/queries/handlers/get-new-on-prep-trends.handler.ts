@@ -15,11 +15,11 @@ export class GetNewOnPrepTrendsHandler
     async execute(query: GetNewOnPrepTrendsQuery): Promise<any> {
         const params = [];
         let newOnPrep = `SELECT
-                month,
-                year,
+                AssMonth month,
+                AssYear year,
                 SUM(StartedPrep) As StartedPrep
             from AggregatePrepCascade prep
-            where year is not null
+            where AssYear is not null
         `;
 
         if (query.county) {
@@ -65,15 +65,15 @@ export class GetNewOnPrepTrendsHandler
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and year = ${query.year}`;
+            newOnPrep = `${newOnPrep} and AssYear = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and month = ${query.month}`;
+            newOnPrep = `${newOnPrep} and AssMonth = ${query.month}`;
         }
 
-        newOnPrep = `${newOnPrep} GROUP BY month, year
-						ORDER BY year Desc, month DESC`;
+        newOnPrep = `${newOnPrep} GROUP BY AssMonth, AssYear
+						ORDER BY AssYear Desc, AssMonth DESC`;
 
         return await this.repository.query(newOnPrep, params);
     }
