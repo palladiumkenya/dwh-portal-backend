@@ -2,7 +2,6 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetMedianTimeToArtByCountyQuery } from '../impl/get-median-time-to-art-by-county.query';
-import { FactCtTimeToArtLast12M } from '../../entities/fact-ct-time-to-art-last-12-m.model';
 import { AggregateTimeToARTLast12M } from './../../entities/aggregate-time-to-art-last-12-m.model';
 
 @QueryHandler(GetMedianTimeToArtByCountyQuery)
