@@ -2,9 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FactPrep } from '../../entities/fact-prep.model';
-import { GetCTPrepQuery } from '../impl/get-ct-prep.query';
 import { GetPrepRefillMonth1Query } from '../impl/get-prep-refill-Month1.query';
-import { GetPrepTotalTestedQuery } from '../impl/get-prep-total-tested.query';
 
 @QueryHandler(GetPrepRefillMonth1Query)
 export class GetPrepRefillMonth1Handler implements IQueryHandler<GetPrepRefillMonth1Query> {

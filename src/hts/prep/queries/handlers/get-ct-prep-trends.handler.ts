@@ -14,11 +14,11 @@ export class GetCTPrepTrendHandler implements IQueryHandler<GetCTPrepTrendQuery>
     async execute(query: GetCTPrepTrendQuery): Promise<any> {
         const params = [];
         let newOnPrep = `Select 
-            year,
-            month,
+            AssYear year,
+            AssMonth month,
             SUM(PrepCT) As PrepCT
         from AggregatePrepCascade prep
-        where year is not null
+        where AssYear is not null
         `;
 
         if (query.county) {
@@ -64,16 +64,16 @@ export class GetCTPrepTrendHandler implements IQueryHandler<GetCTPrepTrendQuery>
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and year = ${query.year}`;
+            newOnPrep = `${newOnPrep} and AssYear = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and month = ${query.month}`;
+            newOnPrep = `${newOnPrep} and AssMonth = ${query.month}`;
         }
 
         newOnPrep = `${newOnPrep} 
-        Group BY year, month
-        Order by year DESC, month DESC`
+        Group BY Assyear, Assmonth
+        Order by Assyear DESC, Assmonth DESC`
 
     return await this.repository.query(newOnPrep, params);
     }

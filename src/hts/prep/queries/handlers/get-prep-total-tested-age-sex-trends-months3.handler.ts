@@ -2,11 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FactPrep } from '../../entities/fact-prep.model';
-import { GetCTPrepQuery } from '../impl/get-ct-prep.query';
-import { GetPrepTotalTestedAgeSexTrendsMonth1Query } from '../impl/get-prep-total-tested-age-sex-trends-month1.query';
 import { GetPrepTotalTestedAgeSexTrendsMonth3Query } from '../impl/get-prep-total-tested-age-sex-trends-month3.query';
-import { GetPrepTotalTestedTrendsQuery } from '../impl/get-prep-total-tested-trends.query';
-import { GetPrepTotalTestedQuery } from '../impl/get-prep-total-tested.query';
 
 @QueryHandler(GetPrepTotalTestedAgeSexTrendsMonth3Query)
 export class GetPrepTotalTestedAgeSexTrendsmonth3Handler implements IQueryHandler<GetPrepTotalTestedAgeSexTrendsMonth3Query> {
@@ -18,16 +14,10 @@ export class GetPrepTotalTestedAgeSexTrendsmonth3Handler implements IQueryHandle
     async execute(query: GetPrepTotalTestedAgeSexTrendsMonth3Query): Promise<any> {
         const params = [];
         let newOnPrep = ` SELECT
-        age.DATIMAgeGroup,
-        Count(*) As TotalTested
-        from NDWH.dbo.FactPrep prep
-        LEFT JOIN NDWH.dbo.DimPatient pat ON prep.PatientKey = pat.PatientKey
-        LEFT JOIN NDWH.dbo.DimFacility fac ON fac.FacilityKey = prep.FacilityKey
-        LEFT JOIN NDWH.dbo.DimPartner p ON p.PartnerKey = prep.PartnerKey
-        LEFT JOIN NDWH.dbo.DimAgency a ON a.AgencyKey = prep.AgencyKey
-        LEFT JOIN NDWH.dbo.DimAgeGroup age ON age.AgeGroupKey = prep.AgeGroupKey      
-        LEFT JOIN NDWH.dbo.DimDate test ON test.DateKey = prep.VisitDateKey
-        WHERE test.Date is not null
+            ageGroup DATIMAgeGroup,
+            SUM(tested) TotalTested
+        FROM AggregatePrepTestingAt3MonthRefill
+        WHERE Year is not null
         `;
 
         if (query.county) {
@@ -67,21 +57,21 @@ export class GetPrepTotalTestedAgeSexTrendsmonth3Handler implements IQueryHandle
         }
 
         if (query.datimAgeGroup) {
-            newOnPrep = `${newOnPrep} and DATIMAgeGroup IN ('${query.datimAgeGroup
+            newOnPrep = `${newOnPrep} and AgeGroup IN ('${query.datimAgeGroup
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and test.year = ${query.year}`;
+            newOnPrep = `${newOnPrep} and year = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and test.month = ${query.month}`;
+            newOnPrep = `${newOnPrep} and month = ${query.month}`;
         }
 
-        newOnPrep = `${newOnPrep} Group BY  age.DATIMAgeGroup
-        Order by age.DATIMAgeGroup`
+        newOnPrep = `${newOnPrep} Group BY AgeGroup
+        Order by AgeGroup`
 
         return await this.repository.query(newOnPrep, params);
     }
