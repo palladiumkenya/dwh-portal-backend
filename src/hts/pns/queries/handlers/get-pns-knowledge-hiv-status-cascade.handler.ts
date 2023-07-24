@@ -16,7 +16,7 @@ export class GetPnsKnowledgeHivStatusCascadeHandler implements IQueryHandler<Get
 
     async execute(query: GetPnsKnowledgeHivStatusCascadeQuery): Promise<any> {
         let pnsKnowledgeHivStatusCascade = `Select 
-                SUM(q.ContactElicited) elicited, SUM(q.ContactTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive, SUM(q.NewNegatives) newNegatives, SUM(q.NewPositives) newPositives, SUM(q.UnknownStatus) unknownStatus
+                SUM(q.ContactElicited) elicited, SUM(q.ContactTested) tested, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive, SUM(q.NewNegatives) newNegatives, SUM(q.NewPositives) newPositives, SUM(q.UnknownStatus) unknownStatus
                 FROM REPORTING.[dbo].[AggregateHTSPNSKnowledgeHIVStatus] q
                 WHERE MFLCode IS NOT NULL`;
         // this.repository.createQueryBuilder('q')
