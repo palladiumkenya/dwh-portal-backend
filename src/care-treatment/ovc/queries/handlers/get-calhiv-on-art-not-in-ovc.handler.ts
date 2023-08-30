@@ -2,14 +2,16 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {GetCalhivOnArtNotInOvcQuery} from "../impl/get-calhiv-on-art-not-in-ovc.query";
-import { LineListOVCEnrollments } from '../../entities/linelist-ovc-enrollments.model';
+import { LineListOVCEligibilityAndEnrollments } from '../../entities/linelist-ovc-eligibility-and-enrollments.model';
 
 @QueryHandler(GetCalhivOnArtNotInOvcQuery)
 export class GetCalhivOnArtNotInOvcHandler
     implements IQueryHandler<GetCalhivOnArtNotInOvcQuery> {
     constructor(
-        @InjectRepository(LineListOVCEnrollments, 'mssql')
-        private readonly repository: Repository<LineListOVCEnrollments>,
+        @InjectRepository(LineListOVCEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<
+            LineListOVCEligibilityAndEnrollments
+        >,
     ) {}
 
     async execute(query: GetCalhivOnArtNotInOvcQuery): Promise<any> {
@@ -55,10 +57,9 @@ export class GetCalhivOnArtNotInOvcHandler
         }
 
         if (query.datimAgeGroup) {
-            CALHIVonARTNotInOvc.andWhere(
-                'f.DATIMAgeGroup IN (:...ageGroups)',
-                { ageGroups: query.datimAgeGroup },
-            );
+            CALHIVonARTNotInOvc.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', {
+                ageGroups: query.datimAgeGroup,
+            });
         }
 
         return await CALHIVonARTNotInOvc.getRawOne();

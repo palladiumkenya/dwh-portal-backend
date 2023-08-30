@@ -2,14 +2,16 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCalhivOnArtQuery } from '../impl/get-calhiv-on-art.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
+import { LineListOVCEligibilityAndEnrollments } from '../../entities/linelist-ovc-eligibility-and-enrollments.model';
 
 @QueryHandler(GetCalhivOnArtQuery)
 export class GetCalhivOnArtHandler
     implements IQueryHandler<GetCalhivOnArtQuery> {
     constructor(
-        @InjectRepository(LineListOVCEnrollments, 'mssql')
-        private readonly repository: Repository<LineListOVCEnrollments>,
+        @InjectRepository(LineListOVCEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<
+            LineListOVCEligibilityAndEnrollments
+        >,
     ) {}
 
     async execute(query: GetCalhivOnArtQuery): Promise<any> {

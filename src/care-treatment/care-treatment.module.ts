@@ -342,6 +342,7 @@ import { AggregateDefaulterTracingOutcome } from './treatment-outcomes/entities/
 import { GetIITTracingHandler } from './treatment-outcomes/queries/handlers/get-iit-tracing.handler';
 import { GetIITTracingOutcomesHandler } from './treatment-outcomes/queries/handlers/get-iit-tracing-outcomes.handler';
 import { AggregateIITTracingStatus } from './treatment-outcomes/entities/aggregate-iit-tracing-status.model';
+import { LineListOVCEligibilityAndEnrollments } from './ovc/entities/linelist-ovc-eligibility-and-enrollments.model';
 
 
 @Module({
@@ -368,6 +369,7 @@ import { AggregateIITTracingStatus } from './treatment-outcomes/entities/aggrega
 
                 AggregateOVCCount,
                 LineListOVCEnrollments,
+                LineListOVCEligibilityAndEnrollments,
 
                 LinelistFACTART,
 
