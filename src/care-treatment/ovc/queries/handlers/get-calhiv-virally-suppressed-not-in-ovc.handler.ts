@@ -1,16 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCalhivVirallySuppressedQuery } from '../impl/get-calhiv-virally-suppressed.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
-import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
+import { LineListOVCEligibilityAndEnrollments } from '../../entities/linelist-ovc-eligibility-and-enrollments.model';
 
 @QueryHandler(GetCalhivVirallySuppressedQuery)
 export class GetCalhivVirallySuppressedNotInOvcHandler implements IQueryHandler<GetCalhivVirallySuppressedQuery> {
     constructor(
-        @InjectRepository(LineListOVCEnrollments, 'mssql')
-        private readonly repository: Repository<LineListOVCEnrollments>
+        @InjectRepository(LineListOVCEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEligibilityAndEnrollments>
     ) {
     }
 

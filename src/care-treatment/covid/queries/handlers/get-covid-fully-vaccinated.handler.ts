@@ -1,10 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCovidFullyVaccinatedQuery } from '../impl/get-covid-fully-vaccinated.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines.model';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
-import {AggregateCovid} from "../../entities/aggregate-covid.model";
 import {LineListCovid} from "../../entities/linelist-covid.model";
 //MARY - done
 @QueryHandler(GetCovidFullyVaccinatedQuery)
