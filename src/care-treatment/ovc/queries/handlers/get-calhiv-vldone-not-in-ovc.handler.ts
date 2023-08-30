@@ -3,12 +3,13 @@ import { GetCalhivVldoneQuery } from '../impl/get-calhiv-vldone.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LineListOVCEnrollments } from '../../entities/linelist-ovc-enrollments.model';
+import { LineListOVCEligibilityAndEnrollments } from '../../entities/linelist-ovc-eligibility-and-enrollments.model';
 
 @QueryHandler(GetCalhivVldoneQuery)
 export class GetCalhivVldoneNotInOvcHandler implements IQueryHandler<GetCalhivVldoneQuery> {
     constructor(
-        @InjectRepository(LineListOVCEnrollments, 'mssql')
-        private readonly repository: Repository<LineListOVCEnrollments>
+        @InjectRepository(LineListOVCEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEligibilityAndEnrollments>
     ) {
     }
 
