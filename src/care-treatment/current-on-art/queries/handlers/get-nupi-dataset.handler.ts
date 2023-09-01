@@ -14,8 +14,7 @@ export class GetNupiDatasetHandler
 
     async execute(query: GetNupiDatasetQuery): Promise<any> {
         const params = [];
-        const nupiDataset = `
-            with EnrichedFullfacilitylist As (
+        const nupiDataset = `with EnrichedFullfacilitylist As (
             -- get the full facilities list with enriched columns
                 Select
                     distinct cast(Allsites.MFLCode collate Latin1_General_CI_AS as nvarchar) as MFLCode,
@@ -24,7 +23,7 @@ export class GetNupiDatasetHandler
                     Allsites.FacilityType,
                     EMRs.EMR,
                     coalesce(EMRs.SDP, Allsites.SDIP) As SDIP,
-                    coalesce(EMRs.[SDP Agency], Allsites.Agency) as Agency
+                    coalesce(EMRs.[SDP_Agency], Allsites.Agency) as Agency
                 from  HIS_Implementation.dbo.EMRandNonEMRSites as Allsites
                 left join HIS_Implementation.dbo.All_EMRSites  EMRs on EMRs.MFL_Code=Allsites.MFLCode
             ),
@@ -32,14 +31,14 @@ export class GetNupiDatasetHandler
             EMRSites as (
                 select
                     distinct
-                    [Facility Name] AS FacilityName,
+                    [Facility_Name] AS FacilityName,
                     cast (MFL_Code as nvarchar) As MFLCode,
                     County,
                     SDP,
                     EMR,
-                    [SDP Agency]
+                    [SDP_Agency]
                 from HIS_Implementation.dbo.All_EMRSites
-                where [EMR Status] = 'Active'
+                where [EMR_Status] = 'Active'
             ),
             --Obtain the latest reporting month in KHIS and pick the latest TXCurr--
             latest_reporting_month as (
@@ -139,7 +138,7 @@ export class GetNupiDatasetHandler
                     cast (SiteCode as nvarchar) As MFLCode,
                     count(distinct concat(PatientIDHash, PatientPKHash, SiteCode)) as count_Paeds
                 from REPORTING.dbo.Linelist_FACTART (nolock)
-                where ARTOutcomeDescription ='Active' and age < 18
+                where  ARTOutcomeDescription ='Active' and age < 18
                 group by
                     SiteCode
             ),
@@ -158,15 +157,15 @@ export class GetNupiDatasetHandler
                 FROM [pSurvey].[dbo].[stg_questionnaire_responses]
                 Group by mfl_code
             ),
-			verified_but_with_survey as (
-				select
-					origin_facility_kmfl_code as mfl_code,
-					count(distinct concat(nupi.ccc_no, '-', nupi.origin_facility_kmfl_code)) as count_of_patients
-				from tmp_and_adhoc.dbo.nupi_dataset as nupi
-				inner join [pSurvey].[dbo].[stg_questionnaire_responses] as surveys on surveys.ccc_no = nupi.ccc_no
-					and cast(surveys.mfl_code as varchar) = nupi.origin_facility_kmfl_code
-				group by origin_facility_kmfl_code						
-			),
+            verified_but_with_survey as (
+                select
+                    origin_facility_kmfl_code as mfl_code,
+                    count(distinct concat(nupi.ccc_no, '-', nupi.origin_facility_kmfl_code)) as count_of_patients
+                from tmp_and_adhoc.dbo.nupi_dataset as nupi
+                inner join [pSurvey].[dbo].[stg_questionnaire_responses] as surveys on surveys.ccc_no = nupi.ccc_no
+                    and cast(surveys.mfl_code as varchar) = nupi.origin_facility_kmfl_code
+                group by origin_facility_kmfl_code                        
+            ),
             FacilitySummary AS (
                 select
                     EnrichedFullfacilitylist.MFLCode as MFLCode,
@@ -192,7 +191,7 @@ export class GetNupiDatasetHandler
                     coalesce(PaedsTXCurr_DWH,0) As PaedsTXCurr_DWH,
                     coalesce (count_AdultsTXCurDWH,0) As AdultsTxCurr_DWH,
                     coalesce (SurveysReceived,0) As SurveysReceived,
-					coalesce(verified_but_with_survey.count_of_patients,0) as patients_verified_but_with_survey
+                    coalesce(verified_but_with_survey.count_of_patients,0) as patients_verified_but_with_survey
                 from EnrichedFullfacilitylist
                 left join khis on cast (khis.SiteCode as nvarchar) = cast (EnrichedFullfacilitylist.MFLCode as nvarchar)
                 full outer join dwh_nupi_by_facility on dwh_nupi_by_facility.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
@@ -204,7 +203,7 @@ export class GetNupiDatasetHandler
                 left join nupi_overall on nupi_overall.facility_code=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
                 left join nupi_non_art_clients on nupi_non_art_clients.facility_code=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
                 left join PSurveys on PSurveys.MFLCode=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-				left join verified_but_with_survey on verified_but_with_survey.mfl_code = EnrichedFullfacilitylist.MFLCode
+                left join verified_but_with_survey on verified_but_with_survey.mfl_code = EnrichedFullfacilitylist.MFLCode
                 group by
                     EnrichedFullfacilitylist.MFLCode,
                     EnrichedFullfacilitylist.FacilityName,
@@ -223,7 +222,7 @@ export class GetNupiDatasetHandler
                     coalesce (PaedsTXCurr_DWH,0),
                     coalesce(count_AdultsTXCurDWH,0),
                     coalesce (SurveysReceived,0),
-					coalesce(verified_but_with_survey.count_of_patients,0)
+                    coalesce(verified_but_with_survey.count_of_patients,0)
             )
             select
                 getdate() as DateQueried,
@@ -251,7 +250,7 @@ export class GetNupiDatasetHandler
                 sum (TXCurr_khis)-sum (NUPIVerified) As '#Unverified',
                 sum (SurveysReceived) As SurveysReceived,
                 sum (TXCurr_khis)-sum (NUPIVerified)-sum (SurveysReceived) As Pendingsurveys,
-				sum(patients_verified_but_with_survey) as '# Patients verified but with survey'
+                sum(patients_verified_but_with_survey) as '# Patients verified but with survey'
             from FacilitySummary
             group by
                 FacilitySummary.Facility,
