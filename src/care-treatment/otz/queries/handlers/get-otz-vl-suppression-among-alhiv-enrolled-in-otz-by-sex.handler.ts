@@ -17,10 +17,10 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler implements I
         const vlSuppressionOtzBySex = this.repository
             .createQueryBuilder('f')
             .select([
-                '[Gender], Last12MVLResult, SUM([Last12MonthVL]) AS vlSuppression',
+                '[Gender], ValidVLResultCategory Last12MVLResult, SUM([HasValidVL]) AS vlSuppression',
             ])
             .andWhere(
-                'f.MFLCode IS NOT NULL AND Last12MVLResult IS NOT NULL',
+                'f.MFLCode IS NOT NULL AND ValidVLResultCategory IS NOT NULL',
             );
 
         if (query.county) {
@@ -52,7 +52,7 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler implements I
         }
 
         return await vlSuppressionOtzBySex
-            .groupBy('[Gender], Last12MVLResult')
+            .groupBy('[Gender], ValidVLResultCategory')
             .orderBy('[Gender]')
             .getRawMany();
     }

@@ -18,7 +18,7 @@ export class GetPnsChildrenCascadeHandler
                 Sum(ChildrenElicited) elicited,
                 sum(ChildrenTested) tested,
                 Sum(ChildrenPositive) positive,
-                sum(ChildrenLiked) linked,
+                sum(ChildrenLinked) linked,
                 
                 Sum(ChildrenKnownPositive) knownPositive
             From REPORTING.dbo.AggregateHTSPNSChildren pns

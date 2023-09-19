@@ -2,11 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FactPrep } from '../../entities/fact-prep.model';
-import { GetCTPrepQuery } from '../impl/get-ct-prep.query';
 import { GetPrepRefillAgeSexMonth3Query } from '../impl/get-prep-refill-age-sex-Month3.query';
-import { GetPrepTotalTestedAgeSexTrendsMonth1Query } from '../impl/get-prep-total-tested-age-sex-trends-month1.query';
-import { GetPrepTotalTestedTrendsQuery } from '../impl/get-prep-total-tested-trends.query';
-import { GetPrepTotalTestedQuery } from '../impl/get-prep-total-tested.query';
 
 @QueryHandler(GetPrepRefillAgeSexMonth3Query)
 export class GetPrepRefillAgeSexTrendsmonth3Handler implements IQueryHandler<GetPrepRefillAgeSexMonth3Query> {

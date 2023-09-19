@@ -19,7 +19,7 @@ export class GetNewOnPrepByAgeSexHandler
                 Gender,
                 SUM(StartedPrep) As StartedPrep
             from AggregatePrepCascade prep
-            where year is not null
+            where AssYear is not null
         `;
 
 
@@ -66,11 +66,11 @@ export class GetNewOnPrepByAgeSexHandler
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and year = ${query.year}`;
+            newOnPrep = `${newOnPrep} and AssYear = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and month = ${query.month}`;
+            newOnPrep = `${newOnPrep} and AssMonth = ${query.month}`;
         }
 
         newOnPrep = `${newOnPrep} GROUP BY AgeGroup, Gender

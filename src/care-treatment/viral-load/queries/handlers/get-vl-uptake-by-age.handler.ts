@@ -16,7 +16,7 @@ export class GetVlUptakeByAgeHandler implements IQueryHandler<GetVlUptakeByAgeQu
         const vlUptakeByAge = this.repository
             .createQueryBuilder('f')
             .select([
-                'f.AgeGroup ageGroup, f.Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed',
+                'f.AgeGroup ageGroup, f.Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(HasValidVL) vlDone, SUM(VirallySuppressed) suppressed',
             ])
             .where('f.MFLCode > 0')
             .andWhere('f.AgeGroup IS NOT NULL')

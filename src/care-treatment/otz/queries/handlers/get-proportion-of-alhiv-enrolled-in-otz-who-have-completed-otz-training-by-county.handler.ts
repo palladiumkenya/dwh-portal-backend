@@ -41,7 +41,7 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCount
         }
 
         if (query.datimAgeGroup) {
-            proportionWhoCompletedTrainingByCounty.andWhere('f.DAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            proportionWhoCompletedTrainingByCounty.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

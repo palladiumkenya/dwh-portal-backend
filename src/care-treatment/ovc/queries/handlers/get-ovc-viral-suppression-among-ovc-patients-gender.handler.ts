@@ -13,8 +13,11 @@ export class GetOvcViralSuppressionAmongOvcPatientsGenderHandler implements IQue
     }
 
     async execute(query: GetOvcViralSuppressionAmongOvcPatientsGenderQuery): Promise<any> {
-        const viralSuppressionAmongOvcByGender = this.repository.createQueryBuilder('f')
-            .select(['[Last12MVLResult], Gender, COUNT(*) suppressed'])
+        const viralSuppressionAmongOvcByGender = this.repository
+            .createQueryBuilder('f')
+            .select([
+                '[ValidVLResultCategory] Last12MVLResult, Gender, COUNT(*) suppressed',
+            ])
             .andWhere('f.OVCEnrollmentDate IS NOT NULL');
 
         if (query.county) {
@@ -47,7 +50,7 @@ export class GetOvcViralSuppressionAmongOvcPatientsGenderHandler implements IQue
         }
 
         return await viralSuppressionAmongOvcByGender
-            .groupBy('Last12MVLResult, Gender')
+            .groupBy('ValidVLResultCategory, Gender')
             .getRawMany();
     }
 }

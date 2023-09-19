@@ -2,14 +2,14 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCalhivEligibleVlQuery } from '../impl/get-calhiv-eligible-vl.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LineListOVCEnrollments } from '../../entities/linelist-ovc-enrollments.model';
+import { LineListOVCEligibilityAndEnrollments } from '../../entities/linelist-ovc-eligibility-and-enrollments.model';
 
 @QueryHandler(GetCalhivEligibleVlQuery)
 export class GetCalhivEligibleVlNotInOvcHandler
     implements IQueryHandler<GetCalhivEligibleVlQuery> {
     constructor(
-        @InjectRepository(LineListOVCEnrollments, 'mssql')
-        private readonly repository: Repository<LineListOVCEnrollments>,
+        @InjectRepository(LineListOVCEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEligibilityAndEnrollments>,
     ) {}
 
     async execute(query: GetCalhivEligibleVlQuery): Promise<any> {

@@ -1,23 +1,26 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetVlOutcomesByYearAndSuppressionCategoryQuery } from '../impl/get-vl-outcomes-by-year-and-suppression-category.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransVLOutcome } from '../../entities/fact-trans-vl-outcome.model';
 import { Repository } from 'typeorm';
-import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
+import { LinelistFACTART } from 'src/care-treatment/common/entities/linelist-fact-art.model';
 
 
 @QueryHandler(GetVlOutcomesByYearAndSuppressionCategoryQuery)
 export class GetVlOutcomesByYearAndSuppressionCategoryHandler implements IQueryHandler<GetVlOutcomesByYearAndSuppressionCategoryQuery> {
     constructor(
-        @InjectRepository(AggregateVLUptakeOutcome, 'mssql')
-        private readonly repository: Repository<AggregateVLUptakeOutcome>
+        @InjectRepository(LinelistFACTART, 'mssql')
+        private readonly repository: Repository<LinelistFACTART>
     ) {
     }
 
     async execute(query: GetVlOutcomesByYearAndSuppressionCategoryQuery): Promise<any> {
-        const vlSuppressionByYear = this.repository.createQueryBuilder('f')
-            .select(['StartARTYear year, Last12MVLResult last12MVLResult, SUM(TotalLast12MVL) totalSuppressed'])
-            .andWhere('f.StartARTYear IS NOT NULL');
+        const vlSuppressionByYear = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'YEAR(StartARTDate) year, ValidVLResultCategory2 last12MVLResult, Count(ValidVLResult) totalSuppressed',
+            ])
+            .andWhere('f.StartARTDate IS NOT NULL')
+            .andWhere('f.isTXCURR > 0');
 
         if (query.county) {
             vlSuppressionByYear.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -48,8 +51,8 @@ export class GetVlOutcomesByYearAndSuppressionCategoryHandler implements IQueryH
         }
 
         return await vlSuppressionByYear
-            .groupBy('f.StartARTYear, f.Last12MVLResult')
-            .orderBy('f.StartARTYear')
+            .groupBy('YEAR(StartARTDate), f.ValidVLResultCategory2')
+            .orderBy('YEAR(StartARTDate)')
             .getRawMany();
     }
 }

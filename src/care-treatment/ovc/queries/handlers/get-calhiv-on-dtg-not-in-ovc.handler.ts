@@ -1,16 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCalhivOnDtgQuery } from '../impl/get-calhiv-on-dtg.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
-import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
+import { LineListOVCEligibilityAndEnrollments } from '../../entities/linelist-ovc-eligibility-and-enrollments.model';
 
 @QueryHandler(GetCalhivOnDtgQuery)
 export class GetCalhivOnDtgNotInOvcHandler implements IQueryHandler<GetCalhivOnDtgQuery> {
     constructor(
-        @InjectRepository(LineListOVCEnrollments, 'mssql')
-        private readonly repository: Repository<LineListOVCEnrollments>
+        @InjectRepository(LineListOVCEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEligibilityAndEnrollments>
     ) {
     }
 

@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('AggregateOVCCount')
-export class AggregateOVCCount {
+@Entity('AggregateIITTracingStatus')
+export class AggregateIITTracingStatus {
     @PrimaryColumn('text')
     MFLCode: string;
 
@@ -21,17 +21,20 @@ export class AggregateOVCCount {
     AgencyName: string;
 
     @Column('text')
-    Gender: string;
-
-    @Column('text')
     DATIMAgeGroup: string;
 
     @Column('text')
-    ARTOutcomeDescription: string;
+    Gender: string;
 
-    @Column('int')
-    TXCurr: number;
+    @Column('text')
+    AppointmentStatus: string;
 
-    @Column('int')
-    OVCEligiblePatientCount: number;
+    @Column('text')
+    NumOfPatients: string;
+
+    @Column('text')
+    YearIIT: string;
+
+    @Column('text')
+    MonthIIT: string;
 }

@@ -13,8 +13,11 @@ export class GetOvcViralSuppressionAmongOvcPatientsOverallHandler implements IQu
     }
 
     async execute(query: GetOvcViralSuppressionAmongOvcPatientsOverallQuery): Promise<any> {
-        const viralSuppressionAmongOvcPatients = this.repository.createQueryBuilder('f')
-            .select(['[Last12MVLResult], COUNT(*) suppressed'])
+        const viralSuppressionAmongOvcPatients = this.repository
+            .createQueryBuilder('f')
+            .select([
+                '[ValidVLResultCategory] Last12MVLResult, COUNT(*) suppressed',
+            ])
             .andWhere('f.OVCEnrollmentDate IS NOT NULL');
 
         if (query.county) {
@@ -56,7 +59,7 @@ export class GetOvcViralSuppressionAmongOvcPatientsOverallHandler implements IQu
         }
 
         return await viralSuppressionAmongOvcPatients
-            .groupBy('Last12MVLResult')
+            .groupBy('ValidVLResultCategory')
             .getRawMany();
     }
 }

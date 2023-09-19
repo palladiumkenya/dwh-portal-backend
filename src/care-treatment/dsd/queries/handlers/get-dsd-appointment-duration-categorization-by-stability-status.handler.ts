@@ -18,7 +18,7 @@ export class GetDsdAppointmentDurationCategorizationByStabilityStatusHandler imp
         const dsdAppointmentCategorization = this.repository
             .createQueryBuilder('f')
             .select([
-                'SUM(patients_number) AS patients, AppointmentsCategory, StabilityAssessment Stability, CAST((cast(SUM(patients_number) as decimal (9,2))/ (SUM(SUM(patients_number)) OVER (PARTITION BY StabilityAssessment ORDER BY StabilityAssessment))*100) as decimal(8,2))  AS proportionByStability',
+                'SUM(patients_number) AS patients, AppointmentsCategory, StabilityAssessment Stability',
             ])
             .where('f.[AppointmentsCategory] IS NOT NULL');
 
@@ -52,7 +52,7 @@ export class GetDsdAppointmentDurationCategorizationByStabilityStatusHandler imp
 
         return await dsdAppointmentCategorization
             .groupBy('[StabilityAssessment], [AppointmentsCategory]')
-            .orderBy('AppointmentsCategory, StabilityAssessment')
+            .orderBy('AppointmentsCategory, StabilityAssessment', )
             .getRawMany();
     }
 }

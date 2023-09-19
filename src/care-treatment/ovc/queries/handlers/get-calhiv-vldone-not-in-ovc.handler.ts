@@ -3,19 +3,23 @@ import { GetCalhivVldoneQuery } from '../impl/get-calhiv-vldone.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LineListOVCEnrollments } from '../../entities/linelist-ovc-enrollments.model';
+import { LineListOVCEligibilityAndEnrollments } from '../../entities/linelist-ovc-eligibility-and-enrollments.model';
 
 @QueryHandler(GetCalhivVldoneQuery)
 export class GetCalhivVldoneNotInOvcHandler implements IQueryHandler<GetCalhivVldoneQuery> {
     constructor(
-        @InjectRepository(LineListOVCEnrollments, 'mssql')
-        private readonly repository: Repository<LineListOVCEnrollments>
+        @InjectRepository(LineListOVCEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEligibilityAndEnrollments>
     ) {
     }
 
     async execute(query: GetCalhivVldoneQuery): Promise<any> {
-        const CALHIVVLDone = this.repository.createQueryBuilder('f')
+        const CALHIVVLDone = this.repository
+            .createQueryBuilder('f')
             .select(['Count (*) CALHIVVLDone'])
-            .andWhere('f.TXCurr=1 and VLDone=1 and f.OVCEnrollmentDate IS NULL');
+            .andWhere(
+                'f.TXCurr=1 and HasValidVL=1 and f.OVCEnrollmentDate IS NULL',
+            );
 
         if (query.county) {
             CALHIVVLDone.andWhere('f.County IN (:...counties)', { counties: query.county });

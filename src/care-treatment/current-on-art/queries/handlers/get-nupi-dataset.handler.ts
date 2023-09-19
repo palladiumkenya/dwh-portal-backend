@@ -121,7 +121,7 @@ export class GetNupiDatasetHandler
                     cast (SiteCode as nvarchar) As MFLCode,
                     count(distinct concat(PatientIDHash, PatientPKHash, SiteCode)) as count_AdultsTXCurDWH
                 from REPORTING.dbo.Linelist_FACTART (nolock)
-                where  ARTOutcome ='V' and age >= 18 and age <= 120
+                where  ARTOutcomeDescription ='Active' and age >= 18 and age <= 120
                 group by
                     SiteCode
             ),
@@ -139,7 +139,7 @@ export class GetNupiDatasetHandler
                     cast (SiteCode as nvarchar) As MFLCode,
                     count(distinct concat(PatientIDHash, PatientPKHash, SiteCode)) as count_Paeds
                 from REPORTING.dbo.Linelist_FACTART (nolock)
-                where  ARTOutcome ='V' and age < 18
+                where ARTOutcomeDescription ='Active' and age < 18
                 group by
                     SiteCode
             ),

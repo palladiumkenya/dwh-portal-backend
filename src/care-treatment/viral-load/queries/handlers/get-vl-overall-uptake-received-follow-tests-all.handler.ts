@@ -17,29 +17,21 @@ export class GetVlOverallUptakeReceivedFollowTestsAllHandler implements IQueryHa
         const vlOverallUptakeReceivedFollowAll = this.repository
             .createQueryBuilder('cohort')
             .select([
-                `SiteCode, cohort.PatientIDHash,cohort.County,cohort.SubCounty,DOB,cohort.Gender, c.LatestVL1 as LastVL,c.LatestVLDate2Key,c.LatestVLDate1Key,ARTOutcome,
+                `SiteCode, cohort.PatientIDHash,cohort.County,cohort.SubCounty,DOB,cohort.Gender, c.LatestVL1 as LastVL,c.LatestVLDate2Key,c.LatestVLDate1Key,ARTOutcomeDescription,
                 CASE
                     WHEN ISNUMERIC(LatestVL1)=1 THEN
                         CASE
-                            WHEN CAST(Replace(LatestVL1,',','')AS FLOAT) <=50.90 THEN '<50 Copies'
-                            WHEN CAST(Replace(LatestVL1,',','') AS FLOAT) between 51.00 and 399.00 THEN '51-399'
-                            WHEN CAST(Replace(LatestVL1,',','')AS FLOAT) between 400.00 and 999.00 THEN '400-999'
                             WHEN CAST(Replace(LatestVL1,',','')AS FLOAT) >=1000 THEN '>1000 Copies'
                         END
-                    WHEN LatestVL1 IN ('undetectable','NOT DETECTED','0 copies/ml','LDL','ND','Target Not Detected',' Not detected','Target Not Detected.','Less than Low Detectable Level') THEN '<50 Copies'
-                ELSE NULL END AS [LastVLResult],
+                END AS [LastVLResult],
                 LatestVLDate1Key as DateLAstVL,
                 LatestVL2,
                 CASE
                     WHEN ISNUMERIC(LatestVL2)=1 THEN
                         CASE
-                            WHEN CAST(Replace(LatestVL2,',','')AS FLOAT) <=50.90 THEN '<50 Copies'
-                            WHEN CAST(Replace(LatestVL2,',','') AS FLOAT) between 51.00 and 399.00 THEN '51-399'
-                            WHEN CAST(Replace(LatestVL2,',','')AS FLOAT) between 400.00 and 999.00 THEN '400-999'
                             WHEN CAST(Replace(LatestVL2,',','')AS FLOAT) >=1000 THEN '>1000 Copies'
                         END
-                    WHEN LatestVL2 IN ('undetectable','NOT DETECTED','0 copies/ml','LDL','ND','Target Not Detected',' Not detected','Target Not Detected.','Less than Low Detectable Level') THEN '<50 Copies'
-                ELSE NULL END AS [VL2Result]`,
+                END AS [VL2Result]`,
             ])
             .leftJoin(
                 'LineListViralLoad',
@@ -100,7 +92,7 @@ export class GetVlOverallUptakeReceivedFollowTestsAllHandler implements IQueryHa
         const originalParams = vlOverallUptakeReceivedFollowAll.getParameters;
         vlOverallUptakeReceivedFollowAll.getQuery = () => {
             const a = originalQuery.call(vlOverallUptakeReceivedFollowAll);
-            return `WITH VL AS (${a}) SELECT Count (*) Num FROM VL WHERE  ARTOutcome='V' and  VL2Result in ('>1000 Copies') and LastVLResult is not null  and DATEDIFF(MONTH,LatestVLDate2Key,GETDATE())<= 14`;
+            return `WITH VL AS (${a}) SELECT Count (*) Num FROM VL WHERE  ARTOutcomeDescription='Active' and  VL2Result in ('>1000 Copies') and LastVLResult is not null  and DATEDIFF(MONTH,LatestVLDate2Key,GETDATE())<= 14`;
         };
 
         vlOverallUptakeReceivedFollowAll.getParameters = () => {

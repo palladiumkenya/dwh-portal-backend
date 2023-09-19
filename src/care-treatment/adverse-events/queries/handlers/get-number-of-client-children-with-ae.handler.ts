@@ -18,7 +18,7 @@ export class GetNumberOfClientChildrenWithAeHandler implements IQueryHandler<Get
             .createQueryBuilder('f')
             .select('SUM([AdverseClientsCount]) total')
             .where(
-                "[DATIMAgeGroup] IN ('Under 1', '1 to 4', '5 to 9', '10 to 14')",
+                "[DATIMAgeGroup] IN (' Under 1', '01 to 04', '05 to 109', '10 to 14')",
             );
 
         if (query.county) {

@@ -17,7 +17,7 @@ export class GetNumberAeReportedInChildrenOver15Handler implements IQueryHandler
         const noOfReportedAeinChildren = this.repository
             .createQueryBuilder('f')
             .select('SUM([AdverseEventCount]) total')
-            .where("[DATIMAgeGroup] IN ('Under 1', '1 to 4', '5 to 9', '10 to 14')");
+            .where("[DATIMAgeGroup] IN (' Under 1', '01 to 04', '05 to 09', '10 to 14')");
 
         if (query.county) {
             noOfReportedAeinChildren
