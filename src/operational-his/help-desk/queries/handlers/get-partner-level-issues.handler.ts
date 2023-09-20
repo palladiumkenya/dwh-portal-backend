@@ -20,7 +20,8 @@ export class GetPartnerLevelIssuesHandler
             Category product,
             [Created On] date,
             status,
-            Description`,
+            Description,
+            Summary`,
         );
 
         if (query.county) {
