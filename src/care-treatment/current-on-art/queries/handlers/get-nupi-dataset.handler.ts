@@ -14,32 +14,40 @@ export class GetNupiDatasetHandler
 
     async execute(query: GetNupiDatasetQuery): Promise<any> {
         const params = [];
-        const nupiDataset = `
-            with EnrichedFullfacilitylist As (
+        const nupiDataset = `with EnrichedFullfacilitylist As (
             -- get the full facilities list with enriched columns
-                Select
-                    distinct cast(Allsites.MFLCode collate Latin1_General_CI_AS as nvarchar) as MFLCode,
-                    Allsites.FacilityName,
-                    Allsites.County,
-                    Allsites.FacilityType,
-                    EMRs.EMR,
-                    coalesce(EMRs.SDP, Allsites.SDIP) As SDIP,
-                    coalesce(EMRs.[SDP Agency], Allsites.Agency) as Agency
-                from  HIS_Implementation.dbo.EMRandNonEMRSites as Allsites
-                left join HIS_Implementation.dbo.All_EMRSites  EMRs on EMRs.MFL_Code=Allsites.MFLCode
+                select 
+                    MFL_Code collate Latin1_General_CI_AS  as MFLCode,
+                    Facility_Name as FacilityName,
+                    County,
+                    'emr' as FacilityType,
+                    EMR,
+                    SDP as SDIP,
+                    SDP_Agency as Agency
+                from ODS.dbo.All_EMRSites
+                union 
+                select 
+                    MFL_code collate Latin1_General_CI_AS as MFLCode,
+                    [Facility Name] as FacilityName,
+                    County,
+                    'non-emr' as FacilityType,
+                    '' as EMR,
+                    [CT-Partner] as SDIP,
+                    Agency as Agency
+                from HIS_Implementation.dbo.All_NonEMRSites
             ),
             --Pick Only the EMR Sites
             EMRSites as (
                 select
                     distinct
-                    [Facility Name] AS FacilityName,
+                    [Facility_Name] AS FacilityName,
                     cast (MFL_Code as nvarchar) As MFLCode,
                     County,
                     SDP,
                     EMR,
-                    [SDP Agency]
+                    [SDP_Agency]
                 from HIS_Implementation.dbo.All_EMRSites
-                where [EMR Status] = 'Active'
+                where [EMR_Status] = 'Active'
             ),
             --Obtain the latest reporting month in KHIS and pick the latest TXCurr--
             latest_reporting_month as (
@@ -85,7 +93,7 @@ export class GetNupiDatasetHandler
                     cast (origin_facility_kmfl_code as  nvarchar) As facility_code,
                     count(*) as nupi_non_art_clients
                 from tmp_and_adhoc.dbo.nupi_dataset as nupi_dataset
-                where (ccc_no is null or ccc_no = 'nan')
+                where (ccc_no is null or ccc_no = 'nan' or ccc_no = 'NA')
                 group by origin_facility_kmfl_code
             ),
             --Groupings of clients with Nupi in DWH per site---
@@ -139,7 +147,7 @@ export class GetNupiDatasetHandler
                     cast (SiteCode as nvarchar) As MFLCode,
                     count(distinct concat(PatientIDHash, PatientPKHash, SiteCode)) as count_Paeds
                 from REPORTING.dbo.Linelist_FACTART (nolock)
-                where ARTOutcomeDescription ='Active' and age < 18
+                where  ARTOutcomeDescription ='Active' and age < 18
                 group by
                     SiteCode
             ),
@@ -158,16 +166,50 @@ export class GetNupiDatasetHandler
                 FROM [pSurvey].[dbo].[stg_questionnaire_responses]
                 Group by mfl_code
             ),
-			verified_but_with_survey as (
-				select
-					origin_facility_kmfl_code as mfl_code,
-					count(distinct concat(nupi.ccc_no, '-', nupi.origin_facility_kmfl_code)) as count_of_patients
-				from tmp_and_adhoc.dbo.nupi_dataset as nupi
-				inner join [pSurvey].[dbo].[stg_questionnaire_responses] as surveys on surveys.ccc_no = nupi.ccc_no
-					and cast(surveys.mfl_code as varchar) = nupi.origin_facility_kmfl_code
-				group by origin_facility_kmfl_code						
-			),
-            FacilitySummary AS (
+            verified_but_with_survey as (
+                select
+                    origin_facility_kmfl_code as mfl_code,
+                    count(distinct concat(nupi.ccc_no, '-', nupi.origin_facility_kmfl_code)) as count_of_patients
+                from tmp_and_adhoc.dbo.nupi_dataset as nupi
+                inner join [pSurvey].[dbo].[stg_questionnaire_responses] as surveys on surveys.ccc_no = nupi.ccc_no
+                    and cast(surveys.mfl_code as varchar) = nupi.origin_facility_kmfl_code
+                group by origin_facility_kmfl_code                        
+            ),
+            /*with a survey but no NUPI among DWH TXCurr (EMR Sites) */
+            survey_but_no_nupi_among_dwh_txcurr as (
+                select
+                    cast(surveys.mfl_code as varchar) as mfl_code,
+                    count(distinct surveys.ccc_no) as count_of_patients
+                from  [pSurvey].[dbo].[stg_questionnaire_responses] as surveys
+                left  join tmp_and_adhoc.dbo.nupi_dataset as nupi on surveys.ccc_no = nupi.ccc_no
+                    and cast(surveys.mfl_code as varchar) = nupi.origin_facility_kmfl_code
+                inner join ODS.dbo.Intermediate_ARTOutcomes as art on art.PatientID = surveys.ccc_no
+                    and cast(surveys.mfl_code as varchar) = art.SiteCode
+                where  nupi.origin_facility_kmfl_code is null and ARTOutcome = 'V' -- return anyone not on the NUPI dataset and is TXCurr in DWH
+                group by cast(surveys.mfl_code as varchar)
+            ),
+            /* with a survey but no NUPI (Non EMR Sites) */
+            survey_but_no_nupi_among_non_emr_sites as (
+                select
+                    cast(surveys.mfl_code as varchar) as mfl_code,
+                    count(distinct surveys.ccc_no) as count_of_patients
+                from  [pSurvey].[dbo].[stg_questionnaire_responses] as surveys
+                left  join tmp_and_adhoc.dbo.nupi_dataset as nupi on surveys.ccc_no = nupi.ccc_no
+                    and cast(surveys.mfl_code as varchar) = nupi.origin_facility_kmfl_code
+                where  nupi.origin_facility_kmfl_code is null and surveys.mfl_code in (select distinct MFL_code from [HIS_Implementation].[dbo].[All_NonEMRSites])
+                group by cast(surveys.mfl_code as varchar)
+                ),
+                /*with a survey and with a nupi in both EMR and Non EMR Sites */
+                survey_and_with_nupi_among_CRS as (
+                select 
+                    cast(surveys.mfl_code as varchar) as mfl_code,
+                    count(distinct surveys.ccc_no) as count_of_patients
+                from  [pSurvey].[dbo].[stg_questionnaire_responses] as surveys
+                inner  join tmp_and_adhoc.dbo.nupi_dataset as nupi on surveys.ccc_no = nupi.ccc_no
+                    and cast(surveys.mfl_code as varchar) = nupi.origin_facility_kmfl_code
+                group by cast(surveys.mfl_code as varchar)
+            ),
+            FacilitySummary as (
                 select
                     EnrichedFullfacilitylist.MFLCode as MFLCode,
                     EnrichedFullfacilitylist.FacilityName as Facility,
@@ -192,7 +234,10 @@ export class GetNupiDatasetHandler
                     coalesce(PaedsTXCurr_DWH,0) As PaedsTXCurr_DWH,
                     coalesce (count_AdultsTXCurDWH,0) As AdultsTxCurr_DWH,
                     coalesce (SurveysReceived,0) As SurveysReceived,
-					coalesce(verified_but_with_survey.count_of_patients,0) as patients_verified_but_with_survey
+                    coalesce(verified_but_with_survey.count_of_patients,0) as patients_verified_but_with_survey,
+                    coalesce(survey_but_no_nupi_among_dwh_txcurr.count_of_patients, 0) as patients_survey_but_no_nupi_among_dwh_txcurr,
+                    coalesce(survey_but_no_nupi_among_non_emr_sites.count_of_patients,0) as patients_survey_but_no_nupi_among_non_emr_sites,
+                    coalesce(survey_and_with_nupi_among_CRS.count_of_patients,0) as patients_verified_and_surveyed
                 from EnrichedFullfacilitylist
                 left join khis on cast (khis.SiteCode as nvarchar) = cast (EnrichedFullfacilitylist.MFLCode as nvarchar)
                 full outer join dwh_nupi_by_facility on dwh_nupi_by_facility.MFLCode = EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
@@ -204,7 +249,10 @@ export class GetNupiDatasetHandler
                 left join nupi_overall on nupi_overall.facility_code=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
                 left join nupi_non_art_clients on nupi_non_art_clients.facility_code=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
                 left join PSurveys on PSurveys.MFLCode=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
-				left join verified_but_with_survey on verified_but_with_survey.mfl_code = EnrichedFullfacilitylist.MFLCode
+                left join verified_but_with_survey on verified_but_with_survey.mfl_code = EnrichedFullfacilitylist.MFLCode
+                left join survey_but_no_nupi_among_dwh_txcurr on survey_but_no_nupi_among_dwh_txcurr.mfl_code = EnrichedFullfacilitylist.MFLCode
+                left join survey_but_no_nupi_among_non_emr_sites on survey_but_no_nupi_among_non_emr_sites.mfl_code = EnrichedFullfacilitylist.MFLCode
+                left join survey_and_with_nupi_among_CRS on survey_and_with_nupi_among_CRS.mfl_code=EnrichedFullfacilitylist.MFLCode
                 group by
                     EnrichedFullfacilitylist.MFLCode,
                     EnrichedFullfacilitylist.FacilityName,
@@ -223,7 +271,11 @@ export class GetNupiDatasetHandler
                     coalesce (PaedsTXCurr_DWH,0),
                     coalesce(count_AdultsTXCurDWH,0),
                     coalesce (SurveysReceived,0),
-					coalesce(verified_but_with_survey.count_of_patients,0)
+                    coalesce(verified_but_with_survey.count_of_patients,0),
+                    coalesce(survey_but_no_nupi_among_dwh_txcurr.count_of_patients, 0),
+                    coalesce(survey_but_no_nupi_among_non_emr_sites.count_of_patients,0),
+                    coalesce(survey_and_with_nupi_among_CRS.count_of_patients,0)
+
             )
             select
                 getdate() as DateQueried,
@@ -251,7 +303,10 @@ export class GetNupiDatasetHandler
                 sum (TXCurr_khis)-sum (NUPIVerified) As '#Unverified',
                 sum (SurveysReceived) As SurveysReceived,
                 sum (TXCurr_khis)-sum (NUPIVerified)-sum (SurveysReceived) As Pendingsurveys,
-				sum(patients_verified_but_with_survey) as '# Patients verified but with survey'
+                sum(patients_verified_but_with_survey) as '# Patients verified but with survey',
+                sum(patients_survey_but_no_nupi_among_dwh_txcurr) as '# Patients with survey but not verified among DWH TXCurr',
+                sum(patients_survey_but_no_nupi_among_non_emr_sites) as ' # Patients with survey but no nupi in Non-EMR Sites',
+                sum(patients_verified_and_surveyed) as '# Patients with surveys and with nupi in all sites'
             from FacilitySummary
             group by
                 FacilitySummary.Facility,
