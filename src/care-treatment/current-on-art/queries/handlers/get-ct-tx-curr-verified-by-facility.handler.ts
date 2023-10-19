@@ -16,7 +16,7 @@ export class GetCtTxCurrVerifiedByFacilityHandler
         let txCurrByPartner = this.repository
             .createQueryBuilder('f')
             .select([
-                'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, MFLCode, sum (numnupi) NumNupi',
+                'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, SiteCode MFLCode, sum (numnupi) NumNupi',
             ])
             .where('f.[Gender] IS NOT NULL');
 
