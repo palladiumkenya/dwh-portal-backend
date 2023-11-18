@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('AggregateCohortRetention')
+@Entity('AggregateTxNew')
 export class AggregateCohortRetention {
     @PrimaryColumn('text')
     MFLCode: string;
