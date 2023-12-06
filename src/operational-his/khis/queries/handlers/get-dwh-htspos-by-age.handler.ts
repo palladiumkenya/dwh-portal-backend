@@ -2,7 +2,6 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetDWHHTSPOSByAgeQuery } from '../impl/get-dwh-htspos-by-age.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHtsUptakeAgeGender } from '../../../../hts/uptake/entities/fact-htsuptake-agegender.entity';
 import { FactHTSClientTests } from './../../../../hts/linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetDWHHTSPOSByAgeQuery)

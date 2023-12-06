@@ -1,7 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeByClientSelfTestedQuery } from '../impl/get-uptake-by-client-self-tested.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsClientSelfTested } from '../../entities/fact-hts-clientselftested.entity';
 import { Repository } from 'typeorm';
 import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 

@@ -2,7 +2,6 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeByMonthsSinceLastTestQuery } from '../impl/get-uptake-by-months-since-last-test.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHtsMonthsLastTest } from '../../entities/fact-hts-monthslasttest.entity';
 import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetUptakeByMonthsSinceLastTestQuery)

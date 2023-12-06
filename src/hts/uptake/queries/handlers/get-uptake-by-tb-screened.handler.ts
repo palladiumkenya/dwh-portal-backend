@@ -1,7 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeByTbScreenedQuery } from '../impl/get-uptake-by-tb-screened.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsTBScreening } from '../../entities/fact-hts-tbscreening.entity';
 import { Repository } from 'typeorm';
 import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
