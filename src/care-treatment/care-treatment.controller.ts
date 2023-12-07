@@ -268,6 +268,8 @@ import { GetQuaterlyIITQuery } from './treatment-outcomes/queries/impl/get-quate
 import { GetAppointmentKeepingWaterfallQuery } from './treatment-outcomes/queries/impl/get-appointment-keeping-waterfall.query';
 import { GetIITTracingQuery } from './treatment-outcomes/queries/impl/get-iit-tracing.query';
 import { GetIITTracingOutcomesQuery } from './treatment-outcomes/queries/impl/get-iit-tracing-outcomes.query';
+import { GetVlUptakeUToUQuery } from './viral-load/queries/impl/get-vl-uptake-U-to-U.query';
+import { GetVlCategorizationUToUQuery } from './viral-load/queries/impl/get-vl-categorization-U-to-U.query';
 
 
 @Controller('care-treatment')
@@ -5003,6 +5005,100 @@ export class CareTreatmentController {
 
         if (project) {
             query.project = project;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlUptakeUToU')
+    async getVlUptakeUToU(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('pbfw') pbfw,
+    ): Promise<any> {
+        const query = new GetVlUptakeUToUQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (pbfw) {
+            query.pbfw = pbfw;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+    @Get('vlCategorizationUToU')
+    async getVlCategorizationUToU(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+        @Query('pbfw') pbfw,
+    ): Promise<any> {
+        const query = new GetVlCategorizationUToUQuery();
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (pbfw) {
+            query.pbfw = pbfw;
+        }
+
+        if (agency) {
+            query.agency = agency;
         }
 
         if (gender) {
