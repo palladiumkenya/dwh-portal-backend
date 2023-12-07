@@ -16,7 +16,7 @@ export class GetVlCategorizationUToUHandler
         const vlUptake = this.repository
             .createQueryBuilder('f')
             .select([
-                `SUM(TXCurr), 
+                `SUM(TXCurr) data, 
                 CASE WHEN ValidVLResultCategory = 'Undetectable' 
                     THEN '<50' 
                     ELSE ValidVLResultCategory 
