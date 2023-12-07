@@ -7,25 +7,28 @@ import {OperationalHisController} from './operational-his.controller';
 
 
 import {FactCtDhis2} from "./khis/entities/fact-ct-dhis2.model";
+import {FactTransHmisStatsTxcurr} from "../care-treatment/current-on-art/entities/fact-trans-hmis-stats-txcurr.model";
+import {FactTransNewlyStarted} from "../care-treatment/new-on-art/entities/fact-trans-newly-started.model";
+import {FactHtsDhis2} from "./khis/entities/fact-hts-dhis2.model";
+import { AggregateTXCurr } from 'src/care-treatment/current-on-art/entities/aggregate-txcurr.model';
+import { AggregateCohortRetention } from 'src/care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
+import { FactHTSClientTests } from 'src/hts/linkage/entities/fact-hts-client-tests.model';
+import { LinelistTicketExport } from './help-desk/entities/linelist-ticket-export.model';
 
 
 import {GetTxNewBySexHandler} from './khis/queries/handlers/get-tx-new-by-sex.handler';
 import {GetNewlyStartedArtHandler} from "./khis/queries/handlers/get-newly-started-art.handler";
 import {GetNewlyStartedArtTrendsHandler} from "./khis/queries/handlers/get-newly-started-art-trends.handler";
 import {GetCurrentOnArtHandler} from "./khis/queries/handlers/get-current-on-art.handler";
-import {FactHtsDhis2} from "./khis/entities/fact-hts-dhis2.model";
 import {GetHtsPositivesTrendsHandler} from "./khis/queries/handlers/get-hts-positives-trends.handler";
 import {GetCurrentOnArtByCountyHandler} from "./khis/queries/handlers/get-current-on-art-by-county.handler";
 import {GetCurrentOnArtByPartnerHandler} from "./khis/queries/handlers/get-current-on-art-by-partner.handler";
 import {GetTxCurrBySexHandler} from "./khis/queries/handlers/get-tx-curr-by-sex.handler";
-import {FactTransHmisStatsTxcurr} from "../care-treatment/current-on-art/entities/fact-trans-hmis-stats-txcurr.model";
-import {FactTransNewlyStarted} from "../care-treatment/new-on-art/entities/fact-trans-newly-started.model";
 import {GetTxNewBySexDwhHandler} from "./khis/queries/handlers/get-tx-new-by-sex-dwh.handler";
 import {GetTxCurrBySexDwhHandler} from "./khis/queries/handlers/get-tx-curr-by-sex-dwh.handler";
 import { GetCtTxCurrAgeGroupDistributionByCountyHandler } from './khis/queries/handlers/get-ct-tx-curr-age-group-distribution-by-county.handler';
 import { GetTicketsOverviewHandler } from './help-desk/queries/handlers/get-tickets-overview.handler';
 import { GetDWHHTSPOSPositiveHandler } from './khis/queries/handlers/get-dwh-htspos.handler';
-import { FactHtsUptakeAgeGender } from 'src/hts/uptake/entities/fact-htsuptake-agegender.entity';
 import { GetKhisHTSPOSHandler } from './khis/queries/handlers/get-khis-htspos.handler';
 import { GetKhisHTSPOSByCountyHandler } from './khis/queries/handlers/get-khis-htspos-by-county.handler';
 import { GetKhisHTSPOSByPartnerHandler } from './khis/queries/handlers/get-khis-htspos-by-partner.handler';
@@ -48,16 +51,10 @@ import { GetOpenIssuesByMonthHandler } from './help-desk/queries/handlers/get-op
 import { GetIssueStatusByMonthHandler } from './help-desk/queries/handlers/get-issue-status-by-month.handler';
 import { GetPartnerLevelIssuesHandler } from './help-desk/queries/handlers/get-partner-level-issues.handler';
 
-import { AggregateTXCurr } from 'src/care-treatment/current-on-art/entities/aggregate-txcurr.model';
-import { AggregateCohortRetention } from 'src/care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
-import { FactHTSClientTests } from 'src/hts/linkage/entities/fact-hts-client-tests.model';
-import { LinelistTicketExport } from './help-desk/entities/linelist-ticket-export.model';
-
 @Module({
     imports: [
         CqrsModule,
         ConfigurationModule,
-        TypeOrmModule.forFeature([FactHtsUptakeAgeGender]),
         TypeOrmModule.forFeature(
             [
                 FactTransHmisStatsTxcurr,

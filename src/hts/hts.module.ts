@@ -18,6 +18,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 // import { FactPNSChildren } from './pns/entities/fact-pns-children.entity';
 // import { FactPNSKnowledgeHivStatus } from './pns/entities/fact-pns-knowledge-hiv-status.entity';
 import { FactPrep } from './prep/entities/fact-prep.model';
+import { AggregateHTSUptake } from './uptake/entities/aggregate-hts-uptake.model';
+import { FactHTSClientTests } from './linkage/entities/fact-hts-client-tests.model';
+import { FactHTSClientLinkages } from './linkage/entities/fact-hts-client-linkages.model';
+import { FactHTSClientTracing } from './linkage/entities/fact-hts-client-tracing.model';
+import { AllEmrSites } from 'src/care-treatment/common/entities/all-emr-sites.model';
 
 import { GetHtsCountiesHandler } from './common/queries/handlers/get-hts-counties.handler';
 import { GetHtsSubCountiesHandler } from './common/queries/handlers/get-hts-sub-counties.handler';
@@ -67,10 +72,6 @@ import { GetPnsKnowledgeHivStatusCascadeHandler } from './pns/queries/handlers/g
 import { GetNewOnPrepHandler } from './prep/queries/handlers/get-new-on-prep.handler';
 import { GetPrepDiscontinuationHandler } from './prep/queries/handlers/get-prep-discontinuation';
 import { GetPrepDiscontinuationReasonHandler } from './prep/queries/handlers/get-prep-discontinuation-reason';
-import { FactHTSClientTests } from './linkage/entities/fact-hts-client-tests.model';
-import { FactHTSClientLinkages } from './linkage/entities/fact-hts-client-linkages.model';
-import { FactHTSClientTracing } from './linkage/entities/fact-hts-client-tracing.model';
-import { AllEmrSites } from 'src/care-treatment/common/entities/all-emr-sites.model';
 import { GetNewOnPrepByAgeSexHandler } from './prep/queries/handlers/get-new-on-prep-by-age-sex.handler';
 import { GetNewOnPrepTrendsHandler } from './prep/queries/handlers/get-new-on-prep-trends.handler';
 import { GetPrepEligibleTrendsHandler } from './prep/queries/handlers/get-prep-eligible-trends.handler';
@@ -96,27 +97,13 @@ import { GetPrepSTIDiagnosedHandler } from './prep/queries/handlers/get-prep-sti
     imports: [
         CqrsModule,
         ConfigurationModule,
-        // TypeOrmModule.forFeature([
-        //     FactHtsUptake,
-        //     FactHtsUptakeAgeGender,
-        //     FactHtsPopulationType,
-        //     FactHtsTeststrategy,
-        //     FactHtsEntryPoint,
-        //     FactHtsClientTestedAs,
-        //     FactHtsClientSelfTested,
-        //     FactHtsMonthsLastTest,
-        //     FactHtsTBScreening,
-        //     FactPNSSexualPartner,
-        //     FactPNSChildren,
-        //     FactHtsuptake,
-        //     FactPNSKnowledgeHivStatus,
-        // ]),
         TypeOrmModule.forFeature(
             [
                 FactHTSClientTests,
                 FactHTSClientLinkages,
                 FactHTSClientTracing,
                 AllEmrSites,
+                AggregateHTSUptake,
 
                 FactPrep,
             ],

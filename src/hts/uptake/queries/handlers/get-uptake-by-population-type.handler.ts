@@ -1,7 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeByPopulationTypeQuery } from '../impl/get-uptake-by-population-type.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsPopulationType } from '../../entities/fact-hts-populationtype.entity';
 import { Repository } from 'typeorm';
 import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 

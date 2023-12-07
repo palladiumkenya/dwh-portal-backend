@@ -1,13 +1,9 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetCovidAdmissionByAgeQuery } from '../impl/get-covid-admission-by-age.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines.model';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 import {GetCovidAdmissionSymptomaticOverallQuery} from "../impl/get-covid-admission-symptomatic-overall.query";
 import { LineListCovid } from '../../entities/linelist-covid.model';
-//Margaret
+
 @QueryHandler(GetCovidAdmissionSymptomaticOverallQuery)
 export class GetCovidAdmissionSymptomaticOverallHandler implements IQueryHandler<GetCovidAdmissionSymptomaticOverallQuery> {
     constructor(
