@@ -1,7 +1,6 @@
 import { GetUptakeByAgeSexPositivityQuery } from '../impl/get-uptake-by-age-sex-positivity.query';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsUptakeAgeGender } from '../../entities/fact-htsuptake-agegender.entity';
 import { Repository } from 'typeorm';
 import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 

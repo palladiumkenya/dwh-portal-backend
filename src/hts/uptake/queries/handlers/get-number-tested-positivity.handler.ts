@@ -1,74 +1,69 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetNumberTestedPositivityQuery } from '../impl/get-number-tested-positivity.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../entities/aggregate-hts-uptake.model';
 
 
 @QueryHandler(GetNumberTestedPositivityQuery)
 export class GetNumberTestedPositivityHandler
     implements IQueryHandler<GetNumberTestedPositivityQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetNumberTestedPositivityQuery): Promise<any> {
         const params = [];
-        let numberTestedPositivitySql = `SELECT
-                year(DateTestedKey) year, month(DateTestedKey) month, TestedBefore,
+        let numberTestedPositivitySql = this.repository.createQueryBuilder('f').
+            select([`year, month, TestedBefore,
                 SUM(Tested) Tested,
                 SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive,
                 SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END) linked,
-                ((CAST(SUM(linked) AS FLOAT)/NULLIF(CAST(SUM(positive)AS FLOAT), 0))*100) AS linkage
-            FROM
-                NDWH.dbo.FactHTSClientTests AS link
-                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                INNER JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                INNER JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                INNER JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE positive > 0 and TestType IN ('Initial', 'Initial Test')`;
+                ((CAST(SUM(linked) AS FLOAT)/NULLIF(CAST(SUM(positive)AS FLOAT), 0))*100) AS linkage`]);
 
         if (query.county) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and County IN ('${query.county
-                .toString()
-                .replace(/,/g, "','")}')`
+            numberTestedPositivitySql.andWhere('f.County IN (:...counties)', { counties: query.county });;
         }
 
         if (query.subCounty) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and SubCounty IN ('${query.subCounty
-                .toString()
-                .replace(/,/g, "','")}')`
+            numberTestedPositivitySql.andWhere(
+                'f.SubCounty IN (:...subCounties)',
+                { subCounties: query.subCounty },
+            );
         }
 
         if (query.facility) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and FacilityName IN ('${query.facility
-                .toString()
-                .replace(/,/g, "','")}')`
+            numberTestedPositivitySql.andWhere(
+                'f.FacilityName IN (:...facilities)',
+                { facilities: query.facility },
+            );
         }
 
         if (query.partner) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and PartnerName IN ('${query.partner
-                .toString()
-                .replace(/,/g, "','")}')`;
-            params.push(query.partner);
+            numberTestedPositivitySql.andWhere(
+                'f.PartnerName IN (:...partners)',
+                { partners: query.partner },
+            );
         }
 
-
         if (query.fromDate) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and DateTestedKey >= ${query.fromDate}01`;
+            numberTestedPositivitySql.andWhere(`year >= year(${query.fromDate}01)`);
+            numberTestedPositivitySql.andWhere(`month >= month(${query.fromDate}01)`);
         }
 
         if (query.toDate) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
+            numberTestedPositivitySql.andWhere(
+                `year <= year(EOMONTH(${query.fromDate}01))`,
+            );
+            numberTestedPositivitySql.andWhere(
+                `month <= month(EOMONTH(${query.fromDate}01))`,
+            );
         }
 
-        numberTestedPositivitySql = `${numberTestedPositivitySql} GROUP BY TestedBefore, year(DateTestedKey), month(DateTestedKey)`;
-
-        numberTestedPositivitySql = `${numberTestedPositivitySql} ORDER BY TestedBefore, year(DateTestedKey), month(DateTestedKey)`;
-
-        return await this.repository.query(numberTestedPositivitySql, params);
+        return await numberTestedPositivitySql
+            .groupBy(`TestedBefore, year, month`)
+            .orderBy(`TestedBefore`).addOrderBy(`year`).addOrderBy(`month`)
+            .getRawMany();
     }
 }

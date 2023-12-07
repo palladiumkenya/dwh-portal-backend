@@ -1,7 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeByEntryPointQuery } from '../impl/get-uptake-by-entrypoint.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsEntryPoint } from '../../entities/fact-hts-entrypoint.entity';
 import { Repository } from 'typeorm';
 import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
