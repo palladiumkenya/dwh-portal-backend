@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity('AggregateVLDurable')
+@Entity('AggregateLDLDurable')
 export class AggregateVLDurable {
     @PrimaryColumn('text')
     MFLCode: string;
