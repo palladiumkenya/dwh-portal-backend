@@ -16,7 +16,7 @@ export class GetPartnerLevelIssuesHandler
         let ticketOverview = this.repository.createQueryBuilder('f').select(
             `[User's Facility/Organization] facility,
             [Service Delivery Patner] sdp,
-            [Issue Type] type,d
+            [Issue Type] type,
             Category product,
             [Created On] date,
             status,
