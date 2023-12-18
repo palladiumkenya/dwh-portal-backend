@@ -17,12 +17,18 @@ import { GetRecencyByPartnerHandler } from './queries/handlers/get-recency-by-pa
 import { GetRecencyByCountyHandler } from './queries/handlers/get-recency-by-county.handler';
 import { GetConsistencyByCountyPartnerHandler } from './queries/handlers/get-consistency-by-county-partner.handler';
 import { GetExpectedUploadsPartnerCountyHandler } from './queries/handlers/get-expected-uploads-partner-county.handler';
+import { GetEMRInfoHandler } from './queries/handlers/get-emr-info.handler';
+import { GetFacilityInfoHandler } from './queries/handlers/get-facility-info.handler';
+import { EMRInfo } from './entities/emr-info.entity';
+import { FacilityInfo } from './entities/facility-info.entity';
 
 @Module({
     imports: [
         CqrsModule,
         ConfigurationModule,
-        TypeOrmModule.forFeature([FactManifest], 'mssql')],
+        TypeOrmModule.forFeature([EMRInfo, FacilityInfo]),
+        TypeOrmModule.forFeature([FactManifest], 'mssql'),
+    ],
     providers: [
         GetConsistencyUploadsHandler,
         GetConsistencyByFacilityHandler,
@@ -36,11 +42,10 @@ import { GetExpectedUploadsPartnerCountyHandler } from './queries/handlers/get-e
         GetRecencyByCountyHandler,
         GetRecencyByPartnerHandler,
         GetConsistencyByCountyPartnerHandler,
-        GetExpectedUploadsPartnerCountyHandler
+        GetExpectedUploadsPartnerCountyHandler,
+        GetEMRInfoHandler,
+        GetFacilityInfoHandler,
     ],
     controllers: [ManifestsController],
 })
-
-export class ManifestsModule {
-
-}
+export class ManifestsModule {}
