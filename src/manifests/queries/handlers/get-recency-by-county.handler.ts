@@ -37,11 +37,6 @@ export class GetRecencyByCountyHandler
                 .replace(/,/g, "','")}')`
         }
 
-        // if(query.facility) {
-        //     recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and facility IN (?)`;
-        //     params.push(query.facility);
-        // }
-
         if (query.partner) {
             recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and Partner IN ('${query.partner
                 .toString()
@@ -70,35 +65,6 @@ export class GetRecencyByCountyHandler
                                         FROM AggregateExpectedUploads
                                     WHERE docket = '${query.docket}'`;
             params.push(query.docket);
-        }
-
-        if (query.county) {
-            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and County IN ('${query.county
-                .toString()
-                .replace(/,/g, "','")}')`
-        }
-
-        if (query.subCounty) {
-            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and subCounty IN ('${query.subCounty
-                .toString()
-                .replace(/,/g, "','")}')`
-        }
-
-        // if(query.facility) {
-        //     recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and facility IN (?)`;
-        //     params.push(query.facility);
-        // }
-
-        if (query.partner) {
-            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and Partner IN ('${query.partner
-                .toString()
-                .replace(/,/g, "','")}')`
-        }
-
-        if (query.agency) {
-            recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and agency IN ('${query.agency
-                .toString()
-                .replace(/,/g, "','")}')`
         }
 
         recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} GROUP BY county
