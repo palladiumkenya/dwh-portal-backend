@@ -16,7 +16,7 @@ export class GetAdverseEventsHandler implements IQueryHandler<GetAdverseEventsQu
         const adultsAEs = this.repository
             .createQueryBuilder('f')
             .select(
-                'SUM([AdverseEventCount]) total, DATIMAgeGroup, Gender, CAST((cast(SUM([AdverseEventCount]) as decimal (9,2))/ (SUM(SUM([AdverseEventCount])) OVER (PARTITION BY DATIMAgeGroup ORDER BY DATIMAgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup',
+                'SUM([AdverseEventsCount]) total, DATIMAgeGroup, Gender, CAST((cast(SUM([AdverseEventsCount]) as decimal (9,2))/ (SUM(SUM([AdverseEventsCount])) OVER (PARTITION BY DATIMAgeGroup ORDER BY DATIMAgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup',
             )
             .where('[DATIMAgeGroup] IS NOT NULL');
 

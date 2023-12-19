@@ -16,7 +16,7 @@ export class GetAeTypeBySeverityHandler implements IQueryHandler<GetAeTypeBySeve
         const aeTypesBySeverity = this.repository
             .createQueryBuilder('f')
             .select(
-                '[Severity], [AdverseEvent], SUM([AdverseEventCount]) total',
+                '[Severity], [AdverseEvent], SUM([AdverseEventsCount]) total',
             )
             .where("ISNULL([Severity],'') <> ''");
 

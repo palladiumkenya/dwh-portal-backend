@@ -17,7 +17,7 @@ export class GetChildrenAdverseEventsHandler implements IQueryHandler<GetChildre
         const childrenAEs = this.repository
             .createQueryBuilder('f')
             .select(
-                'SUM([AdverseEventCount]) total, DATIMAgeGroup, Gender, CAST((cast(SUM([AdverseEventCount]) as decimal (9,2))/ (SUM(SUM([AdverseEventCount])) OVER (PARTITION BY DATIMAgeGroup ORDER BY DATIMAgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup',
+                'SUM([AdverseEventsCount]) total, DATIMAgeGroup, Gender, CAST((cast(SUM([AdverseEventsCount]) as decimal (9,2))/ (SUM(SUM([AdverseEventsCount])) OVER (PARTITION BY DATIMAgeGroup ORDER BY DATIMAgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup',
             )
             .where("[DATIMAgeGroup] IN (' Under 1', '01 to 04', '05 to 09', '10 to 14')");
 

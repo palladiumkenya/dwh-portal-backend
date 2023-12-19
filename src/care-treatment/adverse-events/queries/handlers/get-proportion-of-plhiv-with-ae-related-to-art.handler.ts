@@ -17,7 +17,7 @@ export class GetProportionOfPLHIVWithAeRelatedToArtHandler implements IQueryHand
         const proportionOfPlHIVWithAeRelatedToArt = this.repository
             .createQueryBuilder('f')
             .select([
-                'AdverseEventCause adverseEventCause, SUM(AdverseEventCount) count_cat',
+                'AdverseEventCause adverseEventCause, SUM(AdverseEventsCount) count_cat',
             ])
             .andWhere(
                 "AdverseEventCause IN ('Dolutegravir','Atazanavir','TLE','Efavirenz','Tenofavir','Didanosin','Lamivudine','Lamivudine','Lopinavir','Abacavir','TLD','Nevirapine','Zidovudine','Stavudine')",
@@ -56,7 +56,7 @@ export class GetProportionOfPLHIVWithAeRelatedToArtHandler implements IQueryHand
 
         return await proportionOfPlHIVWithAeRelatedToArt
             .groupBy('f.AdverseEventCause')
-            .orderBy('SUM(AdverseEventCount)', 'DESC')
+            .orderBy('SUM(AdverseEventsCount)', 'DESC')
             .getRawMany();
     }
 }

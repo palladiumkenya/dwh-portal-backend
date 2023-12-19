@@ -17,7 +17,7 @@ export class GetAeSeverityGradingHandler
         const aeSeverityGrading = this.repository
             .createQueryBuilder('f')
             .select(
-                '[Severity], DATIMAgeGroup ageGroup, SUM([AdverseEventCount]) total',
+                '[Severity], DATIMAgeGroup ageGroup, SUM([AdverseEventsCount]) total',
             )
             .where("ISNULL([Severity],'') <> ''");
 

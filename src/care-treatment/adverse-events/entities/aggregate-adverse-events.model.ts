@@ -42,5 +42,5 @@ export class AggregateAdverseEvents {
     Severity: string;
 
     @Column('int')
-    AdverseEventCount: string;
+    AdverseEventsCount: string;
 }
