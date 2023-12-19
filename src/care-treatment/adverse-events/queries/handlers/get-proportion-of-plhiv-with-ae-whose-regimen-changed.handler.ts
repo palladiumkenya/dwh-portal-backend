@@ -16,7 +16,7 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler implements IQu
         const proportionOfPLHIVWithAeWhoseRegimenChanged = this.repository
             .createQueryBuilder('f')
             .select(
-                'AdverseEventActionTaken adverseEventActionTaken, SUM(AdverseEventCount) numberOfPatientsAe',
+                'AdverseEventActionTaken adverseEventActionTaken, SUM(AdverseEventsCount) numberOfPatientsAe',
             )
             .andWhere(
                 `f.AdverseEventActionTaken in ('Medicine causing AE substituted/withdrawn', 'SUBSTITUTED DRUG|SUBSTITUTED DRUG', 'Drug Substituted', 'Drug Withdrawn')`,

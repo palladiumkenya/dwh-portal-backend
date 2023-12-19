@@ -15,7 +15,7 @@ export class GetNumberAeReportedInAdultsOver15Handler implements IQueryHandler<G
     async execute(query: GetNumberAeReportedInAdultsOver15Query): Promise<any> {
         const noOfReportedAeinAdults = this.repository
             .createQueryBuilder('f')
-            .select('SUM([AdverseEventCount]) total')
+            .select('SUM([AdverseEventsCount]) total')
             .where(
                 "[DATIMAgeGroup] NOT IN (' Under 1', '01 to 04', '05 to 09', '10 to 14')",
             );

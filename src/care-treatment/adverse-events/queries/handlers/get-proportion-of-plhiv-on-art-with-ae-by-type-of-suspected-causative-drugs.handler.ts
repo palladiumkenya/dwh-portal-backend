@@ -16,7 +16,7 @@ export class GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandl
         const proportionOfPlHIVByCausativeDrugs = this.repository
             .createQueryBuilder('f')
             .select([
-                'AdverseEventCause adverseEventCause, SUM(AdverseEventCount) count_cat',
+                'AdverseEventCause adverseEventCause, SUM(AdverseEventsCount) count_cat',
             ])
             .andWhere('f.MFLCode IS NOT NULL');
 
@@ -51,7 +51,7 @@ export class GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandl
 
         return await proportionOfPlHIVByCausativeDrugs
             .groupBy('f.AdverseEventCause')
-            .orderBy('SUM(AdverseEventCount)', 'DESC')
+            .orderBy('SUM(AdverseEventsCount)', 'DESC')
             .getRawMany();
     }
 }

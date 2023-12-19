@@ -17,7 +17,7 @@ export class GetAeActionsByDrugsHandler implements IQueryHandler<GetAeActionsByD
         const aeActionsByDrugs = this.repository
             .createQueryBuilder('f')
             .select(
-                '[Severity], [AdverseEventCause], SUM([AdverseEventCount]) total, DATIMAgeGroup ageGroup',
+                '[Severity], [AdverseEventCause], SUM([AdverseEventsCount]) total, DATIMAgeGroup ageGroup',
             )
             .where('[AdverseEventCause] IS NOT NULL');
 
