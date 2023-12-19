@@ -17,7 +17,7 @@ export class GetReportedAesWithSeverityLevelsHandler implements IQueryHandler<Ge
         const reportedAesWithSeverity = this.repository
             .createQueryBuilder('f')
             .select(
-                "[AdverseEvent], [Severity] = CASE WHEN ISNULL([Severity],'') = '' THEN 'Unknown' ELSE [Severity] END, SUM([AdverseEventCount]) total, DATIMAgeGroup ageGroup",
+                "[AdverseEvent], [Severity] = CASE WHEN ISNULL([Severity],'') = '' THEN 'Unknown' ELSE [Severity] END, SUM([AdverseEventsCount]) total, DATIMAgeGroup ageGroup",
             )
             .where('[AdverseEvent] IS NOT NULL');
 
@@ -55,7 +55,7 @@ export class GetReportedAesWithSeverityLevelsHandler implements IQueryHandler<Ge
 
         return await reportedAesWithSeverity
             .groupBy('[AdverseEvent], [Severity], DATIMAgeGroup')
-            .orderBy('SUM([AdverseEventCount])')
+            .orderBy('SUM([AdverseEventsCount])')
             .getRawMany();
     }
 }

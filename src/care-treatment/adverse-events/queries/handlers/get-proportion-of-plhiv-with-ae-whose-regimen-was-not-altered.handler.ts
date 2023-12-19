@@ -17,7 +17,7 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler implemen
         const proportionOfPLHIVWithAeWhoseRegimenNotAltered = this.repository
             .createQueryBuilder('f')
             .select(
-                'AdverseEventActionTaken adverseEventActionTaken, SUM(AdverseEventCount) numberOfPatientsAe',
+                'AdverseEventActionTaken adverseEventActionTaken, SUM(AdverseEventsCount) numberOfPatientsAe',
             )
             .andWhere('f.AdverseEventActionTaken in (:...AdverseEventActionTaken)', {
                 AdverseEventActionTaken: ['Medicine not changed', 'Drug not Changed'],

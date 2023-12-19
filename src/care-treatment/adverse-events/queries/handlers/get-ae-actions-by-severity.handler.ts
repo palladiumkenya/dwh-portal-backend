@@ -20,7 +20,7 @@ export class GetAeActionsBySeverityHandler implements IQueryHandler<GetAeActions
                     "WHEN [AdverseEventActionTaken] = 'Select' OR [AdverseEventActionTaken] IS NULL OR [AdverseEventActionTaken] = 'Other' THEN 'Undocumented' " +
                     "WHEN [AdverseEventActionTaken] = 'Severe' OR [AdverseEventActionTaken] = 'Mild' OR [AdverseEventActionTaken] = 'Moderate' THEN 'Undocumented' " +
                     'ELSE [AdverseEventActionTaken] END,' +
-                    'SUM([AdverseEventCount]) total, DATIMAgeGroup ageGroup',
+                    'SUM([AdverseEventsCount]) total, DATIMAgeGroup ageGroup',
             )
             .where("ISNULL([Severity],'') <> ''");
 
