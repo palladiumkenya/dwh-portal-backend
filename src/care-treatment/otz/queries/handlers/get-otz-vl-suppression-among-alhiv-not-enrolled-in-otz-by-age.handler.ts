@@ -20,10 +20,10 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeHandler
         let vlSuppressionOtzByAgeAlhiv = this.repository
             .createQueryBuilder('f')
             .select([
-                '[AgeGroup] ageGroup, ValidVLResultCategory Last12MVLResult, SUM([HasValidVL]) AS vlSuppression',
+                '[AgeGroup] ageGroup, ValidVLResultCategory2 Last12MVLResult, SUM([HasValidVL]) AS vlSuppression',
             ])
             .andWhere(
-                'f.MFLCode IS NOT NULL AND ValidVLResultCategory IS NOT NULL AND Enrolled = 0',
+                'f.MFLCode IS NOT NULL AND ValidVLResultCategory2 IS NOT NULL AND Enrolled = 0',
             );
 
         if (query.county) {
@@ -80,7 +80,7 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByAgeHandler
         }
 
         return await vlSuppressionOtzByAgeAlhiv
-            .groupBy('[AgeGroup], ValidVLResultCategory')
+            .groupBy('[AgeGroup], ValidVLResultCategory2')
             .orderBy('[AgeGroup]')
             .getRawMany();
     }
