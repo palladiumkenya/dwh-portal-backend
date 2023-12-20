@@ -29,10 +29,6 @@ export class GetRecencyUploadsHandler
                 .toString()
                 .replace(/,/g, "','")}')`
         }
-        // if (query.facility) {
-        //     recencySql = `${recencySql} and facility IN (?)`;
-        //     params.push(query.facility);
-        // }
         if (query.partner) {
             recencySql = `${recencySql} and Partner IN ('${query.partner
                 .toString()
