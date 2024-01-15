@@ -2,19 +2,19 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzEnrolledAdolescentsByAgeQuery } from '../impl/get-otz-enrolled-adolescents-by-age.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateOtz } from './../../entities/aggregate-otz.model';
+import { LineListOTZEligibilityAndEnrollments } from '../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetOtzEnrolledAdolescentsByAgeQuery)
 export class GetOtzEnrolledAdolescentsByAgeHandler implements IQueryHandler<GetOtzEnrolledAdolescentsByAgeQuery> {
     constructor(
-        @InjectRepository(AggregateOtz, 'mssql')
-        private readonly repository: Repository<AggregateOtz>
+        @InjectRepository(LineListOTZEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOTZEligibilityAndEnrollments>
     ) {
     }
 
     async execute(query: GetOtzEnrolledAdolescentsByAgeQuery): Promise<any> {
         const otzTotalAdolescentsByAgeGroup = this.repository.createQueryBuilder('f')
-            .select(['Sum(Enrolled) totalAdolescents, AgeGroup ageGroup']);
+            .select(['Sum(Eligible) totalAdolescents, AgeGroup ageGroup']);
 
         if (query.county) {
             otzTotalAdolescentsByAgeGroup.andWhere('f.County IN (:...counties)', { counties: query.county });
