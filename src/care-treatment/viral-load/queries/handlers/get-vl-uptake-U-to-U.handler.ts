@@ -18,7 +18,8 @@ export class GetVlUptakeUToUHandler
             .select([
                 `SUM(TXCurr) TXCurr, SUM(EligibleVL) EligibleVL, SUM(HasValidVL) HasValidVL, 
                 SUM(CountTwoConsecutiveTestsWithinTheYear) TwoConsTests, 
-                SUM(CountEligibleForTwoVLTests) TwoEligibleTests, SUM(CountDurableLDL) DurableLDL,
+                SUM(CountEligibleForTwoVLTests) TwoEligibleTests, 
+                SUM(CountDurableLDL) DurableLDL,
                 SUM(CountLDLLastOneTest) LDLLastOneTest`,
             ])
             .where('f.Gender IS NOT NULL');
