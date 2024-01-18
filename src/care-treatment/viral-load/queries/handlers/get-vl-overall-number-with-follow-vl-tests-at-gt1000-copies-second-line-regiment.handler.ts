@@ -43,7 +43,7 @@ export class GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegiment
             .leftJoin(
                 'LineListViralLoad',
                 'c',
-                'cohort.PatientidHash= c.PatientID AND cohort.PatientPKHash= c.PatientPKHash  AND cohort.SiteCode= c.MFLCode ',
+                'cohort.PatientidHash= c.PatientIDHash AND cohort.PatientPKHash= c.PatientPKHash  AND cohort.SiteCode= c.MFLCode ',
             );
 
         if (query.county) {
