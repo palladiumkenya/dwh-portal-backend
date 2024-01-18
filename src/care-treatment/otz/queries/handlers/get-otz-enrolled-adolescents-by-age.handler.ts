@@ -15,7 +15,6 @@ export class GetOtzEnrolledAdolescentsByAgeHandler implements IQueryHandler<GetO
     async execute(query: GetOtzEnrolledAdolescentsByAgeQuery): Promise<any> {
         const otzTotalAdolescentsByAgeGroup = this.repository.createQueryBuilder('f')
             .select(['Sum(Eligible) totalAdolescents, AgeGroup ageGroup']);
-
         if (query.county) {
             otzTotalAdolescentsByAgeGroup.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
