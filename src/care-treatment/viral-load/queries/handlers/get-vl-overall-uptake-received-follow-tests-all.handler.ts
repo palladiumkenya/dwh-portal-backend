@@ -36,7 +36,7 @@ export class GetVlOverallUptakeReceivedFollowTestsAllHandler implements IQueryHa
             .leftJoin(
                 'LineListViralLoad',
                 'c',
-                'cohort.PatientidHash=c.PatientID and cohort.PatientPKHash=c.PatientPK and c.MFLCode=cohort.SiteCode',
+                'cohort.PatientidHash=c.PatientIDHash and cohort.PatientPKHash=c.PatientPKHash and c.MFLCode=cohort.SiteCode',
             );
 
         if (query.county) {
