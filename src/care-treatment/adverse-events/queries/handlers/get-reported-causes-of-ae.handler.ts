@@ -16,7 +16,7 @@ export class GetReportedCausesOfAeHandler implements IQueryHandler<GetReportedCa
     async execute(query: GetReportedCausesOfAeQuery): Promise<any> {
         const reportedCausesOfAes = this.repository
             .createQueryBuilder('f')
-            .select('[AdverseEventCause], SUM([AdverseEventCount]) total')
+            .select('[AdverseEventCause], SUM([AdverseEventsCountt]) total')
             .where('[AdverseEventCause] IS NOT NULL');
 
         if (query.county) {

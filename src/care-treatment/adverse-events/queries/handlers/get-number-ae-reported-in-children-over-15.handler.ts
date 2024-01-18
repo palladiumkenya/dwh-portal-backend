@@ -16,7 +16,7 @@ export class GetNumberAeReportedInChildrenOver15Handler implements IQueryHandler
     async execute(query: GetNumberAeReportedInChildrenOver15Query): Promise<any> {
         const noOfReportedAeinChildren = this.repository
             .createQueryBuilder('f')
-            .select('SUM([AdverseEventCount]) total')
+            .select('SUM([AdverseEventsCount]) total')
             .where("[DATIMAgeGroup] IN (' Under 1', '01 to 04', '05 to 09', '10 to 14')");
 
         if (query.county) {

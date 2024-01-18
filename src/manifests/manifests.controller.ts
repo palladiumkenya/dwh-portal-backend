@@ -13,6 +13,8 @@ import { GetRecencyByPartnerQuery } from './queries/impl/get-recency-by-partner.
 import { GetRecencyByCountyQuery } from './queries/impl/get-recency-by-county.query';
 import { GetConsistencyByCountyPartnerQuery } from './queries/impl/get-consistency-by-county-partner.query';
 import { GetExpectedUploadsPartnerCountyQuery } from './queries/impl/get-expected-uploads-partner-county.query';
+import { GetEMRInfoQuery } from './queries/impl/get-emr-info.query';
+import { GetFacilityInfoQuery } from './queries/impl/get-facility-info.query';
 
 @Controller('manifests')
 export class ManifestsController {
@@ -64,7 +66,7 @@ export class ManifestsController {
         @Query('agency') agency,
         @Query('year') year,
         @Query('month') month,
-        @Query('reportingType') reportingType
+        @Query('reportingType') reportingType,
     ): Promise<any> {
         const query = new GetExpectedUploadsPartnerCountyQuery(docket);
         if (county) {
@@ -88,7 +90,7 @@ export class ManifestsController {
         if (month) {
             query.month = month;
         }
-        if(reportingType) {
+        if (reportingType) {
             query.reportingType = reportingType;
         }
         return this.queryBus.execute(query);
@@ -269,7 +271,7 @@ export class ManifestsController {
         @Query('year') year,
         @Query('month') month,
         @Query('period') period,
-        @Query('reportingType') reportingType
+        @Query('reportingType') reportingType,
     ): Promise<any> {
         const query = new GetEmrDistributionQuery(docket);
         if (county) {
@@ -296,7 +298,7 @@ export class ManifestsController {
         if (period) {
             query.period = period;
         }
-        if(reportingType) {
+        if (reportingType) {
             query.reportingType = reportingType;
         }
 
@@ -314,7 +316,7 @@ export class ManifestsController {
         @Query('year') year,
         @Query('month') month,
         @Query('period') period,
-        @Query('reportingType') reportingType
+        @Query('reportingType') reportingType,
     ): Promise<any> {
         const query = new GetOverallReportingQuery(docket);
         if (county) {
@@ -341,7 +343,7 @@ export class ManifestsController {
         if (period) {
             query.period = period;
         }
-        if(reportingType) {
+        if (reportingType) {
             query.reportingType = reportingType;
         }
         return this.queryBus.execute(query);
@@ -358,7 +360,7 @@ export class ManifestsController {
         @Query('year') year,
         @Query('month') month,
         @Query('period') period,
-        @Query('reportingType') reportingType
+        @Query('reportingType') reportingType,
     ): Promise<any> {
         const query = new GetOverallReportingByFacilityQuery(docket);
         if (county) {
@@ -385,13 +387,11 @@ export class ManifestsController {
         if (period) {
             query.period = period;
         }
-        if(reportingType) {
+        if (reportingType) {
             query.reportingType = reportingType;
         }
         return this.queryBus.execute(query);
     }
-
-
 
     @Get('consistencyByFacility/:docket')
     async getConsistencyByFacility(
@@ -404,7 +404,7 @@ export class ManifestsController {
         @Query('year') year,
         @Query('month') month,
         @Query('period') period,
-        @Query('reportingType') reportingType
+        @Query('reportingType') reportingType,
     ): Promise<any> {
         const query = new GetConsistencyByFacilityQuery(docket);
         if (county) {
@@ -431,7 +431,7 @@ export class ManifestsController {
         if (period) {
             query.period = period;
         }
-        if(reportingType) {
+        if (reportingType) {
             query.reportingType = reportingType;
         }
         return this.queryBus.execute(query);
@@ -447,7 +447,7 @@ export class ManifestsController {
         @Query('agency') agency,
         @Query('year') year,
         @Query('month') month,
-        @Query('period') period
+        @Query('period') period,
     ): Promise<any> {
         const query = new GetRecencyByCountyQuery(docket);
         if (county) {
@@ -487,7 +487,7 @@ export class ManifestsController {
         @Query('agency') agency,
         @Query('year') year,
         @Query('month') month,
-        @Query('period') period
+        @Query('period') period,
     ): Promise<any> {
         const query = new GetRecencyByPartnerQuery(docket);
         if (county) {
@@ -528,7 +528,7 @@ export class ManifestsController {
         @Query('year') year,
         @Query('month') month,
         @Query('period') period,
-        @Query('reportingType') reportingType
+        @Query('reportingType') reportingType,
     ): Promise<any> {
         const query = new GetConsistencyByCountyPartnerQuery(docket);
         if (county) {
@@ -555,7 +555,89 @@ export class ManifestsController {
         if (period) {
             query.period = period;
         }
-        if(reportingType) {
+        if (reportingType) {
+            query.reportingType = reportingType;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('emrinfo/:docket')
+    async getEMRInfo(
+        @Param('docket') docket,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
+        // @Query('period') period,
+        @Query('reportingType') reportingType,
+    ): Promise<any> {
+        const query = new GetEMRInfoQuery(docket);
+        if (county) {
+            query.county = county;
+        }
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
+        }
+        if (partner) {
+            query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
+        }
+        if (reportingType) {
+            query.reportingType = reportingType;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('implementationDate/:docket')
+    async getImplementationDateInfo(
+        @Param('docket') docket,
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('year') year,
+        @Query('month') month,
+        // @Query('period') period,
+        @Query('reportingType') reportingType,
+    ): Promise<any> {
+        const query = new GetFacilityInfoQuery(docket);
+        if (county) {
+            query.county = county;
+        }
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+        if (facility) {
+            query.facility = facility;
+        }
+        if (partner) {
+            query.partner = partner;
+        }
+        if (agency) {
+            query.agency = agency;
+        }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
+        }
+        if (reportingType) {
             query.reportingType = reportingType;
         }
         return this.queryBus.execute(query);

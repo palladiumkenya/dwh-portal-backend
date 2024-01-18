@@ -17,7 +17,7 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler implements 
         const proportionOfPLHIVWithAeWhoseRegimenWasStopped = this.repository
             .createQueryBuilder('f')
             .select(
-                'AdverseEventActionTaken adverseEventActionTaken, SUM(AdverseEventCount) numberOfPatientsAe',
+                'AdverseEventActionTaken adverseEventActionTaken, SUM(AdverseEventsCount) numberOfPatientsAe',
             )
             .andWhere('f.AdverseEventActionTaken = (:...AdverseEventActionTaken)', {
                 AdverseEventActionTaken: ['All drugs stopped'],

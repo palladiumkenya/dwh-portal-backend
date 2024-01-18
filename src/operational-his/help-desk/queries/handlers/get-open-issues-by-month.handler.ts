@@ -71,8 +71,8 @@ export class GetOpenIssuesByMonthHandler
             .groupBy(
                 'MONTH ( [Created On] ), YEAR ( [Created On] ), [Issue Type]',
             )
-            .orderBy(`YEAR ( [Created On] )`, `DESC`)
-            .addOrderBy(` MONTH ( [Created On] )`, `DESC`);
+            .orderBy(`YEAR ( [Created On] )`)
+            .addOrderBy(` MONTH ( [Created On] )`);
 
         return await ticketOverview.getRawMany();
     }
