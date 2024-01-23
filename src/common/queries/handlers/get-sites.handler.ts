@@ -16,7 +16,7 @@ export class GetSitesHandler implements IQueryHandler<GetSitesQuery> {
         const facilities = this.repository
             .createQueryBuilder('q')
             .select([
-                'max(q.MFLCode) mfl, q.Facilityname facility, max(q.county) county, max(q.subCounty) subCounty, max(q.agencyName) agency, max(q.partnerName) partner, max(q.isCt) isCt, max(q.isHts) isHts, max(q.isPkv) isPkv',
+                'max(q.MFLCode) mfl, q.Facilityname facility, max(q.county) county, max(q.subCounty) subCounty, max(q.agencyName) agency, max(q.partnerName) partner, max(q.isCt) isCt, max(q.isHts) isHts',
             ])
             .where('q.MFLCode > 0');
 

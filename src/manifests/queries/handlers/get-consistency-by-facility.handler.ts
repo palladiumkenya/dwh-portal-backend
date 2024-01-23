@@ -64,22 +64,6 @@ export class GetConsistencyByFacilityHandler
                     ) X
                 ) f on d.MFLCode = f.facilityId 
                 where isHts = 1 and (NumberOfUploads <3 OR NumberOfUploads is NULL) `;
-        } else if (query.docket.toLowerCase() === 'pkv') {
-            consistencyByFacilitySql = `select
-                MFLCode, FacilityName,County,Subcounty, AgencyName Agency,PartnerName Partner,
-                case when NumberOfUploads is NULL THEN 0 ELSE NumberOfUploads END AS NumberOfUploads
-                from all_EMRSites d
-                left join (
-                    SELECT DISTINCT facilityId,NumberOfUploads FROM (
-                        SELECT fm.facilityId,fm.docketid as docket,
-                            count(*) NumberOfUploads
-                        FROM  NDWH.dbo.Fact_manifest fm
-                        WHERE fm.docketid = '${query.docket.toLowerCase()}' AND
-                            fm.timeId BETWEEN DATEADD(MONTH, -2, EOMONTH(cast('${fromDate}' as date), -1)) AND EOMONTH(cast('${toDate}' as date)) 
-                        GROUP BY facilityId, docketId
-                    ) X
-                ) f on d.MFLCode = f.facilityId 
-                where isPkv = 1 and (NumberOfUploads <3 OR NumberOfUploads is NULL) `;
         } else {
             consistencyByFacilitySql = `select
                 MFLCode,FacilityName,County,Subcounty, AgencyName Agency,PartnerName Partner,
