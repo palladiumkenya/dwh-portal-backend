@@ -89,48 +89,6 @@ export class GetOverallReportingByFacilityHandler
                         where RowId=1
                     ) f on f.facilityId=df.facilityId and df.docket=f.docketId
                 ) Y `;
-        } else if (query.docket.toLowerCase() === 'pkv') {
-            overAllReportingByFacilitySql = `SELECT * 
-                from 
-                (
-                    Select Distinct 
-                        df.FacilityId,
-                        Name as FacilityName,
-                        County,
-                        subCounty,
-                        Agency,
-                        Partner, 
-                        f.year,
-                        f.month, 
-                        f.docketId ,
-                        f.timeId as uploaddate
-                    from (
-                        select 
-                            FacilityName name,
-                            MFLCode facilityId,
-                            county,
-                            subcounty,
-                            AgencyName agency,
-                            PartnerName partner, 
-                            '${query.docket.toLowerCase()}' AS docket 
-                        from REPORTING.dbo.all_EMRSites 
-                        where isPkv = 1
-                    ) df
-                    LEFT JOIN (
-                        SELECT * FROM (
-                            SELECT DISTINCT 
-                                ROW_NUMBER ( ) OVER (PARTITION BY FacilityId,docketId,Concat(Month(fm.timeId),'-', Year(fm.timeId)) ORDER BY (cast(fm.timeId as date)) desc) AS RowID,
-                                FacilityId,
-                                docketId,
-                                fm.timeId, 
-                                year(timeId) year,
-                                month(timeId) month 
-                            FROM  NDWH.dbo.Fact_manifest fm
-                            where year(timeId) = ${year} and month(timeId) = ${month}
-                        )u 
-                        where RowId=1
-                    ) f on f.facilityId=df.facilityId and df.docket=f.docketId
-                ) Y `;
         } else {
             overAllReportingByFacilitySql = `SELECT * 
                 from 
