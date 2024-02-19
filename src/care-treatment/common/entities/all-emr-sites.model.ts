@@ -36,8 +36,5 @@ export class AllEmrSites {
     isCT: number;
 
     @Column('int')
-    isPkv: number;
-
-    @Column('int')
     isHts: number;
 }

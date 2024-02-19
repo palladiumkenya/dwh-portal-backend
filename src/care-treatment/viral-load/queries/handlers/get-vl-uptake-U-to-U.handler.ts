@@ -17,7 +17,7 @@ export class GetVlUptakeUToUHandler
             .createQueryBuilder('f')
             .select([
                 `SUM(TXCurr) TXCurr, SUM(EligibleVL) EligibleVL, SUM(HasValidVL) HasValidVL, 
-                SUM(CountTwoConsecutiveTestsWithinTheYear) TwoConsTests, 
+                SUM(CountTwoConsecutiveTests) TwoConsTests, 
                 SUM(CountEligibleForTwoVLTests) TwoEligibleTests, 
                 SUM(CountDurableLDL) DurableLDL,
                 SUM(CountLDLLastOneTest) LDLLastOneTest`,
