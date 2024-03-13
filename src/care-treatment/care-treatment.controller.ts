@@ -248,7 +248,6 @@ import { GetCtTxCurrVerifiedByCountyQuery } from './current-on-art/queries/impl/
 import { GetCtTxCurrVerifiedByPartnerQuery } from './current-on-art/queries/impl/get-ct-tx-curr-verified-partner.query';
 import { GetOtzEnrollmentTrendQuery } from './otz/queries/impl/get-otz-enrollment-trend.query';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexQuery } from './otz/queries/impl/get-otz-enrollment-among-alhiv-and-on-art-by-age-sex.query';
-import { GetOtzNotEnrolledByPartnerHandler } from './otz/queries/handlers/get-otz-not-enrolled-by-partner.handler';
 import { GetOtzNotEnrolledByPartnerQuery } from './otz/queries/impl/get-otz-not-enrolled-by-partner.query';
 import { GetOtzNotEnrolledByCountyQuery } from './otz/queries/impl/get-otz-not-enrolled-by-county.query';
 import { GetAlhivWithReSuppressionQuery } from './otz/queries/impl/get-alhiv-with-re-suppression.query';
