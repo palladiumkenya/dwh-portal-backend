@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { DimFacility } from './entities/dim-facility.entity';
 import { ConfigurationModule } from '../config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -16,7 +15,8 @@ import { AllEmrSites } from 'src/care-treatment/common/entities/all-emr-sites.mo
     imports: [
         CqrsModule,
         ConfigurationModule,
-        TypeOrmModule.forFeature([AllEmrSites], 'mssql')],
+        TypeOrmModule.forFeature([AllEmrSites], 'mssql')
+    ],
     providers: [
         GetCountiesHandler,
         GetSubCountiesHandler,
