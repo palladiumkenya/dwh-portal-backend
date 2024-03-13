@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetCountiesQuery } from './queries/impl/get-counties.query';
 import { GetSubCountiesQuery } from './queries/impl/get-sub-counties.query';
@@ -10,9 +10,7 @@ import { GetSitesQuery } from './queries/impl/get-sites.query';
 
 @Controller('common')
 export class CommonController {
-    constructor(private readonly queryBus: QueryBus) {
-
-    }
+    constructor(private readonly queryBus: QueryBus) { }
 
     @Get('counties')
     async getCounties(
