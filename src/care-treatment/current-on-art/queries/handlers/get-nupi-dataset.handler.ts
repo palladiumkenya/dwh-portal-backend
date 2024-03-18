@@ -54,13 +54,13 @@ export class GetNupiDatasetHandler
                 select distinct
                     cast (SiteCode as nvarchar) SiteCode,
                     max(ReportMonth_Year) as reporting_month
-                from NDWH.dbo.FACT_CT_DHIS2 as khis
+                from ODS.dbo.CT_DHIS2 as khis
                 where CurrentOnART_Total is not null
                     and datediff(
                         mm,
                         cast(concat(ReportMonth_Year, '01') as date),
                         (select max(cast(concat(ReportMonth_Year, '01') as date)
-                        ) from NDWH.dbo.FACT_CT_DHIS2)    
+                        ) from ODS.dbo.CT_DHIS2)    
                     ) <= 6
                 group by SiteCode
             ),
@@ -70,7 +70,7 @@ export class GetNupiDatasetHandler
             cast (khis.SiteCode as nvarchar) As SiteCode,
                     latest_reporting_month.reporting_month,
                     sum(CurrentOnART_Total) as TXCurr_khis
-                from NDWH.dbo.FACT_CT_DHIS2 as khis
+                from ODS.dbo.CT_DHIS2 as khis
                 inner join latest_reporting_month on latest_reporting_month.SiteCode = khis.SiteCode
                     and khis.ReportMonth_Year = latest_reporting_month.reporting_month
             where CurrentOnART_Total is not null
