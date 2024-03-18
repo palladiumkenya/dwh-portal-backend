@@ -1,9 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { GetVlOverallUptakeAndSuppressionReferredLessIntenseQuery } from '../impl/get-vl-overall-uptake-and-suppression-referred-less-intense.query';
-import { LinelistFACTART } from './../../../common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetVlOverallUptakeAndSuppressionReferredLessIntenseQuery)
 export class GetVlOverallUptakeAndSuppressionReferedLessIntenseHandler

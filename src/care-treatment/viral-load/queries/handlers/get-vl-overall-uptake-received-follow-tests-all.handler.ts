@@ -1,9 +1,8 @@
 import {InjectRepository} from '@nestjs/typeorm';
 import {IQueryHandler, QueryHandler} from '@nestjs/cqrs';
 import {Repository} from 'typeorm';
-import {FactTransNewCohort} from "../../../new-on-art/entities/fact-trans-new-cohort.model";
 import { GetVlOverallUptakeReceivedFollowTestsAllQuery} from "../impl/get-vl-overall-uptake-received-follow-tests-all.query";
-import { LinelistFACTART } from 'src/care-treatment/common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetVlOverallUptakeReceivedFollowTestsAllQuery)
 export class GetVlOverallUptakeReceivedFollowTestsAllHandler implements IQueryHandler<GetVlOverallUptakeReceivedFollowTestsAllQuery> {

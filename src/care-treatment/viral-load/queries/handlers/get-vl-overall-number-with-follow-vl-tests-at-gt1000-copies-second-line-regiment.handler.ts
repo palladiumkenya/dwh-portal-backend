@@ -1,11 +1,10 @@
 import {InjectRepository} from '@nestjs/typeorm';
 import {IQueryHandler, QueryHandler} from '@nestjs/cqrs';
 import {Repository} from 'typeorm';
-import {FactTransNewCohort} from "../../../new-on-art/entities/fact-trans-new-cohort.model";
-import { LinelistFACTART } from 'src/care-treatment/common/entities/linelist-fact-art.model';
 import {
     GetVlOverallNumberWithFollowTestsAtGt1000CopiesSecondlineRegimentQuery
 } from "../impl/get-vl-overall-number-with-follow-tests-at-gt1000-copies-secondline-regiment.query";
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetVlOverallNumberWithFollowTestsAtGt1000CopiesSecondlineRegimentQuery)
 export class GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegimentHandler implements IQueryHandler<GetVlOverallNumberWithFollowTestsAtGt1000CopiesSecondlineRegimentQuery> {

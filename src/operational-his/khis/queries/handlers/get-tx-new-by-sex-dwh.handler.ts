@@ -3,7 +3,7 @@ import {InjectRepository} from '@nestjs/typeorm';
 
 import {Repository} from 'typeorm';
 import {GetTxNewBySexDwhQuery} from "../impl/get-tx-new-by-sex-dwh.query";
-import { AggregateCohortRetention } from 'src/care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
+import { AggregateCohortRetention } from '../../../../care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
 
 @QueryHandler(GetTxNewBySexDwhQuery)
 export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQuery> {

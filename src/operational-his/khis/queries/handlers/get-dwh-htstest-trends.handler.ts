@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetDWHHTSTestTrendsQuery } from '../impl/get-dwh-htstest-trends.query';
-import { FactHTSClientTests } from 'src/hts/linkage/entities/fact-hts-client-tests.model';
+import { FactHTSClientTests } from '../../../../hts/linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetDWHHTSTestTrendsQuery)
 export class GetDWHHTSTestTrendsHandler
