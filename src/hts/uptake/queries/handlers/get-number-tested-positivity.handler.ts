@@ -48,16 +48,16 @@ export class GetNumberTestedPositivityHandler
         }
 
         if (query.fromDate) {
-            numberTestedPositivitySql.andWhere(`year >= year(${query.fromDate}01)`);
-            numberTestedPositivitySql.andWhere(`month >= month(${query.fromDate}01)`);
+            numberTestedPositivitySql.andWhere(`year >= ${query.fromDate.substring(0, 4)}`);
+            numberTestedPositivitySql.andWhere(`month >= ${query.fromDate.substring(4)}`);
         }
 
         if (query.toDate) {
             numberTestedPositivitySql.andWhere(
-                `year <= year(EOMONTH(${query.fromDate}01))`,
+                `year <= ${query.toDate.substring(0, 4)}`,
             );
             numberTestedPositivitySql.andWhere(
-                `month <= month(EOMONTH(${query.fromDate}01))`,
+                `month <= ${query.toDate.substring(4)}`,
             );
         }
 
