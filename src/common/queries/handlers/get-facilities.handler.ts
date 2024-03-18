@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DimFacility } from '../../entities/dim-facility.entity';
 import { GetFacilitiesQuery } from '../impl/get-facilities.query';
-import { AllEmrSites } from './../../../care-treatment/common/entities/all-emr-sites.model';
+import { AllEmrSites } from '../../../care-treatment/common/entities/all-emr-sites.model';
 
 @QueryHandler(GetFacilitiesQuery)
 export class GetFacilitiesHandler implements IQueryHandler<GetFacilitiesQuery> {
