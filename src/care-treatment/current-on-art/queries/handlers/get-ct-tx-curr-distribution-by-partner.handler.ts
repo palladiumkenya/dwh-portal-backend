@@ -3,9 +3,7 @@ import { GetCtTxCurrDistributionByPartnerQuery } from '../impl/get-ct-tx-curr-di
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
-import { FactTransNewCohort } from 'src/care-treatment/new-on-art/entities/fact-trans-new-cohort.model';
-import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
+import { AggregateTXCurr } from '../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrDistributionByPartnerQuery)
 export class GetCtTxCurrDistributionByPartnerHandler

@@ -9,7 +9,7 @@ import { GetPartnersHandler } from './queries/handlers/get-partners.handler';
 import { GetAgenciesHandler } from './queries/handlers/get-agencies.handler';
 import { GetSitesHandler } from './queries/handlers/get-sites.handler';
 import { CommonController } from './common.controller';
-import { AllEmrSites } from 'src/care-treatment/common/entities/all-emr-sites.model';
+import { AllEmrSites } from '../care-treatment/common/entities/all-emr-sites.model';
 
 @Module({
     imports: [

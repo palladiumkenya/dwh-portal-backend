@@ -2,8 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCtTxCurrDistributionByCountyQuery } from '../impl/get-ct-tx-curr-distribution-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from 'src/care-treatment/new-on-art/entities/fact-trans-new-cohort.model';
-import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
+import { AggregateTXCurr } from '../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrDistributionByCountyQuery)
 export class GetCtTxCurrDistributionByCountyHandler

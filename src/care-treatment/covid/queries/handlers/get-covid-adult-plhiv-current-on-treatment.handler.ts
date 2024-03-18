@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCovidAdultPLHIVCurrentOnTreatmentQuery } from '../impl/get-covid-adult-plhiv-current-on-treatment.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LinelistFACTART } from 'src/care-treatment/common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetCovidAdultPLHIVCurrentOnTreatmentQuery)
 export class GetCovidAdultPLHIVCurrentOnTreatmentHandler

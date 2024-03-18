@@ -3,7 +3,7 @@ import { GetHtsPartnersQuery } from '../impl/get-hts-partners.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
-import { AllEmrSites } from 'src/care-treatment/common/entities/all-emr-sites.model';
+import { AllEmrSites } from '../../../../care-treatment/common/entities/all-emr-sites.model';
 
 @QueryHandler(GetHtsPartnersQuery)
 export class GetHtsPartnersHandler

@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { GetVlOutcomesBySexQuery } from '../impl/get-vl-outcomes-by-sex.query';
-import { LinelistFACTART } from 'src/care-treatment/common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetVlOutcomesBySexQuery)
 export class GetVlOutcomesBySexHandler
