@@ -10,9 +10,9 @@ import {FactCtDhis2} from "./khis/entities/fact-ct-dhis2.model";
 import {FactTransHmisStatsTxcurr} from "../care-treatment/current-on-art/entities/fact-trans-hmis-stats-txcurr.model";
 import {FactTransNewlyStarted} from "../care-treatment/new-on-art/entities/fact-trans-newly-started.model";
 import {FactHtsDhis2} from "./khis/entities/fact-hts-dhis2.model";
-import { AggregateTXCurr } from 'src/care-treatment/current-on-art/entities/aggregate-txcurr.model';
-import { AggregateCohortRetention } from 'src/care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
-import { FactHTSClientTests } from 'src/hts/linkage/entities/fact-hts-client-tests.model';
+import { AggregateTXCurr } from '../care-treatment/current-on-art/entities/aggregate-txcurr.model';
+import { AggregateCohortRetention } from '../care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
+import { FactHTSClientTests } from '../hts/linkage/entities/fact-hts-client-tests.model';
 import { LinelistTicketExport } from './help-desk/entities/linelist-ticket-export.model';
 
 

@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {FactCtDhis2} from "../../entities/fact-ct-dhis2.model";
 import {GetTxCurrBySexDwhQuery} from "../impl/get-tx-curr-by-sex-dwh.query";
-import { AggregateTXCurr } from 'src/care-treatment/current-on-art/entities/aggregate-txcurr.model';
+import { AggregateTXCurr } from '../../../../care-treatment/current-on-art/entities/aggregate-txcurr.model';
 
 @QueryHandler(GetTxCurrBySexDwhQuery)
 export class GetTxCurrBySexDwhHandler implements IQueryHandler<GetTxCurrBySexDwhQuery> {

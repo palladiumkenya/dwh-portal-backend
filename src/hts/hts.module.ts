@@ -22,7 +22,7 @@ import { AggregateHTSUptake } from './uptake/entities/aggregate-hts-uptake.model
 import { FactHTSClientTests } from './linkage/entities/fact-hts-client-tests.model';
 import { FactHTSClientLinkages } from './linkage/entities/fact-hts-client-linkages.model';
 import { FactHTSClientTracing } from './linkage/entities/fact-hts-client-tracing.model';
-import { AllEmrSites } from 'src/care-treatment/common/entities/all-emr-sites.model';
+import { AllEmrSites } from '../care-treatment/common/entities/all-emr-sites.model';
 
 import { GetHtsCountiesHandler } from './common/queries/handlers/get-hts-counties.handler';
 import { GetHtsSubCountiesHandler } from './common/queries/handlers/get-hts-sub-counties.handler';

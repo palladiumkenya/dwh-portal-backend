@@ -3,7 +3,7 @@ import { GetCtViralLoadSuppressionPercentageQuery } from '../impl/get-ct-viral-l
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
-import { LinelistFACTART } from 'src/care-treatment/common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetCtViralLoadSuppressionPercentageQuery)
 export class GetCtViralLoadSuppressionPercentageHandler

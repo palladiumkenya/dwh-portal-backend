@@ -5,7 +5,7 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 
 import {PmtctRRIController} from './pmtct-rri.controller';
 
-import { AggregateTXCurr } from 'src/care-treatment/current-on-art/entities/aggregate-txcurr.model';
+import { AggregateTXCurr } from '../care-treatment/current-on-art/entities/aggregate-txcurr.model';
 import { MissedTestingFirstANC } from './missed-anc/entities/missed-testing-first-anc.model';
 import { MissedMaternalHaart } from './missed-haart/entities/missed-maternal-haart.model';
 import { MissedEIDTesting } from './missed-eid/entities/missed-eid-testing.model';

@@ -1,8 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GetDWHHTSPOSByPartnerQuery } from './../impl/get-dwh-htspos-by-partner.query';
-import { FactHTSClientTests } from 'src/hts/linkage/entities/fact-hts-client-tests.model';
+import { GetDWHHTSPOSByPartnerQuery } from '../impl/get-dwh-htspos-by-partner.query';
+import { FactHTSClientTests } from '../../../../hts/linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetDWHHTSPOSByPartnerQuery)
 export class GetDWHHTSPOSByPartnerHandler

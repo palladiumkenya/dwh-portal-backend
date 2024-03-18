@@ -29,7 +29,7 @@ export class GetArtVerificationPendingSurveysByCountyHandler
                     coalesce(EMRs.SDP, Allsites.SDIP) As SDIP,
                     coalesce(EMRs.[SDP Agency], Allsites.Agency) as Agency
                 from  HIS_Implementation.dbo.EMRandNonEMRSites as Allsites
-                left join HIS_Implementation.dbo.All_EMRSites  EMRs on EMRs.MFL_Code=Allsites.MFLCode
+                left join ODS.dbo.All_EMRSites  EMRs on EMRs.MFL_Code=Allsites.MFLCode
             ),
             --Pick Only the EMR Sites
             EMRSites as (
