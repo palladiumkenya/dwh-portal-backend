@@ -68,9 +68,26 @@ export class GetVlCategorizationUToUHandler
         }
 
         if (query.pbfw) {
+            let pbfw = []
+            let ispreg = []
+            query.pbfw.forEach(cat => {
+                let splitCategories = cat.split('|');
+                pbfw.push(splitCategories[0])
+                ispreg.push(splitCategories[1])
+            })
+
             vlUptake.andWhere('f.PBFWCategory IN (:...pbfws)', {
-                pbfws: query.pbfw,
+                pbfws: pbfw,
             });
+            if (ispreg.includes("Yes") && ispreg.includes("No")) {
+                vlUptake.andWhere(`f.Pregnant = 'Yes' OR f.Breastfeeding = 'Yes'`);
+            }
+            else if (ispreg.includes("Yes")) {
+                vlUptake.andWhere(`f.Pregnant = 'Yes'`);
+            }
+            else if (ispreg.includes("No")) {
+                vlUptake.andWhere(`f.Breastfeeding = 'Yes'`);
+            }
         }
 
         return await vlUptake
