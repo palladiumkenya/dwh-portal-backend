@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { GetVlUptakeUToUQuery } from '../impl/get-vl-uptake-U-to-U.query';
-import { AggregateVLDurable } from './../../entities/aggregate-vl-durable.model';
+import { AggregateVLDurable } from '../../entities/aggregate-vl-durable.model';
 
 @QueryHandler(GetVlUptakeUToUQuery)
 export class GetVlUptakeUToUHandler
@@ -27,7 +27,7 @@ export class GetVlUptakeUToUHandler
         if (query.county) {
             vlUptake.andWhere('f.County IN (:...counties)', {
                 counties: query.county,
-            
+
             });
         }
 
@@ -68,9 +68,26 @@ export class GetVlUptakeUToUHandler
         }
 
         if (query.pbfw) {
+            let pbfw = []
+            let ispreg = []
+            query.pbfw.forEach(cat => {
+                let splitCategories = cat.split('|');
+                pbfw.push(splitCategories[0])
+                ispreg.push(splitCategories[1])
+            })
+
             vlUptake.andWhere('f.PBFWCategory IN (:...pbfws)', {
-                pbfws: query.pbfw,
+                pbfws: pbfw,
             });
+            if (ispreg.includes("Yes") && ispreg.includes("No")) {
+                vlUptake.andWhere(`(f.Pregnant = 'Yes' OR f.Breastfeeding = 'Yes')`);
+            }
+            else if (ispreg.includes("Yes")) {
+                vlUptake.andWhere(`f.Pregnant = 'Yes'`);
+            }
+            else if (ispreg.includes("No")) {
+                vlUptake.andWhere(`f.Breastfeeding = 'Yes'`);
+            }
         }
 
         return await vlUptake.getRawOne();
