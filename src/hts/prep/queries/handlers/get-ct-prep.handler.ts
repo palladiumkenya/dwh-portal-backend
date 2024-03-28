@@ -16,7 +16,7 @@ export class GetCTPrepHandler implements IQueryHandler<GetCTPrepQuery> {
         let newOnPrep = `Select 
                     SUM(PrepCT) As PrepCT
                 from AggregatePrepCascade prep
-                where AssYear is not null
+                where Year is not null
         `;
 
         if (query.county) {
