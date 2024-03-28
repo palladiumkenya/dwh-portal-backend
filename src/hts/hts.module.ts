@@ -4,19 +4,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigurationModule } from '../config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-// import { FactHtsUptake } from './uptake/entities/fact-htsuptake.entity';
-// import { FactHtsUptakeAgeGender } from './uptake/entities/fact-htsuptake-agegender.entity';
-// import { FactHtsPopulationType } from './uptake/entities/fact-hts-populationtype.entity';
-// import { FactHtsTeststrategy } from './uptake/entities/fact-hts-teststrategy.entity';
-// import { FactHtsEntryPoint } from './uptake/entities/fact-hts-entrypoint.entity';
-// import { FactHtsClientTestedAs } from './uptake/entities/fact-hts-clienttestedas.entity';
-// import { FactHtsMonthsLastTest } from './uptake/entities/fact-hts-monthslasttest.entity';
-// import { FactHtsTBScreening } from './uptake/entities/fact-hts-tbscreening.entity';
-// import { FactHtsClientSelfTested } from './uptake/entities/fact-hts-clientselftested.entity';
-// import { FactHtsuptake } from './pns/entities/fact-htsuptake.entity';
-// import { FactPNSSexualPartner } from './pns/entities/fact-pns-sexual-partner.entity';
-// import { FactPNSChildren } from './pns/entities/fact-pns-children.entity';
-// import { FactPNSKnowledgeHivStatus } from './pns/entities/fact-pns-knowledge-hiv-status.entity';
+
 import { FactPrep } from './prep/entities/fact-prep.model';
 import { AggregateHTSUptake } from './uptake/entities/aggregate-hts-uptake.model';
 import { FactHTSClientTests } from './linkage/entities/fact-hts-client-tests.model';
