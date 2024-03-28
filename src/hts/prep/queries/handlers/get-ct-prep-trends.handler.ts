@@ -64,16 +64,16 @@ export class GetCTPrepTrendHandler implements IQueryHandler<GetCTPrepTrendQuery>
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and AssYear = ${query.year}`;
+            newOnPrep = `${newOnPrep} and Year = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and AssMonth = ${query.month}`;
+            newOnPrep = `${newOnPrep} and Month = ${query.month}`;
         }
 
         newOnPrep = `${newOnPrep} 
-        Group BY Assyear, Assmonth
-        Order by Assyear DESC, Assmonth DESC`
+        Group BY Year, Month
+        Order by Year DESC, month DESC`
 
     return await this.repository.query(newOnPrep, params);
     }

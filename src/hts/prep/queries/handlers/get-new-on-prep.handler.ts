@@ -20,8 +20,8 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
                 SubCounty, 
                 PartnerName CTPartner, 
                 Agencyname CTAgency, 
-                AssMonth VisitMonth, 
-                AssYear VisitYear,
+                Month VisitMonth, 
+                Year VisitYear,
                 SUM(StartedPrep) As StartedPrep
             from AggregatePrepCascade prep
             where AssYear is not null
@@ -70,14 +70,14 @@ export class GetNewOnPrepHandler implements IQueryHandler<GetNewOnPrepQuery> {
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and AssYear = ${query.year}`;
+            newOnPrep = `${newOnPrep} and Year = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and AssMonth = ${query.month}`;
+            newOnPrep = `${newOnPrep} and Month = ${query.month}`;
         }
 
-        newOnPrep = `${newOnPrep} GROUP BY MFLCode, FacilityName, County, SubCounty, PartnerName, AgencyName, AssMonth, AssYear`;
+        newOnPrep = `${newOnPrep} GROUP BY MFLCode, FacilityName, County, SubCounty, PartnerName, AgencyName, Month, Year`;
 
         return await this.repository.query(newOnPrep, params);
     }

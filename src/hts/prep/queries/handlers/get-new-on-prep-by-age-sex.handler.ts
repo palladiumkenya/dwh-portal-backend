@@ -66,11 +66,11 @@ export class GetNewOnPrepByAgeSexHandler
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and AssYear = ${query.year}`;
+            newOnPrep = `${newOnPrep} and Year = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and AssMonth = ${query.month}`;
+            newOnPrep = `${newOnPrep} and Month = ${query.month}`;
         }
 
         newOnPrep = `${newOnPrep} GROUP BY AgeGroup, Gender
