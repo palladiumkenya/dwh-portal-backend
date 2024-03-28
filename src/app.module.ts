@@ -13,7 +13,7 @@ import { HtsModule } from './hts/hts.module';
 import { CareTreatmentModule } from './care-treatment/care-treatment.module';
 import { OperationalHisModule } from './operational-his/operational-his.module';
 import { PmtctRRIModule } from './pmtct-rri/pmtct-rri.module';
-// import { SelfServiceModule } from './self-service/self-service.module';
+import { SelfServiceModule } from './self-service/self-service.module';
 
 import { AgeGroupMappingMiddleware } from './ageGroupMapping.middleware';
 import { CachesModule } from './cache/caches.module';
@@ -109,7 +109,7 @@ import { CachesModule } from './cache/caches.module';
             ttl: 60 * 60 * 24 * 1000, // Cache responses for a day
             max: 1000,
         }),
-        // SelfServiceModule,
+        SelfServiceModule,
     ],
     controllers: [AppController],
     providers: [
