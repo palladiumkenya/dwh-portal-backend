@@ -19,7 +19,7 @@ export class GetNewOnPrepByAgeSexHandler
                 Gender,
                 SUM(StartedPrep) As StartedPrep
             from AggregatePrepCascade prep
-            where AssYear is not null
+            where Year is not null
         `;
 
 

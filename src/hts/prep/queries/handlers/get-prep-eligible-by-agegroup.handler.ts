@@ -18,7 +18,7 @@ export class GetPrepEligibleByAgegroupHandler
                 AgeGroup DATIMAgeGroup,
                 Sum(EligiblePrep) As EligiblePrep
             from AggregatePrepCascade prep
-            where AssYear is not null
+            where Year is not null
         `;
 
         if (query.county) {
