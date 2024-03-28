@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { GetVlOverallUptakeGt1000CopiesQuery } from '../impl/get-vl-overall-uptake-gt-1000-copies.query';
-import { LinelistFACTART } from './../../../common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetVlOverallUptakeGt1000CopiesQuery)
 export class GetVlOverallGt1000CopiesHandler

@@ -1,7 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from 'src/hts/linkage/entities/fact-hts-client-tests.model';
+import { FactHTSClientTests } from '../../../../hts/linkage/entities/fact-hts-client-tests.model';
 import { GetDWHHTSPOSByGenderQuery } from '../impl/get-dwh-htspos-by-gender.query';
 
 @QueryHandler(GetDWHHTSPOSByGenderQuery)

@@ -18,7 +18,7 @@ export class GetPrepAgeSexTrendHandler implements IQueryHandler<GetPrepAgeSexTre
             Gender,
             SUM(PrepCT) As PrepCT
         from AggregatePrepCascade prep
-        where Assyear is not null
+        where Year is not null
         `;
 
         if (query.county) {
@@ -64,11 +64,11 @@ export class GetPrepAgeSexTrendHandler implements IQueryHandler<GetPrepAgeSexTre
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and Assyear = ${query.year}`;
+            newOnPrep = `${newOnPrep} and Year = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and Assmonth = ${query.month}`;
+            newOnPrep = `${newOnPrep} and Month = ${query.month}`;
         }
 
         newOnPrep = `${newOnPrep} 

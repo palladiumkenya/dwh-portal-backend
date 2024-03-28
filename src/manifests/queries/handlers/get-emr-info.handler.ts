@@ -1,7 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactManifest } from '../../entities/fact-manifest.model';
-import { FacilityInfo } from 'src/manifests/entities/facility-info.entity';
+import { FacilityInfo } from '../../entities/facility-info.entity';
 import { Repository } from 'typeorm';
 import { GetEMRInfoQuery } from './../impl/get-emr-info.query';
 

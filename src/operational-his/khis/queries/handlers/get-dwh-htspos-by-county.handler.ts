@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetDWHHTSPOSByCountyQuery } from '../impl/get-dwh-htspos-by-county.query';
-import { FactHTSClientTests } from 'src/hts/linkage/entities/fact-hts-client-tests.model';
+import { FactHTSClientTests } from '../../../../hts/linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetDWHHTSPOSByCountyQuery)
 export class GetDWHHTSPOSByCountyHandler

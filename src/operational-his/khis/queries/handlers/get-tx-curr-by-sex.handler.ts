@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {GetTxCurrBySexQuery} from "../impl/get-tx-curr-by-sex.query";
 import { FactCtDhis2 } from '../../entities/fact-ct-dhis2.model';
-import {AllEmrSites} from "../../../../care-treatment/common/entities/all-emr-sites.model";
 
 @QueryHandler(GetTxCurrBySexQuery)
 export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery> {
