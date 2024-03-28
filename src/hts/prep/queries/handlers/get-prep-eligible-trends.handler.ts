@@ -15,11 +15,11 @@ export class GetPrepEligibleTrendsHandler
     async execute(query: GetPrepEligibleTrendsQuery): Promise<any> {
         const params = [];
         let newOnPrep = `SELECT
-                AssMonth month,
-                AssYear year,
+                Month month,
+                Year year,
                 Sum(EligiblePrep) As EligiblePrep
             from AggregatePrepCascade prep
-            where AssYear is not null
+            where Year is not null
         `;
 
         if (query.county) {
