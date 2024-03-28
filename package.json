@@ -71,7 +71,7 @@
     "prettier": "^1.19.1",
     "sqlite3": "^5.0.0",
     "supertest": "^4.0.2",
-    "ts-jest": "25.2.1",
+    "ts-jest": "29.1.2",
     "ts-loader": "^6.2.1",
     "ts-node": "^10.7.0",
     "tsconfig-paths": "^3.9.0",
