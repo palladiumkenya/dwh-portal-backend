@@ -15,8 +15,8 @@ export class GetPrepScreenedTrendsHandler
     async execute(query: GetPrepScreenedTrendsQuery): Promise<any> {
         const params = [];
         let newOnPrep = `SELECT
-                AssMonth month,
-                AssYear year,
+                Month month,
+                Year year,
                 Sum([Screened]) As ScreenedPrep
             from AggregatePrepCascade prep
             where AssYear is not null
@@ -65,15 +65,15 @@ export class GetPrepScreenedTrendsHandler
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and AssYear = ${query.year}`;
+            newOnPrep = `${newOnPrep} and Year = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and AssMonth = ${query.month}`;
+            newOnPrep = `${newOnPrep} and Month = ${query.month}`;
         }
 
-        newOnPrep = `${newOnPrep} Group by AssMonth, AssYear
-            ORDER by AssYear DESC, AssMonth DESC`;
+        newOnPrep = `${newOnPrep} Group by Month, Year
+            ORDER by Year DESC, Month DESC`;
 
         return await this.repository.query(newOnPrep, params);
     }
