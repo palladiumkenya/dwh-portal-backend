@@ -57,7 +57,7 @@ export class GetArtVerificationReasonsHandler
             ) Select
                 count(*) NUM, non_verification_reason
                 FROM FacilitySummary
-                where FacilitySummary.FacilityType = 'emr'
+                where FacilitySummary.FacilityType  like '%EMR%'
         `;
 
         if (query.county) {
