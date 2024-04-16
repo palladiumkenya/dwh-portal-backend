@@ -17,16 +17,16 @@ export class GetArtVerificationReasonsHandler
         let nonReasons = `
             with EnrichedFullfacilitylist As (
                 Select
-                    distinct cast(Allsites.MFLCode collate Latin1_General_CI_AS as nvarchar) as MFLCode,
-                    Allsites.FacilityName,
+                    distinct cast(Allsites.MFL_Code collate Latin1_General_CI_AS as nvarchar) as MFLCode,
+                    Allsites.Facility_Name,
                     Allsites.County,
                     Allsites.FacilityType,
                     EMRs.SubCounty,
                     EMRs.EMR,
-                    coalesce(EMRs.SDP, Allsites.SDIP) As SDIP,
-                    coalesce(EMRs.[SDP Agency], Allsites.Agency) as Agency
+                    coalesce(EMRs.SDP, Allsites.SDP) As SDIP,
+                    coalesce(EMRs.[SDP_Agency], Allsites.SDP_Agency) as Agency
                 from  HIS_Implementation.dbo.EMRandNonEMRSites as Allsites
-                left join HIS_Implementation.dbo.All_EMRSites  EMRs on EMRs.MFL_Code=Allsites.MFLCode
+                left join ODS.dbo.All_EMRSites  EMRs on EMRs.MFL_Code=Allsites.MFL_Code
             ),PSurveys as (
                 Select
                     *
@@ -34,7 +34,7 @@ export class GetArtVerificationReasonsHandler
             ), FacilitySummary AS (
                 select
                     EnrichedFullfacilitylist.MFLCode as MFLCode,
-                    EnrichedFullfacilitylist.FacilityName as Facility,
+                    EnrichedFullfacilitylist.Facility_Name as Facility,
                     EnrichedFullfacilitylist.SDIP,
                     EnrichedFullfacilitylist.EMR as EMR,
                     EnrichedFullfacilitylist.SubCounty,
@@ -46,7 +46,7 @@ export class GetArtVerificationReasonsHandler
                 left join PSurveys on PSurveys.mfl_code=EnrichedFullfacilitylist.MFLCode collate Latin1_General_CI_AS
                 group by
                     EnrichedFullfacilitylist.MFLCode,
-                    EnrichedFullfacilitylist.FacilityName,
+                    EnrichedFullfacilitylist.Facility_Name,
                     EnrichedFullfacilitylist.SDIP,
                     EnrichedFullfacilitylist.EMR,
                     EnrichedFullfacilitylist.SubCounty,
