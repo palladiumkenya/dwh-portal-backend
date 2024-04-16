@@ -237,7 +237,7 @@ export class GetArtVerificationPendingSurveysByPartnerHandler
                 sum (TXCurr_khis)-sum (NUPIVerified)-sum (SurveysReceived) As Pendingsurveys
             from FacilitySummary
             where 
-                FacilitySummary.FacilityType = 'emr'
+                FacilitySummary.FacilityType  like '%EMR%'
         `;
 
         if (query.county) {
