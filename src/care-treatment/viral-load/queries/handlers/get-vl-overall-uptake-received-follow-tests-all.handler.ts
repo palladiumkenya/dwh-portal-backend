@@ -21,6 +21,7 @@ export class GetVlOverallUptakeReceivedFollowTestsAllHandler implements IQueryHa
                     WHEN ISNUMERIC(LatestVL1)=1 THEN
                         CASE
                             WHEN CAST(Replace(LatestVL1,',','')AS FLOAT) >=1000 THEN '>1000 Copies'
+                            WHEN CAST(Replace(LatestVL1,',','')AS FLOAT) >=200 AND CAST(Replace(LatestVL1,',','')AS FLOAT) < 1000 THEN '200-999'
                         END
                 END AS [LastVLResult],
                 LatestVLDate1Key as DateLAstVL,
@@ -29,6 +30,7 @@ export class GetVlOverallUptakeReceivedFollowTestsAllHandler implements IQueryHa
                     WHEN ISNUMERIC(LatestVL2)=1 THEN
                         CASE
                             WHEN CAST(Replace(LatestVL2,',','')AS FLOAT) >=1000 THEN '>1000 Copies'
+                            WHEN CAST(Replace(LatestVL2,',','')AS FLOAT) >=200 AND CAST(Replace(LatestVL2,',','')AS FLOAT) < 1000 THEN '200-999'
                         END
                 END AS [VL2Result]`,
             ])
@@ -91,7 +93,7 @@ export class GetVlOverallUptakeReceivedFollowTestsAllHandler implements IQueryHa
         const originalParams = vlOverallUptakeReceivedFollowAll.getParameters;
         vlOverallUptakeReceivedFollowAll.getQuery = () => {
             const a = originalQuery.call(vlOverallUptakeReceivedFollowAll);
-            return `WITH VL AS (${a}) SELECT Count (*) Num FROM VL WHERE  ARTOutcomeDescription='Active' and  VL2Result in ('>1000 Copies') and LastVLResult is not null  and DATEDIFF(MONTH,LatestVLDate2Key,GETDATE())<= 14`;
+            return `WITH VL AS (${a}) SELECT Count (*) Num FROM VL WHERE  ARTOutcomeDescription='Active' and  VL2Result in ('200-999', '>1000 Copies') and LastVLResult is not null  and DATEDIFF(MONTH,LatestVLDate2Key,GETDATE())<= 12`;
         };
 
         vlOverallUptakeReceivedFollowAll.getParameters = () => {
