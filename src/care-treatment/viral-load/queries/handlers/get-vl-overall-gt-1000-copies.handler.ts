@@ -18,6 +18,7 @@ export class GetVlOverallGt1000CopiesHandler
             .select([
                 `LastVL, lastVLDate, CASE WHEN ISNUMERIC(ValidVLResult)=1 THEN CASE 
                     WHEN CAST(Replace(ValidVLResult,',','')AS FLOAT) >= 1000 THEN '>1000 Copies' 
+                    WHEN CAST(Replace(ValidVLResult,',','')AS FLOAT) >=200 AND CAST(Replace(ValidVLResult,',','')AS FLOAT) < 1000 THEN '200-999'
                     END
                     ELSE NULL END AS [Last12MVLResult]`,
             ])
@@ -71,7 +72,7 @@ export class GetVlOverallGt1000CopiesHandler
         const originalParams = vlOverallUptakeGt1000.getParameters;
         vlOverallUptakeGt1000.getQuery = () => {
             const a = originalQuery.call(vlOverallUptakeGt1000);
-            return `WITH VL AS (${a}) SELECT Last12MVLResult, Count(*) Num  FROM VL WHERE Last12MVLResult in ('>1000 Copies') Group by Last12MVLResult`;
+            return `WITH VL AS (${a}) SELECT Last12MVLResult, Count(*) Num  FROM VL WHERE Last12MVLResult in ('200-999', '>1000 Copies') Group by Last12MVLResult`;
         };
         vlOverallUptakeGt1000.getParameters = () => {
             return originalParams.call(vlOverallUptakeGt1000);
