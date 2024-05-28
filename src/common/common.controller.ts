@@ -7,6 +7,12 @@ import { GetPartnersQuery } from './queries/impl/get-partners.query';
 import { GetAgenciesQuery } from './queries/impl/get-agencies.query';
 import { GetProjectsQuery } from './queries/impl/get-projects.query';
 import { GetSitesQuery } from './queries/impl/get-sites.query';
+import { GetFacilityStatusQuery } from './queries/impl/get-facility-status.query';
+import { GetFacilityStatusByPartnerQuery } from './queries/impl/get-facility-status-by-partner.query';
+import { GetFacilityLevelByOwnershipPartnerQuery } from './queries/impl/get-facility-level-by-ownership-partner.query';
+import { GetFacilityLevelByOwnershipCountyQuery } from './queries/impl/get-facility-level-by-ownership-county.query';
+import { GetFacilityByInfrastructureQuery } from './queries/impl/get-facility-by-infrastructure.query';
+import { GetFacilityLinelistQuery } from './queries/impl/get-facility-linelist.query';
 
 @Controller('common')
 export class CommonController {
@@ -194,6 +200,169 @@ export class CommonController {
         }
         if(project) {
             query.project = project;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('facilityStatus')
+    async getFacilityStatus(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+    ): Promise<any> {
+        const query = new GetFacilityStatusQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('facilityStatusByPartner')
+    async getFacilityStatusByPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+    ): Promise<any> {
+        const query = new GetFacilityStatusByPartnerQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('facilityLevelByOwnershipPartner')
+    async getFacilityLevelByOwnershipPartner(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+    ): Promise<any> {
+        const query = new GetFacilityLevelByOwnershipPartnerQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('facilityLevelByOwnershipCounty')
+    async getFacilityLevelByOwnershipCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+    ): Promise<any> {
+        const query = new GetFacilityLevelByOwnershipCountyQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('facilityByInfrastructure')
+    async getFacilityByInfrastructure(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+    ): Promise<any> {
+        const query = new GetFacilityByInfrastructureQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        return this.queryBus.execute(query);
+    }
+
+
+    @Get('facilityLinelist')
+    async getFacilityLinelist(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+    ): Promise<any> {
+        const query = new GetFacilityLinelistQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
         }
         return this.queryBus.execute(query);
     }
