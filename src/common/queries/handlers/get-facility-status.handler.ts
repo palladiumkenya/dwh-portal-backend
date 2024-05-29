@@ -12,25 +12,25 @@ export class GetFacilityStatusHandler implements IQueryHandler<GetFacilityStatus
     ) {}
 
     async execute(query: GetFacilityStatusQuery): Promise<any> {
-        const projects = this.repository
+        const facilitiesStatus = this.repository
             .createQueryBuilder('q')
             .select('COUNT(1) facilities, EMR_Status')
             .where('EMR_Status is not null');
 
         if (query.county) {
-            projects.andWhere('q.County IN (:...county)', {
+            facilitiesStatus.andWhere('q.County IN (:...county)', {
                 county: [query.county],
             });
         }
 
         if (query.subCounty) {
-            projects.andWhere('q.SubCounty IN (:...subCounty)', {
+            facilitiesStatus.andWhere('q.SubCounty IN (:...subCounty)', {
                 subCounty: [query.subCounty],
             });
         }
 
 
-        return await projects
+        return await facilitiesStatus
             .groupBy('q.EMR_Status')
             .distinct(true)
             .getRawMany();

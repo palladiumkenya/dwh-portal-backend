@@ -12,7 +12,7 @@ export class GetFacilityLinelistHandler implements IQueryHandler<GetFacilityLine
     ) {}
 
     async execute(query: GetFacilityLinelistQuery): Promise<any> {
-        const projects = this.repository
+        const facilitiesLineList = this.repository
             .createQueryBuilder('q')
             .select(
                 `MFLCode, FacilityName, SubCounty, County, 
@@ -21,19 +21,19 @@ export class GetFacilityLinelistHandler implements IQueryHandler<GetFacilityLine
             );
 
         if (query.county) {
-            projects.andWhere('q.County IN (:...county)', {
+            facilitiesLineList.andWhere('q.County IN (:...county)', {
                 county: [query.county],
             });
         }
 
         if (query.subCounty) {
-            projects.andWhere('q.SubCounty IN (:...subCounty)', {
+            facilitiesLineList.andWhere('q.SubCounty IN (:...subCounty)', {
                 subCounty: [query.subCounty],
             });
         }
 
 
-        return await projects
+        return await facilitiesLineList
             .orderBy('MFLCode')
             .distinct(true)
             .getRawMany();
