@@ -12,25 +12,25 @@ export class GetFacilityByInfrastructureHandler implements IQueryHandler<GetFaci
     ) {}
 
     async execute(query: GetFacilityByInfrastructureQuery): Promise<any> {
-        const projects = this.repository
+        const facilitiesInfrastructure = this.repository
             .createQueryBuilder('q')
             .select('COUNT(1) facilities, InfrastructureType, PartnerName')
-            .where('InfrastructureType is not null');
+            .where(`InfrastructureType is not null AND EMR_Status = 'Active'`);
 
         if (query.county) {
-            projects.andWhere('q.County IN (:...county)', {
+            facilitiesInfrastructure.andWhere('q.County IN (:...county)', {
                 county: [query.county],
             });
         }
 
         if (query.subCounty) {
-            projects.andWhere('q.SubCounty IN (:...subCounty)', {
+            facilitiesInfrastructure.andWhere('q.SubCounty IN (:...subCounty)', {
                 subCounty: [query.subCounty],
             });
         }
 
 
-        return await projects
+        return await facilitiesInfrastructure
             .groupBy('q.InfrastructureType, PartnerName')
             .orderBy('PartnerName')
             .distinct(true)

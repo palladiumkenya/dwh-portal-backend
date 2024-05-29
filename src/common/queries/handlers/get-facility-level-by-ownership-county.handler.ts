@@ -12,25 +12,25 @@ export class GetFacilityLevelByOwnershipCountyHandler implements IQueryHandler<G
     ) {}
 
     async execute(query: GetFacilityLevelByOwnershipCountyQuery): Promise<any> {
-        const projects = this.repository
+        const facilitiesOwnership = this.repository
             .createQueryBuilder('q')
             .select('COUNT(1) facilities, County, Keph_level')
-            .where('Keph_level is not null');
+            .where(`Keph_level is not null AND EMR_Status = 'Active'`);
 
         if (query.county) {
-            projects.andWhere('q.County IN (:...county)', {
+            facilitiesOwnership.andWhere('q.County IN (:...county)', {
                 county: [query.county],
             });
         }
 
         if (query.subCounty) {
-            projects.andWhere('q.SubCounty IN (:...subCounty)', {
+            facilitiesOwnership.andWhere('q.SubCounty IN (:...subCounty)', {
                 subCounty: [query.subCounty],
             });
         }
 
 
-        return await projects
+        return await facilitiesOwnership
             .groupBy('q.County, Keph_level')
             .orderBy('Keph_level')
             .orderBy('County')
