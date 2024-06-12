@@ -22,6 +22,7 @@ export class GetVlOverallUptakeReceivedFollowTestsHandler implements IQueryHandl
                         WHEN ISNUMERIC(LatestVL1)=1 THEN
                             CASE
                                 WHEN CAST(Replace(LatestVL1,',','')AS FLOAT) >=1000 THEN '>1000 Copies'
+                                WHEN CAST(Replace(LatestVL1,',','')AS FLOAT) >=200 AND CAST(Replace(LatestVL1,',','')AS FLOAT) < 1000 THEN '200-999'
                         END 
                     END AS [LastVLResult],
                     LatestVLDate1Key as DateLAstVL,
@@ -30,6 +31,7 @@ export class GetVlOverallUptakeReceivedFollowTestsHandler implements IQueryHandl
                         WHEN ISNUMERIC(LatestVL2)=1 THEN
                             CASE
                                 WHEN CAST(Replace(LatestVL2,',','')AS FLOAT) >=1000 THEN '>1000 Copies'
+                                WHEN CAST(Replace(LatestVL2,',','')AS FLOAT) >=200 AND CAST(Replace(LatestVL2,',','')AS FLOAT) < 1000 THEN '200-999'
                         END
                     END AS [VL2Result]`,
             ])
@@ -92,7 +94,7 @@ export class GetVlOverallUptakeReceivedFollowTestsHandler implements IQueryHandl
         const originalParams = vlOverallUptakeReceivedFollow.getParameters;
         vlOverallUptakeReceivedFollow.getQuery = () => {
             const a = originalQuery.call(vlOverallUptakeReceivedFollow);
-            return `WITH VL AS (${a}) SELECT LastVLResult, Count (*) Num FROM VL WHERE ARTOutcomeDescription ='Active' and VL2Result in ('>1000 Copies') and DATEDIFF(MONTH,LatestVLDate2Key,GETDATE())<= 14 group by LastVLResult`;
+            return `WITH VL AS (${a}) SELECT LastVLResult, Count (*) Num FROM VL WHERE ARTOutcomeDescription ='Active' and VL2Result in ('200-999', '>1000 Copies') and DATEDIFF(MONTH,LatestVLDate2Key,GETDATE())<= 12 group by LastVLResult`;
         };
 
         vlOverallUptakeReceivedFollow.getParameters = () => {
