@@ -29,7 +29,6 @@ export class GetFacilityStatusByPartnerHandler implements IQueryHandler<GetFacil
             });
         }
 
-
         return await facilitiesStatus
             .groupBy('q.EMR_Status, PartnerName')
             .orderBy('PartnerName')
