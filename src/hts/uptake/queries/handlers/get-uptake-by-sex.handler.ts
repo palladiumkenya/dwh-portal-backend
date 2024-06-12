@@ -2,55 +2,44 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeBySexQuery } from '../impl/get-uptake-by-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetUptakeBySexQuery)
 export class GetUptakeBySexHandler
     implements IQueryHandler<GetUptakeBySexQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetUptakeBySexQuery): Promise<any> {
         const params = [];
-        let uptakeBySexSql = `SELECT
-                CASE WHEN Gender = 'M' THEN 'Male' WHEN Gender = 'F' THEN 'Female' ELSE Gender END gender,
+
+        let uptakeBySexSql = this.repository
+            .createQueryBuilder('q')
+            .select(
+                `Gender gender, 
                 SUM(Tested) tested, 
                 SUM(Positive) positive, 
-                ((CAST(SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) AS FLOAT)/CAST(SUM(Tested) AS FLOAT))*100) AS positivity
-            FROM
-                NDWH.dbo.FactHTSClientTests AS link
-                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE Tested > 0 and TestType IN ('Initial', 'Initial Test')`;
+                ((CAST(SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) AS FLOAT)/CAST(SUM(Tested) AS FLOAT))*100) AS positivity`
+            )
+            .where(`Tested > 0`)
 
         if (query.county) {
-            uptakeBySexSql = `${uptakeBySexSql} and County IN ('${query.county
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeBySexSql.andWhere('County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            uptakeBySexSql = `${uptakeBySexSql} and SubCounty IN ('${query.subCounty
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeBySexSql.andWhere('SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
-            uptakeBySexSql = `${uptakeBySexSql} and FacilityName IN ('${query.facility
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeBySexSql.andWhere('FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
+
         if (query.partner) {
-            uptakeBySexSql = `${uptakeBySexSql} and PartnerName IN ('${query.partner
-                .toString()
-                .replace(/,/g, "','")}')`;
-            params.push(query.partner);
+            uptakeBySexSql.andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         // if(query.month) {
@@ -64,14 +53,22 @@ export class GetUptakeBySexHandler
         // }
 
         if (query.fromDate) {
-            uptakeBySexSql = `${uptakeBySexSql} and DateTestedKey >= ${query.fromDate}01`;
+            let year = `${query.fromDate}`.substring(0, 4); // Extract year
+            let month = `${query.fromDate}`.substring(4, 6); // Extract month
+            let formattedDate = `${year}-${month}-01`;
+            uptakeBySexSql.andWhere('AsOfDate >= :fromDate', { fromDate: formattedDate });
         }
 
         if (query.toDate) {
-            uptakeBySexSql = `${uptakeBySexSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
+            let toDate = `${query.toDate}`;
+            let year = toDate.substring(0, 4);
+            let month = toDate.substring(4, 6);
+            let formattedDate = `${year}-${month}-01`;
+            uptakeBySexSql.andWhere('AsOfDate <=  EOMONTH(:toDate)', { toDate: formattedDate });
         }
 
-        uptakeBySexSql = `${uptakeBySexSql} GROUP BY CASE WHEN Gender = 'M' THEN 'Male' WHEN Gender = 'F' THEN 'Female' ELSE Gender END`;
-        return await this.repository.query(uptakeBySexSql, params);
+        return await uptakeBySexSql
+            .groupBy('Gender')
+            .getRawMany();
     }
 }
