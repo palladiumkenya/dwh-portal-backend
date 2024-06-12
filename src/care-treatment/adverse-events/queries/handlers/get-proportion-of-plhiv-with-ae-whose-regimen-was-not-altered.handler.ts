@@ -3,7 +3,7 @@ import { GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery } from '../imp
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransAeActionDrug } from '../../entities/fact-trans-ae-action-drug.model';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery)
 export class GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler implements IQueryHandler<GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery> {
