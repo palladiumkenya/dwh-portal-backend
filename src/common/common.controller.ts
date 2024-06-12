@@ -14,6 +14,8 @@ import { GetFacilityLevelByOwnershipCountyQuery } from './queries/impl/get-facil
 import { GetFacilityByInfrastructureQuery } from './queries/impl/get-facility-by-infrastructure.query';
 import { GetFacilityLinelistQuery } from './queries/impl/get-facility-linelist.query';
 import { GetFacilityTxcurrQuery } from './queries/impl/get-facility-txcurr.query';
+import { GetFacilityStatusByCountyQuery } from './queries/impl/get-facility-status-by-county.query';
+import { GetFacilityByInfrastructureCountyQuery } from './queries/impl/get-facility-by-infrastructure-county.query';
 
 @Controller('common')
 export class CommonController {
@@ -378,6 +380,62 @@ export class CommonController {
         @Query('agency') agency,
     ): Promise<any> {
         const query = new GetFacilityTxcurrQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        return this.queryBus.execute(query);
+    }
+
+
+    @Get('facilityByInfrastructureCounty')
+    async getFacilityByInfrastructureCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+    ): Promise<any> {
+        const query = new GetFacilityByInfrastructureCountyQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        return this.queryBus.execute(query);
+    }
+
+
+    @Get('facilityStatusByCounty')
+    async getFacilityStatusByCounty(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+    ): Promise<any> {
+        const query = new GetFacilityStatusByCountyQuery();
         if(county) {
             query.county = county;
         }
