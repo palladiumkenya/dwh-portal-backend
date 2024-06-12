@@ -3,18 +3,23 @@ import { GetDsdAppointmentDurationCategorizationByStabilityStatusQuery } from '.
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransDsdAppointmentByStabilityStatus } from '../../entities/fact-trans-dsd-appointment-by-stability-status.model';
 import { Repository } from 'typeorm';
+import {AggregateDSD} from "../../entities/aggregate-dsd.model";
+import {AggregateDSDApptsByStability} from "../../entities/aggregate-dsd-appts-by-stability.model";
 
 @QueryHandler(GetDsdAppointmentDurationCategorizationByStabilityStatusQuery)
 export class GetDsdAppointmentDurationCategorizationByStabilityStatusHandler implements IQueryHandler<GetDsdAppointmentDurationCategorizationByStabilityStatusQuery> {
     constructor(
-        @InjectRepository(FactTransDsdAppointmentByStabilityStatus, 'mssql')
-        private readonly repository: Repository<FactTransDsdAppointmentByStabilityStatus>
+        @InjectRepository(AggregateDSDApptsByStability, 'mssql')
+        private readonly repository: Repository<AggregateDSDApptsByStability>
     ) {
     }
 
     async execute(query: GetDsdAppointmentDurationCategorizationByStabilityStatusQuery): Promise<any> {
-        const dsdAppointmentCategorization = this.repository.createQueryBuilder('f')
-            .select(['SUM(NUMPatients) AS patients, AppointmentsCategory, Stability, CAST((cast(SUM(NUMPatients) as decimal (9,2))/ (SUM(SUM(NUMPatients)) OVER (PARTITION BY Stability ORDER BY Stability))*100) as decimal(8,2))  AS proportionByStability'])
+        const dsdAppointmentCategorization = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'SUM(patients_number) AS patients, AppointmentsCategory, StabilityAssessment Stability',
+            ])
             .where('f.[AppointmentsCategory] IS NOT NULL');
 
         if (query.county) {
@@ -30,15 +35,15 @@ export class GetDsdAppointmentDurationCategorizationByStabilityStatusHandler imp
         }
 
         if (query.partner) {
-            dsdAppointmentCategorization.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdAppointmentCategorization.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdAppointmentCategorization.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdAppointmentCategorization.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
-        if (query.datimAgeGroup) {
-            dsdAppointmentCategorization.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        if (query.ageGroup) {
+            dsdAppointmentCategorization.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.ageGroup });
         }
 
         if (query.gender) {
@@ -46,8 +51,8 @@ export class GetDsdAppointmentDurationCategorizationByStabilityStatusHandler imp
         }
 
         return await dsdAppointmentCategorization
-            .groupBy('[Stability], [AppointmentsCategory]')
-            .orderBy('AppointmentsCategory, Stability')
+            .groupBy('[StabilityAssessment], [AppointmentsCategory]')
+            .orderBy('AppointmentsCategory, StabilityAssessment', )
             .getRawMany();
     }
 }

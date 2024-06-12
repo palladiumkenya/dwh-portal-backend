@@ -3,21 +3,25 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { GetTreatmentOutcomesUndocumentedByFacilityQuery } from '../impl/get-treatment-outcomes-undocumented-by-facility.query';
+import { AggregateTreatmentOutcomes } from './../../entities/aggregate-treatment-outcomes.model';
 
 @QueryHandler(GetTreatmentOutcomesUndocumentedByFacilityQuery)
 export class GetTreatmentOutcomesUndocumentedByFacilityHandler implements IQueryHandler<GetTreatmentOutcomesUndocumentedByFacilityQuery> {
     constructor(
-        @InjectRepository(FactTransNewCohort, 'mssql')
-        private readonly repository: Repository<FactTransNewCohort>
+        @InjectRepository(AggregateTreatmentOutcomes, 'mssql')
+        private readonly repository: Repository<AggregateTreatmentOutcomes>
     ) {
     }
 
     async execute(query: GetTreatmentOutcomesUndocumentedByFacilityQuery): Promise<any> {
-        const treatmentOutcomesUndocumentedByFacility = this.repository.createQueryBuilder('f')
-            .select(['MFLCode mfl, FacilityName facility, County county, SubCounty subCounty, CTPartner partner, COUNT(*) patients'])
+        const treatmentOutcomesUndocumentedByFacility = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'MFLCode mfl, FacilityName facility, County county, SubCounty subCounty, PartnerName partner, SUM(TotalOutcomes) patients',
+            ])
             .where('MFLCode > 0')
-            .andWhere('StartARTDate IS NOT NULL')
-            .andWhere("ARTOutcome = 'UL'");
+            .andWhere('StartYear IS NOT NULL')
+            .andWhere("ARTOutcomeDescription = 'Undocumented Loss'");
 
         if (query.county) {
             treatmentOutcomesUndocumentedByFacility.andWhere('County IN (:...counties)', { counties: query.county });
@@ -32,11 +36,11 @@ export class GetTreatmentOutcomesUndocumentedByFacilityHandler implements IQuery
         }
 
         if (query.partner) {
-            treatmentOutcomesUndocumentedByFacility.andWhere('CTPartner IN (:...partners)', { partners: query.partner });
+            treatmentOutcomesUndocumentedByFacility.andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            treatmentOutcomesUndocumentedByFacility.andWhere('CTAgency IN (:...agency)', { agency: query.agency });
+            treatmentOutcomesUndocumentedByFacility.andWhere('AgencyName IN (:...agency)', { agency: query.agency });
         }
 
         // if (query.project) {
@@ -47,10 +51,9 @@ export class GetTreatmentOutcomesUndocumentedByFacilityHandler implements IQuery
             treatmentOutcomesUndocumentedByFacility.andWhere('Gender IN (:...gender)', { gender: query.gender });
         }
 
-        // if (query.datimAgeGroup) {
-        // lacking age group
-        //     treatmentOutcomesUndocumentedByFacility.andWhere('DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
-        // }
+        if (query.datimAgeGroup) {
+            treatmentOutcomesUndocumentedByFacility.andWhere('DATIM_AgeGroup IN (:...datimAgeGroup)', { datimAgeGroup: query.datimAgeGroup });
+        }
 
         if (query.populationType) {
             treatmentOutcomesUndocumentedByFacility.andWhere('PopulationType IN (:...populationType)', { populationType: query.populationType });
@@ -61,7 +64,7 @@ export class GetTreatmentOutcomesUndocumentedByFacilityHandler implements IQuery
         }
 
         return await treatmentOutcomesUndocumentedByFacility
-            .groupBy('FacilityName, MFLCode, County, SubCounty, CTPartner')
+            .groupBy('FacilityName, MFLCode, County, SubCounty, PartnerName')
             .orderBy('FacilityName')
             .getRawMany();
     }

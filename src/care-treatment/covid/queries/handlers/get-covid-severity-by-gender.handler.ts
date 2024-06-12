@@ -5,52 +5,58 @@ import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
+import { LineListCovid } from './../../entities/linelist-covid.model';
 
 @QueryHandler(GetCovidSeverityByGenderQuery)
 export class GetCovidSeverityByGenderHandler implements IQueryHandler<GetCovidSeverityByGenderQuery> {
     constructor(
-        @InjectRepository(FactTransCovidVaccines, 'mssql')
-        private readonly repository: Repository<FactTransCovidVaccines>
+        @InjectRepository(LineListCovid, 'mssql')
+        private readonly repository: Repository<LineListCovid>
     ) {
     }
 
     async execute(query: GetCovidSeverityByGenderQuery): Promise<any> {
-        const covidSeverityByGender = this.repository.createQueryBuilder('f')
-            .select(['Gender, PatientStatus, Count (*) Num'])
-            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
-            .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('ARTOutcome=\'V\'');
+        const covidSeverityByGender = this.repository
+            .createQueryBuilder('g')
+            .select([
+                'PatientStatus, Gender, Case ' +
+                    "When PatientStatus='No' then 'Asymptomatic' " +
+                    "When PatientStatus= 'Yes' then 'Symptomatic' " +
+                    'Else PatientStatus end as PatientStatusComputed, ' +
+                    'count (*) Num',
+            ])
+            .where('PatientStatus is not null ');
 
         if (query.county) {
-            covidSeverityByGender.andWhere('f.County IN (:...counties)', { counties: query.county });
+            covidSeverityByGender.andWhere('County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            covidSeverityByGender.andWhere('f.SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
+            covidSeverityByGender.andWhere('SubCounty IN (:...subCounties)', { subCounties: query.subCounty });
         }
 
         if (query.facility) {
-            covidSeverityByGender.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+            covidSeverityByGender.andWhere('FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
-            covidSeverityByGender.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            covidSeverityByGender.andWhere('PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            covidSeverityByGender.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            covidSeverityByGender.andWhere('AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
-            covidSeverityByGender.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            covidSeverityByGender.andWhere('Gender IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
-            covidSeverityByGender.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            covidSeverityByGender.andWhere('AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await covidSeverityByGender
-            .groupBy('Gender,PatientStatus')
+            .groupBy('Gender, PatientStatus')
             .getRawMany();
     }
 }

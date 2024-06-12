@@ -1,21 +1,20 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOvcDistributionByPartnerQuery } from '../impl/get-ovc-distribution-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
+import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetOvcDistributionByPartnerQuery)
 export class GetOvcDistributionByPartnerHandler implements IQueryHandler<GetOvcDistributionByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransOvcEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(LineListOVCEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOVCEnrollments>
     ) {
     }
 
     async execute(query: GetOvcDistributionByPartnerQuery): Promise<any> {
         const overOvcServByPartner = this.repository.createQueryBuilder('f')
-            .select(['COUNT(*) count, [CTPartner] partner, COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS Percentage'])
+            .select(['COUNT(*) count, [PartnerName] partner, COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS Percentage'])
             .andWhere('f.OVCEnrollmentDate IS NOT NULL and TXCurr=1');
 
         if (query.county) {
@@ -31,11 +30,11 @@ export class GetOvcDistributionByPartnerHandler implements IQueryHandler<GetOvcD
         }
 
         if (query.partner) {
-            overOvcServByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            overOvcServByPartner.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            overOvcServByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            overOvcServByPartner.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -43,11 +42,11 @@ export class GetOvcDistributionByPartnerHandler implements IQueryHandler<GetOvcD
         }
 
         if (query.datimAgeGroup) {
-            overOvcServByPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            overOvcServByPartner.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         return await overOvcServByPartner
-            .groupBy('CTPartner')
+            .groupBy('PartnerName')
             .getRawMany();
     }
 }

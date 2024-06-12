@@ -15,7 +15,7 @@ export class FactTransAdverseEvents {
     SubCounty: string;
 
     @Column('text')
-    CTPartner: string;
+    PartnerName: string;
 
     @Column('text')
     Gender: string;

@@ -3,45 +3,82 @@ import { GetPnsSexualContactsCascadeQuery } from '../impl/get-pns-sexual-contact
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactPNSSexualPartner } from '../../entities/fact-pns-sexual-partner.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetPnsSexualContactsCascadeQuery)
 export class GetPnsSexualContactsCascadeHandler implements IQueryHandler<GetPnsSexualContactsCascadeQuery> {
     constructor(
-        @InjectRepository(FactPNSSexualPartner)
-        private readonly repository: Repository<FactPNSSexualPartner>
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>
     ) {
 
     }
 
     async execute(query: GetPnsSexualContactsCascadeQuery): Promise<any> {
-        const pnsSexualContactsCascade = this.repository.createQueryBuilder('q')
-            .select(['SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
-            .where('q.Mflcode IS NOT NULL');
+        let pnsSexualContactsCascade = `Select 
+                Sum(PartnersElicited) elicited,
+                sum(PartnerTested) tested,
+                Sum(Positive) positive,
+                sum(Linked) linked,
+                
+                Sum(KnownPositive) knownPositive
+            FROM [dbo].[AggregateHTSPNSSexualPartner]
+            where MFLCode is not null
+        `;
+        // this.repository.createQueryBuilder('q')
+        //     .select(['SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
+        //     .where('q.Mflcode IS NOT NULL');
 
-        if(query.county) {
-            pnsSexualContactsCascade.andWhere('q.County IN (:...county)', { county: query.county });
+        if (query.county) {
+            pnsSexualContactsCascade = `${pnsSexualContactsCascade} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.subCounty) {
-            pnsSexualContactsCascade.andWhere('q.SubCounty IN (:...subCounty)', { subCounty: query.subCounty });
+        if (query.subCounty) {
+            pnsSexualContactsCascade = `${pnsSexualContactsCascade} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.facility) {
-            pnsSexualContactsCascade.andWhere('q.FacilityName IN (:...facility)', { facility: query.facility });
+        if (query.facility) {
+            pnsSexualContactsCascade = `${pnsSexualContactsCascade} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.partner) {
-            pnsSexualContactsCascade.andWhere('q.CTPartner IN (:...partner)', { partner: query.partner });
+        if (query.partner) {
+            pnsSexualContactsCascade = `${pnsSexualContactsCascade} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`;
         }
 
-        if(query.month) {
-            pnsSexualContactsCascade.andWhere('q.month = :month', { month: query.month });
+        // if (query.agency) {
+        //     pnsSexualContactsCascade = `${pnsSexualContactsCascade} and agencyName IN ('${query.agency
+        //         .toString()
+        //         .replace(/,/g, "','")}')`;
+        // }
+
+        // if(query.month) {
+        //     pnsSexualContactsCascade.andWhere('q.month = :month', { month: query.month });
+        // }
+
+        // if(query.year) {
+        //     pnsSexualContactsCascade.andWhere('q.year = :year', { year: query.year});
+        // }
+
+        if (query.fromDate) {
+            const fromYear = parseInt(query.fromDate.substring(0, 4));
+            const fromMonth = parseInt(query.fromDate.substring(4));
+            pnsSexualContactsCascade = `${pnsSexualContactsCascade} and (year > ${fromYear} or (year = ${fromYear} and month >= ${fromMonth}))`;
         }
 
-        if(query.year) {
-            pnsSexualContactsCascade.andWhere('q.year = :year', { year: query.year});
+        if (query.toDate) {
+            const toYear = parseInt(query.toDate.substring(0, 4));
+            const toMonth = parseInt(query.toDate.substring(4));
+            pnsSexualContactsCascade = `${pnsSexualContactsCascade} and (year < ${toYear} or (year = ${toYear} and month <= ${toMonth}))`;
         }
 
-        return await pnsSexualContactsCascade.getRawOne();
+        return await this.repository.query(pnsSexualContactsCascade, []);
     }
 }

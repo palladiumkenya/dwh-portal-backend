@@ -5,21 +5,19 @@ import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines
 import { Repository } from 'typeorm';
 import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
+import {LineListCovid} from "../../entities/linelist-covid.model";
 
 @QueryHandler(GetCovidAdultPlhivVaccinatedByPartnerQuery)
 export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandler<GetCovidAdultPlhivVaccinatedByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransCovidVaccines, 'mssql')
-        private readonly repository: Repository<FactTransCovidVaccines>
+        @InjectRepository(LineListCovid, 'mssql')
+        private readonly repository: Repository<LineListCovid>
     ) {
     }
 
     async execute(query: GetCovidAdultPlhivVaccinatedByPartnerQuery): Promise<any> {
-        const adultPLHIVVaccinatedByPartner = this.repository.createQueryBuilder('f')
-            .select(['VaccinationStatus, f.CTPartner, Count (*) Num'])
-            .leftJoin(FactTransNewCohort, 'g', 'f.PatientID = g.PatientID and f.SiteCode=g.MFLCode and f.PatientPK=g.PatientPK')
-            .innerJoin(DimAgeGroups, 'v', 'g.ageLV = v.Age')
-            .where('g.ageLV >= 18 AND g.ARTOutcome = \'V\'');
+        const adultPLHIVVaccinatedByPartner = this.repository.createQueryBuilder('g')
+            .select(['g.VaccinationStatus, g.PartnerName CTPartner, Count (*) Num'])
 
         if (query.county) {
             adultPLHIVVaccinatedByPartner.andWhere('g.County IN (:...counties)', { counties: query.county });
@@ -30,27 +28,27 @@ export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandl
         }
 
         if (query.facility) {
-            adultPLHIVVaccinatedByPartner.andWhere('f.FacilityName IN (:...facilities)', { facilities: query.facility });
+            adultPLHIVVaccinatedByPartner.andWhere('FacilityName IN (:...facilities)', { facilities: query.facility });
         }
 
         if (query.partner) {
-            adultPLHIVVaccinatedByPartner.andWhere('g.CTPartner IN (:...partners)', { partners: query.partner });
+            adultPLHIVVaccinatedByPartner.andWhere('g.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            adultPLHIVVaccinatedByPartner.andWhere('g.CTAgency IN (:...agencies)', { agencies: query.agency });
+            adultPLHIVVaccinatedByPartner.andWhere('g.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
-            adultPLHIVVaccinatedByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            adultPLHIVVaccinatedByPartner.andWhere('Gender IN (:...genders)', { genders: query.gender });
         }
 
-        if (query.datimAgeGroup) {
-            adultPLHIVVaccinatedByPartner.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+        if (query.ageGroup) {
+            adultPLHIVVaccinatedByPartner.andWhere('AgeGroup IN (:...ageGroups)', { ageGroups: query.ageGroup });
         }
 
         return await adultPLHIVVaccinatedByPartner
-            .groupBy('f.CTPartner,VaccinationStatus')
+            .groupBy('g.PartnerName,g.VaccinationStatus')
             .getRawMany();
     }
 }

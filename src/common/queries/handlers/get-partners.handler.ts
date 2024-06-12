@@ -3,28 +3,32 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DimFacility } from '../../entities/dim-facility.entity';
 import { GetPartnersQuery } from '../impl/get-partners.query';
+import { AllEmrSites } from './../../../care-treatment/common/entities/all-emr-sites.model';
 
 
 @QueryHandler(GetPartnersQuery)
 export class GetPartnersHandler implements IQueryHandler<GetPartnersQuery> {
     constructor(
-        @InjectRepository(DimFacility)
-        private readonly repository: Repository<DimFacility>,
-    ) {
-        
-    }
+        @InjectRepository(AllEmrSites, 'mssql')
+        private readonly repository: Repository<AllEmrSites>,
+    ) {}
 
     async execute(query: GetPartnersQuery): Promise<any> {
-        const partners = this.repository.createQueryBuilder('q')
-            .select('q.partner', 'partner')
-            .where('q.facilityId > 0');
+        const partners = this.repository
+            .createQueryBuilder('q')
+            .select('q.partnerName', 'partner')
+            .where('q.MFLCode > 0');
 
         if (query.county) {
-            partners.andWhere('q.county IN (:...county)', { county: [query.county] });
+            partners.andWhere('q.county IN (:...county)', {
+                county: [query.county],
+            });
         }
 
         if (query.subCounty) {
-            partners.andWhere('q.subCounty IN (:...subCounty)', { subCounty: [query.subCounty] });
+            partners.andWhere('q.subCounty IN (:...subCounty)', {
+                subCounty: [query.subCounty],
+            });
         }
 
         // if (query.facility) {
@@ -43,7 +47,9 @@ export class GetPartnersHandler implements IQueryHandler<GetPartnersQuery> {
         //     partners.andWhere('q.project IN (:...project)', { project: [query.project] });
         // }
 
-        return await partners.orderBy('q.partner').distinct(true).getRawMany();
+        return await partners
+            .orderBy('q.partnerName')
+            .distinct(true)
+            .getRawMany();
     }
-
 }

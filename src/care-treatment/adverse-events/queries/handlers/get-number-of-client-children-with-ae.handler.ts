@@ -1,22 +1,25 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetNumberOfClientChildrenWithAeQuery } from '../impl/get-number-of-client-children-with-ae.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAeClients } from '../../entities/fact-trans-ae-clients.model';
 import { Repository } from 'typeorm';
+import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetNumberOfClientChildrenWithAeQuery)
 export class GetNumberOfClientChildrenWithAeHandler implements IQueryHandler<GetNumberOfClientChildrenWithAeQuery> {
     constructor(
-        @InjectRepository(FactTransAeClients, 'mssql')
-        private readonly repository: Repository<FactTransAeClients>
+        @InjectRepository(AggregateAdverseEvents, 'mssql')
+        private readonly repository: Repository<AggregateAdverseEvents>
     ) {
     }
 
 
     async execute(query: GetNumberOfClientChildrenWithAeQuery): Promise<any> {
-        const noOfClientsChildrenWithAe = this.repository.createQueryBuilder('f')
-            .select('SUM([Total]) total')
-            .where('[AgeGroup] IN (\'Under 1\', \'1 to 4\', \'5 to 9\', \'10 to 14\')');
+        const noOfClientsChildrenWithAe = this.repository
+            .createQueryBuilder('f')
+            .select('SUM([AdverseClientsCount]) total')
+            .where(
+                "[DATIMAgeGroup] IN (' Under 1', '01 to 04', '05 to 109', '10 to 14')",
+            );
 
         if (query.county) {
             noOfClientsChildrenWithAe
@@ -35,15 +38,15 @@ export class GetNumberOfClientChildrenWithAeHandler implements IQueryHandler<Get
 
         if (query.partner) {
             noOfClientsChildrenWithAe
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            noOfClientsChildrenWithAe.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            noOfClientsChildrenWithAe.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            noOfClientsChildrenWithAe.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            noOfClientsChildrenWithAe.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

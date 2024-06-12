@@ -3,13 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetCountiesQuery } from '../impl/get-counties.query';
 import { DimFacility } from '../../entities/dim-facility.entity';
+import { AllEmrSites } from './../../../care-treatment/common/entities/all-emr-sites.model';
 
 
 @QueryHandler(GetCountiesQuery)
 export class GetCountiesHandler implements IQueryHandler<GetCountiesQuery> {
     constructor(
-        @InjectRepository(DimFacility)
-        private readonly repository: Repository<DimFacility>,
+        @InjectRepository(AllEmrSites, 'mssql')
+        private readonly repository: Repository<AllEmrSites>,
     ) {
 
     }
@@ -17,7 +18,7 @@ export class GetCountiesHandler implements IQueryHandler<GetCountiesQuery> {
     async execute(query: GetCountiesQuery): Promise<any> {
         const counties = this.repository.createQueryBuilder('q')
             .select('q.county', 'county')
-            .where('q.facilityId > 0');
+            .where('q.MFLCode > 0');
 
         // if (query.county) {
         //     counties.andWhere('q.county IN (:...county)', { county: [query.county] });

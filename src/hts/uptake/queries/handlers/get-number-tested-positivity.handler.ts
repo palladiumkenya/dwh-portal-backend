@@ -1,67 +1,69 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetNumberTestedPositivityQuery } from '../impl/get-number-tested-positivity.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
+import { AggregateHTSUptake } from '../../entities/aggregate-hts-uptake.model';
 
 
 @QueryHandler(GetNumberTestedPositivityQuery)
-export class GetNumberTestedPositivityHandler implements IQueryHandler<GetNumberTestedPositivityQuery> {
+export class GetNumberTestedPositivityHandler
+    implements IQueryHandler<GetNumberTestedPositivityQuery> {
     constructor(
-        @InjectRepository(FactHtsUptake)
-        private readonly repository: Repository<FactHtsUptake>
-    ) {
-    }
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
+    ) {}
 
     async execute(query: GetNumberTestedPositivityQuery): Promise<any> {
         const params = [];
-        let numberTestedPositivitySql = 'SELECT year,month, SUM(Tested) Tested, TestedBefore, ' +
-            'SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive, ' +
-            '((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity ' +
-            'FROM fact_htsuptake WHERE Tested IS NOT NULL ';
+        let numberTestedPositivitySql = this.repository.createQueryBuilder('f').
+            select([`year, month, TestedBefore,
+                SUM(Tested) Tested,
+                SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive,
+                SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END) linked,
+                ((CAST(SUM(linked) AS FLOAT)/NULLIF(CAST(SUM(positive)AS FLOAT), 0))*100) AS linkage`]);
 
-        if(query.county) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and County IN (?)`;
-            params.push(query.county);
+        if (query.county) {
+            numberTestedPositivitySql.andWhere('f.County IN (:...counties)', { counties: query.county });;
         }
 
-        if(query.subCounty) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and SubCounty IN (?)`;
-            params.push(query.subCounty);
+        if (query.subCounty) {
+            numberTestedPositivitySql.andWhere(
+                'f.SubCounty IN (:...subCounties)',
+                { subCounties: query.subCounty },
+            );
         }
 
-        if(query.facility) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and FacilityName IN (?)`;
-            params.push(query.facility);
+        if (query.facility) {
+            numberTestedPositivitySql.andWhere(
+                'f.FacilityName IN (:...facilities)',
+                { facilities: query.facility },
+            );
         }
 
-        if(query.partner) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and CTPartner IN (?)`;
-            params.push(query.partner);
+        if (query.partner) {
+            numberTestedPositivitySql.andWhere(
+                'f.PartnerName IN (:...partners)',
+                { partners: query.partner },
+            );
         }
 
-        if(query.month) {
-            numberTestedPositivitySql = `${numberTestedPositivitySql} and month=?`;
-            params.push(query.month);
+        if (query.fromDate) {
+            numberTestedPositivitySql.andWhere(`year >= ${query.fromDate.substring(0, 4)}`);
+            numberTestedPositivitySql.andWhere(`month >= ${query.fromDate.substring(4)}`);
         }
 
-        if(query.year) {
-            const dateVal = new Date();
-            const yearVal = dateVal.getFullYear();
-
-            if(query.year == yearVal) {
-                numberTestedPositivitySql = `${numberTestedPositivitySql} and  (YEAR >= YEAR(DATE_SUB(NOW(), INTERVAL 11 MONTH)))`;
-            } else {
-                numberTestedPositivitySql = `${numberTestedPositivitySql} and year=?`;
-            }
-
-            params.push(query.year);
+        if (query.toDate) {
+            numberTestedPositivitySql.andWhere(
+                `year <= ${query.toDate.substring(0, 4)}`,
+            );
+            numberTestedPositivitySql.andWhere(
+                `month <= ${query.toDate.substring(4)}`,
+            );
         }
 
-        numberTestedPositivitySql = `${numberTestedPositivitySql} GROUP BY TestedBefore, year,month`;
-
-        numberTestedPositivitySql = `${numberTestedPositivitySql} ORDER BY TestedBefore, year,month`;
-
-        return await this.repository.query(numberTestedPositivitySql, params);
+        return await numberTestedPositivitySql
+            .groupBy(`TestedBefore, year, month`)
+            .orderBy(`TestedBefore`).addOrderBy(`year`).addOrderBy(`month`)
+            .getRawMany();
     }
 }

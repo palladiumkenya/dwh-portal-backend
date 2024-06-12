@@ -4,19 +4,13 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigurationModule } from '../config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { FactHtsUptake } from './uptake/entities/fact-htsuptake.entity';
-import { FactHtsUptakeAgeGender } from './uptake/entities/fact-htsuptake-agegender.entity';
-import { FactHtsPopulationType } from './uptake/entities/fact-hts-populationtype.entity';
-import { FactHtsTeststrategy } from './uptake/entities/fact-hts-teststrategy.entity';
-import { FactHtsEntryPoint } from './uptake/entities/fact-hts-entrypoint.entity';
-import { FactHtsClientTestedAs } from './uptake/entities/fact-hts-clienttestedas.entity';
-import { FactHtsMonthsLastTest } from './uptake/entities/fact-hts-monthslasttest.entity';
-import { FactHtsTBScreening } from './uptake/entities/fact-hts-tbscreening.entity';
-import { FactHtsClientSelfTested } from './uptake/entities/fact-hts-clientselftested.entity';
-import { FactHtsuptake } from './pns/entities/fact-htsuptake.entity';
-import { FactPNSSexualPartner } from './pns/entities/fact-pns-sexual-partner.entity';
-import { FactPNSChildren } from './pns/entities/fact-pns-children.entity';
-import { FactPNSKnowledgeHivStatus } from './pns/entities/fact-pns-knowledge-hiv-status.entity';
+
+import { FactPrep } from './prep/entities/fact-prep.model';
+import { AggregateHTSUptake } from './uptake/entities/aggregate-hts-uptake.model';
+import { FactHTSClientTests } from './linkage/entities/fact-hts-client-tests.model';
+import { FactHTSClientLinkages } from './linkage/entities/fact-hts-client-linkages.model';
+import { FactHTSClientTracing } from './linkage/entities/fact-hts-client-tracing.model';
+import { AllEmrSites } from '../care-treatment/common/entities/all-emr-sites.model';
 
 import { GetHtsCountiesHandler } from './common/queries/handlers/get-hts-counties.handler';
 import { GetHtsSubCountiesHandler } from './common/queries/handlers/get-hts-sub-counties.handler';
@@ -63,25 +57,46 @@ import { GetPnsChildrenByYearHandler } from './pns/queries/handlers/get-pns-chil
 import { GetPnsIndexHandler } from './pns/queries/handlers/get-pns-index.handler';
 import { GetPnsKnowledgeHivStatusCascadeHandler } from './pns/queries/handlers/get-pns-knowledge-hiv-status-cascade.handler';
 
+import { GetNewOnPrepHandler } from './prep/queries/handlers/get-new-on-prep.handler';
+import { GetPrepDiscontinuationHandler } from './prep/queries/handlers/get-prep-discontinuation';
+import { GetPrepDiscontinuationReasonHandler } from './prep/queries/handlers/get-prep-discontinuation-reason';
+import { GetNewOnPrepByAgeSexHandler } from './prep/queries/handlers/get-new-on-prep-by-age-sex.handler';
+import { GetNewOnPrepTrendsHandler } from './prep/queries/handlers/get-new-on-prep-trends.handler';
+import { GetPrepEligibleTrendsHandler } from './prep/queries/handlers/get-prep-eligible-trends.handler';
+import { GetCTPrepHandler } from './prep/queries/handlers/get-ct-prep.handler';
+import { GetPrepScreenedTrendsHandler } from './prep/queries/handlers/get-prep-screened-trends.handler';
+import { GetPrepEligibleByAgegroupHandler } from './prep/queries/handlers/get-prep-eligible-by-agegroup.handler';
+import { GetPrepSTIScreenedOutcomeHandler } from './prep/queries/handlers/get-prep-sti-screening-outcome.handler';
+import { GetPrepSTITreatmentOutcomeHandler } from './prep/queries/handlers/get-prep-sti-Treatment-outcome.handler';
+import { GetPrepDiscontinuationTrendHandler } from './prep/queries/handlers/get-prep-discontinuation-trends.handler';
+import { GetCTPrepTrendHandler } from './prep/queries/handlers/get-ct-prep-trends.handler';
+import { GetPrepTotalTestedHandler } from './prep/queries/handlers/get-prep-total-tested.handler';
+import { GetPrepTotalTestedTrendsHandler } from './prep/queries/handlers/get-prep-total-tested-trends.handler';
+import { GetPrepAgeSexTrendHandler } from './prep/queries/handlers/get-prep-age-sex-trends.handler';
+import { GetPrepTotalTestedAgeSexTrendsmonth1Handler } from './prep/queries/handlers/get-prep-total-tested-age-sex-trends-months1.handler';
+import { GetPrepTotalTestedAgeSexTrendsmonth3Handler } from './prep/queries/handlers/get-prep-total-tested-age-sex-trends-months3.handler';
+import { GetPrepRefillMonth1Handler } from './prep/queries/handlers/get-prep-refill-month1.handler';
+import { GetPrepRefillMonth3Handler } from './prep/queries/handlers/get-prep-refill-month3.handler';
+import { GetPrepRefillAgeSexTrendsmonth1Handler } from './prep/queries/handlers/get-prep-refilll-age-sex-trends-months1.handler';
+import { GetPrepRefillAgeSexTrendsmonth3Handler } from './prep/queries/handlers/get-prep-refilll-age-sex-trends-months3.handler';
+import { GetPrepSTIDiagnosedHandler } from './prep/queries/handlers/get-prep-sti-diagnosed.handler';
+
 @Module({
     imports: [
         CqrsModule,
         ConfigurationModule,
-        TypeOrmModule.forFeature([
-            FactHtsUptake,
-            FactHtsUptakeAgeGender,
-            FactHtsPopulationType,
-            FactHtsTeststrategy,
-            FactHtsEntryPoint,
-            FactHtsClientTestedAs,
-            FactHtsClientSelfTested,
-            FactHtsMonthsLastTest,
-            FactHtsTBScreening,
-            FactPNSSexualPartner,
-            FactPNSChildren,
-            FactHtsuptake,
-            FactPNSKnowledgeHivStatus,
-        ])
+        TypeOrmModule.forFeature(
+            [
+                FactHTSClientTests,
+                FactHTSClientLinkages,
+                FactHTSClientTracing,
+                AllEmrSites,
+                AggregateHTSUptake,
+
+                FactPrep,
+            ],
+            'mssql',
+        ),
     ],
     providers: [
         GetHtsCountiesHandler,
@@ -128,8 +143,32 @@ import { GetPnsKnowledgeHivStatusCascadeHandler } from './pns/queries/handlers/g
         GetPnsChildrenByYearHandler,
         GetPnsIndexHandler,
         GetPnsKnowledgeHivStatusCascadeHandler,
-    ],
-    controllers: [HtsController]
-})
 
+        GetNewOnPrepHandler,
+        GetPrepDiscontinuationHandler,
+        GetPrepDiscontinuationReasonHandler,
+        GetNewOnPrepByAgeSexHandler,
+        GetNewOnPrepTrendsHandler,
+        GetPrepEligibleTrendsHandler,
+        GetPrepScreenedTrendsHandler,
+        GetPrepEligibleByAgegroupHandler,
+        GetCTPrepHandler,
+        GetPrepSTIScreenedOutcomeHandler,
+        GetPrepSTITreatmentOutcomeHandler,
+        GetPrepDiscontinuationTrendHandler,
+        GetCTPrepTrendHandler,
+        GetPrepTotalTestedHandler,
+        GetPrepTotalTestedTrendsHandler,
+        GetPrepAgeSexTrendHandler,
+        GetPrepTotalTestedAgeSexTrendsmonth1Handler,
+        GetPrepTotalTestedAgeSexTrendsmonth3Handler,
+        GetPrepRefillMonth1Handler,
+        GetPrepRefillMonth3Handler,
+        GetPrepRefillAgeSexTrendsmonth1Handler,
+        GetPrepRefillAgeSexTrendsmonth3Handler,
+        GetPrepSTIDiagnosedHandler,
+        
+    ],
+    controllers: [HtsController],
+})
 export class HtsModule {}

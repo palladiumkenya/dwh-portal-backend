@@ -14,11 +14,17 @@ export class GetCtSiteGpsHandler implements IQueryHandler<GetCtSiteGpsQuery> {
     }
 
     async execute(query: GetCtSiteGpsQuery): Promise<any> {
-        const facilities = this.repository.createQueryBuilder('q')
-            .select(['facilityId mfl, name facility, county, subCounty, agency, partner, owner, latitude, longitude, LTRIM(RTRIM(EMR)) emr, isCT, isPkv, isHts'])
-            .where('q.name IS NOT NULL')
+        const facilities = this.repository
+            .createQueryBuilder('q')
+            .select([
+                'MFLCode mfl, FacilityName facility, County county, subCounty, AgencyName agency, PartnerName partner, latitude, longitude, UPPER(LTRIM(RTRIM(EMR))) emr, isCT, isHts',
+            ])
+            .where('q.FacilityName IS NOT NULL')
             .andWhere('q.EMR IS NOT NULL')
-            .andWhere("q.partner <> 'IRDO'")
+            .andWhere("q.PartnerName <> 'IRDO'")
+            .andWhere(
+                "emr in ('KenyaEMR', 'DREAMS', 'AMRS', 'ECare', 'IQCare-KeHMIS')",
+            ) //this is to show the correct emrsites on map
             .andWhere("q.EMR <> ''");
 
         if (query.county) {
@@ -30,21 +36,23 @@ export class GetCtSiteGpsHandler implements IQueryHandler<GetCtSiteGpsQuery> {
         }
 
         if (query.facility) {
-            facilities.andWhere('q.name IN (:...facility)', { facility: query.facility });
+            facilities.andWhere('q.FacilityName IN (:...facility)', {
+                facility: query.facility,
+            });
         }
 
         if (query.partner) {
-            facilities.andWhere('q.partner IN (:...partner)', { partner: query.partner });
+            facilities.andWhere('q.PartnerName IN (:...partner)', { partner: query.partner });
         }
 
         if (query.agency) {
-            facilities.andWhere('q.agency IN (:...agency)', { agency: query.agency });
+            facilities.andWhere('q.AgencyName IN (:...agency)', { agency: query.agency });
         }
 
         // if (query.project) {
         //     facilities.andWhere('q.project IN (:...project)', { project: query.project });
         // }
 
-        return await facilities.orderBy('q.name').getRawMany();
+        return await facilities.orderBy('q.FacilityName').getRawMany();
     }
 }

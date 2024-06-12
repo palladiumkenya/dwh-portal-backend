@@ -7,58 +7,130 @@ import { OverallReportingByFacilityDto } from '../../entities/dtos/overall-repor
 import moment = require('moment');
 
 @QueryHandler(GetOverallReportingByFacilityQuery)
-export class GetOverallReportingByFacilityHandler implements IQueryHandler<GetOverallReportingByFacilityQuery> {
+export class GetOverallReportingByFacilityHandler
+    implements IQueryHandler<GetOverallReportingByFacilityQuery> {
     constructor(
-        @InjectRepository(FactManifest)
-        private readonly repository: Repository<FactManifest>
-    ) {
+        @InjectRepository(FactManifest, 'mssql')
+        private readonly repository: Repository<FactManifest>,
+    ) {}
 
-    }
-
-    async execute(query: GetOverallReportingByFacilityQuery): Promise<OverallReportingByFacilityDto> {
+    async execute(
+        query: GetOverallReportingByFacilityQuery,
+    ): Promise<OverallReportingByFacilityDto> {
         const params = [];
-        let overAllReportingByFacilitySql;
-        if (query.docket.toLowerCase() === 'hts') {
-            overAllReportingByFacilitySql = `SELECT * from (Select Distinct df.FacilityId,Name as FacilityName,County,subCounty,Agency,Partner, f.year,f.month, f.docketId ,f.timeId as uploaddate
-                from (select name,facilityId,county,subcounty,agency,partner, ? AS docket from dim_facility where isHts = 1) df
-                LEFT JOIN (SELECT * FROM (
-                            SELECT DISTINCT ROW_NUMBER ( ) OVER (PARTITION BY FacilityId,docketId,Concat(Month(fm.timeId),'-', Year(fm.timeId)) ORDER BY (cast(fm.timeId as date)) desc) AS RowID,
-                            FacilityId,docketId,fm.timeId, dt.year,dt.month FROM  fact_manifest fm
-                            inner join dim_time dt on dt.timeId=fm.timeId
-                            where dt.year = ? and dt.month = ?
-                )u where RowId=1) f on f.facilityId=df.facilityId and df.docket=f.docketId) Y `;
-        } else if (query.docket.toLowerCase() === 'pkv') {
-            overAllReportingByFacilitySql = `SELECT * from (Select Distinct df.FacilityId,Name as FacilityName,County,subCounty,Agency,Partner, f.year,f.month, f.docketId ,f.timeId as uploaddate
-                from (select name,facilityId,county,subcounty,agency,partner, ? AS docket from dim_facility where isPkv = 1) df
-                LEFT JOIN (SELECT * FROM (
-                            SELECT DISTINCT ROW_NUMBER ( ) OVER (PARTITION BY FacilityId,docketId,Concat(Month(fm.timeId),'-', Year(fm.timeId)) ORDER BY (cast(fm.timeId as date)) desc) AS RowID,
-                            FacilityId,docketId,fm.timeId, dt.year,dt.month FROM  fact_manifest fm
-                            inner join dim_time dt on dt.timeId=fm.timeId
-                            where dt.year = ? and dt.month = ?
-                )u where RowId=1) f on f.facilityId=df.facilityId and df.docket=f.docketId) Y `;
-        } else {
-            overAllReportingByFacilitySql = `SELECT * from (Select Distinct df.FacilityId,Name as FacilityName,County,subCounty,Agency,Partner, f.year,f.month, f.docketId ,f.timeId as uploaddate
-                from (select name,facilityId,county,subcounty,agency,partner, ? AS docket from dim_facility where isCt = 1) df
-                LEFT JOIN (SELECT * FROM (
-                            SELECT DISTINCT ROW_NUMBER ( ) OVER (PARTITION BY FacilityId,docketId,Concat(Month(fm.timeId),'-', Year(fm.timeId)) ORDER BY (cast(fm.timeId as date)) desc) AS RowID,
-                            FacilityId,docketId,fm.timeId, dt.year,dt.month FROM  fact_manifest fm
-                            inner join dim_time dt on dt.timeId=fm.timeId
-                            where dt.year = ? and dt.month = ?
-                )u where RowId=1) f on f.facilityId=df.facilityId and df.docket=f.docketId) Y `;
-        }
-
+        let year = moment()
+                .startOf('month')
+                .subtract(1, 'month')
+                .format('YYYY');
+        let month = moment()
+                .startOf('month')
+                .subtract(1, 'month')
+                .format('MM')
         params.push(query.docket.toLowerCase());
 
         if (query.period) {
-            const year = query.period.split(',')[0];
-            const month = query.period.split(',')[1];
+            year = query.period.split(',')[0];
+            month = query.period.split(',')[1];
             params.push(year);
             params.push(month);
         } else {
-            const month = moment().startOf('month').subtract(1, 'month').format("MM");
-            const year = moment().startOf('month').subtract(1, 'month').format("YYYY");
+            month = moment()
+                .startOf('month')
+                .subtract(1, 'month')
+                .format('MM');
+            year = moment()
+                .startOf('month')
+                .subtract(1, 'month')
+                .format('YYYY');
             params.push(year);
             params.push(month);
+        }
+
+        let overAllReportingByFacilitySql = '';
+        if (query.docket.toLowerCase() === 'hts') {
+            overAllReportingByFacilitySql = `SELECT * 
+                from 
+                (
+                    Select Distinct 
+                        df.FacilityId,
+                        Name as FacilityName,
+                        County,
+                        subCounty,
+                        Agency,
+                        Partner, 
+                        f.year,
+                        f.month, 
+                        f.docketId ,
+                        f.timeId as uploaddate
+                    from (
+                        select 
+                            FacilityName name,
+                            MFLCode facilityId,
+                            county,
+                            subcounty,
+                            AgencyName agency,
+                            PartnerName partner, 
+                            '${query.docket.toLowerCase()}' AS docket 
+                        from REPORTING.dbo.all_EMRSites 
+                        where isHts = 1
+                    ) df
+                    LEFT JOIN (
+                        SELECT * FROM (
+                            SELECT DISTINCT 
+                                ROW_NUMBER ( ) OVER (PARTITION BY FacilityId,docketId,Concat(Month(fm.timeId),'-', Year(fm.timeId)) ORDER BY (cast(fm.timeId as date)) desc) AS RowID,
+                                FacilityId,
+                                docketId,
+                                fm.timeId, 
+                                year(timeId) year,
+                                month(timeId) month 
+                            FROM  NDWH.dbo.Fact_manifest fm
+                            where year(timeId) = ${year} and month(timeId) = ${month}
+                        )u 
+                        where RowId=1
+                    ) f on f.facilityId=df.facilityId and df.docket=f.docketId
+                ) Y `;
+        } else {
+            overAllReportingByFacilitySql = `SELECT * 
+                from 
+                (
+                    Select Distinct 
+                        df.FacilityId,
+                        Name as FacilityName,
+                        County,
+                        subCounty,
+                        Agency,
+                        Partner, 
+                        f.year,
+                        f.month, 
+                        f.docketId ,
+                        f.timeId as uploaddate
+                    from (
+                        select 
+                            FacilityName name,
+                            MFLCode facilityId,
+                            county,
+                            subcounty,
+                            AgencyName agency,
+                            PartnerName partner, 
+                            '${query.docket.toLowerCase()}' AS docket 
+                        from REPORTING.dbo.all_EMRSites 
+                        where isCT = 1
+                    ) df
+                    LEFT JOIN (
+                        SELECT * FROM (
+                            SELECT DISTINCT 
+                                ROW_NUMBER ( ) OVER (PARTITION BY FacilityId,docketId,Concat(Month(fm.timeId),'-', Year(fm.timeId)) ORDER BY (cast(fm.timeId as date)) desc) AS RowID,
+                                FacilityId,
+                                docketId,
+                                fm.timeId, 
+                                year(timeId) year,
+                                month(timeId) month 
+                            FROM  NDWH.dbo.Fact_manifest fm
+                            where year(timeId) = ${year} and month(timeId) = ${month}
+                        )u 
+                        where RowId=1
+                    ) f on f.facilityId=df.facilityId and df.docket=f.docketId
+                ) Y `;
         }
 
         if (query.reportingType === '0') {
@@ -68,30 +140,38 @@ export class GetOverallReportingByFacilityHandler implements IQueryHandler<GetOv
         }
 
         if (query.county) {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and County IN (?)`;
-            params.push(query.county);
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.subCounty) {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and subCounty IN (?)`;
-            params.push(query.subCounty);
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.facility) {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and FacilityName IN (?)`;
-            params.push(query.facility);
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.partner) {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and partner IN (?)`;
-            params.push(query.partner);
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and Partner IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.agency) {
-            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and Agency IN (?)`;
-            params.push(query.agency);
+            overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and agency IN ('${query.agency
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        return await this.repository.query(overAllReportingByFacilitySql, params);
+        return await this.repository.query(
+            overAllReportingByFacilitySql,
+            params,
+        );
     }
 }

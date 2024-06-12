@@ -3,19 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransDsdMmdUptake } from '../../entities/fact-trans-dsd-mmd-uptake.model';
 import { Repository } from 'typeorm';
 import { GetDsdMmdUptakeOverallBySexQuery } from '../impl/get-dsd-mmd-uptake-overall-by-sex.query';
+import { AggregateDSD } from '../../entities/aggregate-dsd.model';
 
 @QueryHandler(GetDsdMmdUptakeOverallBySexQuery)
 export class GetDsdMmdUptakeOverallBySexHandler implements IQueryHandler<GetDsdMmdUptakeOverallBySexQuery> {
     constructor(
-        @InjectRepository(FactTransDsdMmdUptake, 'mssql')
-        private readonly repository: Repository<FactTransDsdMmdUptake>
+        @InjectRepository(AggregateDSD, 'mssql')
+        private readonly repository: Repository<AggregateDSD>
     ) {
 
     }
 
     async execute(query: GetDsdMmdUptakeOverallBySexQuery): Promise<any> {
         const dsdMmdStable = this.repository.createQueryBuilder('f')
-            .select(['Gender gender, SUM(TxCurr) txCurr, SUM(MMD) mmd, SUM(NonMMD) nonMmd'])
+            .select(['Gender gender, SUM(TxCurr) txCurr, SUM(patients_onMMD) mmd, SUM(patients_nonMMD) nonMmd'])
             .where('f.MFLCode > 1');
 
         if (query.county) {
@@ -31,20 +32,21 @@ export class GetDsdMmdUptakeOverallBySexHandler implements IQueryHandler<GetDsdM
         }
 
         if (query.partner) {
-            dsdMmdStable.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            dsdMmdStable.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            dsdMmdStable.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            dsdMmdStable.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            dsdMmdStable.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            dsdMmdStable.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
             dsdMmdStable.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
         }
+       
 
         return await dsdMmdStable.groupBy('f.Gender').getRawMany();
     }

@@ -3,12 +3,14 @@ import { GetOtzTotalWithVlLessThan1000Query } from '../impl/get-otz-total-with-v
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
+import { AggregateOtz } from '../../entities/aggregate-otz.model';
+import { LineListOTZ } from './../../entities/line-list-otz.model';
 
 @QueryHandler(GetOtzTotalWithVlLessThan1000Query)
 export class GetOtzTotalWithVlLessThan1000Handler implements IQueryHandler<GetOtzTotalWithVlLessThan1000Query> {
     constructor(
-        @InjectRepository(FactTransOtzEnrollments, 'mssql')
-        private readonly repository: Repository<FactTransOtzEnrollments>
+        @InjectRepository(LineListOTZ, 'mssql')
+        private readonly repository: Repository<LineListOTZ>
     ) {
     }
 
@@ -16,7 +18,6 @@ export class GetOtzTotalWithVlLessThan1000Handler implements IQueryHandler<GetOt
         const totalWithVLLessThan1000 = this.repository.createQueryBuilder('f')
             .select(['count(*) totalWithVlLessThan1000'])
             .where('f.lastVL IS NOT NULL')
-            .andWhere('f.OTZEnrollmentDate IS NOT NULL')
             .andWhere('CASE WHEN ISNUMERIC(f.lastVL) = 0 THEN 1 ELSE CAST(CONVERT(numeric, f.lastVL) as int) END < 1000');
 
         if (query.county) {
@@ -32,15 +33,15 @@ export class GetOtzTotalWithVlLessThan1000Handler implements IQueryHandler<GetOt
         }
 
         if (query.partner) {
-            totalWithVLLessThan1000.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            totalWithVLLessThan1000.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            totalWithVLLessThan1000.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            totalWithVLLessThan1000.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            totalWithVLLessThan1000.andWhere('f.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            totalWithVLLessThan1000.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {

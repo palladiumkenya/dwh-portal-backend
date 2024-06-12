@@ -15,7 +15,7 @@ export class GetTreatmentOutcomesRetention3mHandler implements IQueryHandler<Get
 
     async execute(query: GetTreatmentOutcomesRetention3mQuery): Promise<any> {
         const retention = this.repository.createQueryBuilder('f')
-            .select(['StartARTYear, SUM([M3Retained]) m3Retention,SUM(f.[M3NetCohort]) as netcohort, (SUM(f.[M3Retained]) * 100.0)/ Sum(SUM(f.[M3NetCohort])) OVER (partition by StartARTYear Order by StartARTYear) AS Percentage'])
+            .select(['StartARTYear, SUM([M3Retained]) m3Retention,SUM(f.[M3NetCohort]) as netcohort, IIF (SUM ( f.[M3NetCohort] ) != 0, (SUM(f.[M3Retained]) * 100.0)/ Sum(SUM(f.[M3NetCohort])) OVER (partition by StartARTYear Order by StartARTYear), 0) AS Percentage'])
             .where('Year(GetDate())- StartARTYear <=10');
 
         if (query.county) {
@@ -31,21 +31,19 @@ export class GetTreatmentOutcomesRetention3mHandler implements IQueryHandler<Get
         }
 
         if (query.partner) {
-            retention.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            retention.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            retention.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            retention.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            // lacking age group
-            // retention.andWhere('f.ageGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
+            retention.andWhere('f.AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
-            // lacking gender
-            // retention.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            retention.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
         }
 
         return await retention

@@ -1,20 +1,23 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzOutcomesByPartnerQuery } from '../impl/get-otz-outcomes-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzOutcome } from '../../entities/fact-trans-otz-outcome.model';
 import { Repository } from 'typeorm';
+import { AggregateOTZOutcome } from '../../entities/aggregate-otz-outcome.model';
 
 @QueryHandler(GetOtzOutcomesByPartnerQuery)
 export class GetOtzOutcomesByPartnerHandler implements IQueryHandler<GetOtzOutcomesByPartnerQuery> {
     constructor(
-        @InjectRepository(FactTransOtzOutcome, 'mssql')
-        private readonly repository: Repository<FactTransOtzOutcome>
+        @InjectRepository(AggregateOTZOutcome, 'mssql')
+        private readonly repository: Repository<AggregateOTZOutcome>
     ) {
     }
 
     async execute(query: GetOtzOutcomesByPartnerQuery): Promise<any> {
-        const otzOutcomesByPartner = this.repository.createQueryBuilder('f')
-            .select(['[CTPartner] partner, CASE WHEN [Outcome] IS NULL THEN \'Active\' ELSE [Outcome] END AS Outcome, SUM([Total_OutCome]) outcomesByPartner'])
+        const otzOutcomesByPartner = this.repository
+            .createQueryBuilder('f')
+            .select([
+                "[PartnerName] partner, CASE WHEN [Outcome] IS NULL THEN 'Active' WHEN [Outcome] = 'Dead' THEN 'Died'  ELSE [Outcome] END AS Outcome, SUM([patients_totalOutcome]) outcomesByPartner",
+            ])
             .andWhere('f.MFLCode IS NOT NULL');
 
         if (query.county) {
@@ -30,11 +33,11 @@ export class GetOtzOutcomesByPartnerHandler implements IQueryHandler<GetOtzOutco
         }
 
         if (query.partner) {
-            otzOutcomesByPartner.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            otzOutcomesByPartner.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            otzOutcomesByPartner.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            otzOutcomesByPartner.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -46,7 +49,7 @@ export class GetOtzOutcomesByPartnerHandler implements IQueryHandler<GetOtzOutco
         }
 
         return await otzOutcomesByPartner
-            .groupBy('[CTPartner], [Outcome]')
+            .groupBy(`[PartnerName], CASE WHEN [Outcome] IS NULL THEN 'Active' WHEN [Outcome] = 'Dead' THEN 'Died' ELSE [Outcome] END`)
             .getRawMany();
     }
 }

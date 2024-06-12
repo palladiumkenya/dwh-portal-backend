@@ -7,80 +7,81 @@ import { ConsistencyByFacilityDto } from '../../entities/dtos/consistency-by-fac
 import moment = require('moment');
 
 @QueryHandler(GetConsistencyByFacilityQuery)
-export class GetConsistencyByFacilityHandler implements IQueryHandler<GetConsistencyByFacilityQuery> {
+export class GetConsistencyByFacilityHandler
+    implements IQueryHandler<GetConsistencyByFacilityQuery> {
     constructor(
-        @InjectRepository(FactManifest)
-        private readonly repository: Repository<FactManifest>
-    ) {
+        @InjectRepository(FactManifest, 'mssql')
+        private readonly repository: Repository<FactManifest>,
+    ) {}
 
-    }
-
-    async execute(query: GetConsistencyByFacilityQuery): Promise<ConsistencyByFacilityDto> {
+    async execute(
+        query: GetConsistencyByFacilityQuery,
+    ): Promise<ConsistencyByFacilityDto> {
         const params = [];
+        params.push(query.docket.toLowerCase());
+        let fromDate
+        let toDate
+
+        if (query.period) {
+            fromDate = moment(query.period, 'YYYY,MMM')
+                .startOf('month')
+                .subtract(1, 'month')
+                .format('YYYY-MM-DD');
+            toDate = moment(query.period, 'YYYY,MMM')
+                .startOf('month')
+                .subtract(1, 'month')
+                .endOf('month')
+                .format('YYYY-MM-DD');
+            params.push(fromDate);
+            params.push(toDate);
+        } else {
+            fromDate = moment()
+                .startOf('month')
+                .subtract(1, 'month')
+                .format('YYYY-MM-DD');
+            toDate = moment()
+                .startOf('month')
+                .subtract(1, 'month')
+                .endOf('month')
+                .format('YYYY-MM-DD');
+            params.push(fromDate);
+            params.push(toDate);
+        }
         let consistencyByFacilitySql;
         if (query.docket.toLowerCase() === 'hts') {
             consistencyByFacilitySql = `select
-                d.facilityId as MFLCode, name as FacilityName,County,Subcounty,Agency,Partner,
-                case when NumberOfUploads is NULL THEN 0 ELSE NumberOfUploads END AS NumberOfUploads
-                from dim_facility d
+                d.MFLCode, FacilityName,County, Subcounty, AgencyName Agency, PartnerName Partner,
+                CASE WHEN NumberOfUploads is NULL THEN 0 ELSE NumberOfUploads END AS NumberOfUploads
+                from all_EMRSites d
                 left join (
-                    SELECT DISTINCT facilityId,NumberOfUploads,project FROM (
+                    SELECT DISTINCT facilityId,NumberOfUploads FROM (
                         SELECT fm.facilityId,fm.docketid as docket,
-                            count(*) NumberOfUploads,fm.project
-                        FROM  fact_manifest fm
-                        WHERE fm.docketid = ? AND
-                            fm.timeId BETWEEN DATE_ADD(DATE_ADD(LAST_DAY(date(?) - INTERVAL 2 MONTH), INTERVAL 1 DAY), INTERVAL -1 MONTH) AND
-                            LAST_DAY(date(?)) GROUP BY facilityId, docket, project
+                            count(*) NumberOfUploads
+                        FROM  NDWH.dbo.Fact_manifest fm
+                        WHERE fm.docketid = '${query.docket.toLowerCase()}' AND
+                            fm.timeId BETWEEN DATEADD(MONTH, -2, EOMONTH(cast('${fromDate}' as date), -1)) AND EOMONTH(cast('${toDate}' as date)) 
+                        GROUP BY facilityId, docketId
                     ) X
-                ) f on d.facilityId = f.facilityId and d.project = f.project
+                ) f on d.MFLCode = f.facilityId 
                 where isHts = 1 and (NumberOfUploads <3 OR NumberOfUploads is NULL) `;
-        } else if (query.docket.toLowerCase() === 'pkv') {
-            consistencyByFacilitySql = `select
-                d.facilityId as MFLCode, name as FacilityName,County,Subcounty,Agency,Partner,
-                case when NumberOfUploads is NULL THEN 0 ELSE NumberOfUploads END AS NumberOfUploads
-                from dim_facility d
-                left join (
-                    SELECT DISTINCT facilityId,NumberOfUploads,project FROM (
-                        SELECT fm.facilityId,fm.docketid as docket,
-                            count(*) NumberOfUploads,fm.project
-                        FROM  fact_manifest fm
-                        WHERE fm.docketid = ? AND
-                            fm.timeId BETWEEN DATE_ADD(DATE_ADD(LAST_DAY(date(?) - INTERVAL 2 MONTH), INTERVAL 1 DAY), INTERVAL -1 MONTH) AND
-                            LAST_DAY(date(?)) GROUP BY facilityId, docket, project
-                    ) X
-                ) f on d.facilityId = f.facilityId and d.project = f.project
-                where isPkv = 1 and (NumberOfUploads <3 OR NumberOfUploads is NULL) `;
         } else {
             consistencyByFacilitySql = `select
-                d.facilityId as MFLCode, name as FacilityName,County,Subcounty,Agency,Partner,
+                MFLCode,FacilityName,County,Subcounty, AgencyName Agency,PartnerName Partner,
                 case when NumberOfUploads is NULL THEN 0 ELSE NumberOfUploads END AS NumberOfUploads
-                from dim_facility d
+                from all_EMRSites d
                 left join (
-                    SELECT DISTINCT facilityId,NumberOfUploads,project FROM (
+                    SELECT DISTINCT facilityId,NumberOfUploads FROM (
                         SELECT fm.facilityId,fm.docketid as docket,
-                            count(*) NumberOfUploads,fm.project
-                        FROM  fact_manifest fm
-                        WHERE fm.docketid = ? AND
-                            fm.timeId BETWEEN DATE_ADD(DATE_ADD(LAST_DAY(date(?) - INTERVAL 2 MONTH), INTERVAL 1 DAY), INTERVAL -1 MONTH) AND
-                            LAST_DAY(date(?)) GROUP BY facilityId, docket, project
+                            count(*) NumberOfUploads
+                        FROM  NDWH.dbo.Fact_manifest fm
+                        WHERE fm.docketid = '${query.docket.toLowerCase()}' AND
+                            fm.timeId BETWEEN DATEADD(MONTH, -2, EOMONTH(cast('${fromDate}' as date), -1)) AND EOMONTH(cast('${toDate}' as date)) 
+                        GROUP BY facilityId, docketId
                     ) X
-                ) f on d.facilityId = f.facilityId and d.project = f.project
+                ) f on d.MFLCode = f.facilityId
                 where isCt = 1 and (NumberOfUploads <3 OR NumberOfUploads is NULL) `;
         }
 
-        params.push(query.docket.toLowerCase());
-
-        if (query.period) {
-            const fromDate = moment(query.period, 'YYYY,MMM').startOf('month').subtract(1, 'month').format("YYYY-MM-DD");
-            const toDate = moment(query.period, 'YYYY,MMM').startOf('month').subtract(1, 'month').endOf('month').format("YYYY-MM-DD");
-            params.push(fromDate);
-            params.push(toDate);
-        } else {
-            const fromDate = moment().startOf('month').subtract(1, 'month').format("YYYY-MM-DD");
-            const toDate = moment().startOf('month').subtract(1, 'month').endOf('month').format("YYYY-MM-DD");
-            params.push(fromDate);
-            params.push(toDate);
-        }
 
         // if (query.reportingType === '0') {
         //     consistencyByFacilitySql = `${consistencyByFacilitySql} AND NumberOfUploads is null `;
@@ -89,28 +90,33 @@ export class GetConsistencyByFacilityHandler implements IQueryHandler<GetConsist
         // }
 
         if (query.county) {
-            consistencyByFacilitySql = `${consistencyByFacilitySql} and County IN (?)`;
-            params.push(query.county);
+            consistencyByFacilitySql = `${consistencyByFacilitySql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.subCounty) {
-            consistencyByFacilitySql = `${consistencyByFacilitySql} and subCounty IN (?)`;
-            params.push(query.subCounty);
+            consistencyByFacilitySql = `${consistencyByFacilitySql} and subCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.facility) {
-            consistencyByFacilitySql = `${consistencyByFacilitySql} and name IN (?)`;
-            params.push(query.facility);
+            consistencyByFacilitySql = `${consistencyByFacilitySql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.partner) {
-            consistencyByFacilitySql = `${consistencyByFacilitySql} and partner IN (?)`;
-            params.push(query.partner);
+            consistencyByFacilitySql = `${consistencyByFacilitySql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         if (query.agency) {
-            consistencyByFacilitySql = `${consistencyByFacilitySql} and Agency IN (?)`;
-            params.push(query.agency);
+            consistencyByFacilitySql = `${consistencyByFacilitySql} and agencyName IN ('${query.agency
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
         return await this.repository.query(consistencyByFacilitySql, params);

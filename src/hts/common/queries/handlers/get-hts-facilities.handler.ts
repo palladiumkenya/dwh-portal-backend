@@ -1,28 +1,27 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetHtsFacilitiesQuery } from '../impl/get-hts-facilities.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
+import { AllEmrSites } from './../../../../care-treatment/common/entities/all-emr-sites.model';
 
 @QueryHandler(GetHtsFacilitiesQuery)
-export class GetHtsFacilitiesHandler implements IQueryHandler<GetHtsFacilitiesQuery> {
+export class GetHtsFacilitiesHandler
+    implements IQueryHandler<GetHtsFacilitiesQuery> {
     constructor(
-        @InjectRepository(FactHtsUptake)
-        private readonly repository: Repository<FactHtsUptake>
-    ) {
-
-    }
+        @InjectRepository(AllEmrSites, 'mssql')
+        private readonly repository: Repository<AllEmrSites>,
+    ) {}
 
     async execute(query: GetHtsFacilitiesQuery): Promise<any> {
         const params = [];
-        let facilitiesSql = `SELECT DISTINCT \`FacilityName\` AS \`facility\` FROM \`fact_htsuptake\` WHERE \`FacilityName\` IS NOT NULL `;
+        let facilitiesSql = `SELECT DISTINCT FacilityName AS facility FROM all_EMRSites WHERE FacilityName IS NOT NULL and isHts = 1`;
 
-        if(query.county) {
+        if (query.county) {
             facilitiesSql = `${facilitiesSql} and County IN (?)`;
             params.push(query.county);
         }
 
-        if(query.subCounty) {
+        if (query.subCounty) {
             facilitiesSql = `${facilitiesSql} and SubCounty IN (?)`;
             params.push(query.subCounty);
         }
@@ -49,6 +48,6 @@ export class GetHtsFacilitiesHandler implements IQueryHandler<GetHtsFacilitiesQu
 
         facilitiesSql = `${facilitiesSql} ORDER BY FacilityName ASC`;
 
-        return  await this.repository.query(facilitiesSql, params);
+        return await this.repository.query(facilitiesSql, params);
     }
 }

@@ -1,22 +1,26 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetVlOutcomesByYearAndSuppressionCategoryQuery } from '../impl/get-vl-outcomes-by-year-and-suppression-category.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransVLOutcome } from '../../entities/fact-trans-vl-outcome.model';
 import { Repository } from 'typeorm';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 
 @QueryHandler(GetVlOutcomesByYearAndSuppressionCategoryQuery)
 export class GetVlOutcomesByYearAndSuppressionCategoryHandler implements IQueryHandler<GetVlOutcomesByYearAndSuppressionCategoryQuery> {
     constructor(
-        @InjectRepository(FactTransVLOutcome, 'mssql')
-        private readonly repository: Repository<FactTransVLOutcome>
+        @InjectRepository(LinelistFACTART, 'mssql')
+        private readonly repository: Repository<LinelistFACTART>
     ) {
     }
 
     async execute(query: GetVlOutcomesByYearAndSuppressionCategoryQuery): Promise<any> {
-        const vlSuppressionByYear = this.repository.createQueryBuilder('f')
-            .select(['StartART_Year year, Last12MVLResult last12MVLResult, SUM(Total_Last12MVL) totalSuppressed'])
-            .andWhere('f.StartART_Year IS NOT NULL');
+        const vlSuppressionByYear = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'YEAR(StartARTDate) year, ValidVLResultCategory2 last12MVLResult, Count(ValidVLResult) totalSuppressed',
+            ])
+            .andWhere('f.StartARTDate IS NOT NULL')
+            .andWhere('f.isTXCURR > 0');
 
         if (query.county) {
             vlSuppressionByYear.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -31,11 +35,11 @@ export class GetVlOutcomesByYearAndSuppressionCategoryHandler implements IQueryH
         }
 
         if (query.partner) {
-            vlSuppressionByYear.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlSuppressionByYear.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlSuppressionByYear.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlSuppressionByYear.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
@@ -47,8 +51,8 @@ export class GetVlOutcomesByYearAndSuppressionCategoryHandler implements IQueryH
         }
 
         return await vlSuppressionByYear
-            .groupBy('f.StartART_Year, f.Last12MVLResult')
-            .orderBy('f.StartART_Year')
+            .groupBy('YEAR(StartARTDate), f.ValidVLResultCategory2')
+            .orderBy('YEAR(StartARTDate)')
             .getRawMany();
     }
 }

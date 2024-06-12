@@ -45,7 +45,7 @@ describe('Get Tile Consistency uploads', () => {
 
     it('should get consistency uploads By County', async () => {
         const query = new GetConsistencyUploadsQuery('CT','2019,10');
-        query.county='Kisumu'
+        query.county=['Kisumu']
         const result = await queryBus.execute<GetConsistencyUploadsQuery, any>(query);
         expect(result.docket).toBe(query.docket);
         expect(result.consistency).toBeGreaterThan(0);
@@ -54,7 +54,7 @@ describe('Get Tile Consistency uploads', () => {
 
     it('should get consistency uploads By Agency', async () => {
         const query = new GetConsistencyUploadsQuery('CT','2019,10');
-        query.agency='CDC'
+        query.agency=['CDC']
         const result = await queryBus.execute<GetConsistencyUploadsQuery, any>(query);
         expect(result.docket).toBe(query.docket);
         expect(result.consistency).toBeGreaterThan(0);
@@ -63,7 +63,7 @@ describe('Get Tile Consistency uploads', () => {
 
     it('should get consistency uploads By Partner', async () => {
         const query = new GetConsistencyUploadsQuery('CT','2019,10');
-        query.partner='CHS Shinda';
+        query.partner=['CHS Shinda'];
         const result = await queryBus.execute<GetConsistencyUploadsQuery, ConsistencyUploadsTileDto>(query);
         expect(result.docket).toBe(query.docket);
         expect(result.consistency).toBeGreaterThan(0);

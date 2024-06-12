@@ -1,28 +1,35 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCtTxCurrAgeGroupDistributionByCountyQuery } from '../impl/get-ct-tx-curr-age-group-distribution-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
 import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
+import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrAgeGroupDistributionByCountyQuery)
 export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHandler<GetCtTxCurrAgeGroupDistributionByCountyQuery> {
     constructor(
-        @InjectRepository(FactTransHmisStatsTxcurr, 'mssql')
-        private readonly repository: Repository<FactTransHmisStatsTxcurr>
+        @InjectRepository(AggregateTXCurr, 'mssql')
+        private readonly repository: Repository<AggregateTXCurr>
     ) {
     }
 
     async execute(query: GetCtTxCurrAgeGroupDistributionByCountyQuery): Promise<any> {
-        let txCurrAgeGroupDistributionByCounty = this.repository.createQueryBuilder('f')
-            .select(['[County], f.[ageGroup], Gender, SUM([TXCURR_Total]) txCurr'])
-            // .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
-            .where('f.[TXCURR_Total] IS NOT NULL AND f.ageGroup IS NOT NULL');
+        let txCurrAgeGroupDistributionByCounty = this.repository
+            .createQueryBuilder('f')
+            .select([
+                '[County], f.[DATIMAgeGroup] ageGroup, Gender, SUM([CountClientsTXCur]) txCurr',
+            ])
+            .where(
+                'f.[CountClientsTXCur] IS NOT NULL AND f.DATIMAgeGroup IS NOT NULL',
+            );
 
         if (query.county) {
-            txCurrAgeGroupDistributionByCounty = this.repository.createQueryBuilder('f')
-                .select(['[Subcounty] County, f.[ageGroup], SUM([TXCURR_Total]) txCurr'])
-                .where('f.[TXCURR_Total] IS NOT NULL');
+            txCurrAgeGroupDistributionByCounty = this.repository
+                .createQueryBuilder('f')
+                .select([
+                    '[Subcounty] County, f.[DATIMAgeGroup] ageGroup, SUM([CountClientsTXCur]) txCurr',
+                ])
+                .where('f.[CountClientsTXCur] IS NOT NULL');
 
             txCurrAgeGroupDistributionByCounty
                 .andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -39,13 +46,15 @@ export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHan
         }
 
         if (query.partner) {
-            txCurrAgeGroupDistributionByCounty
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            txCurrAgeGroupDistributionByCounty.andWhere(
+                'f.PartnerName IN (:...partners)',
+                { partners: query.partner },
+            );
         }
 
         if (query.agency) {
             txCurrAgeGroupDistributionByCounty
-                .andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+                .andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.gender) {
@@ -54,19 +63,21 @@ export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHan
         }
 
         if (query.datimAgeGroup) {
-            /*txCurrAgeGroupDistributionByCounty
-                .andWhere('v.DATIM_AgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });*/
+            txCurrAgeGroupDistributionByCounty.andWhere(
+                'f.DATIMAgeGroup IN (:...ageGroups)',
+                { ageGroups: query.datimAgeGroup },
+            );
         }
 
         if (query.county) {
             return await txCurrAgeGroupDistributionByCounty
-                .groupBy('[Subcounty], f.[ageGroup]')
-                .orderBy('SUM([TXCURR_Total])', 'DESC')
+                .groupBy('[Subcounty], f.[DATIMAgeGroup]')
+                .orderBy('SUM([CountClientsTXCur])', 'DESC')
                 .getRawMany();
         } else {
             return await txCurrAgeGroupDistributionByCounty
-                .groupBy('[County], f.[ageGroup], Gender')
-                .orderBy('SUM([TXCURR_Total])', 'DESC')
+                .groupBy('[County], f.[DATIMAgeGroup], Gender')
+                .orderBy('SUM([CountClientsTXCur])', 'DESC')
                 .getRawMany();
         }
     }

@@ -3,56 +3,77 @@ import { GetLinkageByPartnerQuery } from '../impl/get-linkage-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
+import { FactHTSClientTests } from './../../entities/fact-hts-client-tests.model';
 
 @QueryHandler(GetLinkageByPartnerQuery)
-export class GetLinkageByPartnerHandler implements IQueryHandler<GetLinkageByPartnerQuery> {
+export class GetLinkageByPartnerHandler
+    implements IQueryHandler<GetLinkageByPartnerQuery> {
     constructor(
-        @InjectRepository(FactHtsUptake)
-        private readonly repository: Repository<FactHtsUptake>
-    ){}
+        @InjectRepository(FactHTSClientTests, 'mssql')
+        private readonly repository: Repository<FactHTSClientTests>,
+    ) {}
 
     async execute(query: GetLinkageByPartnerQuery): Promise<any> {
         const params = [];
-        let linkageByPartnerSql = 'SELECT ' +
-            'CTPartner AS Partner,' +
-            'SUM(CASE WHEN Positive IS NULL THEN 0 ELSE Positive END) positive, ' +
-            'SUM(CASE WHEN Linked IS NULL THEN 0 ELSE Linked END) linked, ' +
-            '((SUM(CASE WHEN Linked IS NULL THEN 0 ELSE Linked END)/SUM(positive))*100) AS linkage ' +
-            'FROM fact_htsuptake ' +
-            'WHERE CTPartner IS NOT NULL AND positive > 0 ';
+        let linkageByPartnerSql = `SELECT
+                PartnerName Partner,
+                SUM(Tested) tested,
+                SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive,
+                SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END) linked,
+                ((CAST(SUM(linked) AS FLOAT)/NULLIF(CAST(SUM(positive)AS FLOAT), 0))*100) AS linkage
+            FROM
+                NDWH.dbo.FactHTSClientTests AS link
+                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
+                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
+                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
+                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
+                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
+            WHERE PartnerName IS NOT NULL AND positive > 0 and TestType IN ('Initial', 'Initial Test')`;
 
-        if(query.county) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and County IN (?)`;
-            params.push(query.county);
+        if (query.county) {
+            linkageByPartnerSql = `${linkageByPartnerSql} and County IN ('${query.county
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.subCounty) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and SubCounty IN (?)`;
-            params.push(query.subCounty);
+        if (query.subCounty) {
+            linkageByPartnerSql = `${linkageByPartnerSql} and SubCounty IN ('${query.subCounty
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.facility) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and FacilityName IN (?)`;
-            params.push(query.facility);
+        if (query.facility) {
+            linkageByPartnerSql = `${linkageByPartnerSql} and FacilityName IN ('${query.facility
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.partner) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and CTPartner IN (?)`;
-            params.push(query.partner);
+        if (query.partner) {
+            linkageByPartnerSql = `${linkageByPartnerSql} and PartnerName IN ('${query.partner
+                .toString()
+                .replace(/,/g, "','")}')`
         }
 
-        if(query.year) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and year=?`;
-            params.push(query.year);
+        // if(query.year) {
+        //     linkageByPartnerSql = `${linkageByPartnerSql} and year=?`;
+        //     params.push(query.year);
+        // }
+
+        // if(query.month) {
+        //     linkageByPartnerSql = `${linkageByPartnerSql} and month=?`;
+        //     params.push(query.month);
+        // }
+
+        if (query.fromDate) {
+            linkageByPartnerSql = `${linkageByPartnerSql} and DateTestedKey >= ${query.fromDate}01`;
         }
 
-        if(query.month) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and month=?`;
-            params.push(query.month);
+        if (query.toDate) {
+            linkageByPartnerSql = `${linkageByPartnerSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
         }
 
-        linkageByPartnerSql = `${linkageByPartnerSql} GROUP BY CTPartner ORDER BY SUM(Positive) DESC`;
+        linkageByPartnerSql = `${linkageByPartnerSql} GROUP BY PartnerName ORDER BY SUM(Positive) DESC`;
 
-        return  await this.repository.query(linkageByPartnerSql, params);
+        return await this.repository.query(linkageByPartnerSql, params);
     }
 }

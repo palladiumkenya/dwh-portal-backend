@@ -3,27 +3,31 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DimFacility } from '../../entities/dim-facility.entity';
 import { GetAgenciesQuery } from '../impl/get-agencies.query';
+import { AllEmrSites } from './../../../care-treatment/common/entities/all-emr-sites.model';
 
 @QueryHandler(GetAgenciesQuery)
 export class GetAgenciesHandler implements IQueryHandler<GetAgenciesQuery> {
     constructor(
-        @InjectRepository(DimFacility)
-        private readonly repository: Repository<DimFacility>,
-    ) {
-
-    }
+        @InjectRepository(AllEmrSites, 'mssql')
+        private readonly repository: Repository<AllEmrSites>,
+    ) {}
 
     async execute(query: GetAgenciesQuery): Promise<any> {
-        const agencies = this.repository.createQueryBuilder('q')
-            .select('q.agency', 'agency')
-            .where('q.facilityId > 0');
+        const agencies = this.repository
+            .createQueryBuilder('q')
+            .select('q.agencyName', 'agency')
+            .where('q.MFLCode > 0');
 
         if (query.county) {
-            agencies.andWhere('q.county IN (:...county)', { county: [query.county] });
+            agencies.andWhere('q.county IN (:...county)', {
+                county: [query.county],
+            });
         }
 
         if (query.subCounty) {
-            agencies.andWhere('q.subCounty IN (:...subCounty)', { subCounty: [query.subCounty] });
+            agencies.andWhere('q.subCounty IN (:...subCounty)', {
+                subCounty: [query.subCounty],
+            });
         }
 
         // if (query.facility) {
@@ -42,7 +46,9 @@ export class GetAgenciesHandler implements IQueryHandler<GetAgenciesQuery> {
         //     agencies.andWhere('q.project IN (:...project)', { project: [query.project] });
         // }
 
-        return await agencies.orderBy('q.agency').distinct(true).getRawMany();
+        return await agencies
+            .orderBy('q.agencyName')
+            .distinct(true)
+            .getRawMany();
     }
-
 }

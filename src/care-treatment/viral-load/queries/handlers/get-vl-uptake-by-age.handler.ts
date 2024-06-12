@@ -1,20 +1,23 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransVLOverallUptake } from '../../entities/fact-trans-vl-overall-uptake.model';
 import { GetVlUptakeByAgeQuery } from '../impl/get-vl-uptake-by-age.query';
+import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlUptakeByAgeQuery)
 export class GetVlUptakeByAgeHandler implements IQueryHandler<GetVlUptakeByAgeQuery> {
     constructor(
-        @InjectRepository(FactTransVLOverallUptake, 'mssql')
-        private readonly repository: Repository<FactTransVLOverallUptake>
+        @InjectRepository(AggregateVLUptakeOutcome, 'mssql')
+        private readonly repository: Repository<AggregateVLUptakeOutcome>
     ) {
     }
 
     async execute(query: GetVlUptakeByAgeQuery): Promise<any> {
-        const vlUptakeByAge = this.repository.createQueryBuilder('f')
-            .select(['f.AgeGroup ageGroup, f.Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(VLDone) vlDone, SUM(VirallySuppressed) suppressed'])
+        const vlUptakeByAge = this.repository
+            .createQueryBuilder('f')
+            .select([
+                'f.AgeGroup ageGroup, f.Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(HasValidVL) vlDone, SUM(VirallySuppressed) suppressed',
+            ])
             .where('f.MFLCode > 0')
             .andWhere('f.AgeGroup IS NOT NULL')
             .andWhere('f.Gender IS NOT NULL');
@@ -32,11 +35,11 @@ export class GetVlUptakeByAgeHandler implements IQueryHandler<GetVlUptakeByAgeQu
         }
 
         if (query.partner) {
-            vlUptakeByAge.andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+            vlUptakeByAge.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            vlUptakeByAge.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            vlUptakeByAge.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {

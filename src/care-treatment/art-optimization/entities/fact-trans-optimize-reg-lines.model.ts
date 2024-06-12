@@ -15,7 +15,7 @@ export class FactTransOptimizeRegLines {
     Subcounty: string;
 
     @Column('text')
-    CTPartner: string;
+    PartnerName: string;
 
     @Column('text')
     Agegroup: string;

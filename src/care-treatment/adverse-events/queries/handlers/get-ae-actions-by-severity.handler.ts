@@ -1,25 +1,28 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetAeActionsBySeverityQuery } from '../impl/get-ae-actions-by-severity.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAdverseEvents } from '../../entities/fact-trans-adverse-events.model';
 import { Repository } from 'typeorm';
+import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetAeActionsBySeverityQuery)
 export class GetAeActionsBySeverityHandler implements IQueryHandler<GetAeActionsBySeverityQuery> {
     constructor(
-        @InjectRepository(FactTransAdverseEvents, 'mssql')
-        private readonly repository: Repository<FactTransAdverseEvents>
+        @InjectRepository(AggregateAdverseEvents, 'mssql')
+        private readonly repository: Repository<AggregateAdverseEvents>
     ) {
     }
 
     async execute(query: GetAeActionsBySeverityQuery): Promise<any> {
-        const aeActionsBySeverity = this.repository.createQueryBuilder('f')
-            .select('[Severity], [AdverseEventActionTaken] = CASE \n' +
-                '\t\t\t\t\t\t\tWHEN [AdverseEventActionTaken] = \'Select\' OR [AdverseEventActionTaken] IS NULL OR [AdverseEventActionTaken] = \'Other\' THEN \'Undocumented\' \n' +
-                '\t\t\t\t\t\t\tWHEN [AdverseEventActionTaken] = \'Severe\' OR [AdverseEventActionTaken] = \'Mild\' OR [AdverseEventActionTaken] = \'Moderate\' THEN \'Undocumented\' \n' +
-                '\t\t\t\t\t\t\tELSE [AdverseEventActionTaken] END,\n' +
-                'SUM([AdverseEvent_Total]) total, AgeGroup ageGroup')
-            .where('ISNULL([Severity],\'\') <> \'\'');
+        const aeActionsBySeverity = this.repository
+            .createQueryBuilder('f')
+            .select(
+                '[Severity], [AdverseEventActionTaken] = CASE ' +
+                    "WHEN [AdverseEventActionTaken] = 'Select' OR [AdverseEventActionTaken] IS NULL OR [AdverseEventActionTaken] = 'Other' THEN 'Undocumented' " +
+                    "WHEN [AdverseEventActionTaken] = 'Severe' OR [AdverseEventActionTaken] = 'Mild' OR [AdverseEventActionTaken] = 'Moderate' THEN 'Undocumented' " +
+                    'ELSE [AdverseEventActionTaken] END,' +
+                    'SUM([AdverseEventsCount]) total, DATIMAgeGroup ageGroup',
+            )
+            .where("ISNULL([Severity],'') <> ''");
 
         if (query.county) {
             aeActionsBySeverity
@@ -38,15 +41,15 @@ export class GetAeActionsBySeverityHandler implements IQueryHandler<GetAeActions
 
         if (query.partner) {
             aeActionsBySeverity
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if (query.agency) {
-            aeActionsBySeverity.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            aeActionsBySeverity.andWhere('f.AgencyName IN (:...agencies)', { agencies: query.agency });
         }
 
         if (query.datimAgeGroup) {
-            aeActionsBySeverity.andWhere('f.AgeGroup IN (:...ageGroup)', { ageGroup: query.datimAgeGroup });
+            aeActionsBySeverity.andWhere('f.DATIMAgeGroup IN (:...ageGroup)', { ageGroup: query.datimAgeGroup });
         }
 
         if (query.gender) {
@@ -54,7 +57,7 @@ export class GetAeActionsBySeverityHandler implements IQueryHandler<GetAeActions
         }
 
         return await aeActionsBySeverity
-            .groupBy('Severity, AdverseEventActionTaken, AgeGroup')
+            .groupBy('Severity, AdverseEventActionTaken, DATIMAgeGroup')
             .getRawMany();
     }
 }
