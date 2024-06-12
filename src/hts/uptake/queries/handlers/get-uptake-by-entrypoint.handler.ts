@@ -50,7 +50,6 @@ export class GetUptakeByEntrypointHandler
             uptakeByEntryPointSql = `${uptakeByEntryPointSql} and PartnerName IN ('${query.partner
                 .toString()
                 .replace(/,/g, "','")}')`;
-            params.push(query.partner);
         }
 
         // if(query.month) {

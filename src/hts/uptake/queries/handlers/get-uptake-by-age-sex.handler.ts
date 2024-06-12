@@ -49,7 +49,6 @@ export class GetUptakeByAgeSexHandler
             uptakeByAgeSexSql = `${uptakeByAgeSexSql} and PartnerName IN ('${query.partner
                 .toString()
                 .replace(/,/g, "','")}')`;
-            params.push(query.partner);
         }
 
 
