@@ -13,6 +13,7 @@ import { GetFacilityLevelByOwnershipPartnerQuery } from './queries/impl/get-faci
 import { GetFacilityLevelByOwnershipCountyQuery } from './queries/impl/get-facility-level-by-ownership-county.query';
 import { GetFacilityByInfrastructureQuery } from './queries/impl/get-facility-by-infrastructure.query';
 import { GetFacilityLinelistQuery } from './queries/impl/get-facility-linelist.query';
+import { GetFacilityTxcurrQuery } from './queries/impl/get-facility-txcurr.query';
 
 @Controller('common')
 export class CommonController {
@@ -349,6 +350,34 @@ export class CommonController {
         @Query('agency') agency,
     ): Promise<any> {
         const query = new GetFacilityLinelistQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        return this.queryBus.execute(query);
+    }
+
+
+    @Get('facilityTxcurr')
+    async getFacilityTxCurr(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+    ): Promise<any> {
+        const query = new GetFacilityTxcurrQuery();
         if(county) {
             query.county = county;
         }
