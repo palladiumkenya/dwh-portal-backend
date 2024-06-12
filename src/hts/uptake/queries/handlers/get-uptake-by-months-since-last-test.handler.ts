@@ -50,7 +50,6 @@ export class GetUptakeByMonthsSinceLastTestHandler
             uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and PartnerName IN ('${query.partner
                 .toString()
                 .replace(/,/g, "','")}')`;
-            params.push(query.partner);
         }
 
         // if(query.month) {
