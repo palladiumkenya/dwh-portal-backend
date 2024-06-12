@@ -14,14 +14,16 @@ import { GetFacilityLevelByOwnershipPartnerHandler } from './queries/handlers/ge
 import { GetFacilityLevelByOwnershipCountyHandler } from './queries/handlers/get-facility-level-by-ownership-county.handler';
 import { GetFacilityByInfrastructureHandler } from './queries/handlers/get-facility-by-infrastructure.handler';
 import { GetFacilityLinelistHandler } from './queries/handlers/get-facility-linelist.handler';
+import { GetFacilityTxcurrHandler } from './queries/handlers/get-facility-txcurr.handler';
 import { CommonController } from './common.controller';
 import { AllEmrSites } from '../care-treatment/common/entities/all-emr-sites.model';
+import { LinelistFACTART } from '../care-treatment/common/entities/linelist-fact-art.model';
 
 @Module({
     imports: [
         CqrsModule,
         ConfigurationModule,
-        TypeOrmModule.forFeature([AllEmrSites], 'mssql')
+        TypeOrmModule.forFeature([AllEmrSites, LinelistFACTART], 'mssql')
     ],
     providers: [
         GetCountiesHandler,
@@ -36,6 +38,7 @@ import { AllEmrSites } from '../care-treatment/common/entities/all-emr-sites.mod
         GetFacilityLevelByOwnershipCountyHandler,
         GetFacilityByInfrastructureHandler,
         GetFacilityLinelistHandler,
+        GetFacilityTxcurrHandler,
     ],
     controllers: [CommonController],
 })
