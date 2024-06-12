@@ -15,29 +15,28 @@ export class GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegiment
     }
 
     async execute(query: GetVlOverallNumberWithFollowTestsAtGt1000CopiesSecondlineRegimentQuery): Promise<any> {
-        // const vlOverallUptakeAndSuppressionBySex = this.repository.createQueryBuilder('f')
-        //     .select(['Last12MVLResult, Gender gender, COUNT ( * ) Num'])
-        //     .where('f.MFLCode > 0')
-        //     .andWhere('Last12MVLResult IS NOT NULL');
 
         const vlOverallNumberFollowSecondlineRegiment = this.repository
             .createQueryBuilder('cohort')
             .select([
-                `cohort.SiteCode,cohort.PatientIDHash,cohort.County,cohort.SubCounty,DOB,cohort.Gender,LatestVL1 as LastVL,LatestVLDate2Key,LatestVLDate1Key,ARTOutcomeDescription,CurrentRegimenLine As CurrentARTLine,
+                `cohort.SiteCode, cohort.PatientIDHash, cohort.County, cohort.SubCounty, DOB, cohort.Gender,LatestVL1 as LastVL,
+                LatestVLDate2Key, LatestVLDate1Key, ARTOutcomeDescription, CurrentRegimenLine As CurrentARTLine, SwitchedToSecondLineLast12Months,
                 CASE
                     WHEN ISNUMERIC(LatestVL1)=1 THEN
                         CASE
                             WHEN CAST(Replace(LatestVL1,',','')AS FLOAT) >=1000 THEN '>1000 Copies'
+                            WHEN CAST(Replace(LatestVL1,',','')AS FLOAT) >=200 AND CAST(Replace(LatestVL1,',','')AS FLOAT) < 1000 THEN '200-999'
                         END
-                    END AS [LastVLResult],
+                END AS [LastVLResult],
                 LatestVLDate1Key as DateLAstVL,
                 LatestVL2,
                 CASE
                     WHEN ISNUMERIC(LatestVL2)=1 THEN
                         CASE
                             WHEN CAST(Replace(LatestVL2,',','')AS FLOAT) >=1000 THEN '>1000 Copies'
+                            WHEN CAST(Replace(LatestVL2,',','')AS FLOAT) >=200 AND CAST(Replace(LatestVL2,',','')AS FLOAT) < 1000 THEN '200-999'
                         END
-                    END AS [VL2Result]`,
+                END AS [VL2Result]`,
             ])
             .leftJoin(
                 'LineListViralLoad',
@@ -97,7 +96,7 @@ export class GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegiment
             const a = originalQuery.call(
                 vlOverallNumberFollowSecondlineRegiment,
             );
-            return `WITH VL AS (${a}) SELECT VL2Result, Count (*) Num FROM VL WHERE ARTOutcomeDescription ='Active' and  VL2Result in ('>1000 Copies')  and DATEDIFF(MONTH,LatestVLDate2Key,GETDATE())<= 14 and currentARTline='Second Line' Group by VL2Result`;
+            return `WITH VL AS (${a}) SELECT VL2Result, Count (*) Num FROM VL WHERE ARTOutcomeDescription ='Active' and  VL2Result in ('200-999', '>1000 Copies')  and DATEDIFF(MONTH,LatestVLDate2Key,GETDATE())<= 12 and SwitchedToSecondLineLast12Months = 1 Group by VL2Result`;
         };
 
         vlOverallNumberFollowSecondlineRegiment.getParameters = () => {
