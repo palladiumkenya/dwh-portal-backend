@@ -15,6 +15,8 @@ import { GetFacilityLevelByOwnershipCountyHandler } from './queries/handlers/get
 import { GetFacilityByInfrastructureHandler } from './queries/handlers/get-facility-by-infrastructure.handler';
 import { GetFacilityLinelistHandler } from './queries/handlers/get-facility-linelist.handler';
 import { GetFacilityTxcurrHandler } from './queries/handlers/get-facility-txcurr.handler';
+import { GetFacilityStatusByCountyHandler } from './queries/handlers/get-facility-status-by-county.handler';
+import { GetFacilityByInfrastructureCountyHandler } from './queries/handlers/get-facility-by-infrastructure-county.handler';
 import { CommonController } from './common.controller';
 import { AllEmrSites } from '../care-treatment/common/entities/all-emr-sites.model';
 import { LinelistFACTART } from '../care-treatment/common/entities/linelist-fact-art.model';
@@ -39,6 +41,8 @@ import { LinelistFACTART } from '../care-treatment/common/entities/linelist-fact
         GetFacilityByInfrastructureHandler,
         GetFacilityLinelistHandler,
         GetFacilityTxcurrHandler,
+        GetFacilityStatusByCountyHandler,
+        GetFacilityByInfrastructureCountyHandler
     ],
     controllers: [CommonController],
 })
