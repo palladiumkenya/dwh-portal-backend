@@ -17,6 +17,7 @@ import { GetFacilityTxcurrQuery } from './queries/impl/get-facility-txcurr.query
 import { GetFacilityStatusByCountyQuery } from './queries/impl/get-facility-status-by-county.query';
 import { GetFacilityByInfrastructureCountyQuery } from './queries/impl/get-facility-by-infrastructure-county.query';
 import { GetFacilityArtHtsMnchQuery } from './queries/impl/get-facility-art-hts-mnch.query';
+import { GetCountyCoverageHtsQuery } from './queries/impl/get-county-coverage-hts.query';
 
 @Controller('common')
 export class CommonController {
@@ -465,6 +466,34 @@ export class CommonController {
         @Query('agency') agency,
     ): Promise<any> {
         const query = new GetFacilityArtHtsMnchQuery();
+        if(county) {
+            query.county = county;
+        }
+        if(subCounty) {
+            query.subCounty = subCounty;
+        }
+        if(facility) {
+            query.facility = facility;
+        }
+        if(partner) {
+            query.partner = partner;
+        }
+        if(agency) {
+            query.agency = agency;
+        }
+        return this.queryBus.execute(query);
+    }
+
+
+    @Get('getCountyCoverageHts')
+    async getCountyCoverageHts(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+    ): Promise<any> {
+        const query = new GetCountyCoverageHtsQuery();
         if(county) {
             query.county = county;
         }
