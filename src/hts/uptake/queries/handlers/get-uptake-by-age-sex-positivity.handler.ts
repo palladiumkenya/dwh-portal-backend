@@ -2,14 +2,14 @@ import { GetUptakeByAgeSexPositivityQuery } from '../impl/get-uptake-by-age-sex-
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetUptakeByAgeSexPositivityQuery)
 export class GetUptakeByAgeSexPositivityHandler
     implements IQueryHandler<GetUptakeByAgeSexPositivityQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetUptakeByAgeSexPositivityQuery): Promise<any> {
