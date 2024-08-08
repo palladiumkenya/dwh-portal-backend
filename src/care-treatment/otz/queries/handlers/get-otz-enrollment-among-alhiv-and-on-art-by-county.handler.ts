@@ -3,12 +3,13 @@ import { GetOtzEnrollmentAmongAlhivAndOnArtByCountyQuery } from '../impl/get-otz
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AggregateOtz } from './../../entities/aggregate-otz.model';
+import { LineListOTZEligibilityAndEnrollments } from '../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetOtzEnrollmentAmongAlhivAndOnArtByCountyQuery)
 export class GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler implements IQueryHandler<GetOtzEnrollmentAmongAlhivAndOnArtByCountyQuery> {
     constructor(
-        @InjectRepository(AggregateOtz, 'mssql')
-        private readonly repository: Repository<AggregateOtz>
+        @InjectRepository(LineListOTZEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOTZEligibilityAndEnrollments>
     ) {
     }
 
@@ -16,7 +17,7 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler implements IQuery
         const otzEnrollmentsCounty = this.repository
             .createQueryBuilder('f')
             .select([
-                '[County], SUM(CompletedTraining) count_training, SUM(Enrolled) TXCurr, SUM(Enrolled) * 100.0 / SUM(SUM(Enrolled)) OVER () AS Percentage',
+                '[County], SUM(CompletedTraining) count_training, SUM(Enrolled) TXCurr, COUNT(*) alhiv, SUM(Enrolled) * 100.0 / SUM(SUM(Enrolled)) OVER () AS Percentage',
             ]);
 
         if (query.county) {
@@ -46,7 +47,6 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler implements IQuery
         if (query.gender) {
             otzEnrollmentsCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
         }
-
         return await otzEnrollmentsCounty
             .groupBy('County')
             .getRawMany();
