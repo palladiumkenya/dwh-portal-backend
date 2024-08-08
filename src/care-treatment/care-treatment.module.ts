@@ -339,6 +339,7 @@ import { GetAppointmentKeepingWaterfallHandler } from './treatment-outcomes/quer
 import { GetQuaterlyIITHandler } from './treatment-outcomes/queries/handlers/get-quaterly-iit.handler';
 import { GetIITTracingHandler } from './treatment-outcomes/queries/handlers/get-iit-tracing.handler';
 import { GetIITTracingOutcomesHandler } from './treatment-outcomes/queries/handlers/get-iit-tracing-outcomes.handler';
+import { GetAlhivOnArtByAgeSexHandler } from './otz/queries/handlers/get-alhiv-on-art-by-age-sex.handler';
 
 
 @Module({
@@ -665,6 +666,7 @@ import { GetIITTracingOutcomesHandler } from './treatment-outcomes/queries/handl
         GetOvcVldoneHandler,
         GetOTZCalhivOnArtHandler,
         GetOtzCalhivVlEligibleHandler,
+        GetAlhivOnArtByAgeSexHandler,
         GetCovidNumberScreenedHandler,
         GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler,
         GetCovidAdmissionSymptomaticOverallHandler,
