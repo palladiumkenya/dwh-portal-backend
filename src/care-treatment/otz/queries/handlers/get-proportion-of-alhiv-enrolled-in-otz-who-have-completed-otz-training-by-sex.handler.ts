@@ -2,13 +2,13 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexQuery } from '../impl/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LineListOTZ } from './../../entities/line-list-otz.model';
+import { LineListOTZEligibilityAndEnrollments } from '../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexQuery)
 export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHandler implements IQueryHandler<GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexQuery> {
     constructor(
-        @InjectRepository(LineListOTZ, 'mssql')
-        private readonly repository: Repository<LineListOTZ>
+        @InjectRepository(LineListOTZEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOTZEligibilityAndEnrollments>
     ) {
     }
 
@@ -16,7 +16,7 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHa
         const proportionWhoCompletedTrainingByGender = this.repository
             .createQueryBuilder('f')
             .select([
-                '[Gender], [CompletedTraining] training, SUM([CompletedTraining]) count_training',
+                '[Gender], [CompletedTraining] training, COUNT([CompletedTraining]) count_training',
             ]);
 
         if (query.county) {

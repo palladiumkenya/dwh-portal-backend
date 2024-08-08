@@ -2,13 +2,13 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyQuery } from '../impl/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateOtz } from './../../entities/aggregate-otz.model';
+import { LineListOTZEligibilityAndEnrollments } from '../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyQuery)
 export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyHandler implements IQueryHandler<GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyQuery> {
     constructor(
-        @InjectRepository(AggregateOtz, 'mssql')
-        private readonly repository: Repository<AggregateOtz>
+        @InjectRepository(LineListOTZEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOTZEligibilityAndEnrollments>
     ) {
     }
 
