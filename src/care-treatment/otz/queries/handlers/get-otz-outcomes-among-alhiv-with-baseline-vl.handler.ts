@@ -3,13 +3,14 @@ import { GetOtzOutcomesAmongAlhivWithBaselineVlQuery } from '../impl/get-otz-out
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LineListOTZ } from './../../entities/line-list-otz.model';
+import { LineListOTZEligibilityAndEnrollments } from '../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetOtzOutcomesAmongAlhivWithBaselineVlQuery)
 export class GetOtzOutcomesAmongAlhivWithBaselineVlHandler
     implements IQueryHandler<GetOtzOutcomesAmongAlhivWithBaselineVlQuery> {
     constructor(
-        @InjectRepository(LineListOTZ, 'mssql')
-        private readonly repository: Repository<LineListOTZ>,
+        @InjectRepository(LineListOTZEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOTZEligibilityAndEnrollments>,
     ) {}
 
     async execute(
@@ -18,10 +19,16 @@ export class GetOtzOutcomesAmongAlhivWithBaselineVlHandler
         const baselineVl = this.repository
             .createQueryBuilder('f')
             .select([
-                'AlHivEnrolledInOTZ = Count(*),' +
-                    'AlHivWithBaselineVl = (SELECT COUNT(*) FROM [dbo].[LineListOTZ] WHERE FirstVL IS NOT NULL ),\n' +
-                    "AlHivWithVlLessThan1000 = (SELECT COUNT(*) FROM [dbo].[LineListOTZ] WHERE (CASE WHEN FirstVL = 'Undetectable' THEN 1 WHEN FirstVL = 'DETECTED' Then 0 ELSE TRY_CONVERT(decimal, FirstVL) END) < 1000 )," +
-                    "AlHivWithVlGreaterThan1000 = (SELECT COUNT(*) FROM [dbo].[LineListOTZ] WHERE (CASE WHEN FirstVL = 'Undetectable' THEN 1 WHEN FirstVL = 'DETECTED' Then 0 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000 )",
+                `
+                    AlHivEnrolledInOTZ = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] WHERE Enrolled = 1 ),
+                    AlHiv = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments]),
+                    AlHivWithBaselineVl = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] WHERE FirstVL IS NOT NULL ),
+                    AlHivWithVlLessThan1000 = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] WHERE (CASE WHEN FirstVL = 'Undetectable' THEN 1 WHEN FirstVL = 'DETECTED' Then 0 ELSE TRY_CONVERT(decimal, FirstVL) END) < 200 ),
+                    AlHivWithVlGreaterThan1000 = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] WHERE (CASE WHEN FirstVL = 'Undetectable' THEN 1 WHEN FirstVL = 'DETECTED' Then 0 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 200 ),
+                    AlHivWithBaselineVlEnrolled = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] WHERE FirstVL IS NOT NULL AND Enrolled = 1),
+                    AlHivWithVlLessThan1000Enrolled = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] WHERE (CASE WHEN FirstVL = 'Undetectable' THEN 1 WHEN FirstVL = 'DETECTED' Then 0 ELSE TRY_CONVERT(decimal, FirstVL) END) < 200 AND Enrolled = 1),
+                    AlHivWithVlGreaterThan1000Enrolled = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] WHERE (CASE WHEN FirstVL = 'Undetectable' THEN 1 WHEN FirstVL = 'DETECTED' Then 0 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 200 AND Enrolled = 1)
+                `
             ]);
 
         if (query.county) {
