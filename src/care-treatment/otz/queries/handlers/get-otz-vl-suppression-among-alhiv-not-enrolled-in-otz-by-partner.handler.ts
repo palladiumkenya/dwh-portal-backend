@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerQuery } from '../impl/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-partner.query';
-import { LineListOTZEligibilityAndEnrollments } from './../../entities/line-list-otz-eligibility-and-enrollments.model';
+import { LineListOTZEligibilityAndEnrollments } from '../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerQuery)
 export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerHandler

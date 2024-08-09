@@ -46,7 +46,6 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHa
         if (query.gender) {
             proportionWhoCompletedTrainingByGender.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
         }
-
         return await proportionWhoCompletedTrainingByGender
             .groupBy('CompletedTraining, [Gender]')
             .getRawMany();
