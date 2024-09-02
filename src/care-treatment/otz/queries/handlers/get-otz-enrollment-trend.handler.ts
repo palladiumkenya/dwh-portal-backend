@@ -19,6 +19,7 @@ export class GetOtzEnrollmentTrentHandler
             .add(16, 'days')
             .endOf('month')
             .format('YYYY-MM');
+
         const otzEnrolled = this.repository
             .createQueryBuilder('f')
             .select([

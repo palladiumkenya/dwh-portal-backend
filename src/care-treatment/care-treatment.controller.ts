@@ -270,6 +270,7 @@ import { GetIITTracingOutcomesQuery } from './treatment-outcomes/queries/impl/ge
 import { GetVlUptakeUToUQuery } from './viral-load/queries/impl/get-vl-uptake-U-to-U.query';
 import { GetVlCategorizationUToUQuery } from './viral-load/queries/impl/get-vl-categorization-U-to-U.query';
 import { GetAlhivOnArtByAgeSexQuery } from './otz/queries/impl/get-alhiv-on-art-by-age-sex.query';
+import { GetOtzTotalWithDurableVlQuery } from './otz/queries/impl/get-otz-total-with-durable-vl.query';
 
 
 @Controller('care-treatment')
@@ -10470,6 +10471,65 @@ export class CareTreatmentController {
         @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
         const query = new GetOtzEnrollmentTrendQuery();
+
+        if (county) {
+            query.county = county;
+        }
+
+        if (subCounty) {
+            query.subCounty = subCounty;
+        }
+
+        if (facility) {
+            query.facility = facility;
+        }
+
+        if (partner) {
+            query.partner = partner;
+        }
+
+        if (agency) {
+            query.agency = agency;
+        }
+
+        if (project) {
+            query.project = project;
+        }
+
+        if (year) {
+            query.year = year;
+        }
+
+        if (month) {
+            query.month = month;
+        }
+
+        if (gender) {
+            query.gender = gender;
+        }
+
+        if (datimAgeGroup) {
+            query.datimAgeGroup = datimAgeGroup;
+        }
+
+        return this.queryBus.execute(query);
+    }
+
+
+    @Get('getOtzTotalWithDurableVl')
+    async getOtzTotalWithDurableVl(
+        @Query('county') county,
+        @Query('subCounty') subCounty,
+        @Query('facility') facility,
+        @Query('partner') partner,
+        @Query('agency') agency,
+        @Query('project') project,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('gender') gender,
+        @Query('datimAgeGroup') datimAgeGroup,
+    ): Promise<any> {
+        const query = new GetOtzTotalWithDurableVlQuery();
 
         if (county) {
             query.county = county;
