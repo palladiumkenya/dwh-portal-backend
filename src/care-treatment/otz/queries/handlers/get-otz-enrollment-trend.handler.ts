@@ -1,10 +1,9 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
-import { GetOtzEnrollmentTrendQuery } from './../impl/get-otz-enrollment-trend.query';
+import { GetOtzEnrollmentTrendQuery } from '../impl/get-otz-enrollment-trend.query';
 import moment = require('moment');
-import { AggregateOtz } from './../../entities/aggregate-otz.model';
+import { AggregateOtz } from '../../entities/aggregate-otz.model';
 
 @QueryHandler(GetOtzEnrollmentTrendQuery)
 export class GetOtzEnrollmentTrentHandler
@@ -20,10 +19,11 @@ export class GetOtzEnrollmentTrentHandler
             .add(16, 'days')
             .endOf('month')
             .format('YYYY-MM');
+
         const otzEnrolled = this.repository
             .createQueryBuilder('f')
             .select([
-                "SUM(Enrolled) enrolledInOTZ, MONTH (CAST(REPLACE(OTZEnrollmentYearMonth , '-', '') + '01' AS DATE)) 'month', YEAR ( CAST(REPLACE(OTZEnrollmentYearMonth , '-', '') + '01' AS DATE)) 'year'",
+                "SUM(Enrolled) enrolledInOTZ, SUM(SUM(Enrolled)) OVER () AS CumulativePatients, MONTH (CAST(REPLACE(OTZEnrollmentYearMonth , '-', '') + '01' AS DATE)) 'month', YEAR ( CAST(REPLACE(OTZEnrollmentYearMonth , '-', '') + '01' AS DATE)) 'year'",
             ])
             .where(`OTZEnrollmentYearMonth <= '${previousMonth}'`);
 
