@@ -16,7 +16,7 @@ import { PmtctRRIModule } from './pmtct-rri/pmtct-rri.module';
 import { SelfServiceModule } from './self-service/self-service.module';
 
 import { AgeGroupMappingMiddleware } from './ageGroupMapping.middleware';
-import { CachesModule } from './cache/caches.module';
+
 @Module({
     imports: [
         ConfigModule.forRoot({
