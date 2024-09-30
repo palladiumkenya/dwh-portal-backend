@@ -23,6 +23,7 @@ export class GetAhdScreeningHandler implements IQueryHandler<GetAhdScreeningQuer
                 SUM(DoneTBLamTest) AS DoneTBLamTest,
                 SUM(TBLamPositive) AS TBLamPositive,
                 -- tb treatment initiated
+                SUM(OntbTreatment) AS tbInitiated,
                 SUM(DoneCrAgTest) AS DoneCrAgTest,
                 SUM(CrAgPositive) AS CrAgPositive,
                 SUM(CSFCrAg) AS CSFCrAg,
