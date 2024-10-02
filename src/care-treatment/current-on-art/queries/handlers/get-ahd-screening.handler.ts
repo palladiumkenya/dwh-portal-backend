@@ -15,15 +15,16 @@ export class GetAhdScreeningHandler implements IQueryHandler<GetAhdScreeningQuer
         const ahdScreening = this.repository
             .createQueryBuilder('f')
             .select([`
-                SUM(NewPatient) as NewPatient,
+                SUM(NewRTTSTF) as NewPatient,
                 -- ahd screened
+                COUNT(WhoStage) AS AHDScreened,
                 SUM(AHD) AS AHD,
                 SUM(DoneCD4Test) AS DoneCD4Test,
                 SUM(CD4Lessthan200) AS less200CD4,
                 SUM(DoneTBLamTest) AS DoneTBLamTest,
                 SUM(TBLamPositive) AS TBLamPositive,
-                -- tb treatment initiated
-                SUM(OntbTreatment) AS tbInitiated,
+                --SUM(OntbTreatment) AS tbInitiated,
+                0 AS tbInitiated,
                 SUM(DoneCrAgTest) AS DoneCrAgTest,
                 SUM(CrAgPositive) AS CrAgPositive,
                 SUM(CSFCrAg) AS CSFCrAg,
