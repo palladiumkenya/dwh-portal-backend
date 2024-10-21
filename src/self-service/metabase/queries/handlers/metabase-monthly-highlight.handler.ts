@@ -7,7 +7,7 @@ export class GetMetabaseMonthlyHighlightHandler implements IQueryHandler<GetMeta
 
     async execute(query: GetMetabaseMonthlyHighlightQuery): Promise<any> {
         const METABASE_SITE_URL = "https://metabase.kenyahmis.org";
-        const METABASE_SECRET_KEY = '919930fd2520f0ea5d890526bdb68daaaa37b8412dba0108a86dba5add85be44';
+        const METABASE_SECRET_KEY = '';
 
         let payload = {
             resource: { dashboard: 56 },
