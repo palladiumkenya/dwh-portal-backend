@@ -341,6 +341,8 @@ import { GetIITTracingOutcomesHandler } from './treatment-outcomes/queries/handl
 import { GetAlhivOnArtByAgeSexHandler } from './otz/queries/handlers/get-alhiv-on-art-by-age-sex.handler';
 import { GetOtzTotalWithDurableVlHandler } from './otz/queries/handlers/get-otz-total-with-durable-vl.handler';
 
+import { GetAhdScreeningHandler } from './current-on-art/queries/handlers/get-ahd-screening.handler';
+
 
 @Module({
     imports: [
@@ -684,6 +686,8 @@ import { GetOtzTotalWithDurableVlHandler } from './otz/queries/handlers/get-otz-
         GetArtVerificationPendingSurveysByPartnerHandler,
         GetArtVerificationPendingSurveysByCountyHandler,
         GetArtVerificationReasonsHandler,
+
+        GetAhdScreeningHandler,
     ],
     controllers: [CareTreatmentController],
 })
