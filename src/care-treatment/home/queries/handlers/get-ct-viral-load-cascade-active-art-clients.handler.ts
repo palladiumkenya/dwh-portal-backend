@@ -21,7 +21,8 @@ export class GetCtViralLoadCascadeActiveArtClientsHandler implements IQueryHandl
                 SUM(CASE WHEN ValidVLResultCategory2 = 'High Risk LLV ' THEN 1 END) HighRisk, 
                 SUM(CASE WHEN ValidVLResultCategory2 = 'LDL' THEN 1 END) LDL, 
                 SUM(CASE WHEN ValidVLResultCategory2 = 'Low Risk LLV' THEN 1 END) LowRisk, 
-                SUM(CASE WHEN ValidVLResultCategory2 = 'UNSUPPRESSED' THEN 1 END) Unsuppressed
+                SUM(CASE WHEN ValidVLResultCategory2 = 'UNSUPPRESSED' THEN 1 END) Unsuppressed,
+                EndofMonthDate
                 `,
             ])
             .where('f.[ISTxCurr] > 0');
@@ -61,6 +62,7 @@ export class GetCtViralLoadCascadeActiveArtClientsHandler implements IQueryHandl
         }
 
         return await viralLoadCascade
+            .groupBy('EndofMonthDate')
             .getRawOne();
     }
 }
