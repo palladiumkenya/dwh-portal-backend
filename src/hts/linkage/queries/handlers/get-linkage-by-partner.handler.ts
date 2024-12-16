@@ -1,79 +1,71 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetLinkageByPartnerQuery } from '../impl/get-linkage-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../../uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetLinkageByPartnerQuery)
 export class GetLinkageByPartnerHandler
     implements IQueryHandler<GetLinkageByPartnerQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetLinkageByPartnerQuery): Promise<any> {
         const params = [];
-        let linkageByPartnerSql = `SELECT
+        let linkageByPartnerSql = this.repository.createQueryBuilder('f')
+            .select([`
                 PartnerName Partner,
                 SUM(Tested) tested,
                 SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive,
                 SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END) linked,
                 ((CAST(SUM(linked) AS FLOAT)/NULLIF(CAST(SUM(positive)AS FLOAT), 0))*100) AS linkage
-            FROM
-                NDWH.dbo.FactHTSClientTests AS link
-                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE PartnerName IS NOT NULL AND positive > 0 and TestType IN ('Initial', 'Initial Test')`;
+            `])
+            .where(`PartnerName IS NOT NULL AND positive > 0 `);
 
         if (query.county) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and County IN ('${query.county
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageByPartnerSql.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and SubCounty IN ('${query.subCounty
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageByPartnerSql.andWhere(
+                'f.SubCounty IN (:...subCounties)',
+                { subCounties: query.subCounty },
+            );
         }
 
         if (query.facility) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and FacilityName IN ('${query.facility
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageByPartnerSql.andWhere(
+                'f.FacilityName IN (:...facilities)',
+                { facilities: query.facility },
+            );
         }
 
         if (query.partner) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and PartnerName IN ('${query.partner
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageByPartnerSql.andWhere(
+                'f.PartnerName IN (:...partners)',
+                { partners: query.partner },
+            );
         }
 
-        // if(query.year) {
-        //     linkageByPartnerSql = `${linkageByPartnerSql} and year=?`;
-        //     params.push(query.year);
-        // }
-
-        // if(query.month) {
-        //     linkageByPartnerSql = `${linkageByPartnerSql} and month=?`;
-        //     params.push(query.month);
-        // }
-
         if (query.fromDate) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and DateTestedKey >= ${query.fromDate}01`;
+            linkageByPartnerSql.andWhere(`year >= ${query.fromDate.substring(0, 4)}`);
+            linkageByPartnerSql.andWhere(`month >= ${query.fromDate.substring(4)}`);
         }
 
         if (query.toDate) {
-            linkageByPartnerSql = `${linkageByPartnerSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
+            linkageByPartnerSql.andWhere(
+                `year <= ${query.toDate.substring(0, 4)}`,
+            );
+            linkageByPartnerSql.andWhere(
+                `month <= ${query.toDate.substring(4)}`,
+            );
         }
 
-        linkageByPartnerSql = `${linkageByPartnerSql} GROUP BY PartnerName ORDER BY SUM(Positive) DESC`;
-
-        return await this.repository.query(linkageByPartnerSql, params);
+        return await linkageByPartnerSql
+            .groupBy('PartnerName')
+            .orderBy(`SUM(Positive)`, `DESC`)
+            .getRawMany();
     }
 }

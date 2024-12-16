@@ -12,7 +12,6 @@ import {FactTransNewlyStarted} from "../care-treatment/new-on-art/entities/fact-
 import {FactHtsDhis2} from "./khis/entities/fact-hts-dhis2.model";
 import { AggregateTXCurr } from '../care-treatment/current-on-art/entities/aggregate-txcurr.model';
 import { AggregateCohortRetention } from '../care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
-import { FactHTSClientTests } from '../hts/linkage/entities/fact-hts-client-tests.model';
 import { LinelistTicketExport } from './help-desk/entities/linelist-ticket-export.model';
 
 
@@ -50,6 +49,7 @@ import { GetOpenIssuesByCountyHandler } from './help-desk/queries/handlers/get-o
 import { GetOpenIssuesByMonthHandler } from './help-desk/queries/handlers/get-open-issues-by-month.handler';
 import { GetIssueStatusByMonthHandler } from './help-desk/queries/handlers/get-issue-status-by-month.handler';
 import { GetPartnerLevelIssuesHandler } from './help-desk/queries/handlers/get-partner-level-issues.handler';
+import { AggregateHTSUptake } from '../hts/uptake/entities/aggregate-hts-uptake.model';
 
 @Module({
     imports: [
@@ -64,7 +64,7 @@ import { GetPartnerLevelIssuesHandler } from './help-desk/queries/handlers/get-p
 
                 AggregateTXCurr,
                 AggregateCohortRetention,
-                FactHTSClientTests,
+                AggregateHTSUptake,
                 LinelistTicketExport,
             ],
             'mssql',

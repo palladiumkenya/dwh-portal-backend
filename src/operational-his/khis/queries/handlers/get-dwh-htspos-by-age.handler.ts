@@ -2,14 +2,14 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetDWHHTSPOSByAgeQuery } from '../impl/get-dwh-htspos-by-age.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../../hts/linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../../../hts/uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetDWHHTSPOSByAgeQuery)
 export class GetDWHHTSPOSByAgeHandler
     implements IQueryHandler<GetDWHHTSPOSByAgeQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetDWHHTSPOSByAgeQuery): Promise<any> {

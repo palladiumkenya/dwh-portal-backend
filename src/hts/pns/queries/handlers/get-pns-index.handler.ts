@@ -1,15 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetPnsIndexQuery } from '../impl/get-pns-index.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsuptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../../uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetPnsIndexQuery)
 export class GetPnsIndexHandler implements IQueryHandler<GetPnsIndexQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetPnsIndexQuery): Promise<any> {

@@ -2,80 +2,67 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeByMonthsSinceLastTestQuery } from '../impl/get-uptake-by-months-since-last-test.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSMonthsLastTest } from '../../entities/aggregate-hts-months-last-test.model';
 
 @QueryHandler(GetUptakeByMonthsSinceLastTestQuery)
 export class GetUptakeByMonthsSinceLastTestHandler
     implements IQueryHandler<GetUptakeByMonthsSinceLastTestQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSMonthsLastTest, 'mssql')
+        private readonly repository: Repository<AggregateHTSMonthsLastTest>,
     ) {}
 
     async execute(query: GetUptakeByMonthsSinceLastTestQuery): Promise<any> {
         const params = [];
-        let uptakeByPopulationTypeSql = `SELECT
-                MonthsLastTest MonthLastTest,
+        let uptakeByPopulationTypeSql = this.repository.createQueryBuilder('f')
+            .select([`
+                MonthLastTest MonthLastTest,
                 SUM(Tested)Tested, 
                 SUM(Positive) Positive, 
                 ((CAST(SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) AS FLOAT)/CAST(SUM(Tested) AS FLOAT))*100) AS positivity
-            FROM
-                NDWH.dbo.FactHTSClientTests AS link
-                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE Tested > 0 AND MonthsLastTest IS NOT NULL and TestType IN ('Initial', 'Initial Test')`;
+            `])
+            .where(`Tested > 0 AND MonthLastTest IS NOT NULL`);
 
         if (query.county) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and County IN ('${query.county
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByPopulationTypeSql.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and SubCounty IN ('${query.subCounty
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByPopulationTypeSql.andWhere(
+                'f.SubCounty IN (:...subCounties)',
+                { subCounties: query.subCounty },
+            );
         }
 
         if (query.facility) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and FacilityName IN ('${query.facility
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByPopulationTypeSql.andWhere(
+                'f.FacilityName IN (:...facilities)',
+                { facilities: query.facility },
+            );
         }
 
         if (query.partner) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and PartnerName IN ('${query.partner
-                .toString()
-                .replace(/,/g, "','")}')`;
+            uptakeByPopulationTypeSql.andWhere(
+                'f.PartnerName IN (:...partners)',
+                { partners: query.partner },
+            );
         }
 
-        // if(query.month) {
-        //     uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and month=?`;
-        //     params.push(query.month);
-        // }
-
-        // if(query.year) {
-        //     uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and year=?`;
-        //     params.push(query.year);
-        // }
-
         if (query.fromDate) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and DateTestedKey >= ${query.fromDate}01`;
+            uptakeByPopulationTypeSql.andWhere(`year >= ${query.fromDate.substring(0, 4)}`);
+            uptakeByPopulationTypeSql.andWhere(`month >= ${query.fromDate.substring(4)}`);
         }
 
         if (query.toDate) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
+            uptakeByPopulationTypeSql.andWhere(
+                `year <= ${query.toDate.substring(0, 4)}`,
+            );
+            uptakeByPopulationTypeSql.andWhere(
+                `month <= ${query.toDate.substring(4)}`,
+            );
         }
 
-        uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} GROUP BY MonthsLastTest`;
-
-        const resultSet = await this.repository.query(
-            uptakeByPopulationTypeSql,
-            params,
-        );
+        const resultSet = await uptakeByPopulationTypeSql.groupBy(`MonthLastTest`).getRawMany();
 
         const returnedVal = [];
         const groupings = [

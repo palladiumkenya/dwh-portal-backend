@@ -2,14 +2,14 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetDWHHTSPOSPositiveQuery } from '../impl/get-dwh-htspos-positive.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from '../../../../hts/linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../../../hts/uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetDWHHTSPOSPositiveQuery)
 export class GetDWHHTSPOSPositiveHandler
     implements IQueryHandler<GetDWHHTSPOSPositiveQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetDWHHTSPOSPositiveQuery): Promise<any> {

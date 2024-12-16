@@ -1,15 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetPnsSexualContactsByAgeSexQuery } from '../impl/get-pns-sexual-contacts-by-age-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactPNSSexualPartner } from '../../entities/fact-pns-sexual-partner.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../../uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetPnsSexualContactsByAgeSexQuery)
 export class GetPnsSexualContactsByAgeSexHandler implements IQueryHandler<GetPnsSexualContactsByAgeSexQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>
     ) {
 
     }
@@ -26,7 +25,7 @@ export class GetPnsSexualContactsByAgeSexHandler implements IQueryHandler<GetPns
             FROM [dbo].[AggregateHTSPNSSexualPartner]
             where MFLCode is not null
             `;
-        
+
         // this.repository.createQueryBuilder('q')
         //     .select(['q.Agegroup age, q.Gender gender, SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
         //     .where('q.Mflcode IS NOT NULL')

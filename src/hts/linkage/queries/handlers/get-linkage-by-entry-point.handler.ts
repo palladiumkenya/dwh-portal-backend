@@ -1,79 +1,71 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetLinkageByEntryPointQuery } from '../impl/get-linkage-by-entry-point.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsEntryPoint } from '../../entities/fact-hts-entrypoint.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from '../../entities/fact-hts-client-tests.model';
+import { AggregateHTSEntrypoint } from '../../entities/aggregate-hts-entrypoint.model';
 
 @QueryHandler(GetLinkageByEntryPointQuery)
 export class GetLinkageByEntryPointHandler
     implements IQueryHandler<GetLinkageByEntryPointQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSEntrypoint, 'mssql')
+        private readonly repository: Repository<AggregateHTSEntrypoint>,
     ) {}
 
     async execute(query: GetLinkageByEntryPointQuery): Promise<any> {
         const params = [];
-        let linkageByEntryPointSql = `SELECT
-                EntryPoint entryPoint,
+        let linkageByEntryPointSql = this.repository.createQueryBuilder('f')
+            .select([
+                `EntryPoint entryPoint,
                 SUM(Tested) tested,
                 SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive,
                 SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END) linked,
-                ((CAST(SUM(linked) AS FLOAT)/NULLIF(CAST(SUM(positive)AS FLOAT), 0))*100) AS linkage
-            FROM
-                NDWH.dbo.FactHTSClientTests AS link
-                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE EntryPoint IS NOT NULL AND EntryPoint <> '' AND positive IS NOT NULL AND positive > 0 and TestType IN ('Initial', 'Initial Test')`;
+                ((CAST(SUM(linked) AS FLOAT)/NULLIF(CAST(SUM(positive)AS FLOAT), 0))*100) AS linkage`
+            ])
+            .where(`EntryPoint IS NOT NULL AND EntryPoint <> '' AND positive IS NOT NULL AND positive > 0 `);
 
         if (query.county) {
-            linkageByEntryPointSql = `${linkageByEntryPointSql} and County IN ('${query.county
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageByEntryPointSql.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            linkageByEntryPointSql = `${linkageByEntryPointSql} and SubCounty IN ('${query.subCounty
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageByEntryPointSql.andWhere(
+                'f.SubCounty IN (:...subCounties)',
+                { subCounties: query.subCounty },
+            );
         }
 
         if (query.facility) {
-            linkageByEntryPointSql = `${linkageByEntryPointSql} and FacilityName IN ('${query.facility
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageByEntryPointSql.andWhere(
+                'f.FacilityName IN (:...facilities)',
+                { facilities: query.facility },
+            );
         }
 
         if (query.partner) {
-            linkageByEntryPointSql = `${linkageByEntryPointSql} and PartnerName IN ('${query.partner
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageByEntryPointSql.andWhere(
+                'f.PartnerName IN (:...partners)',
+                { partners: query.partner },
+            );
         }
 
-        // if(query.year) {
-        //     linkageByEntryPointSql = `${linkageByEntryPointSql} and year=?`;
-        //     params.push(query.year);
-        // }
-
-        // if(query.month) {
-        //     linkageByEntryPointSql = `${linkageByEntryPointSql} and month=?`;
-        //     params.push(query.month);
-        // }
-
         if (query.fromDate) {
-            linkageByEntryPointSql = `${linkageByEntryPointSql} and DateTestedKey >= ${query.fromDate}01`;
+            linkageByEntryPointSql.andWhere(`year >= ${query.fromDate.substring(0, 4)}`);
+            linkageByEntryPointSql.andWhere(`month >= ${query.fromDate.substring(4)}`);
         }
 
         if (query.toDate) {
-            linkageByEntryPointSql = `${linkageByEntryPointSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
+            linkageByEntryPointSql.andWhere(
+                `year <= ${query.toDate.substring(0, 4)}`,
+            );
+            linkageByEntryPointSql.andWhere(
+                `month <= ${query.toDate.substring(4)}`,
+            );
         }
 
-        linkageByEntryPointSql = `${linkageByEntryPointSql} GROUP BY EntryPoint ORDER BY SUM(positive) DESC`;
-
-        return await this.repository.query(linkageByEntryPointSql, params);
+        return await linkageByEntryPointSql
+            .groupBy('EntryPoint')
+            .orderBy('SUM(positive)', 'DESC')
+            .getRawMany();
     }
 }

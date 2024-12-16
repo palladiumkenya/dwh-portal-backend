@@ -1,79 +1,71 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetLinkageByStrategyQuery } from '../impl/get-linkage-by-strategy.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsTeststrategy } from '../../entities/fact-hts-teststrategy.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../entities/fact-hts-client-tests.model';
+import { AggregateHTSTestStrategy } from '../../entities/aggregate-hts-strategy.model';
 
 @QueryHandler(GetLinkageByStrategyQuery)
 export class GetLinkageByStrategyHandler
     implements IQueryHandler<GetLinkageByStrategyQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSTestStrategy, 'mssql')
+        private readonly repository: Repository<AggregateHTSTestStrategy>,
     ) {}
 
     async execute(query: GetLinkageByStrategyQuery): Promise<any> {
         const params = [];
-        let linkageByStrategySql = `SELECT
+        let linkageByStrategySql = this.repository.createQueryBuilder('f')
+            .select([`
                 CASE WHEN TestStrategy = 'NP: HTS for non-patients ' THEN 'NP:HTS for Non-Patient' ELSE TestStrategy END AS TestStrategy,
-                SUM(Tested) tested,
-                SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive,
-                SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END) linked,
-                ((CAST(SUM(linked) AS FLOAT)/NULLIF(CAST(SUM(positive)AS FLOAT), 0))*100) AS linkage
-            FROM
-                NDWH.dbo.FactHTSClientTests AS link
-                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                left JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE TestStrategy IS NOT NULL AND TestStrategy <> 'NULL' AND positive > 0 and TestType IN ('Initial', 'Initial Test')`;
+                SUM(TestedClients) tested,
+                SUM(CASE WHEN positiveClients IS NULL THEN 0 ELSE positiveClients END) positive,
+                SUM(CASE WHEN linkedClients IS NULL THEN 0 ELSE linkedClients END) linked,
+                ((CAST(SUM(linkedClients) AS FLOAT)/NULLIF(CAST(SUM(positiveClients)AS FLOAT), 0))*100) AS linkage
+            `])
+            .where(`TestStrategy IS NOT NULL AND TestStrategy <> 'NULL' AND positiveClients > 0`);
 
         if (query.county) {
-            linkageByStrategySql = `${linkageByStrategySql} and County IN ('${query.county
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageByStrategySql.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            linkageByStrategySql = `${linkageByStrategySql} and SubCounty IN ('${query.subCounty
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageByStrategySql.andWhere(
+                'f.SubCounty IN (:...subCounties)',
+                { subCounties: query.subCounty },
+            );
         }
 
         if (query.facility) {
-            linkageByStrategySql = `${linkageByStrategySql} and FacilityName IN ('${query.facility
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageByStrategySql.andWhere(
+                'f.FacilityName IN (:...facilities)',
+                { facilities: query.facility },
+            );
         }
 
         if (query.partner) {
-            linkageByStrategySql = `${linkageByStrategySql} and PartnerName IN ('${query.partner
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageByStrategySql.andWhere(
+                'f.PartnerName IN (:...partners)',
+                { partners: query.partner },
+            );
         }
 
-        // if(query.month) {
-        //     linkageByStrategySql = `${linkageByStrategySql} and month=?`;
-        //     params.push(query.month);
-        // }
-
-        // if(query.year) {
-        //     linkageByStrategySql = `${linkageByStrategySql} and year=?`;
-        //     params.push(query.year);
-        // }
-
         if (query.fromDate) {
-            linkageByStrategySql = `${linkageByStrategySql} and DateTestedKey >= ${query.fromDate}01`;
+            linkageByStrategySql.andWhere(`year >= ${query.fromDate.substring(0, 4)}`);
+            linkageByStrategySql.andWhere(`month >= ${query.fromDate.substring(4)}`);
         }
 
         if (query.toDate) {
-            linkageByStrategySql = `${linkageByStrategySql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
+            linkageByStrategySql.andWhere(
+                `year <= ${query.toDate.substring(0, 4)}`,
+            );
+            linkageByStrategySql.andWhere(
+                `month <= ${query.toDate.substring(4)}`,
+            );
         }
 
-        linkageByStrategySql = `${linkageByStrategySql} GROUP BY TestStrategy ORDER BY SUM(positive) DESC`;
-
-        return await this.repository.query(linkageByStrategySql, params);
+        return await linkageByStrategySql
+            .groupBy('TestStrategy')
+            .orderBy(`SUM(positiveClients)`, `DESC`)
+            .getRawMany();
     }
 }

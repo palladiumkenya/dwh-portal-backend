@@ -1,16 +1,15 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetLinkageNumberNotLinkedByFacilityQuery } from '../impl/get-linkage-number-not-linked-by-facility.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from '../../entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../../uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetLinkageNumberNotLinkedByFacilityQuery)
 export class GetLinkageNumberNotLinkedByFacilityHandler
     implements IQueryHandler<GetLinkageNumberNotLinkedByFacilityQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(
@@ -18,76 +17,60 @@ export class GetLinkageNumberNotLinkedByFacilityHandler
     ): Promise<any> {
         const params = [];
 
-        let linkageNumberNotLinkedByFacilitySql = `SELECT
+        let linkageNumberNotLinkedByFacilitySql = this.repository.createQueryBuilder('f')
+            .select([`
                 MFLCode mfl, 
                 FacilityName facility, 
                 County county, 
                 subcounty subCounty, 
                 PartnerName partner, 
                 Sum(Positive) positive, 
-                Sum(Linked) linked 
-            FROM
-                NDWH.dbo.FactHTSClientTests AS link
-                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                left JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE  MFLCode > 0 AND Positive > 0 and TestType IN ('Initial', 'Initial Test')`;
+                Sum(Linked) linked
+            `])
+            .where(`MFLCode > 0 AND Positive > 0`);
 
         if (query.county) {
-            linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and County IN ('${query.county
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageNumberNotLinkedByFacilitySql.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and subcounty IN ('${query.subCounty
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageNumberNotLinkedByFacilitySql.andWhere(
+                'f.SubCounty IN (:...subCounties)',
+                { subCounties: query.subCounty },
+            );
         }
 
         if (query.facility) {
-            linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and FacilityName IN ('${query.facility
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageNumberNotLinkedByFacilitySql.andWhere(
+                'f.FacilityName IN (:...facilities)',
+                { facilities: query.facility },
+            );
         }
 
         if (query.partner) {
-            linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and PartnerName IN ('${query.partner
-                .toString()
-                .replace(/,/g, "','")}')`
+            linkageNumberNotLinkedByFacilitySql.andWhere(
+                'f.PartnerName IN (:...partners)',
+                { partners: query.partner },
+            );
         }
 
-        // if (query.year) {
-        //     // if (query.year == new Date().getFullYear()) {
-        //     //     linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and  (YEAR >= YEAR(DATE_SUB(NOW(), INTERVAL 11 MONTH)))`;
-        //     // } else {
-        //         linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and year=?`;
-        //     // }
-        //     params.push(query.year);
-        // }
-
-        // if (query.month) {
-        //     linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and month=?`;
-        //     params.push(query.month);
-        // }
-
         if (query.fromDate) {
-            linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and DateTestedKey >= ${query.fromDate}01`;
+            linkageNumberNotLinkedByFacilitySql.andWhere(`year >= ${query.fromDate.substring(0, 4)}`);
+            linkageNumberNotLinkedByFacilitySql.andWhere(`month >= ${query.fromDate.substring(4)}`);
         }
 
         if (query.toDate) {
-            linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
+            linkageNumberNotLinkedByFacilitySql.andWhere(
+                `year <= ${query.toDate.substring(0, 4)}`,
+            );
+            linkageNumberNotLinkedByFacilitySql.andWhere(
+                `month <= ${query.toDate.substring(4)}`,
+            );
         }
 
-        linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} GROUP BY MFLCode, FacilityName, County, subcounty, PartnerName`;
-
-        linkageNumberNotLinkedByFacilitySql = `${linkageNumberNotLinkedByFacilitySql} ORDER BY FacilityName`;
-
-        return await this.repository.query(
-            linkageNumberNotLinkedByFacilitySql,
-            params,
-        );
+        return await linkageNumberNotLinkedByFacilitySql
+            .groupBy(`MFLCode, FacilityName, County, subcounty, PartnerName`)
+            .orderBy('FacilityName')
+            .getRawMany()
     }
 }
