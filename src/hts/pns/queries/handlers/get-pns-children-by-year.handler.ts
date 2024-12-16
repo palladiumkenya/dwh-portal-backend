@@ -1,16 +1,15 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetPnsChildrenByYearQuery } from '../impl/get-pns-children-by-year.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactPNSChildren } from '../../entities/fact-pns-children.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../../uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetPnsChildrenByYearQuery)
 export class GetPnsChildrenByYearHandler
     implements IQueryHandler<GetPnsChildrenByYearQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetPnsChildrenByYearQuery): Promise<any> {

@@ -1,15 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetPnsKnowledgeHivStatusCascadeQuery } from '../impl/get-pns-knowledge-hiv-status-cascade.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactPNSKnowledgeHivStatus } from '../../entities/fact-pns-knowledge-hiv-status.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../../uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetPnsKnowledgeHivStatusCascadeQuery)
 export class GetPnsKnowledgeHivStatusCascadeHandler implements IQueryHandler<GetPnsKnowledgeHivStatusCascadeQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>
     ) {
 
     }

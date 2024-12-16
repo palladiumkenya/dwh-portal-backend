@@ -2,76 +2,67 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeByTestingStrategyQuery } from '../impl/get-uptake-by-testing-strategy.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../entities/aggregate-hts-uptake.model';
+import { AggregateHTSTestStrategy } from '../../../linkage/entities/aggregate-hts-strategy.model';
 
 @QueryHandler(GetUptakeByTestingStrategyQuery)
 export class GetUptakeByTestingStrategyHandler
     implements IQueryHandler<GetUptakeByTestingStrategyQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSTestStrategy, 'mssql')
+        private readonly repository: Repository<AggregateHTSTestStrategy>,
     ) {}
 
     async execute(query: GetUptakeByTestingStrategyQuery): Promise<any> {
         const params = [];
-        let uptakeByPopulationTypeSql = `SELECT
+        let uptakeByPopulationTypeSql =  this.repository.createQueryBuilder('f')
+            .select([`
                 TestStrategy AS TestStrategy,
-                SUM(Tested)Tested, 
-                SUM(Positive) Positive, 
-                ((CAST(SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) AS FLOAT)/CAST(SUM(Tested) AS FLOAT))*100) AS positivity
-            FROM
-                NDWH.dbo.FactHTSClientTests AS link
-                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE TestStrategy IS NOT NULL and TestType IN ('Initial', 'Initial Test')`;
+                SUM(TestedClients)Tested, 
+                SUM(PositiveClients) Positive, 
+                ((CAST(SUM(CASE WHEN positiveClients IS NULL THEN 0 ELSE positiveClients END) AS FLOAT)/CAST(SUM(TestedClients) AS FLOAT))*100) AS positivity
+            `])
+            .where(`TestStrategy IS NOT NULL`);
 
         if (query.county) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and County IN ('${query.county
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByPopulationTypeSql.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and SubCounty IN ('${query.subCounty
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByPopulationTypeSql.andWhere(
+                'f.SubCounty IN (:...subCounties)',
+                { subCounties: query.subCounty },
+            );
         }
 
         if (query.facility) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and FacilityName IN ('${query.facility
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByPopulationTypeSql.andWhere(
+                'f.FacilityName IN (:...facilities)',
+                { facilities: query.facility },
+            );
         }
 
         if (query.partner) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and PartnerName IN ('${query.partner
-                .toString()
-                .replace(/,/g, "','")}')`;
+            uptakeByPopulationTypeSql.andWhere(
+                'f.PartnerName IN (:...partners)',
+                { partners: query.partner },
+            );
         }
 
-        // if(query.month) {
-        //     uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and month=?`;
-        //     params.push(query.month);
-        // }
-
-        // if(query.year) {
-        //     uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and year=?`;
-        //     params.push(query.year);
-        // }
-
         if (query.fromDate) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and DateTestedKey >= ${query.fromDate}01`;
+            uptakeByPopulationTypeSql.andWhere(`year >= ${query.fromDate.substring(0, 4)}`);
+            uptakeByPopulationTypeSql.andWhere(`month >= ${query.fromDate.substring(4)}`);
         }
 
         if (query.toDate) {
-            uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
+            uptakeByPopulationTypeSql.andWhere(
+                `year <= ${query.toDate.substring(0, 4)}`,
+            );
+            uptakeByPopulationTypeSql.andWhere(
+                `month <= ${query.toDate.substring(4)}`,
+            );
         }
 
-        uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} GROUP BY TestStrategy ORDER BY SUM(Tested) DESC`;
-
-        return await this.repository.query(uptakeByPopulationTypeSql, params);
+        return await uptakeByPopulationTypeSql.groupBy(`TestStrategy`).orderBy(`SUM(TestedClients)`, `DESC`).getRawMany()
     }
 }

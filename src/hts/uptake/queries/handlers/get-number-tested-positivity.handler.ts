@@ -23,7 +23,7 @@ export class GetNumberTestedPositivityHandler
                 ((CAST(SUM(linked) AS FLOAT)/NULLIF(CAST(SUM(positive)AS FLOAT), 0))*100) AS linkage`]);
 
         if (query.county) {
-            numberTestedPositivitySql.andWhere('f.County IN (:...counties)', { counties: query.county });;
+            numberTestedPositivitySql.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
