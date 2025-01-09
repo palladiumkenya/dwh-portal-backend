@@ -1,8 +1,11 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 
-@Entity()
-export class FactHtsUptake {
+@Entity('AggregateHTSEntrypoint')
+export class AggregateHTSEntrypoint {
+    @PrimaryColumn('int')
+    MFLCode: number;
+
     @PrimaryColumn('text')
     FacilityName: string;
 
@@ -10,7 +13,13 @@ export class FactHtsUptake {
     County: string;
 
     @Column({ type: 'text' })
-    CTPartner: string;
+    PartnerName: string;
+
+    @Column({ type: 'text' })
+    AgencyName: string;
+
+    @Column({ type: 'text' })
+    Gender: string;
 
     @Column({ type: 'int' })
     year: number;
@@ -19,7 +28,7 @@ export class FactHtsUptake {
     month: number;
 
     @Column({ type: 'text' })
-    MonthName: string;
+    SubCounty: string;
 
     @Column({ type: 'int' })
     Tested: number;

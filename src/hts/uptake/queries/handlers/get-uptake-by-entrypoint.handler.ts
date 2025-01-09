@@ -2,76 +2,69 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeByEntryPointQuery } from '../impl/get-uptake-by-entrypoint.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSEntrypoint } from '../../../linkage/entities/aggregate-hts-entrypoint.model';
 
 @QueryHandler(GetUptakeByEntryPointQuery)
 export class GetUptakeByEntrypointHandler
     implements IQueryHandler<GetUptakeByEntryPointQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSEntrypoint, 'mssql')
+        private readonly repository: Repository<AggregateHTSEntrypoint>,
     ) {}
 
     async execute(query: GetUptakeByEntryPointQuery): Promise<any> {
         const params = [];
-        let uptakeByEntryPointSql = `SELECT
+        let uptakeByEntryPointSql = this.repository.createQueryBuilder('f')
+            .select([`
                 EntryPoint AS EntryPoint,
                 SUM(Tested) Tested,
                 SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive,
                 ((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity
-            FROM
-                NDWH.dbo.FactHTSClientTests AS link
-                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE EntryPoint IS NOT NULL and TestType IN ('Initial', 'Initial Test')`;
+            `])
+            .where(`EntryPoint IS NOT NULL`);
 
         if (query.county) {
-            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and County IN ('${query.county
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByEntryPointSql.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and SubCounty IN ('${query.subCounty
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByEntryPointSql.andWhere(
+                'f.SubCounty IN (:...subCounties)',
+                { subCounties: query.subCounty },
+            );
         }
 
         if (query.facility) {
-            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and FacilityName IN ('${query.facility
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByEntryPointSql.andWhere(
+                'f.FacilityName IN (:...facilities)',
+                { facilities: query.facility },
+            );
         }
 
         if (query.partner) {
-            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and PartnerName IN ('${query.partner
-                .toString()
-                .replace(/,/g, "','")}')`;
+            uptakeByEntryPointSql.andWhere(
+                'f.PartnerName IN (:...partners)',
+                { partners: query.partner },
+            );
         }
 
-        // if(query.month) {
-        //     uptakeByEntryPointSql = `${uptakeByEntryPointSql} and month=?`;
-        //     params.push(query.month);
-        // }
-
-        // if(query.year) {
-        //     uptakeByEntryPointSql = `${uptakeByEntryPointSql} and year=?`;
-        //     params.push(query.year);
-        // }
-
         if (query.fromDate) {
-            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and DateTestedKey >= ${query.fromDate}01`;
+            uptakeByEntryPointSql.andWhere(`year >= ${query.fromDate.substring(0, 4)}`);
+            uptakeByEntryPointSql.andWhere(`month >= ${query.fromDate.substring(4)}`);
         }
 
         if (query.toDate) {
-            uptakeByEntryPointSql = `${uptakeByEntryPointSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
+            uptakeByEntryPointSql.andWhere(
+                `year <= ${query.toDate.substring(0, 4)}`,
+            );
+            uptakeByEntryPointSql.andWhere(
+                `month <= ${query.toDate.substring(4)}`,
+            );
         }
 
-        uptakeByEntryPointSql = `${uptakeByEntryPointSql} GROUP BY EntryPoint ORDER BY SUM(Tested) DESC`;
-
-        return await this.repository.query(uptakeByEntryPointSql, params);
+        return await uptakeByEntryPointSql
+            .groupBy(`EntryPoint`)
+            .orderBy(`SUM(Tested)`, `DESC`)
+            .getRawMany();
     }
 }

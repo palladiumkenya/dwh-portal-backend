@@ -2,14 +2,14 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetDWHHTSPOSByPartnerQuery } from '../impl/get-dwh-htspos-by-partner.query';
-import { FactHTSClientTests } from '../../../../hts/linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../../../hts/uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetDWHHTSPOSByPartnerQuery)
 export class GetDWHHTSPOSByPartnerHandler
     implements IQueryHandler<GetDWHHTSPOSByPartnerQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetDWHHTSPOSByPartnerQuery): Promise<any> {

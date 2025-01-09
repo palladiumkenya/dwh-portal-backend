@@ -1,16 +1,15 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetPnsSexualContactsByPartnerQuery } from '../impl/get-pns-sexual-contacts-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactPNSSexualPartner } from '../../entities/fact-pns-sexual-partner.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../../uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetPnsSexualContactsByPartnerQuery)
 export class GetPnsSexualContactsByPartnerHandler
     implements IQueryHandler<GetPnsSexualContactsByPartnerQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetPnsSexualContactsByPartnerQuery): Promise<any> {

@@ -1,15 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetPnsSexualContactsByCountyQuery } from '../impl/get-pns-sexual-contacts-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactPNSSexualPartner } from '../../entities/fact-pns-sexual-partner.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../../uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetPnsSexualContactsByCountyQuery)
 export class GetPnsSexualContactsByCountyHandler implements IQueryHandler<GetPnsSexualContactsByCountyQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>
     ) {
 
     }
@@ -25,13 +24,13 @@ export class GetPnsSexualContactsByCountyHandler implements IQueryHandler<GetPns
             FROM [dbo].[AggregateHTSPNSSexualPartner]
             where MFLCode is not null
             `;
-        
+
         // this.repository.createQueryBuilder('q')
         //     .select(['q.County county, SUM(q.PartnersElicited) elicited, SUM(q.PartnerTested) tested, SUM(q.Positive) positive, SUM(q.Linked) linked, SUM(q.KnownPositive) knownPositive'])
         //     .where('q.Mflcode IS NOT NULL')
         //     .andWhere('q.County IS NOT NULL');
 
-        
+
         if (query.county) {
             pnsSexualContactsByCounty = `${pnsSexualContactsByCounty} and County IN ('${query.county
                 .toString()

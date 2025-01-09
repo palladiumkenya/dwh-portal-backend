@@ -6,10 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 
 import { FactPrep } from './prep/entities/fact-prep.model';
-import { AggregateHTSUptake } from './uptake/entities/aggregate-hts-uptake.model';
-import { FactHTSClientTests } from './linkage/entities/fact-hts-client-tests.model';
-import { FactHTSClientLinkages } from './linkage/entities/fact-hts-client-linkages.model';
-import { FactHTSClientTracing } from './linkage/entities/fact-hts-client-tracing.model';
+import { AggregateHTSUptake } from './uptake/entities/aggregate-hts-uptake.model'
 import { AllEmrSites } from '../care-treatment/common/entities/all-emr-sites.model';
 
 import { GetHtsCountiesHandler } from './common/queries/handlers/get-hts-counties.handler';
@@ -40,7 +37,6 @@ import { GetLinkageNumberPositiveHandler } from './linkage/queries/handlers/get-
 import { GetLinkageNumberPositiveByTypeHandler } from './linkage/queries/handlers/get-linkage-number-positive-by-type.handler';
 import { GetLinkageByAgeSexHandler } from './linkage/queries/handlers/get-linkage-by-age-sex.handler';
 import { GetLinkageBySexHandler } from './linkage/queries/handlers/get-linkage-by-sex.handler';
-import { GetLinkageByPopulationTypeHandler } from './linkage/queries/handlers/get-linkage-by-population-type.handler';
 import { GetLinkageByCountyHandler } from './linkage/queries/handlers/get-linkage-by-county.handler';
 import { GetLinkageByPartnerHandler } from './linkage/queries/handlers/get-linkage-by-partner.handler';
 import { GetLinkageByEntryPointHandler } from './linkage/queries/handlers/get-linkage-by-entry-point.handler';
@@ -80,6 +76,11 @@ import { GetPrepRefillMonth3Handler } from './prep/queries/handlers/get-prep-ref
 import { GetPrepRefillAgeSexTrendsmonth1Handler } from './prep/queries/handlers/get-prep-refilll-age-sex-trends-months1.handler';
 import { GetPrepRefillAgeSexTrendsmonth3Handler } from './prep/queries/handlers/get-prep-refilll-age-sex-trends-months3.handler';
 import { GetPrepSTIDiagnosedHandler } from './prep/queries/handlers/get-prep-sti-diagnosed.handler';
+import { AggregateHTSEntrypoint } from './linkage/entities/aggregate-hts-entrypoint.model';
+import { AggregateHTSTestStrategy } from './linkage/entities/aggregate-hts-strategy.model';
+import { AggregateClientSelfTested } from './uptake/entities/aggregate-hts-client-self-tested.model';
+import { AggregateHTSMonthsLastTest } from './uptake/entities/aggregate-hts-months-last-test.model';
+import { AggregateClientTestedAs } from './uptake/entities/aggregate-hts-client-tested-as.model';
 
 @Module({
     imports: [
@@ -87,11 +88,13 @@ import { GetPrepSTIDiagnosedHandler } from './prep/queries/handlers/get-prep-sti
         ConfigurationModule,
         TypeOrmModule.forFeature(
             [
-                FactHTSClientTests,
-                FactHTSClientLinkages,
-                FactHTSClientTracing,
                 AllEmrSites,
                 AggregateHTSUptake,
+                AggregateHTSEntrypoint,
+                AggregateHTSTestStrategy,
+                AggregateClientSelfTested,
+                AggregateHTSMonthsLastTest,
+                AggregateClientTestedAs,
 
                 FactPrep,
             ],
@@ -127,7 +130,6 @@ import { GetPrepSTIDiagnosedHandler } from './prep/queries/handlers/get-prep-sti
         GetLinkageNumberPositiveByTypeHandler,
         GetLinkageByAgeSexHandler,
         GetLinkageBySexHandler,
-        GetLinkageByPopulationTypeHandler,
         GetLinkageByCountyHandler,
         GetLinkageByPartnerHandler,
         GetLinkageByEntryPointHandler,
@@ -167,7 +169,7 @@ import { GetPrepSTIDiagnosedHandler } from './prep/queries/handlers/get-prep-sti
         GetPrepRefillAgeSexTrendsmonth1Handler,
         GetPrepRefillAgeSexTrendsmonth3Handler,
         GetPrepSTIDiagnosedHandler,
-        
+
     ],
     controllers: [HtsController],
 })

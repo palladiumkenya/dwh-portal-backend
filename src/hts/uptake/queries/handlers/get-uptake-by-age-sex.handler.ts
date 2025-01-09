@@ -2,7 +2,6 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeByAgeSexQuery } from '../impl/get-uptake-by-age-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
 import { AggregateHTSUptake } from '../../entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetUptakeByAgeSexQuery)

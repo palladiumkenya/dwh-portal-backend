@@ -2,76 +2,66 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeByTestedasQuery } from '../impl/get-uptake-by-testedas.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateClientTestedAs } from '../../entities/aggregate-hts-client-tested-as.model';
 
 @QueryHandler(GetUptakeByTestedasQuery)
 export class GetUptakeByTestedasHandler
     implements IQueryHandler<GetUptakeByTestedasQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateClientTestedAs, 'mssql')
+        private readonly repository: Repository<AggregateClientTestedAs>,
     ) {}
 
     async execute(query: GetUptakeByTestedasQuery): Promise<any> {
         const params = [];
-        let uptakeByClientTestedAsSql = `SELECT
+        let uptakeByClientTestedAsSql = this.repository.createQueryBuilder('f')
+            .select([`
                 ClientTestedAs AS ClientTestedAs,
                 SUM(Tested)Tested, 
                 SUM(Positive) Positive, 
                 ((CAST(SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) AS FLOAT)/CAST(SUM(Tested) AS FLOAT))*100) AS positivity
-            FROM
-                NDWH.dbo.FactHTSClientTests AS link
-                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE ClientTestedAs IS NOT NULL and TestType IN ('Initial', 'Initial Test')`;
+            `])
+            .where(`ClientTestedAs IS NOT NULL`);
 
         if (query.county) {
-            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and County IN ('${query.county
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByClientTestedAsSql.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and SubCounty IN ('${query.subCounty
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByClientTestedAsSql.andWhere(
+                'f.SubCounty IN (:...subCounties)',
+                { subCounties: query.subCounty },
+            );
         }
 
         if (query.facility) {
-            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and FacilityName IN ('${query.facility
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByClientTestedAsSql.andWhere(
+                'f.FacilityName IN (:...facilities)',
+                { facilities: query.facility },
+            );
         }
 
         if (query.partner) {
-            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and PartnerName IN ('${query.partner
-                .toString()
-                .replace(/,/g, "','")}')`;
+            uptakeByClientTestedAsSql.andWhere(
+                'f.PartnerName IN (:...partners)',
+                { partners: query.partner },
+            );
         }
 
-        // if(query.month) {
-        //     uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and month=?`;
-        //     params.push(query.month);
-        // }
-
-        // if(query.year) {
-        //     uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and year=?`;
-        //     params.push(query.year);
-        // }
-
         if (query.fromDate) {
-            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and DateTestedKey >= ${query.fromDate}01`;
+            uptakeByClientTestedAsSql.andWhere(`year >= ${query.fromDate.substring(0, 4)}`);
+            uptakeByClientTestedAsSql.andWhere(`month >= ${query.fromDate.substring(4)}`);
         }
 
         if (query.toDate) {
-            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
+            uptakeByClientTestedAsSql.andWhere(
+                `year <= ${query.toDate.substring(0, 4)}`,
+            );
+            uptakeByClientTestedAsSql.andWhere(
+                `month <= ${query.toDate.substring(4)}`,
+            );
         }
 
-        uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} GROUP BY ClientTestedAs`;
-
-        return await this.repository.query(uptakeByClientTestedAsSql, params);
+        return await uptakeByClientTestedAsSql.groupBy(`ClientTestedAs`).getRawMany();
     }
 }

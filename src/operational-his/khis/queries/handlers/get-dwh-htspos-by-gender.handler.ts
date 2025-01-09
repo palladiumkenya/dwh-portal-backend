@@ -1,15 +1,15 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from '../../../../hts/linkage/entities/fact-hts-client-tests.model';
 import { GetDWHHTSPOSByGenderQuery } from '../impl/get-dwh-htspos-by-gender.query';
+import { AggregateHTSUptake } from '../../../../hts/uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetDWHHTSPOSByGenderQuery)
 export class GetDWHHTSPOSByGenderHandler
     implements IQueryHandler<GetDWHHTSPOSByGenderQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetDWHHTSPOSByGenderQuery): Promise<any> {
