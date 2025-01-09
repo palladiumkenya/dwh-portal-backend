@@ -14,24 +14,93 @@ export class GetAhdScreeningHandler implements IQueryHandler<GetAhdScreeningQuer
     async execute(query: GetAhdScreeningQuery): Promise<any> {
         const ahdScreening = this.repository
             .createQueryBuilder('f')
-            .select([`
-                SUM(NewRTTSTF) as NewPatient,
-                -- ahd screened
-                COUNT(WhoStage) AS AHDScreened,
-                SUM(AHD) AS AHD,
-                SUM(DoneCD4Test) AS DoneCD4Test,
-                SUM(CD4Lessthan200) AS less200CD4,
-                SUM(DoneTBLamTest) AS DoneTBLamTest,
-                SUM(TBLamPositive) AS TBLamPositive,
-                SUM(TBLamPosonTBRx) AS tbInitiated,
-                SUM(DoneCrAgTest) AS DoneCrAgTest,
-                SUM(CrAgPositive) AS CrAgPositive,
-                SUM(CSFCrAg) AS CSFCrAg,
-                SUM(CSFCrAgPositive) AS CSFCrAgPositive,
-                SUM(InitiatedCMTreatment) AS InitiatedCMTreatment,
-                SUM(PreemtiveCMTheraphy) AS PreemtiveCMTheraphy
+            .select([`TOP 1
+                (SELECT
+                     SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                     SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                     SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END)
+                   FROM REPORTING.dbo.linelist_FactART) AS NewPatient,
+                
+                (SELECT
+                     SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                     SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                     SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END)
+                   FROM REPORTING.dbo.linelist_FactART
+                   WHERE (WhoStage IS NOT NULL) OR (LastCD4 IS NOT NULL)) AS AHDScreened,
+                
+                (SELECT
+                     SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                     SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                     SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END)
+                   FROM REPORTING.dbo.linelist_FactART
+                   WHERE AHD = 1) AS AHD,
+                (SELECT
+                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                FROM REPORTING.dbo.linelist_FactART
+                where LastCD4 is not null) AS DoneCD4Test,
+                (SELECT 
+                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                FROM REPORTING.dbo.linelist_FactART
+                where  CONVERT(float, LastCD4) < 200 OR TRY_CAST(LastCD4Percentage AS decimal) < 25) AS less200CD4,
+                (SELECT 
+                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                FROM REPORTING.dbo.linelist_FactART
+                where AHD=1 and DoneTBLamTest=1) AS DoneTBLamTest,
+                (SELECT 
+                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                FROM REPORTING.dbo.linelist_FactART
+                where AHD=1 and DoneTBLamTest=1 and TBLamPositive=1) AS TBLamPositive,
+                (SELECT 
+                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                FROM REPORTING.dbo.linelist_FactART
+                where AHD=1 and DoneTBLamTest=1 and TBLamPositive=1 and TBLamPosonTBRx=1) AS tbInitiated,
+                (SELECT 
+                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                FROM REPORTING.dbo.linelist_FactART
+                where AHD=1 and DoneCrAgTest=1) AS DoneCrAgTest,
+                (SELECT 
+                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                FROM REPORTING.dbo.linelist_FactART
+                where AHD=1 and DoneCrAgTest=1 and CrAgPositive=1) AS CrAgPositive,
+                (SELECT 
+                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                FROM REPORTING.dbo.linelist_FactART
+                where AHD=1   and CSFCrAg=1) AS CSFCrAg,
+                (SELECT 
+                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                FROM REPORTING.dbo.linelist_FactART
+                where AHD=1   and CSFCrAg=1 and CSFCrAgPositive=1) AS CSFCrAgPositive,
+                (SELECT 
+                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                FROM REPORTING.dbo.linelist_FactART
+                where AHD=1 and CSFCrAg=1 and CSFCrAgPositive=1  and  InitiatedCMTreatment=1) AS InitiatedCMTreatment,
+                (SELECT 
+                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                FROM REPORTING.dbo.linelist_FactART
+                where AHD=1 and CSFCrAg=1 and CSFCrAgPositive=1  and  InitiatedCMTreatment=1 and  PreemtiveCMTheraphy=1) AS PreemtiveCMTheraphy
             `])
-            .where(`StartARTDate >= DATEADD(MONTH, DATEDIFF(MONTH,0, GETDATE()) -1,0) and StartARTDate <DATEADD(MONTH,DATEDIFF(MONTH, 0, GETDATE()), 0)`);
 
         if (query.county) {
             ahdScreening.andWhere('f.County IN (:...counties)', {
