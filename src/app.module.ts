@@ -82,6 +82,7 @@ import { AgeGroupMappingMiddleware } from './ageGroupMapping.middleware';
                     'DATABASE_USER_MSSQL',
                     dbConfig.usernameMssql,
                 ),
+                port: dbConfig.portMssql,
                 password: configService.get<string>(
                     'DATABASE_PASSWORD_MSSQL',
                     dbConfig.passwordMssql,
