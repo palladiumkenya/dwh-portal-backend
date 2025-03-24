@@ -57,7 +57,7 @@ export class GetConsistencyByFacilityHandler
                     SELECT DISTINCT facilityId,NumberOfUploads FROM (
                         SELECT fm.facilityId,fm.docketid as docket,
                             count(*) NumberOfUploads
-                        FROM  NDWH.dbo.Fact_manifest fm
+                        FROM  NDWH.Fact.Fact_manifest fm
                         WHERE fm.docketid = '${query.docket.toLowerCase()}' AND
                             fm.timeId BETWEEN DATEADD(MONTH, -2, EOMONTH(cast('${fromDate}' as date), -1)) AND EOMONTH(cast('${toDate}' as date)) 
                         GROUP BY facilityId, docketId
@@ -73,7 +73,7 @@ export class GetConsistencyByFacilityHandler
                     SELECT DISTINCT facilityId,NumberOfUploads FROM (
                         SELECT fm.facilityId,fm.docketid as docket,
                             count(*) NumberOfUploads
-                        FROM  NDWH.dbo.Fact_manifest fm
+                        FROM  NDWH.Fact.Fact_manifest fm
                         WHERE fm.docketid = '${query.docket.toLowerCase()}' AND
                             fm.timeId BETWEEN DATEADD(MONTH, -2, EOMONTH(cast('${fromDate}' as date), -1)) AND EOMONTH(cast('${toDate}' as date)) 
                         GROUP BY facilityId, docketId

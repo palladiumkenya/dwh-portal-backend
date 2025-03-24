@@ -42,7 +42,6 @@ import { FactTransOvcEnrollments } from './ovc/entities/fact-trans-ovc-enrollmen
 import { FactTransCohortRetention } from './treatment-outcomes/entities/fact-trans-cohort-retention.model';
 import { FactTransCovidVaccines } from './covid/entities/fact-trans-covid-vaccines.model';
 import { DimAgeGroups } from './common/entities/dim-age-groups.model';
-import { FactNUPI } from './current-on-art/entities/fact-nupi.model';
 import { AggregateOtz } from './otz/entities/aggregate-otz.model';
 import { AggregateOTZOutcome } from './otz/entities/aggregate-otz-outcome.model';
 import { LineListOTZ } from './otz/entities/line-list-otz.model';
@@ -433,7 +432,6 @@ import { GetAhdOutcomesHandler } from './ahd/queries/handlers/get-ahd-outcomes.h
                 FactTransCohortRetention,
                 FactTransCovidVaccines,
                 DimAgeGroups,
-                FactNUPI,
             ],
             'mssql',
         ),
