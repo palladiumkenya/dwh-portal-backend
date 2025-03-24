@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetArtOptimizationCurrentByAgeSexQuery } from '../impl/get-art-optimization-current-by-age-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateOptimizeCurrentRegimens } from './../../entities/aggregate-optimize-current-regimens.model';
+import { AggregateOptimizeCurrentRegimens } from '../../entities/aggregate-optimize-current-regimens.model';
 
 @QueryHandler(GetArtOptimizationCurrentByAgeSexQuery)
 export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<GetArtOptimizationCurrentByAgeSexQuery> {
@@ -16,7 +16,7 @@ export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<G
     async execute(query: GetArtOptimizationCurrentByAgeSexQuery): Promise<any> {
         const artOptimizationCurrentByAgeSex = this.repository.createQueryBuilder('f')
         //TODO:: Add Current Regimen
-            .select(['CurrentRegimen regimen, Gender gender, DATIMAgeGroup datimAgeGroup, sum(TXCurr) txCurr'])
+            .select(['CurrentRegimen regimen, Sex gender, DATIMAgeGroup datimAgeGroup, sum(TXCurr) txCurr'])
             .where('SiteCode IS NOT NULL');
 
         if (query.county) {
@@ -52,7 +52,7 @@ export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<G
         // }
 
         if (query.gender) {
-            artOptimizationCurrentByAgeSex.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+            artOptimizationCurrentByAgeSex.andWhere('f.Sex IN (:...gender)', { gender: query.gender });
         }
 
         if (query.datimAgeGroup) {
@@ -64,8 +64,8 @@ export class GetArtOptimizationCurrentByAgeSexHandler implements IQueryHandler<G
         }
 
         return await artOptimizationCurrentByAgeSex
-            .groupBy('CurrentRegimen, Gender, DATIMAgeGroup')
-            .orderBy('CurrentRegimen, Gender, DATIMAgeGroup')
+            .groupBy('CurrentRegimen, Sex, DATIMAgeGroup')
+            .orderBy('CurrentRegimen, Sex, DATIMAgeGroup')
             .getRawMany();
     }
 }

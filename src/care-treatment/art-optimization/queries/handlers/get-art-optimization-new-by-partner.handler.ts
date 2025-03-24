@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetArtOptimizationNewByPartnerQuery } from '../impl/get-art-optimization-new-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateOptimizeStartRegimens } from './../../entities/aggregate-optimize-start-regimens.model';
+import { AggregateOptimizeStartRegimens } from '../../entities/aggregate-optimize-start-regimens.model';
 
 @QueryHandler(GetArtOptimizationNewByPartnerQuery)
 export class GetArtOptimizationNewByPartnerHandler implements IQueryHandler<GetArtOptimizationNewByPartnerQuery> {
@@ -51,7 +51,7 @@ export class GetArtOptimizationNewByPartnerHandler implements IQueryHandler<GetA
         }
 
         if (query.gender) {
-            artOptimizationNewByPartner.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+            artOptimizationNewByPartner.andWhere('f.Sex IN (:...gender)', { gender: query.gender });
         }
 
         if (query.datimAgeGroup) {

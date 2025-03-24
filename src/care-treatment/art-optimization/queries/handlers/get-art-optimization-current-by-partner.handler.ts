@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetArtOptimizationCurrentByPartnerQuery } from '../impl/get-art-optimization-current-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateOptimizeCurrentRegimens } from './../../entities/aggregate-optimize-current-regimens.model';
+import { AggregateOptimizeCurrentRegimens } from '../../entities/aggregate-optimize-current-regimens.model';
 
 @QueryHandler(GetArtOptimizationCurrentByPartnerQuery)
 export class GetArtOptimizationCurrentByPartnerHandler implements IQueryHandler<GetArtOptimizationCurrentByPartnerQuery> {
@@ -15,7 +15,7 @@ export class GetArtOptimizationCurrentByPartnerHandler implements IQueryHandler<
 
     async execute(query: GetArtOptimizationCurrentByPartnerQuery): Promise<any> {
         const artOptimizationCurrentByPartner = this.repository.createQueryBuilder('f')
-            .select(['PartnerName partner, CurrentRegimen regimen, Gender gender, Agegroup, sum(TXCurr) txCurr'])
+            .select(['PartnerName partner, CurrentRegimen regimen, Sex gender, Agegroup, sum(TXCurr) txCurr'])
             .where('SiteCode IS NOT NULL');
 
         if (query.county) {
@@ -38,20 +38,8 @@ export class GetArtOptimizationCurrentByPartnerHandler implements IQueryHandler<
             artOptimizationCurrentByPartner.andWhere('f.AgencyName IN (:...agency)', { agency: query.agency });
         }
 
-        // if (query.project) {
-        //     artOptimizationCurrentByPartner.andWhere('f.project IN (:...project)', { project: query.project });
-        // }
-
-        // if(query.month) {
-        //     artOptimizationCurrentByPartner.andWhere('f.StartARTMonth IN (:...month)', { month: query.month });
-        // }
-
-        // if (query.year) {
-        //     artOptimizationCurrentByPartner.andWhere('f.StartARTYr IN (:...year)', { year: query.year });
-        // }
-
         if (query.gender) {
-            artOptimizationCurrentByPartner.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+            artOptimizationCurrentByPartner.andWhere('f.Sex IN (:...gender)', { gender: query.gender });
         }
 
         if (query.datimAgeGroup) {
@@ -63,8 +51,8 @@ export class GetArtOptimizationCurrentByPartnerHandler implements IQueryHandler<
         }
 
         return await artOptimizationCurrentByPartner
-            .groupBy('PartnerName, CurrentRegimen, Gender, Agegroup')
-            .orderBy('PartnerName, CurrentRegimen, Gender, Agegroup')
+            .groupBy('PartnerName, CurrentRegimen, Sex, Agegroup')
+            .orderBy('PartnerName, CurrentRegimen, Sex, Agegroup')
             .getRawMany();
     }
 }

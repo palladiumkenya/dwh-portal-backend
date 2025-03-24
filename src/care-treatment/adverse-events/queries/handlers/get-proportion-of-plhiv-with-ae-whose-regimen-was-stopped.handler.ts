@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedQuery } from '../impl/get-proportion-of-plhiv-with-ae-whose-regimen-was-stopped.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAeActionDrug } from '../../entities/fact-trans-ae-action-drug.model';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedQuery)
 export class GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler implements IQueryHandler<GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedQuery> {
@@ -49,7 +48,7 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler implements 
 
         if (query.gender) {
             proportionOfPLHIVWithAeWhoseRegimenWasStopped.andWhere(
-                'f.Gender IN (:...genders)',
+                'f.Sex IN (:...genders)',
                 { genders: query.gender },
             );
         }

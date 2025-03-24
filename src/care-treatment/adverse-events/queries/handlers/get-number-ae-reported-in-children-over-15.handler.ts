@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactTransAdverseEvents } from '../../entities/fact-trans-adverse-events.model';
 import { GetNumberAeReportedInChildrenOver15Query } from '../impl/get-number-ae-reported-in-children-over-15.query';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetNumberAeReportedInChildrenOver15Query)
 export class GetNumberAeReportedInChildrenOver15Handler implements IQueryHandler<GetNumberAeReportedInChildrenOver15Query> {
@@ -48,7 +47,7 @@ export class GetNumberAeReportedInChildrenOver15Handler implements IQueryHandler
         }
 
         if (query.gender) {
-            noOfReportedAeinChildren.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            noOfReportedAeinChildren.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await noOfReportedAeinChildren.getRawOne();

@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetReportedCausesOfAeQuery } from '../impl/get-reported-causes-of-ae.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAeCauses } from '../../entities/fact-trans-ae-causes.model';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetReportedCausesOfAeQuery)
 export class GetReportedCausesOfAeHandler implements IQueryHandler<GetReportedCausesOfAeQuery> {
@@ -48,7 +47,7 @@ export class GetReportedCausesOfAeHandler implements IQueryHandler<GetReportedCa
         }
 
         if (query.gender) {
-            reportedCausesOfAes.andWhere('f.Gender IN (:...genders)', {
+            reportedCausesOfAes.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
