@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetArtOptimizationCurrentByCountyQuery } from '../impl/get-art-optimization-current-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateOptimizeCurrentRegimens } from './../../entities/aggregate-optimize-current-regimens.model';
+import { AggregateOptimizeCurrentRegimens } from '../../entities/aggregate-optimize-current-regimens.model';
 
 @QueryHandler(GetArtOptimizationCurrentByCountyQuery)
 export class GetArtOptimizationCurrentByCountyHandler
@@ -18,7 +18,7 @@ export class GetArtOptimizationCurrentByCountyHandler
         const artOptimizationCurrentByCounty = this.repository
             .createQueryBuilder('f')
             .select([
-                'County county, CurrentRegimen regimen, Gender gender, Agegroup, sum(TXCurr) txCurr',
+                'County county, CurrentRegimen regimen, Sex gender, Agegroup, sum(TXCurr) txCurr',
             ])
             .where('SiteCode IS NOT NULL');
 
@@ -71,7 +71,7 @@ export class GetArtOptimizationCurrentByCountyHandler
 
         if (query.gender) {
             artOptimizationCurrentByCounty.andWhere(
-                'f.Gender IN (:...gender)',
+                'f.Sex IN (:...gender)',
                 { gender: query.gender },
             );
         }
@@ -91,8 +91,8 @@ export class GetArtOptimizationCurrentByCountyHandler
         }
 
         return await artOptimizationCurrentByCounty
-            .groupBy('County, CurrentRegimen, Gender, Agegroup')
-            .orderBy('County, CurrentRegimen, Gender, Agegroup')
+            .groupBy('County, CurrentRegimen, Sex, Agegroup')
+            .orderBy('County, CurrentRegimen, Sex, Agegroup')
             .getRawMany();
     }
 }

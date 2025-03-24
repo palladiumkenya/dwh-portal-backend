@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetAeActionsBySeverityQuery } from '../impl/get-ae-actions-by-severity.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetAeActionsBySeverityQuery)
 export class GetAeActionsBySeverityHandler implements IQueryHandler<GetAeActionsBySeverityQuery> {
@@ -53,7 +53,7 @@ export class GetAeActionsBySeverityHandler implements IQueryHandler<GetAeActions
         }
 
         if (query.gender) {
-            aeActionsBySeverity.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            aeActionsBySeverity.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await aeActionsBySeverity

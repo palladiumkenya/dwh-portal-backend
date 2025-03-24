@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetAdverseEventsClientsQuery } from '../impl/get-adverse-events-clients.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetAdverseEventsClientsQuery)
 export class GetAdverseEventsClientsHandler implements IQueryHandler<GetAdverseEventsClientsQuery> {
@@ -16,7 +16,7 @@ export class GetAdverseEventsClientsHandler implements IQueryHandler<GetAdverseE
         const adultsAEs = this.repository
             .createQueryBuilder('f')
             .select(
-                'SUM([AdverseClientsCount]) total, DATIMAgeGroup, Gender, CAST((cast(SUM([AdverseClientsCount]) as decimal (9,2))/ (SUM(SUM([AdverseClientsCount])) OVER (PARTITION BY DATIMAgeGroup ORDER BY DATIMAgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup',
+                'SUM([AdverseClientsCount]) total, DATIMAgeGroup, Sex Gender, CAST((cast(SUM([AdverseClientsCount]) as decimal (9,2))/ (SUM(SUM([AdverseClientsCount])) OVER (PARTITION BY DATIMAgeGroup ORDER BY DATIMAgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup',
             )
             .where('[DATIMAgeGroup] IS NOT NULL');
 
@@ -49,11 +49,11 @@ export class GetAdverseEventsClientsHandler implements IQueryHandler<GetAdverseE
         }
 
         if (query.gender) {
-            adultsAEs.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            adultsAEs.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await adultsAEs
-            .groupBy('DATIMAgeGroup, Gender')
+            .groupBy('DATIMAgeGroup, Sex')
             .getRawMany();
     }
 }

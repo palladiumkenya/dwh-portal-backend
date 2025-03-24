@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetArtOptimizationCurrentByRegimenQuery } from '../impl/get-art-optimization-current-by-regimen.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateOptimizeCurrentRegimens } from './../../entities/aggregate-optimize-current-regimens.model';
+import { AggregateOptimizeCurrentRegimens } from '../../entities/aggregate-optimize-current-regimens.model';
 
 @QueryHandler(GetArtOptimizationCurrentByRegimenQuery)
 export class GetArtOptimizationCurrentByRegimenHandler
@@ -73,7 +73,7 @@ export class GetArtOptimizationCurrentByRegimenHandler
 
         if (query.gender) {
             artOptimizationCurrentByRegimen.andWhere(
-                'f.Gender IN (:...gender)',
+                'f.Sex IN (:...gender)',
                 { gender: query.gender },
             );
         }

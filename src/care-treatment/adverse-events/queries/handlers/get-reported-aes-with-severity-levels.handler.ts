@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetReportedAesWithSeverityLevelsQuery } from '../impl/get-reported-aes-with-severity-levels.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAdverseEvents } from '../../entities/fact-trans-adverse-events.model';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetReportedAesWithSeverityLevelsQuery)
 export class GetReportedAesWithSeverityLevelsHandler implements IQueryHandler<GetReportedAesWithSeverityLevelsQuery> {
@@ -50,7 +49,7 @@ export class GetReportedAesWithSeverityLevelsHandler implements IQueryHandler<Ge
         }
 
         if (query.gender) {
-            reportedAesWithSeverity.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            reportedAesWithSeverity.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await reportedAesWithSeverity

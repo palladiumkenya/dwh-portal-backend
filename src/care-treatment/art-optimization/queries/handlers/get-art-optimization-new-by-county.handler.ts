@@ -1,7 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetArtOptimizationNewByCountyQuery } from '../impl/get-art-optimization-new-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOptimizeStartRegimen } from '../../entities/fact-trans-optimize-start-regimen.model';
 import { Repository } from 'typeorm';
 import { AggregateOptimizeStartRegimens } from '../../entities/aggregate-optimize-start-regimens.model';
 
@@ -52,7 +51,7 @@ export class GetArtOptimizationNewByCountyHandler implements IQueryHandler<GetAr
         }
 
         if (query.gender) {
-            artOptimizationNewByCounty.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+            artOptimizationNewByCounty.andWhere('f.Sex IN (:...gender)', { gender: query.gender });
         }
 
         if (query.datimAgeGroup) {

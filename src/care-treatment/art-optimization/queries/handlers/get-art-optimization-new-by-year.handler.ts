@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetArtOptimizationNewByYearQuery } from '../impl/get-art-optimization-new-by-year.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOptimizeStartRegimen } from '../../entities/fact-trans-optimize-start-regimen.model';
 import { Repository } from 'typeorm';
-import { AggregateOptimizeStartRegimens } from './../../entities/aggregate-optimize-start-regimens.model';
+import { AggregateOptimizeStartRegimens } from '../../entities/aggregate-optimize-start-regimens.model';
 
 @QueryHandler(GetArtOptimizationNewByYearQuery)
 export class GetArtOptimizationNewByYearHandler implements IQueryHandler<GetArtOptimizationNewByYearQuery> {
@@ -52,7 +51,7 @@ export class GetArtOptimizationNewByYearHandler implements IQueryHandler<GetArtO
         }
 
         if (query.gender) {
-            artOptimizationNewByYear.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+            artOptimizationNewByYear.andWhere('f.Sex IN (:...gender)', { gender: query.gender });
         }
 
         if (query.datimAgeGroup) {

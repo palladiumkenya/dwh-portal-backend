@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery } from '../impl/get-proportion-of-plhiv-with-ae-whose-regimen-changed.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery)
 export class GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler implements IQueryHandler<GetProportionOfPLHIVWithAeWhoseRegimenChangedQuery> {
@@ -48,7 +48,7 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler implements IQu
 
         if (query.gender) {
             proportionOfPLHIVWithAeWhoseRegimenChanged.andWhere(
-                'f.Gender IN (:...genders)',
+                'f.Sex IN (:...genders)',
                 { genders: query.gender },
             );
         }
