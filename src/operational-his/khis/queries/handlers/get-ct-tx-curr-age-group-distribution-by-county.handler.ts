@@ -47,7 +47,7 @@ export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHan
 
         if (query.gender) {
             txCurrAgeGroupDistributionByCounty
-                .andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+                .andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
@@ -61,6 +61,6 @@ export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHan
             .groupBy('[County]')
             .orderBy('SUM([CountClientsTXCur])', 'DESC')
             .getRawMany();
-        
+
     }
 }

@@ -16,7 +16,7 @@ export class GetDWHHTSPOSByGenderHandler
         const params = [];
         let uptakeBySexSql = `SELECT 
             SUM(Tested) tested,
-            Gender, SUM(Positive) positive
+            Sex Gender, SUM(Positive) positive
             FROM
                 NDWH.Fact.FactHTSClientTests AS link
                 INNER JOIN NDWH.Dim.DimPatient AS pat ON link.PatientKey = pat.PatientKey
@@ -64,17 +64,7 @@ export class GetDWHHTSPOSByGenderHandler
             params.push(query.datimAgeGroup);
         }
 
-        // if (query.fromDate) {
-        //     uptakeBySexSql = `${uptakeBySexSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
-        //     params.push(query.fromDate);
-        // }
-
-        // if (query.toDate) {
-        //     uptakeBySexSql = `${uptakeBySexSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
-        //     params.push(query.toDate);
-        // }
-
-        uptakeBySexSql = `${uptakeBySexSql} GROUP BY Gender`;
+        uptakeBySexSql = `${uptakeBySexSql} GROUP BY Sex`;
         return await this.repository.query(uptakeBySexSql, params);
     }
 }
