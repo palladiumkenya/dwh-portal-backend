@@ -64,15 +64,6 @@ export class GetDWHHTSPOSByAgeHandler
             params.push(query.datimAgeGroup);
         }
 
-        // if (query.fromDate) {
-        //     uptakeBySexSql = `${uptakeBySexSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
-        //     params.push(query.fromDate);
-        // }
-
-        // if (query.toDate) {
-        //     uptakeBySexSql = `${uptakeBySexSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
-        //     params.push(query.toDate);
-        // }
 
         uptakeBySexSql = `${uptakeBySexSql} GROUP BY DATIMAgeGroup`;
         return await this.repository.query(uptakeBySexSql, params);

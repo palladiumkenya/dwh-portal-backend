@@ -15,7 +15,7 @@ export class GetTxCurrBySexDwhHandler implements IQueryHandler<GetTxCurrBySexDwh
     async execute(query: GetTxCurrBySexDwhQuery): Promise<any> {
         const txCurrBySex = this.repository.createQueryBuilder('a')
             .select('a.FacilityName,a.County,a.SubCounty,MFLCode,AgencyName CTAgency, PartnerName CTPartner,' +
-                'SUM ( CASE WHEN Gender = \'Male\' THEN COUNTCLIENTSTXCUR ELSE 0 END ) DWHmale, SUM ( CASE WHEN Gender = \'Female\' THEN COUNTCLIENTSTXCUR ELSE 0 END ) DWHFemale, SUM ( COUNTCLIENTSTXCUR ) DWHtxCurr ')
+                'SUM ( CASE WHEN Sex = \'Male\' THEN COUNTCLIENTSTXCUR ELSE 0 END ) DWHmale, SUM ( CASE WHEN Sex = \'Female\' THEN COUNTCLIENTSTXCUR ELSE 0 END ) DWHFemale, SUM ( COUNTCLIENTSTXCUR ) DWHtxCurr ')
 
 
         if (query.county) {
@@ -49,7 +49,7 @@ export class GetTxCurrBySexDwhHandler implements IQueryHandler<GetTxCurrBySexDwh
         }
 
         if (query.gender) {
-            txCurrBySex.andWhere('a.Gender IN (:...genders)', {
+            txCurrBySex.andWhere('a.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
