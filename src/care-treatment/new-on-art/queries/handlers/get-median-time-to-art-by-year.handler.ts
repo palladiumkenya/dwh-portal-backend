@@ -130,14 +130,14 @@ export class GetMedianTimeToArtByYearHandler
             medianTimeToARTSql = this.repository
                 .createQueryBuilder('f')
                 .select([
-                    '[StartARTYear] StartYr, MedianTimeToART_Gender medianTime',
+                    '[StartARTYear] StartYr, MedianTimeToART_Sex medianTime',
                 ])
-                .andWhere('f.Gender IN (:...genders)', {
+                .andWhere('f.Sex IN (:...genders)', {
                     genders: query.gender,
                 });
 
             return await medianTimeToARTSql
-                .groupBy('[StartARTYear], MedianTimeToART_Gender')
+                .groupBy('[StartARTYear], MedianTimeToART_Sex')
                 .orderBy('f.StartARTYear')
                 .getRawMany();
         }

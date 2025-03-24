@@ -2,8 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetNewlyStartedDesegregatedQuery } from '../impl/get-newly-started-desegregated.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactTransNewlyStarted } from '../../entities/fact-trans-newly-started.model';
-import { AggregateCohortRetention } from './../../entities/aggregate-cohort-retention.model';
+import { AggregateCohortRetention } from '../../entities/aggregate-cohort-retention.model';
 
 @QueryHandler(GetNewlyStartedDesegregatedQuery)
 export class GetNewlyStartedDesegregatedHandler implements IQueryHandler<GetNewlyStartedDesegregatedQuery> {
@@ -18,8 +17,8 @@ export class GetNewlyStartedDesegregatedHandler implements IQueryHandler<GetNewl
             .createQueryBuilder('f')
             .select(
                 'SUM([patients_startedART]) TotalStartedOnART,\n' +
-                    "SUM(CASE When Gender='Male' or Gender = 'M' Then [patients_startedART] Else 0 End ) as MalesStartedOnART,\n" +
-                    "SUM(CASE When Gender='Female'  or Gender = 'F' Then [patients_startedART] Else 0 End ) as FemalesStartedOnART,\n" +
+                    "SUM(CASE When Sex='Male' or Sex = 'M' Then [patients_startedART] Else 0 End ) as MalesStartedOnART,\n" +
+                    "SUM(CASE When Sex='Female'  or Sex = 'F' Then [patients_startedART] Else 0 End ) as FemalesStartedOnART,\n" +
                     "SUM(CASE When AgeGroup IN('15 to 19', '20 to 24', '25 to 29', '30 to 34', '35 to 39', '40 to 44', '45 to 49', '50 to 54', '55 to 59', '60 to 64', '65+') Then [patients_startedART] Else 0 End ) as AdultsStartedOnART,\n" +
                     "SUM(CASE When AgeGroup IN('10 to 14', '15 to 19') Then [patients_startedART] Else 0 End ) as AdolescentsStartedOnART,\n" +
                     "SUM(CASE When AgeGroup IN(' Under 1', '01 to 04', '05 to 09', '10 to 14') Then [patients_startedART] Else 0 End ) as ChildrenStartedOnART",
@@ -65,7 +64,7 @@ export class GetNewlyStartedDesegregatedHandler implements IQueryHandler<GetNewl
         }
 
         if (query.gender) {
-            newlyStartedDesegregated.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            newlyStartedDesegregated.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

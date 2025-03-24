@@ -63,7 +63,7 @@ export class GetMissingDiagnosisDateByFacilityHandler
         // }
 
         if (query.gender) {
-            missingDiagnosisDateByFacility.andWhere('Gender IN (:...gender)', {
+            missingDiagnosisDateByFacility.andWhere('Sex IN (:...gender)', {
                 gender: query.gender,
             });
         }
