@@ -69,12 +69,12 @@ export class GetMedianTimeToArtByPartnerHandler implements IQueryHandler<GetMedi
 
         if (query.gender) {
             medianTimeToARTPartnerSql = this.repository.createQueryBuilder('f')
-                .select(['PartnerName partner, MedianTimeToART_Gender medianTime'])
-                .andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+                .select(['PartnerName partner, MedianTimeToART_Sex medianTime'])
+                .andWhere('f.Sex IN (:...genders)', { genders: query.gender });
 
             return await medianTimeToARTPartnerSql
-                .groupBy('PartnerName, MedianTimeToART_Gender')
-                .orderBy('f.MedianTimeToART_Gender', 'DESC')
+                .groupBy('PartnerName, MedianTimeToART_Sex')
+                .orderBy('f.MedianTimeToART_Sex', 'DESC')
                 .getRawMany();
         }
 
