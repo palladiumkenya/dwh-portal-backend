@@ -19,7 +19,7 @@ export class GetCtTxCurrByFacilityHandler
                 'FacilityName, PartnerName CTPartner, County, Subcounty, AgencyName CTAgency, SiteCode MFLCode, SUM(ISTXCurr) TXCURR',
             ])
             .where(
-                "f.[Gender] IS NOT NULL ",
+                "f.[Sex] IS NOT NULL ",
             );
 
         if (query.county) {

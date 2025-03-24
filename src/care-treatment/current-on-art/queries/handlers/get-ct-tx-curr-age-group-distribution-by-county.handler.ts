@@ -2,8 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCtTxCurrAgeGroupDistributionByCountyQuery } from '../impl/get-ct-tx-curr-age-group-distribution-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
-import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
+import { AggregateTXCurr } from '../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrAgeGroupDistributionByCountyQuery)
 export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHandler<GetCtTxCurrAgeGroupDistributionByCountyQuery> {
@@ -76,7 +75,7 @@ export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHan
                 .getRawMany();
         } else {
             return await txCurrAgeGroupDistributionByCounty
-                .groupBy('[County], f.[DATIMAgeGroup], Gender')
+                .groupBy('[County], f.[DATIMAgeGroup], Sex')
                 .orderBy('SUM([CountClientsTXCur])', 'DESC')
                 .getRawMany();
         }

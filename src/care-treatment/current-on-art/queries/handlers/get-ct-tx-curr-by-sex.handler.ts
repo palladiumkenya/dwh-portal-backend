@@ -17,7 +17,7 @@ export class GetCtTxCurrBySexHandler
             .createQueryBuilder('f')
             .select(['[Sex], SUM([CountClientsTXCur]) txCurr'])
             // .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
-            .where('f.[Gender] IS NOT NULL');
+            .where('f.[Sex] IS NOT NULL');
 
         if (query.county) {
             txCurrBySex.andWhere('f.County IN (:...counties)', {
