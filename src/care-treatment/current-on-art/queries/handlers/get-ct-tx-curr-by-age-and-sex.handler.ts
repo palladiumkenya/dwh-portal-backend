@@ -76,7 +76,7 @@ export class GetCtTxCurrByAgeAndSexHandler
         }
 
         const result = await txCurrByAgeAndSex
-            .groupBy('f.[DATIMAgeGroup], [Gender]')
+            .groupBy('f.[DATIMAgeGroup], [Sex]')
             .orderBy('f.[DATIMAgeGroup]')
             .getRawMany();
 
