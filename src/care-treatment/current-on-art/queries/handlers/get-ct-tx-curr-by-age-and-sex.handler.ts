@@ -17,7 +17,7 @@ export class GetCtTxCurrByAgeAndSexHandler
         const txCurrByAgeAndSex = this.repository
             .createQueryBuilder('f')
             .select([
-                'f.[DATIMAgeGroup] ageGroup, [Gender], Sum(CountClientsTXCur) txCurr',
+                'f.[DATIMAgeGroup] ageGroup, Sex [Gender], Sum(CountClientsTXCur) txCurr',
             ]);
             // .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
             // .where(`ARTOutcome ='V' AND ageLV BETWEEN 0 and 120`);

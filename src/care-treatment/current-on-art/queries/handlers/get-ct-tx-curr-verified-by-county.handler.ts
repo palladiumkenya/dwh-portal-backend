@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetCtTxCurrVerifiedByCountyQuery } from '../impl/get-ct-tx-curr-verified-county.query';
-import { AggregateNupi } from './../../entities/aggregate-nupi.model';
+import { AggregateNupi } from '../../entities/aggregate-nupi.model';
 
 @QueryHandler(GetCtTxCurrVerifiedByCountyQuery)
 export class GetCtTxCurrVerifiedByCountyHandler

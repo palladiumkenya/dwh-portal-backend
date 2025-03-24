@@ -15,7 +15,7 @@ export class GetCtTxCurrDistributionByCountyHandler
     async execute(query: GetCtTxCurrDistributionByCountyQuery): Promise<any> {
         let txCurrDistributionByCounty = this.repository
             .createQueryBuilder('f')
-            .select(['[County],Sum(CountClientsTXCur) txCurr']);
+            .select(['[County], Sum(CountClientsTXCur) txCurr']);
 
         if (query.county) {
             txCurrDistributionByCounty.andWhere('f.County IN (:...counties)', {

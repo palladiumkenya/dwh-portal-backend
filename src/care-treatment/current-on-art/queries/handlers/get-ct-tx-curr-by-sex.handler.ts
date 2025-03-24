@@ -1,10 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCtTxCurrBySexQuery } from '../impl/get-ct-tx-curr-by-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
-import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
+import { AggregateTXCurr } from '../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrBySexQuery)
 export class GetCtTxCurrBySexHandler

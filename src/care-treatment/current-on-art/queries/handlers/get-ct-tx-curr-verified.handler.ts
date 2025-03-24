@@ -16,7 +16,7 @@ export class GetCtTxCurrVerifiedHandler
         let txCurr = this.repository
             .createQueryBuilder('f')
             .select(['sum (numnupi) NumNupi'])
-            .where('f.[Gender] IS NOT NULL');
+            .where('f.[Sex] IS NOT NULL');
 
         if (query.datimAgePopulations) {
             if (
@@ -27,12 +27,12 @@ export class GetCtTxCurrVerifiedHandler
                 txCurr = this.repository
                     .createQueryBuilder('f')
                     .select(['sum (adults) NumNupi'])
-                    .where('f.[Gender] IS NOT NULL');
+                    .where('f.[Sex] IS NOT NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurr = this.repository
                     .createQueryBuilder('f')
                     .select(['sum (children) NumNupi'])
-                    .where('f.[Gender] IS NOT NULL');
+                    .where('f.[Sex] IS NOT NULL');
         }
 
         if (query.county) {

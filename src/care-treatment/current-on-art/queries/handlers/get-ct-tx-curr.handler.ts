@@ -15,7 +15,7 @@ export class GetCtTxCurrHandler implements IQueryHandler<GetCtTxCurrQuery> {
         const txCurr = this.repository
             .createQueryBuilder('f')
             .select(['SUM(CountClientsTXCur) TXCURR'])
-            .where('f.[Gender] IS NOT NULL');
+            .where('f.[Sex] IS NOT NULL');
 
         if (query.county) {
             txCurr.andWhere('f.County IN (:...counties)', {

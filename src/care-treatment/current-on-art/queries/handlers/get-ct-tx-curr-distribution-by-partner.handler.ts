@@ -1,7 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCtTxCurrDistributionByPartnerQuery } from '../impl/get-ct-tx-curr-distribution-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
 import { AggregateTXCurr } from '../../entities/aggregate-txcurr.model';
 
