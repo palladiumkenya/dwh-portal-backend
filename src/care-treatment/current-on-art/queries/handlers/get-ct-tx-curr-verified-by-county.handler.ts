@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetCtTxCurrVerifiedByCountyQuery } from '../impl/get-ct-tx-curr-verified-county.query';
-import { AggregateNupi } from './../../entities/aggregate-nupi.model';
+import { AggregateNupi } from '../../entities/aggregate-nupi.model';
 
 @QueryHandler(GetCtTxCurrVerifiedByCountyQuery)
 export class GetCtTxCurrVerifiedByCountyHandler
@@ -72,7 +72,7 @@ export class GetCtTxCurrVerifiedByCountyHandler
         }
 
         if (query.gender) {
-            txCurrByCounty.andWhere('f.Gender IN (:...genders)', {
+            txCurrByCounty.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
@@ -81,6 +81,6 @@ export class GetCtTxCurrVerifiedByCountyHandler
             .groupBy('[County]')
             .orderBy('NumNupi', 'DESC')
             .getRawMany();
-        
+
     }
 }

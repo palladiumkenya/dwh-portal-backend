@@ -1,10 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCtTxCurrBySexQuery } from '../impl/get-ct-tx-curr-by-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
-import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
+import { AggregateTXCurr } from '../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrBySexQuery)
 export class GetCtTxCurrBySexHandler
@@ -17,7 +15,7 @@ export class GetCtTxCurrBySexHandler
     async execute(query: GetCtTxCurrBySexQuery): Promise<any> {
         const txCurrBySex = this.repository
             .createQueryBuilder('f')
-            .select(['[Gender], SUM([CountClientsTXCur]) txCurr'])
+            .select(['[Sex], SUM([CountClientsTXCur]) txCurr'])
             // .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
             .where('f.[Gender] IS NOT NULL');
 
@@ -58,14 +56,14 @@ export class GetCtTxCurrBySexHandler
         }
 
         if (query.gender) {
-            txCurrBySex.andWhere('f.Gender IN (:...genders)', {
+            txCurrBySex.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
 
         return await txCurrBySex
-            .groupBy('[Gender]')
-            .orderBy('[Gender]')
+            .groupBy('[Sex]')
+            .orderBy('[Sex]')
             .getRawMany();
     }
 }

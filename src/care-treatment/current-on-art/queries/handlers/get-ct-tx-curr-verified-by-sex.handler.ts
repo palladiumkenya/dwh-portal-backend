@@ -15,8 +15,8 @@ export class GetCtTxCurrVerifiedBySexHandler
     async execute(query: GetCtTxCurrVerifiedByAgeAndSexQuery): Promise<any> {
         let txCurrBySex = this.repository
             .createQueryBuilder('f')
-            .select(['Gender, AgeGroup, sum (numnupi) NumNupi'])
-            .where('f.[Gender] IS NOT NULL and AgeGroup is not NULL');
+            .select(['Sex Gender, AgeGroup, sum (numnupi) NumNupi'])
+            .where('f.[Sex] IS NOT NULL and AgeGroup is not NULL');
 
         if (query.datimAgePopulations) {
             if (
@@ -26,14 +26,14 @@ export class GetCtTxCurrVerifiedBySexHandler
             } else if (query.datimAgePopulations.includes('>18'))
                 txCurrBySex = this.repository
                     .createQueryBuilder('f')
-                    .select(['Gender, AgeGroup, sum (adults) NumNupi'])
-                    .where('f.[Gender] IS NOT NULL and AgeGroup is not NULL');
+                    .select(['Sex Gender, AgeGroup, sum (adults) NumNupi'])
+                    .where('f.[Sex] IS NOT NULL and AgeGroup is not NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurrBySex = this.repository
                     .createQueryBuilder('f')
-                    .select(['Gender, AgeGroup, sum (children) NumNupi'])
+                    .select(['Sex Gender, AgeGroup, sum (children) NumNupi'])
                     .where(
-                        'f.[Gender] IS NOT NULL and AgeGroup is not NULL',
+                        'f.[Sex] IS NOT NULL and AgeGroup is not NULL',
                     );
         }
 
@@ -74,13 +74,13 @@ export class GetCtTxCurrVerifiedBySexHandler
         }
 
         if (query.gender) {
-            txCurrBySex.andWhere('f.Gender IN (:...genders)', {
+            txCurrBySex.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
 
         return await txCurrBySex
-            .groupBy('Gender, AgeGroup')
+            .groupBy('Sex, AgeGroup')
             .orderBy('AgeGroup')
             .getRawMany();
     }

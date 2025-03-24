@@ -17,7 +17,7 @@ export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHan
         let txCurrAgeGroupDistributionByCounty = this.repository
             .createQueryBuilder('f')
             .select([
-                '[County], f.[DATIMAgeGroup] ageGroup, Gender, SUM([CountClientsTXCur]) txCurr',
+                '[County], f.[DATIMAgeGroup] ageGroup, Sex Gender, SUM([CountClientsTXCur]) txCurr',
             ])
             .where(
                 'f.[CountClientsTXCur] IS NOT NULL AND f.DATIMAgeGroup IS NOT NULL',
@@ -59,7 +59,7 @@ export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHan
 
         if (query.gender) {
             txCurrAgeGroupDistributionByCounty
-                .andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+                .andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
