@@ -14,7 +14,7 @@ export class GetKhisHTSTESTByFacilityHandler
 
     async execute(query: GetKhisHTSTESTByFacilityQuery): Promise<any> {
         let htsPOS = this.repository.createQueryBuilder('f').select(
-            `FacilityName, County, SubCounty, SiteCode, [AgencyName] Agency,
+            `FacilityName, County, SubCounty, MFLCode SiteCode, [AgencyName] Agency,
             SUM ( Tested_Total ) Tested_Total,
             SUM ( Tested_10_14_M ) + SUM ( Tested_15_19_M ) + SUM ( Tested_20_24_M ) + SUM ( Tested_25_Plus_M ) Tested_Male,
             SUM ( Tested_10_14_F ) + SUM ( Tested_15_19_F ) + SUM ( Tested_20_24_F ) + SUM ( Tested_25_Plus_F ) Tested_Female,
@@ -37,7 +37,7 @@ export class GetKhisHTSTESTByFacilityHandler
             // No action
         } else if (query.gender && query.gender.includes('Female')) {
             htsPOS = this.repository.createQueryBuilder('f').select(
-                `FacilityName, County, SubCounty, SiteCode, [AgencyName] Agency,
+                `FacilityName, County, SubCounty, MFLCode SiteCode, [AgencyName] Agency,
                 SUM ( Tested_10_14_F ) + SUM ( Tested_15_19_F ) + SUM ( Tested_20_24_F ) + SUM ( Tested_25_Plus_F ) Tested_Total,
                 SUM ( Tested_10_14_F ) + SUM ( Tested_15_19_F ) + SUM ( Tested_20_24_F ) + SUM ( Tested_25_Plus_F ) Tested_Female, 0 Tested_Male,
                 0 Tested_1_9,
@@ -52,7 +52,7 @@ export class GetKhisHTSTESTByFacilityHandler
             );
         } else if (query.gender && query.gender.includes('Male')) {
             htsPOS = this.repository.createQueryBuilder('f').select(
-                `FacilityName, County, SubCounty, SiteCode, [AgencyName] Agency,
+                `FacilityName, County, SubCounty, MFLCode SiteCode, [AgencyName] Agency,
                 SUM ( Tested_10_14_M ) + SUM ( Tested_15_19_M ) + SUM ( Tested_20_24_M ) + SUM ( Tested_25_Plus_M ) Tested_Total,
                 SUM ( Tested_10_14_M ) + SUM ( Tested_15_19_M ) + SUM ( Tested_20_24_M ) + SUM ( Tested_25_Plus_M ) Tested_Male, 0 Tested_Female,
                 0 Tested_1_9,
@@ -105,7 +105,7 @@ export class GetKhisHTSTESTByFacilityHandler
 
         return await htsPOS
             .groupBy(
-                'FacilityName, County, SubCounty, [AgencyName], SiteCode',
+                'FacilityName, County, SubCounty, [AgencyName], MFLCode',
             )
             .getRawMany();
     }

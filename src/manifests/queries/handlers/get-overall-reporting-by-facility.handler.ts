@@ -83,7 +83,7 @@ export class GetOverallReportingByFacilityHandler
                                 fm.timeId, 
                                 year(timeId) year,
                                 month(timeId) month 
-                            FROM  NDWH.dbo.Fact_manifest fm
+                            FROM  NDWH.Fact.Fact_manifest fm
                             where year(timeId) = ${year} and month(timeId) = ${month}
                         )u 
                         where RowId=1
@@ -125,7 +125,7 @@ export class GetOverallReportingByFacilityHandler
                                 fm.timeId, 
                                 year(timeId) year,
                                 month(timeId) month 
-                            FROM  NDWH.dbo.Fact_manifest fm
+                            FROM  NDWH.Fact.Fact_manifest fm
                             where year(timeId) = ${year} and month(timeId) = ${month}
                         )u 
                         where RowId=1

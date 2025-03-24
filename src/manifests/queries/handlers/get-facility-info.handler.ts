@@ -23,8 +23,8 @@ export class GetFacilityInfoHandler
         params.push(query.docket);
 
         let expectedSql = `SELECT DISTINCT MFLCode AS expected
-                FROM NDWH.DBO.DimFacility f
-                INNER JOIN ODS.dbo.All_EMRSites a on a.MFL_Code = MFLCode
+                FROM NDWH.Dim.DimFacility f
+                INNER JOIN ODS.Care.All_EMRSites a on a.MFL_Code = MFLCode
                 WHERE (isCT = 1)`;
         if (query.county) {
             expectedSql = `${expectedSql} and f.County IN ('${query.county
@@ -57,7 +57,7 @@ export class GetFacilityInfoHandler
                     (e: { expected: string }) => e.expected,
                 ),
             });
-        
+
         if (query.year && query.month) {
             facilities.andWhere('month(date_of_emr_impl) = :month', {
                 month: query.month,
