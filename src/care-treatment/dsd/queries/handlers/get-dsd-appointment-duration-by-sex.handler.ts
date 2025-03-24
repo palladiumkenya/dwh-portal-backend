@@ -17,10 +17,10 @@ export class GetDsdAppointmentDurationBySexHandler implements IQueryHandler<GetD
 
     async execute(query: GetDsdAppointmentDurationBySexQuery): Promise<any> {
         const dsdAppointmentDuration = this.repository.createQueryBuilder('f')
-            .select(['SUM(patients_number) patients, AppointmentsCategory, Gender'])
+            .select(['SUM(patients_number) patients, AppointmentsCategory, Sex Gender'])
             .where('f.MFLCode > 1')
             .andWhere('f.AppointmentsCategory IS NOT NULL')
-            .andWhere('f.Gender IS NOT NULL');
+            .andWhere('f.Sex IS NOT NULL');
 
         if (query.county) {
             dsdAppointmentDuration.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -47,12 +47,12 @@ export class GetDsdAppointmentDurationBySexHandler implements IQueryHandler<GetD
         }
 
         if (query.gender) {
-            dsdAppointmentDuration.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            dsdAppointmentDuration.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await dsdAppointmentDuration
-            .groupBy('Gender, AppointmentsCategory')
-            .orderBy('AppointmentsCategory, Gender')
+            .groupBy('Sex, AppointmentsCategory')
+            .orderBy('AppointmentsCategory, Sex')
             .getRawMany();
     }
 }

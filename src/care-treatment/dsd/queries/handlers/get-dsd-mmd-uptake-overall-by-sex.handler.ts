@@ -16,7 +16,7 @@ export class GetDsdMmdUptakeOverallBySexHandler implements IQueryHandler<GetDsdM
 
     async execute(query: GetDsdMmdUptakeOverallBySexQuery): Promise<any> {
         const dsdMmdStable = this.repository.createQueryBuilder('f')
-            .select(['Gender gender, SUM(TxCurr) txCurr, SUM(patients_onMMD) mmd, SUM(patients_nonMMD) nonMmd'])
+            .select(['Sex gender, SUM(TxCurr) txCurr, SUM(patients_onMMD) mmd, SUM(patients_nonMMD) nonMmd'])
             .where('f.MFLCode > 1');
 
         if (query.county) {
@@ -44,10 +44,10 @@ export class GetDsdMmdUptakeOverallBySexHandler implements IQueryHandler<GetDsdM
         }
 
         if (query.gender) {
-            dsdMmdStable.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            dsdMmdStable.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
-       
 
-        return await dsdMmdStable.groupBy('f.Gender').getRawMany();
+
+        return await dsdMmdStable.groupBy('f.Sex').getRawMany();
     }
 }

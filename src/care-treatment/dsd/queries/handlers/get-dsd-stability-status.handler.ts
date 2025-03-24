@@ -47,7 +47,7 @@ export class GetDsdStabilityStatusHandler implements IQueryHandler<GetDsdStabili
         }
 
         if (query.gender) {
-            dsdStabilityStatus.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            dsdStabilityStatus.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await dsdStabilityStatus.getRawOne();

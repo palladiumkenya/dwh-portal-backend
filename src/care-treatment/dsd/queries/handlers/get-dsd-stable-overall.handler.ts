@@ -43,7 +43,7 @@ export class GetDsdStableOverallHandler implements IQueryHandler<GetDsdStableOve
         }
 
         if (query.gender) {
-            dsdMmdStable.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            dsdMmdStable.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await dsdMmdStable
