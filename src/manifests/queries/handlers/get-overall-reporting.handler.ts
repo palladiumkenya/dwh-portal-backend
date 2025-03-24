@@ -18,7 +18,7 @@ export class GetOverallReportingHandler
     ): Promise<OverallReportingDto> {
         const params = [];
         params.push(query.docket);
-        let overAllReportingSql = `SELECT ${query.reportingType}, COUNT(df.MFLCode) AS facilities_count FROM NDWH.dbo.fact_manifest fm
+        let overAllReportingSql = `SELECT ${query.reportingType}, COUNT(df.MFLCode) AS facilities_count FROM NDWH.Fact.fact_manifest fm
             INNER JOIN REPORTING.dbo.all_EMRSites df ON df.MFLCode = fm.facilityId
             WHERE docketId = '${query.docket}'`;
 

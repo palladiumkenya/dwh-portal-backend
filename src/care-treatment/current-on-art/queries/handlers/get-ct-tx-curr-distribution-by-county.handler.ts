@@ -52,7 +52,7 @@ export class GetCtTxCurrDistributionByCountyHandler
         }
 
         if (query.gender) {
-            txCurrDistributionByCounty.andWhere('f.Gender IN (:...genders)', {
+            txCurrDistributionByCounty.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
@@ -79,6 +79,6 @@ export class GetCtTxCurrDistributionByCountyHandler
             .groupBy('[County]')
             .orderBy('count(*)', 'DESC')
             .getRawMany();
-        
+
     }
 }

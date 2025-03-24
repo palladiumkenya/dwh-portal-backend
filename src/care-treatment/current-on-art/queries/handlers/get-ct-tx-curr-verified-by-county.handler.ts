@@ -72,7 +72,7 @@ export class GetCtTxCurrVerifiedByCountyHandler
         }
 
         if (query.gender) {
-            txCurrByCounty.andWhere('f.Gender IN (:...genders)', {
+            txCurrByCounty.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
@@ -81,6 +81,6 @@ export class GetCtTxCurrVerifiedByCountyHandler
             .groupBy('[County]')
             .orderBy('NumNupi', 'DESC')
             .getRawMany();
-        
+
     }
 }

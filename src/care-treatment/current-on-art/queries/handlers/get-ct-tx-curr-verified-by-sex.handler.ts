@@ -74,7 +74,7 @@ export class GetCtTxCurrVerifiedBySexHandler
         }
 
         if (query.gender) {
-            txCurrBySex.andWhere('f.Gender IN (:...genders)', {
+            txCurrBySex.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

@@ -53,7 +53,7 @@ export class GetCtTxCurrByAgeAndSexHandler
         }
 
         if (query.gender) {
-            txCurrByAgeAndSex.andWhere('f.Gender IN (:...genders)', {
+            txCurrByAgeAndSex.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

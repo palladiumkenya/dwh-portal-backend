@@ -17,7 +17,7 @@ export class GetCtTxCurrBySexHandler
     async execute(query: GetCtTxCurrBySexQuery): Promise<any> {
         const txCurrBySex = this.repository
             .createQueryBuilder('f')
-            .select(['[Gender], SUM([CountClientsTXCur]) txCurr'])
+            .select(['[Sex], SUM([CountClientsTXCur]) txCurr'])
             // .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
             .where('f.[Gender] IS NOT NULL');
 
@@ -58,14 +58,14 @@ export class GetCtTxCurrBySexHandler
         }
 
         if (query.gender) {
-            txCurrBySex.andWhere('f.Gender IN (:...genders)', {
+            txCurrBySex.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
 
         return await txCurrBySex
-            .groupBy('[Gender]')
-            .orderBy('[Gender]')
+            .groupBy('[Sex]')
+            .orderBy('[Sex]')
             .getRawMany();
     }
 }

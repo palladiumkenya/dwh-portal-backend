@@ -55,7 +55,7 @@ export class GetCtTxCurrDistributionByPartnerHandler
         }
 
         if (query.gender) {
-            txCurrDistributionByPartner.andWhere('f.Gender IN (:...genders)', {
+            txCurrDistributionByPartner.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
