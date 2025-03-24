@@ -22,12 +22,12 @@ export class GetFacilityArtHtsMnchHandler implements IQueryHandler<GetFacilityAr
                 'ISNULL(KHIS_PMTCT.onMaternalHAARTtotal, 0) as onMaternalHAARTtotal'
             ])
             .leftJoin(
-                `(SELECT SiteCode, CurrentOnART_Total, ReportMonth_Year as reporting_month_CT FROM ODS.dbo.CT_DHIS2 dhis WHERE CurrentOnART_Total IS NOT NULL AND DATEDIFF(mm, CAST(CONCAT(ReportMonth_Year, '01') AS DATE), (SELECT MAX(CAST(CONCAT(ReportMonth_Year, '01') AS DATE)) FROM ODS.dbo.CT_DHIS2)) = 0 GROUP BY SiteCode, ReportMonth_Year, CurrentOnART_Total)`,
+                `(SELECT SiteCode, CurrentOnART_Total, ReportMonth_Year as reporting_month_CT FROM ODS.Care.CT_DHIS2 dhis WHERE CurrentOnART_Total IS NOT NULL AND DATEDIFF(mm, CAST(CONCAT(ReportMonth_Year, '01') AS DATE), (SELECT MAX(CAST(CONCAT(ReportMonth_Year, '01') AS DATE)) FROM ODS.dbo.CT_DHIS2)) = 0 GROUP BY SiteCode, ReportMonth_Year, CurrentOnART_Total)`,
             'dhis_CT',
             'q.MFLCode = dhis_CT.SiteCode'
             )
             .leftJoin(
-                    `(SELECT SiteCode, Tested_Total, ReportMonth_Year as reporting_month_HTS FROM ODS.dbo.HTS_DHIS2 dhis WHERE Tested_Total IS NOT NULL AND DATEDIFF(mm, CAST(CONCAT(ReportMonth_Year, '01') AS DATE), (SELECT MAX(CAST(CONCAT(ReportMonth_Year, '01') AS DATE)) FROM ODS.dbo.HTS_DHIS2)) = 0 GROUP BY SiteCode, ReportMonth_Year, Tested_Total)`,
+                    `(SELECT SiteCode, Tested_Total, ReportMonth_Year as reporting_month_HTS FROM ODS.HTS.HTS_DHIS2 dhis WHERE Tested_Total IS NOT NULL AND DATEDIFF(mm, CAST(CONCAT(ReportMonth_Year, '01') AS DATE), (SELECT MAX(CAST(CONCAT(ReportMonth_Year, '01') AS DATE)) FROM ODS.dbo.HTS_DHIS2)) = 0 GROUP BY SiteCode, ReportMonth_Year, Tested_Total)`,
                     'KHIS_HTS',
                     'q.MFLCode = KHIS_HTS.SiteCode'
             )

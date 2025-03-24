@@ -17,10 +17,10 @@ export class GetEMRInfoHandler implements IQueryHandler<GetEMRInfoQuery> {
     async execute(query: GetEMRInfoQuery): Promise<any> {
         const params = [];
         params.push(query.docket);
-        
+
         let expectedSql = `SELECT DISTINCT MFLCode AS expected
-                FROM NDWH.DBO.DimFacility f
-                INNER JOIN ODS.dbo.All_EMRSites a on a.MFL_Code = MFLCode
+                FROM NDWH.Dim.DimFacility f
+                INNER JOIN ODS.Care.All_EMRSites a on a.MFL_Code = MFLCode
                 WHERE (isCT = 1)`;
         if (query.county) {
             expectedSql = `${expectedSql} and f.County IN ('${query.county
@@ -43,7 +43,7 @@ export class GetEMRInfoHandler implements IQueryHandler<GetEMRInfoQuery> {
                 .replace(/,/g, "','")}')`;
         }
         let expected  = await this.repository2.query(expectedSql, params)
-        
+
         const facilities = this.repository
             .createQueryBuilder('f')
             .select(
@@ -54,7 +54,7 @@ export class GetEMRInfoHandler implements IQueryHandler<GetEMRInfoQuery> {
                     (e: { expected: string }) => e.expected,
                 ),
             });
-        
+
         return await facilities.groupBy('infrastructure_type').getRawMany();
 
     }

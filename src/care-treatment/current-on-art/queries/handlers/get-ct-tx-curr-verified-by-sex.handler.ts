@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GetCtTxCurrVerifiedByAgeAndSexQuery } from './../impl/get-ct-tx-curr-verified-age-group-sex.query';
-import { FactNUPI } from '../../entities/fact-nupi.model';
-import { AggregateNupi } from './../../entities/aggregate-nupi.model';
+import { GetCtTxCurrVerifiedByAgeAndSexQuery } from '../impl/get-ct-tx-curr-verified-age-group-sex.query';
+import { AggregateNupi } from '../../entities/aggregate-nupi.model';
 
 @QueryHandler(GetCtTxCurrVerifiedByAgeAndSexQuery)
 export class GetCtTxCurrVerifiedBySexHandler
