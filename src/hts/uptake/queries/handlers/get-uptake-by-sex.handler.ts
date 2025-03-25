@@ -18,7 +18,7 @@ export class GetUptakeBySexHandler
         let uptakeBySexSql = this.repository
             .createQueryBuilder('q')
             .select(
-                `Gender gender, 
+                `Sex gender, 
                 SUM(Tested) tested, 
                 SUM(Positive) positive, 
                 ((CAST(SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) AS FLOAT)/CAST(SUM(Tested) AS FLOAT))*100) AS positivity`
@@ -68,7 +68,7 @@ export class GetUptakeBySexHandler
         }
 
         return await uptakeBySexSql
-            .groupBy('Gender')
+            .groupBy('Sex')
             .getRawMany();
     }
 }

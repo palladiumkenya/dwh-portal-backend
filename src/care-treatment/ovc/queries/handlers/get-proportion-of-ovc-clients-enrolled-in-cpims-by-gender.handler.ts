@@ -1,10 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfOvcClientsEnrolledInCpimsByGenderQuery } from '../impl/get-proportion-of-ovc-clients-enrolled-in-cpims-by-gender.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOvcEnrollments } from '../../entities/fact-trans-ovc-enrollments.model';
 import { Repository } from 'typeorm';
-import { FactTransOtzOutcome } from '../../../otz/entities/fact-trans-otz-outcome.model';
-import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
+import { LineListOVCEnrollments } from '../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetProportionOfOvcClientsEnrolledInCpimsByGenderQuery)
 export class GetProportionOfOvcClientsEnrolledInCpimsByGenderHandler implements IQueryHandler<GetProportionOfOvcClientsEnrolledInCpimsByGenderQuery> {
@@ -16,7 +14,7 @@ export class GetProportionOfOvcClientsEnrolledInCpimsByGenderHandler implements 
 
     async execute(query: GetProportionOfOvcClientsEnrolledInCpimsByGenderQuery): Promise<any> {
         const enrolledInCIPMS = this.repository.createQueryBuilder('f')
-            .select(['EnrolledinCPIMSCleaned EnrolledinCPIMS, COUNT(*) Enrollments, Gender'])
+            .select(['EnrolledinCPIMSCleaned EnrolledinCPIMS, COUNT(*) Enrollments, Sex Gender'])
             .andWhere('f.OVCEnrollmentDate IS NOT NULL and f.TXCurr=1');
 
         if (query.county) {
@@ -40,7 +38,7 @@ export class GetProportionOfOvcClientsEnrolledInCpimsByGenderHandler implements 
         }
 
         if (query.gender) {
-            enrolledInCIPMS.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            enrolledInCIPMS.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
@@ -48,7 +46,7 @@ export class GetProportionOfOvcClientsEnrolledInCpimsByGenderHandler implements 
         }
 
         return await enrolledInCIPMS
-            .groupBy('Gender, EnrolledinCPIMSCleaned')
+            .groupBy('Sex, EnrolledinCPIMSCleaned')
             .getRawMany();
     }
 }

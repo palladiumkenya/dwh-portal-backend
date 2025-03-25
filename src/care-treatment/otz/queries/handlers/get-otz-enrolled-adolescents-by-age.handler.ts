@@ -40,7 +40,7 @@ export class GetOtzEnrolledAdolescentsByAgeHandler implements IQueryHandler<GetO
         }
 
         if (query.gender) {
-            otzTotalAdolescentsByAgeGroup.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            otzTotalAdolescentsByAgeGroup.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await otzTotalAdolescentsByAgeGroup

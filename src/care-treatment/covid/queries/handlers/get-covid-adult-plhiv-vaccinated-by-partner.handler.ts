@@ -40,7 +40,7 @@ export class GetCovidAdultPLHIVVaccinatedByPartnerHandler implements IQueryHandl
         }
 
         if (query.gender) {
-            adultPLHIVVaccinatedByPartner.andWhere('Gender IN (:...genders)', { genders: query.gender });
+            adultPLHIVVaccinatedByPartner.andWhere('Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.ageGroup) {

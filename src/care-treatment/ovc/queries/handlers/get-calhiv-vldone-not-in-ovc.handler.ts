@@ -42,7 +42,7 @@ export class GetCalhivVldoneNotInOvcHandler implements IQueryHandler<GetCalhivVl
         }
 
         if (query.gender) {
-            CALHIVVLDone.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            CALHIVVLDone.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

@@ -16,7 +16,7 @@ export class GetPrepTotalTestedHandler implements IQueryHandler<GetPrepTotalTest
         let newOnPrep = `SELECT
             SUM(s.tested) + SUM(p.tested) TotalTested
         from AggregatePrepTestingAt1MonthRefill s
-        FULL OUTER JOIN AggregatePrepTestingAt3MonthRefill p on p.MFLCode = s.MFLCode and s.FacilityName = p.FacilityName and s.County = p.County and s.SubCounty = p.SubCounty and s.PartnerName = p.PartnerName and s.AgencyName = p.AgencyName and s.Gender = p.Gender and s.AgeGroup = s.AgeGroup and s.Month = p.Month and s.Year = p.Year
+        FULL OUTER JOIN AggregatePrepTestingAt3MonthRefill p on p.MFLCode = s.MFLCode and s.FacilityName = p.FacilityName and s.County = p.County and s.SubCounty = p.SubCounty and s.PartnerName = p.PartnerName and s.AgencyName = p.AgencyName and s.Sex = p.Sex and s.AgeGroup = s.AgeGroup and s.Month = p.Month and s.Year = p.Year
         WHERE s.MFLCode is not null
         `;
 
@@ -61,9 +61,9 @@ export class GetPrepTotalTestedHandler implements IQueryHandler<GetPrepTotalTest
         }
 
         if (query.gender) {
-            newOnPrep = `${newOnPrep} and (s.Gender IN ('${query.gender
+            newOnPrep = `${newOnPrep} and (s.Sex IN ('${query.gender
                 .toString()
-                .replace(/,/g, "','")}') or p.Gender IN ('${query.gender
+                .replace(/,/g, "','")}') or p.Sex IN ('${query.gender
                 .toString()
                 .replace(/,/g, "','")}'))`;
         }

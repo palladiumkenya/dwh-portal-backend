@@ -59,7 +59,7 @@ export class GetOtzAdolescentsEnrolledByPartnerHandler
         }
 
         if (query.gender) {
-            otzEnrollmentsPartner.andWhere('f.Gender IN (:...genders)', {
+            otzEnrollmentsPartner.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

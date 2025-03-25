@@ -23,7 +23,7 @@ export class GetVlCategorizationUToUHandler
                 END  ValidVLResultCategory
                 `,
             ])
-            .where('f.Gender IS NOT NULL');
+            .where('f.Sex IS NOT NULL');
 
         if (query.county) {
             vlUptake.andWhere('f.County IN (:...counties)', {
@@ -62,7 +62,7 @@ export class GetVlCategorizationUToUHandler
         }
 
         if (query.gender) {
-            vlUptake.andWhere('f.Gender IN (:...genders)', {
+            vlUptake.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

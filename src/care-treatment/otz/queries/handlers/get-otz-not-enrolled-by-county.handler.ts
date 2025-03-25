@@ -61,7 +61,7 @@ export class GetOtzNotEnrolledByCountyHandler
 
         if (query.gender) {
             proportionWhoCompletedTraining.andWhere(
-                'f.Gender IN (:...genders)',
+                'f.Sex IN (:...genders)',
                 { genders: query.gender },
             );
         }

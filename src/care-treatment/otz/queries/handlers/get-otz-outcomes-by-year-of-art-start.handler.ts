@@ -44,7 +44,7 @@ export class GetOtzOutcomesByYearOfArtStartHandler implements IQueryHandler<GetO
         }
 
         if (query.gender) {
-            otzOutcomesByYearOfArtStart.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            otzOutcomesByYearOfArtStart.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

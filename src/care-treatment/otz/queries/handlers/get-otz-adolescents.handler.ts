@@ -17,7 +17,7 @@ export class GetOtzAdolescentsHandler
     async execute(query: GetOtzAdolescentsQuery): Promise<any> {
         const otzTotalAdolescents = this.repository
             .createQueryBuilder('f')
-            .select(['count(*) totalAdolescents, Gender']);
+            .select(['count(*) totalAdolescents, Sex Gender']);
 
         if (query.county) {
             otzTotalAdolescents.andWhere('f.County IN (:...counties)', {
@@ -56,14 +56,14 @@ export class GetOtzAdolescentsHandler
         }
 
         if (query.gender) {
-            otzTotalAdolescents.andWhere('f.Gender IN (:...genders)', {
+            otzTotalAdolescents.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
 
         return await otzTotalAdolescents
-            .groupBy('Gender')
-            .orderBy('Gender')
+            .groupBy('Sex')
+            .orderBy('Sex')
             .getRawMany();
     }
 }

@@ -44,7 +44,7 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler implements IQuer
         }
 
         if (query.gender) {
-            otzEnrollmentsPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            otzEnrollmentsPartner.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await otzEnrollmentsPartner

@@ -45,7 +45,7 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCount
         }
 
         if (query.gender) {
-            proportionWhoCompletedTrainingByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            proportionWhoCompletedTrainingByCounty.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await proportionWhoCompletedTrainingByCounty

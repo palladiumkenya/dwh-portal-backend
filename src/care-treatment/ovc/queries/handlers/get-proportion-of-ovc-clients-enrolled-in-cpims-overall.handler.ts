@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfOvcClientsEnrolledInCpimsOverallQuery } from '../impl/get-proportion-of-ovc-clients-enrolled-in-cpims-overall.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
+import { LineListOVCEnrollments } from '../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetProportionOfOvcClientsEnrolledInCpimsOverallQuery)
 export class GetProportionOfOvcClientsEnrolledInCpimsOverallHandler implements IQueryHandler<GetProportionOfOvcClientsEnrolledInCpimsOverallQuery> {
@@ -38,7 +38,7 @@ export class GetProportionOfOvcClientsEnrolledInCpimsOverallHandler implements I
         }
 
         if (query.gender) {
-            enrolledInCIPMS.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            enrolledInCIPMS.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

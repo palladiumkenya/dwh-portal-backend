@@ -16,7 +16,7 @@ export class GetNewOnPrepByAgeSexHandler
         const params = [];
         let newOnPrep = `SELECT
                 AgeGroup DatimAgeGroup,
-                Gender,
+                Sex Gender,
                 SUM(StartedPrep) As StartedPrep
             from AggregatePrepCascade prep
             where Year is not null
@@ -54,7 +54,7 @@ export class GetNewOnPrepByAgeSexHandler
         }
 
         if (query.gender) {
-            newOnPrep = `${newOnPrep} and Gender IN ('${query.gender
+            newOnPrep = `${newOnPrep} and Sex IN ('${query.gender
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
@@ -73,8 +73,8 @@ export class GetNewOnPrepByAgeSexHandler
             newOnPrep = `${newOnPrep} and Month = ${query.month}`;
         }
 
-        newOnPrep = `${newOnPrep} GROUP BY AgeGroup, Gender
-						ORDER BY AgeGroup, Gender`;
+        newOnPrep = `${newOnPrep} GROUP BY AgeGroup, Sex
+						ORDER BY AgeGroup, Sex`;
 
         return await this.repository.query(newOnPrep, params);
     }

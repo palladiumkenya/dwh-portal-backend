@@ -19,7 +19,7 @@ export class GetCovidOverallAdmissionMalesHandler
                 "AdmissionStatus, CASE WHEN AdmissionStatus='Yes' THEN 'Admitted' WHEN AdmissionStatus='No' THEN 'Not Admitted' ELSE 'Unclassified' END as Admission, count (*)Num",
             ])
             .where(
-                "f.Gender in ('Male', 'M') and PatientStatus in ('Yes','Symptomatic')",
+                "f.Sex IN ('Male', 'M') and PatientStatus in ('Yes','Symptomatic')",
             );
 
         if (query.county) {
@@ -57,7 +57,7 @@ export class GetCovidOverallAdmissionMalesHandler
         }
 
         if (query.gender) {
-            covidOverallAdmissionMales.andWhere('f.Gender IN (:...genders)', {
+            covidOverallAdmissionMales.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

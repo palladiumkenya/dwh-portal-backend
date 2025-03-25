@@ -51,7 +51,7 @@ export class GetPrepRefillMonth3Handler implements IQueryHandler<GetPrepRefillMo
         }
 
         if (query.gender) {
-            newOnPrep = `${newOnPrep} and Gender IN ('${query.gender
+            newOnPrep = `${newOnPrep} and Sex IN ('${query.gender
                 .toString()
                 .replace(/,/g, "','")}')`;
         }

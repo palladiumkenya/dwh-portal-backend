@@ -45,7 +45,7 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler implements IQueryHan
         }
 
         if (query.gender) {
-            otzEnrollmentsByAge.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            otzEnrollmentsByAge.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await otzEnrollmentsByAge

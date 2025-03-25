@@ -38,7 +38,7 @@ export class GetOvcOnArtHandler implements IQueryHandler<GetOvcOnArtQuery> {
         }
 
         if (query.gender) {
-            OVConART.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            OVConART.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

@@ -57,7 +57,7 @@ export class GetOtzAdolescentsEnrolledByCountyHandler
         }
 
         if (query.gender) {
-            otzEnrollmentsCounty.andWhere('f.Gender IN (:...genders)', {
+            otzEnrollmentsCounty.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

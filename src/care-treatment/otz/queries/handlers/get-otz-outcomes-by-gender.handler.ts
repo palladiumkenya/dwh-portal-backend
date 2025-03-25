@@ -1,7 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzOutcomesByGenderQuery } from '../impl/get-otz-outcomes-by-gender.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AggregateOTZOutcome } from './../../entities/aggregate-otz-outcome.model';
+import { AggregateOTZOutcome } from '../../entities/aggregate-otz-outcome.model';
 import { Repository } from 'typeorm';
 
 @QueryHandler(GetOtzOutcomesByGenderQuery)
@@ -16,7 +16,7 @@ export class GetOtzOutcomesByGenderHandler implements IQueryHandler<GetOtzOutcom
         const otzOutcomesByGender = this.repository
             .createQueryBuilder('f')
             .select([
-                "[Gender], CASE WHEN [Outcome] IS NULL THEN 'Active' WHEN [Outcome] = 'Died' THEN 'Dead' ELSE [Outcome] END as Outcome, SUM([patients_totalOutcome]) outcomesByGender",
+                "Sex Gender, CASE WHEN [Outcome] IS NULL THEN 'Active' WHEN [Outcome] = 'Died' THEN 'Dead' ELSE [Outcome] END as Outcome, SUM([patients_totalOutcome]) outcomesByGender",
             ])
             .andWhere('f.MFLCode IS NOT NULL');
 
@@ -41,7 +41,7 @@ export class GetOtzOutcomesByGenderHandler implements IQueryHandler<GetOtzOutcom
         }
 
         if (query.gender) {
-            otzOutcomesByGender.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            otzOutcomesByGender.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
@@ -49,7 +49,7 @@ export class GetOtzOutcomesByGenderHandler implements IQueryHandler<GetOtzOutcom
         }
 
         return await otzOutcomesByGender
-            .groupBy('[Gender], CASE WHEN [Outcome] IS NULL THEN \'Active\' WHEN [Outcome] = \'Died\' THEN \'Dead\' ELSE [Outcome] END')
+            .groupBy('[Sex], CASE WHEN [Outcome] IS NULL THEN \'Active\' WHEN [Outcome] = \'Died\' THEN \'Dead\' ELSE [Outcome] END')
             .getRawMany();
     }
 }

@@ -38,7 +38,7 @@ export class GetOvcOnDtgHandler implements IQueryHandler<GetOvcOnDtgQuery> {
         }
 
         if (query.gender) {
-            OVConDTG.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            OVConDTG.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

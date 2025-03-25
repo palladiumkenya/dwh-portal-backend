@@ -2,7 +2,6 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetVlMedianTimeToFirstVlByCountyQuery } from '../impl/get-vl-median-time-to-first-vl-by-county.query';
-import { FactTimeToVlLast12M } from '../../entities/fact-time-to-vl-last-12m.model';
 import { AggregateTimeToVL12M } from '../../entities/aggregate-time-to-vl-last-12m.model';
 
 @QueryHandler(GetVlMedianTimeToFirstVlByCountyQuery)
@@ -85,7 +84,7 @@ export class GetVlMedianTimeToFirstVlByCountyHandler
         }
 
         if (query.gender) {
-            medianTimeToFirstVlSql.andWhere('f.Gender IN (:...genders)', {
+            medianTimeToFirstVlSql.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

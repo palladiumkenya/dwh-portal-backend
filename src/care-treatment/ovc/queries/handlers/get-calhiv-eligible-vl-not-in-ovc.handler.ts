@@ -51,7 +51,7 @@ export class GetCalhivEligibleVlNotInOvcHandler
         }
 
         if (query.gender) {
-            CALHIVEligible.andWhere('f.Gender IN (:...genders)', {
+            CALHIVEligible.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

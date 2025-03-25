@@ -62,7 +62,7 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
         }
 
         if (query.gender) {
-            vlOverallUptakeGt1000.andWhere('art.Gender IN (:...genders)', {
+            vlOverallUptakeGt1000.andWhere('art.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

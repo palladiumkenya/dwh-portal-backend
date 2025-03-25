@@ -47,7 +47,7 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler implemen
         }
 
         if (query.gender) {
-            vlSuppressionOtzByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlSuppressionOtzByPartner.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlSuppressionOtzByPartner

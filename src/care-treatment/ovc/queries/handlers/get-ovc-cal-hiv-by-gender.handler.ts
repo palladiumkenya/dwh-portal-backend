@@ -17,7 +17,7 @@ export class GetOvcCalHIVByGenderHandler
     async execute(query: GetOvcCalHIVByGenderQuery): Promise<any> {
         const calHIVByGender = this.repository
             .createQueryBuilder('f')
-            .select(['COUNT(*) CALHIV, Gender'])
+            .select(['COUNT(*) CALHIV, Sex Gender'])
             .andWhere('f.TXCurr = 1');
 
         if (query.county) {
@@ -51,7 +51,7 @@ export class GetOvcCalHIVByGenderHandler
         }
 
         if (query.gender) {
-            calHIVByGender.andWhere('f.Gender IN (:...genders)', {
+            calHIVByGender.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
@@ -60,6 +60,6 @@ export class GetOvcCalHIVByGenderHandler
             calHIVByGender.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
-        return await calHIVByGender.groupBy('Gender').getRawMany();
+        return await calHIVByGender.groupBy('Sex').getRawMany();
     }
 }

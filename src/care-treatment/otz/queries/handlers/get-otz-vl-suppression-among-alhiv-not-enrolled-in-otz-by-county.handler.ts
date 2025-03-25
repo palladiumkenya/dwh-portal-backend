@@ -74,7 +74,7 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler
         }
 
         if (query.gender) {
-            vlSuppressionOtzByCounty.andWhere('f.Gender IN (:...genders)', {
+            vlSuppressionOtzByCounty.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

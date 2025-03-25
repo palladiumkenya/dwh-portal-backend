@@ -15,7 +15,7 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler implements IQueryHan
 
     async execute(query: GetOtzEnrollmentAmongAlhivAndOnArtBySexQuery): Promise<any> {
         const otzEnrollmentsBySex = this.repository.createQueryBuilder('f')
-            .select(['[Gender], SUM(Enrolled) TXCurr, SUM(Enrolled) * 100.0 / SUM(SUM(Enrolled)) OVER () AS Percentage'])
+            .select(['Sex Gender, SUM(Enrolled) TXCurr, SUM(Enrolled) * 100.0 / SUM(SUM(Enrolled)) OVER () AS Percentage'])
 
         if (query.county) {
             otzEnrollmentsBySex.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -42,11 +42,11 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler implements IQueryHan
         }
 
         if (query.gender) {
-            otzEnrollmentsBySex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            otzEnrollmentsBySex.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await otzEnrollmentsBySex
-            .groupBy('Gender')
+            .groupBy('Sex')
             .getRawMany();
     }
 }

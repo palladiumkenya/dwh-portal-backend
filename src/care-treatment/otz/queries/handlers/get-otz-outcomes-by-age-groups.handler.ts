@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzOutcomesByAgeGroupsQuery } from '../impl/get-otz-outcomes-by-age-groups.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateOTZOutcome } from './../../entities/aggregate-otz-outcome.model';
+import { AggregateOTZOutcome } from '../../entities/aggregate-otz-outcome.model';
 
 @QueryHandler(GetOtzOutcomesByAgeGroupsQuery)
 export class GetOtzOutcomesByAgeGroupsHandler implements IQueryHandler<GetOtzOutcomesByAgeGroupsQuery> {
@@ -40,7 +40,7 @@ export class GetOtzOutcomesByAgeGroupsHandler implements IQueryHandler<GetOtzOut
         }
 
         if (query.gender) {
-            otzOutcomesByAgeGroups.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            otzOutcomesByAgeGroups.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

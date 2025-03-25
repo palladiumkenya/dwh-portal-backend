@@ -43,7 +43,7 @@ export class GetOvcCaregiversRelationshipToOvcClientHandler implements IQueryHan
         }
 
         if (query.gender) {
-            ovcCareGiversRelationships.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            ovcCareGiversRelationships.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

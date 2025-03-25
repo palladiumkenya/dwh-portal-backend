@@ -1,9 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransOptimizeStartRegimen } from '../../entities/fact-trans-optimize-start-regimen.model';
 import { GetVlSuppressionByRegimenQuery } from '../impl/get-vl-suppression-by-regimen.query';
-import { AggregateOptimizeStartRegimens } from './../../../art-optimization/entities/aggregate-optimize-start-regimens.model';
+import { AggregateOptimizeStartRegimens } from '../../../art-optimization/entities/aggregate-optimize-start-regimens.model';
 
 @QueryHandler(GetVlSuppressionByRegimenQuery)
 export class GetVlSuppressionByRegimenHandler implements IQueryHandler<GetVlSuppressionByRegimenQuery> {
@@ -49,7 +48,7 @@ export class GetVlSuppressionByRegimenHandler implements IQueryHandler<GetVlSupp
         }
 
         if (query.gender) {
-            vlSuppressionByRegimen.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlSuppressionByRegimen.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlSuppressionByRegimen

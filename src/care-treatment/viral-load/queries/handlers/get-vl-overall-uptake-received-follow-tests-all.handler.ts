@@ -16,7 +16,7 @@ export class GetVlOverallUptakeReceivedFollowTestsAllHandler implements IQueryHa
         const vlOverallUptakeReceivedFollowAll = this.repository
             .createQueryBuilder('cohort')
             .select([
-                `SiteCode, cohort.PatientIDHash,cohort.County,cohort.SubCounty,DOB,cohort.Gender, c.LatestVL1 as LastVL,c.LatestVLDate2Key,c.LatestVLDate1Key,ARTOutcomeDescription,
+                `SiteCode, cohort.PatientIDHash,cohort.County,cohort.SubCounty,DOB,cohort.Sex Gender, c.LatestVL1 as LastVL,c.LatestVLDate2Key,c.LatestVLDate1Key,ARTOutcomeDescription,
                 CASE
                     WHEN ISNUMERIC(LatestVL1)=1 THEN
                         CASE
@@ -46,49 +46,49 @@ export class GetVlOverallUptakeReceivedFollowTestsAllHandler implements IQueryHa
                 { counties: query.county },
             );
         }
-        
+
         if (query.subCounty) {
             vlOverallUptakeReceivedFollowAll.andWhere(
                 'cohort.SubCounty IN (:...subCounties)',
                 { subCounties: query.subCounty },
             );
         }
-        
+
         if (query.facility) {
             vlOverallUptakeReceivedFollowAll.andWhere(
                 'cohort.FacilityName IN (:...facilities)',
                 { facilities: query.facility },
             );
         }
-        
+
         if (query.partner) {
             vlOverallUptakeReceivedFollowAll.andWhere(
                 'cohort.PartnerName IN (:...partners)',
                 { partners: query.partner },
             );
         }
-        
+
         if (query.agency) {
             vlOverallUptakeReceivedFollowAll.andWhere(
                 'cohort.AgencyName IN (:...agencies)',
                 { agencies: query.agency },
             );
         }
-        
+
         if (query.datimAgeGroup) {
             vlOverallUptakeReceivedFollowAll.andWhere(
                 'cohort.AgeGroup IN (:...ageGroups)',
                 { ageGroups: query.datimAgeGroup },
             );
         }
-        
+
         if (query.gender) {
             vlOverallUptakeReceivedFollowAll.andWhere(
-                'cohort.Gender IN (:...genders)',
+                'cohort.Sex IN (:...genders)',
                 { genders: query.gender },
             );
         }
-        
+
         const originalQuery = vlOverallUptakeReceivedFollowAll.getQuery;
         const originalParams = vlOverallUptakeReceivedFollowAll.getParameters;
         vlOverallUptakeReceivedFollowAll.getQuery = () => {

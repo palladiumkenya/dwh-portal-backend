@@ -60,7 +60,7 @@ export class GetVlSuppressionByAgeHandler
         }
 
         if (query.gender) {
-            vlSuppressionByAge.andWhere('f.Gender IN (:...genders)', {
+            vlSuppressionByAge.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

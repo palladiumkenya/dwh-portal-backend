@@ -51,7 +51,7 @@ export class GetCalhivOnArtNotInOvcHandler
         }
 
         if (query.gender) {
-            CALHIVonARTNotInOvc.andWhere('f.Gender IN (:...genders)', {
+            CALHIVonARTNotInOvc.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

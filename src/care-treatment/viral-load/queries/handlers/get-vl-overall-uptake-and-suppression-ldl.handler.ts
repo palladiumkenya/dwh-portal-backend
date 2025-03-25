@@ -70,7 +70,7 @@ export class GetVlOverallUptakeAndSuppressionLdlHandler
 
         if (query.gender) {
             vlOverallUptakeAndSuppressinLDL.andWhere(
-                'f.Gender IN (:...genders)',
+                'f.Sex IN (:...genders)',
                 { genders: query.gender },
             );
         }

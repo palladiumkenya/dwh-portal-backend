@@ -65,7 +65,7 @@ export class GetAlhivWithReSuppressionHandler
         }
 
         if (query.gender) {
-            baselineVlReSuppression.andWhere('f.Gender IN (:...genders)', {
+            baselineVlReSuppression.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

@@ -42,7 +42,7 @@ export class GetOtzTotalWithDurableVlHandler implements IQueryHandler<GetOtzTota
         }
 
         if (query.gender) {
-            totalWithDurableLDL.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            totalWithDurableLDL.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await totalWithDurableLDL.getRawOne();

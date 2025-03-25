@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOvcClientsExitReasonsQuery } from '../impl/get-ovc-clients-exit-reasons.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
+import { LineListOVCEnrollments } from '../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetOvcClientsExitReasonsQuery)
 export class GetOvcClientsExitReasonsHandler implements IQueryHandler<GetOvcClientsExitReasonsQuery> {

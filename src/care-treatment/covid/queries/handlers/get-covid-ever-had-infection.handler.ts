@@ -42,7 +42,7 @@ export class GetCovidEverHadInfectionHandler implements IQueryHandler<GetCovidEv
         }
 
         if (query.gender) {
-            everHadCovidInfection.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            everHadCovidInfection.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.ageGroup) {

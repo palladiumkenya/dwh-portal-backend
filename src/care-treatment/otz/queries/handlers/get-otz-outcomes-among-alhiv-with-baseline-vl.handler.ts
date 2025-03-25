@@ -68,7 +68,7 @@ export class GetOtzOutcomesAmongAlhivWithBaselineVlHandler
         }
 
         if (query.gender) {
-            baselineVl.andWhere('f.Gender IN (:...genders)', {
+            baselineVl.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

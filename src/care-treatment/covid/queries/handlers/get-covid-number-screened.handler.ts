@@ -38,7 +38,7 @@ export class GetCovidNumberScreenedHandler implements IQueryHandler<GetCovidNumb
         }
 
         if (query.gender) {
-            numberScreened.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            numberScreened.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

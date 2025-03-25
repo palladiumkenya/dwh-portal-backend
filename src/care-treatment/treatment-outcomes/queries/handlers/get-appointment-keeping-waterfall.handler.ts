@@ -2,8 +2,8 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { GetAppointmentKeepingWaterfallQuery } from './../impl/get-appointment-keeping-waterfall.query';
-import { AggregateAppointments } from './../../entities/aggregate-appointments.model';
+import { GetAppointmentKeepingWaterfallQuery } from '../impl/get-appointment-keeping-waterfall.query';
+import { AggregateAppointments } from '../../entities/aggregate-appointments.model';
 
 @QueryHandler(GetAppointmentKeepingWaterfallQuery)
 export class GetAppointmentKeepingWaterfallHandler
@@ -57,7 +57,7 @@ export class GetAppointmentKeepingWaterfallHandler
         }
 
         if (query.gender) {
-            treatmentOutcomes.andWhere('f.Gender IN (:...genders)', {
+            treatmentOutcomes.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

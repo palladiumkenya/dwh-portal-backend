@@ -40,7 +40,7 @@ export class GetCovidPartiallyVaccinatedHandler implements IQueryHandler<GetCovi
         }
 
         if (query.gender) {
-            covidPartiallyVaccinated.andWhere('Gender IN (:...genders)', { genders: query.gender });
+            covidPartiallyVaccinated.andWhere('Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

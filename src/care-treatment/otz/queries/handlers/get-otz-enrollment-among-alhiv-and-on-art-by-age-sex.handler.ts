@@ -17,7 +17,7 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexHandler
         const otzEnrollmentsByAge = this.repository
             .createQueryBuilder('f')
             .select([
-                '[AgeGroup] ageGroup, Gender, SUM(Enrolled) TXCurr',
+                '[AgeGroup] ageGroup, Sex Gender, SUM(Enrolled) TXCurr',
             ])
 
         if (query.county) {
@@ -58,13 +58,13 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByAgeSexHandler
         }
 
         if (query.gender) {
-            otzEnrollmentsByAge.andWhere('f.Gender IN (:...genders)', {
+            otzEnrollmentsByAge.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
 
         return await otzEnrollmentsByAge
-            .groupBy('AgeGroup, Gender')
+            .groupBy('AgeGroup, Sex')
             .orderBy('AgeGroup')
             .getRawMany();
     }

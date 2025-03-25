@@ -15,7 +15,7 @@ export class GetPnsSexualContactsByAgeSexHandler implements IQueryHandler<GetPns
 
     async execute(query: GetPnsSexualContactsByAgeSexQuery): Promise<any> {
         let pnsSexualContactsByAgeSex = `Select Agegroup age,
-                Gender gender,
+                Sex gender,
                 Sum(PartnersElicited) elicited,
                 sum(PartnerTested) tested,
                 Sum(Positive) positive,
@@ -82,9 +82,9 @@ export class GetPnsSexualContactsByAgeSexHandler implements IQueryHandler<GetPns
             pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} and (year < ${toYear} or (year = ${toYear} and month <= ${toMonth}))`;
         }
 
-        pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} GROUP BY Gender,Agegroup`;
+        pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} GROUP BY Sex, Agegroup`;
 
-        pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} ORDER BY Agegroup, Gender`;
+        pnsSexualContactsByAgeSex = `${pnsSexualContactsByAgeSex} ORDER BY Agegroup, Sex`;
 
 
         return await this.repository.query(

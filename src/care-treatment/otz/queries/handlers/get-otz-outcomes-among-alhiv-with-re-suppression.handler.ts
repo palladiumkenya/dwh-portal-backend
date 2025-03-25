@@ -47,7 +47,7 @@ export class GetOtzOutcomesAmongAlhivWithReSuppressionHandler implements IQueryH
         }
 
         if (query.gender) {
-            baselineVlReSuppression.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            baselineVlReSuppression.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await baselineVlReSuppression.getRawMany();
