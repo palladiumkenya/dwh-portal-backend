@@ -106,6 +106,7 @@ export class GetRecencyByPartnerHandler
 
         if (query.agency) {
             recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and agency IN ('${query.agency
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
@@ -114,6 +115,7 @@ export class GetRecencyByPartnerHandler
                                     ) b ON b.partner = a.partner`;
 
         recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} ORDER BY b.expected DESC`;
+        console.log(recencyOfReportingByPartnerSql)
 
         return await this.repository.query(
             recencyOfReportingByPartnerSql,
