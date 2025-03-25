@@ -43,7 +43,7 @@ export class GetTreatmentOutcomesRetention3mHandler implements IQueryHandler<Get
         }
 
         if (query.gender) {
-            retention.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            retention.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await retention
