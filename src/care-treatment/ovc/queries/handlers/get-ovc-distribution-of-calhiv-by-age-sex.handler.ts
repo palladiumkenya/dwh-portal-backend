@@ -19,7 +19,7 @@ export class GetOvcDistributionOfCalHIVByAgeSexHandler
     ): Promise<any> {
         const distributionOfCALHIVAgeAndSex = this.repository
             .createQueryBuilder('f')
-            .select(['Gender, DATIMAgeGroup, Count (*) OverallCALHIV'])
+            .select(['Sex Gender, DATIMAgeGroup, Count (*) OverallCALHIV'])
             .where('TxCurr = 1');
 
         if (query.county) {
@@ -59,7 +59,7 @@ export class GetOvcDistributionOfCalHIVByAgeSexHandler
 
         if (query.gender) {
             distributionOfCALHIVAgeAndSex.andWhere(
-                'f.Gender IN (:...genders)',
+                'f.Sex IN (:...genders)',
                 { genders: query.gender },
             );
         }
@@ -72,7 +72,7 @@ export class GetOvcDistributionOfCalHIVByAgeSexHandler
         }
 
         return await distributionOfCALHIVAgeAndSex
-            .groupBy('Gender, DATIMAgeGroup')
+            .groupBy('Sex, DATIMAgeGroup')
             .orderBy('DATIMAgeGroup')
             .getRawMany();
     }

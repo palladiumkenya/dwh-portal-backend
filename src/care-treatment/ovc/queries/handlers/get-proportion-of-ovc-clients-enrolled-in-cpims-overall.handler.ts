@@ -38,7 +38,7 @@ export class GetProportionOfOvcClientsEnrolledInCpimsOverallHandler implements I
         }
 
         if (query.gender) {
-            enrolledInCIPMS.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            enrolledInCIPMS.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

@@ -38,7 +38,7 @@ export class GetOvcDistributionByPartnerHandler implements IQueryHandler<GetOvcD
         }
 
         if (query.gender) {
-            overOvcServByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            overOvcServByPartner.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

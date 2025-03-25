@@ -38,7 +38,7 @@ export class GetCalhivOnMmdNotInOvcHandler implements IQueryHandler<GetCalhivOnM
         }
 
         if (query.gender) {
-            CALHIVonMMD.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            CALHIVonMMD.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

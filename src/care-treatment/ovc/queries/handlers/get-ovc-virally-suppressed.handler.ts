@@ -38,7 +38,7 @@ export class GetOvcVirallySuppressedHandler implements IQueryHandler<GetOvcViral
         }
 
         if (query.gender) {
-            OVCVLSuppressed.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            OVCVLSuppressed.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

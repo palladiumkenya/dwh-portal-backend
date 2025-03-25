@@ -42,7 +42,7 @@ export class GetOvcViralSuppressionAmongOvcPatientsOverallHandler implements IQu
 
         if (query.gender) {
             viralSuppressionAmongOvcPatients.andWhere(
-                'f.Gender IN (:...genders)',
+                'f.Sex IN (:...genders)',
                 {
                     genders: query.gender,
                 },

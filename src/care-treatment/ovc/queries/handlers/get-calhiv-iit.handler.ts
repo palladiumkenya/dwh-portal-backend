@@ -39,7 +39,7 @@ export class GetCalhivIitHandler implements IQueryHandler<GetCalhivIitQuery> {
         }
 
         if (query.gender) {
-            CALHIVonART.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            CALHIVonART.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
