@@ -52,7 +52,7 @@ export class GetPrepSTIScreenedOutcomeHandler
         }
 
         if (query.gender) {
-            newOnPrep = `${newOnPrep} and Gender IN ('${query.gender
+            newOnPrep = `${newOnPrep} and Sex   IN ('${query.gender
                 .toString()
                 .replace(/,/g, "','")}')`;
         }

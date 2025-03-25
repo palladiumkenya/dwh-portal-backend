@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 import { GetArtVerificationPendingSurveysByCountyQuery } from '../impl/get-art-verification-pending-surveys-by-county.query';
-import { FactTransNewCohort } from './../../../new-on-art/entities/fact-trans-new-cohort.model';
+import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 
 @QueryHandler(GetArtVerificationPendingSurveysByCountyQuery)
 export class GetArtVerificationPendingSurveysByCountyHandler

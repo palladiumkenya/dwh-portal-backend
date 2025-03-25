@@ -16,7 +16,7 @@ export class GetLinkageBySexHandler
         const params = [];
         let linkageBySexSql = this.repository.createQueryBuilder('f')
             .select([`
-                gender,
+                Sex gender,
                 SUM(Tested) tested,
                 SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive,
                 SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END) linked,
@@ -64,7 +64,7 @@ export class GetLinkageBySexHandler
         }
 
         return await linkageBySexSql
-            .groupBy('Gender')
+            .groupBy('Sex')
             .getRawMany();
     }
 }

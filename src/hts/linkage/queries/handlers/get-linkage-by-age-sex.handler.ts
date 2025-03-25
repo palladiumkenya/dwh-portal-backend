@@ -17,7 +17,7 @@ export class GetLinkageByAgeSexHandler
         let linkageByAgeSexSql = this.repository.createQueryBuilder('f')
             .select([
                 `AgeGroup,
-                Gender,
+                Sex Gender,
                 SUM(Tested) Tested,
                 SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive,
                 SUM(CASE WHEN linked IS NULL THEN 0 ELSE linked END) linked,
@@ -75,7 +75,7 @@ export class GetLinkageByAgeSexHandler
         }
 
         return await linkageByAgeSexSql
-            .groupBy('AgeGroup, Gender')
+            .groupBy('AgeGroup, Sex')
             .getRawMany();
     }
 }

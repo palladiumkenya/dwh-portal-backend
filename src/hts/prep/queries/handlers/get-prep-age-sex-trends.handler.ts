@@ -15,7 +15,7 @@ export class GetPrepAgeSexTrendHandler implements IQueryHandler<GetPrepAgeSexTre
         const params = [];
         let newOnPrep = `Select 
             AgeGroup DATIMAgeGroup,
-            Gender,
+            Sex Gender,
             SUM(PrepCT) As PrepCT
         from AggregatePrepCascade prep
         where Year is not null
@@ -52,7 +52,7 @@ export class GetPrepAgeSexTrendHandler implements IQueryHandler<GetPrepAgeSexTre
         }
 
         if (query.gender) {
-            newOnPrep = `${newOnPrep} and Gender IN ('${query.gender
+            newOnPrep = `${newOnPrep} and Sex IN ('${query.gender
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
@@ -72,8 +72,8 @@ export class GetPrepAgeSexTrendHandler implements IQueryHandler<GetPrepAgeSexTre
         }
 
         newOnPrep = `${newOnPrep} 
-        Group BY AgeGroup, Gender
-        Order by AgeGroup, Gender`
+        Group BY AgeGroup, Sex
+        Order by AgeGroup, Sex`
 
     return await this.repository.query(newOnPrep, params);
     }

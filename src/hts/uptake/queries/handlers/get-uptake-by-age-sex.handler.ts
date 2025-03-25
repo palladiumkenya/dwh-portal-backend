@@ -16,7 +16,7 @@ export class GetUptakeByAgeSexHandler
         const params = [];
         let uptakeByAgeSex = this.repository
             .createQueryBuilder(`q`)
-            .select(`AgeGroup, Gender, SUM(Tested) Tested`)
+            .select(`AgeGroup, Sex Gender, SUM(Tested) Tested`)
             .where(`Tested is not null`);
 
         if (query.county) {
@@ -53,7 +53,7 @@ export class GetUptakeByAgeSexHandler
         }
 
         return await uptakeByAgeSex
-            .groupBy(`AgeGroup, Gender`)
+            .groupBy(`AgeGroup, Sex`)
             .getRawMany();
     }
 }

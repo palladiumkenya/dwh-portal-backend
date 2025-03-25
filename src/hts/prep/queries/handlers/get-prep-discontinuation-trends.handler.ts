@@ -52,7 +52,7 @@ export class GetPrepDiscontinuationTrendHandler
         }
 
         if (query.gender) {
-            prepDiscontinuation = `${prepDiscontinuation} and Gender IN ('${query.gender
+            prepDiscontinuation = `${prepDiscontinuation} and Sex IN ('${query.gender
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
