@@ -18,24 +18,29 @@ export class GetRecencyUploadsHandler
     ): Promise<RecencyUploadsTileDto> {
         const params = [];
         params.push(query.docket);
+        const escapeQuotes = (str) => str.replace(/'/g, "''");
         let recencySql = `select sum(recency) as totalrecency from AggregateRecencyUploads where docket='${query.docket}'`;
         if (query.county) {
             recencySql = `${recencySql} and County IN ('${query.county
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
         if (query.subCounty) {
             recencySql = `${recencySql} and subCounty IN ('${query.subCounty
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
         if (query.partner) {
             recencySql = `${recencySql} and Partner IN ('${query.partner
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
         if (query.agency) {
             recencySql = `${recencySql} and agency IN ('${query.agency
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }

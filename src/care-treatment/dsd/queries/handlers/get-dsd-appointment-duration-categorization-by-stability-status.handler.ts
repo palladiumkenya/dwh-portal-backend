@@ -47,7 +47,7 @@ export class GetDsdAppointmentDurationCategorizationByStabilityStatusHandler imp
         }
 
         if (query.gender) {
-            dsdAppointmentCategorization.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            dsdAppointmentCategorization.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await dsdAppointmentCategorization

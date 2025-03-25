@@ -18,25 +18,30 @@ export class GetExpectedUploadsHandler
         query: GetExpectedUploadsQuery,
     ): Promise<ExpectedUploadsTileDto> {
         const params = [];
+        const escapeQuotes = (str) => str.replace(/'/g, "''");
         params.push(query.docket);
         let expectedSql = `select sum(expected) as totalexpected from AggregateExpectedUploads where docket='${query.docket}'`;
         if (query.county) {
             expectedSql = `${expectedSql} and County IN ('${query.county
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
         if (query.subCounty) {
             expectedSql = `${expectedSql} and subCounty IN ('${query.subCounty
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
         if (query.agency) {
             expectedSql = `${expectedSql} and agency IN ('${query.agency
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
         if (query.partner) {
             expectedSql = `${expectedSql} and Partner IN ('${query.partner
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }

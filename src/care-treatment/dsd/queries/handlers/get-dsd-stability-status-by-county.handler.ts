@@ -52,7 +52,7 @@ export class GetDsdStabilityStatusByCountyHandler implements IQueryHandler<GetDs
         }
 
         if (query.gender) {
-            dsdStabilityStatusByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            dsdStabilityStatusByCounty.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.county) {

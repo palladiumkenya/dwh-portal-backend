@@ -17,6 +17,7 @@ export class GetOverallReportingHandler
         query: GetOverallReportingQuery,
     ): Promise<OverallReportingDto> {
         const params = [];
+        const escapeQuotes = (str) => str.replace(/'/g, "''");
         params.push(query.docket);
         let overAllReportingSql = `SELECT ${query.reportingType}, COUNT(df.MFLCode) AS facilities_count FROM NDWH.Fact.fact_manifest fm
             INNER JOIN REPORTING.dbo.all_EMRSites df ON df.MFLCode = fm.facilityId
@@ -24,30 +25,35 @@ export class GetOverallReportingHandler
 
         if (query.county) {
             overAllReportingSql = `${overAllReportingSql} and County IN ('${query.county
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.subCounty) {
             overAllReportingSql = `${overAllReportingSql} and subCounty IN ('${query.subCounty
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.facility) {
             overAllReportingSql = `${overAllReportingSql} and FacilityName IN ('${query.facility
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.partner) {
             overAllReportingSql = `${overAllReportingSql} and Partner IN ('${query.partner
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.agency) {
             overAllReportingSql = `${overAllReportingSql} and agencyName IN ('${query.agency
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }

@@ -14,25 +14,30 @@ export class GetExpectedUploadsPartnerCountyHandler
 
     async execute(query: GetExpectedUploadsPartnerCountyQuery): Promise<any> {
         const params = [];
+        const escapeQuotes = (str) => str.replace(/'/g, "''");
         params.push(query.docket);
         let expectedPartnerCountySql = `select sum(expected) AS totalexpected, ${query.reportingType} from AggregateExpectedUploads where docket='${query.docket}'`;
         if (query.county) {
             expectedPartnerCountySql = `${expectedPartnerCountySql} and County IN ('${query.county
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
         if (query.subCounty) {
             expectedPartnerCountySql = `${expectedPartnerCountySql} and subCounty IN ('${query.subCounty
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
         if (query.agency) {
             expectedPartnerCountySql = `${expectedPartnerCountySql} and agency IN ('${query.agency
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
         if (query.partner) {
             expectedPartnerCountySql = `${expectedPartnerCountySql} and Partner IN ('${query.partner
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }

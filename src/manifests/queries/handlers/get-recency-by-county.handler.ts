@@ -15,6 +15,7 @@ export class GetRecencyByCountyHandler
 
     async execute(query: GetRecencyByCountyQuery): Promise<RecencyByCountyDto> {
         const params = [];
+        const escapeQuotes = (str) => str.replace(/'/g, "''");
         params.push(query.docket);
         let recencyOfReportingByCountySql = `SELECT b.county
                 ,CASE WHEN recency IS NULL THEN 0 ELSE recency END AS recency
@@ -27,24 +28,28 @@ export class GetRecencyByCountyHandler
 
         if (query.county) {
             recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and County IN ('${query.county
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.subCounty) {
             recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and subCounty IN ('${query.subCounty
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.partner) {
             recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and Partner IN ('${query.partner
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.agency) {
             recencyOfReportingByCountySql = `${recencyOfReportingByCountySql} and agency IN ('${query.agency
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }

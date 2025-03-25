@@ -55,7 +55,7 @@ export class GetDsdAppointmentDurationByCountyHandler implements IQueryHandler<G
         }
 
         if (query.gender) {
-            dsdAppointmentDuration.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            dsdAppointmentDuration.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.county) {

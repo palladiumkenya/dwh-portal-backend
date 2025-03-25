@@ -48,7 +48,7 @@ export class GetDsdAppointmentDurationByAgeHandler implements IQueryHandler<GetD
         }
 
         if (query.gender) {
-            dsdAppointmentDuration.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            dsdAppointmentDuration.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await dsdAppointmentDuration
