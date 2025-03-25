@@ -56,7 +56,7 @@ export class GetOtzOutcomesByPopulationTypeHandler
         }
 
         if (query.gender) {
-            otzOutcomesByPopulationType.andWhere('f.Gender IN (:...genders)', {
+            otzOutcomesByPopulationType.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

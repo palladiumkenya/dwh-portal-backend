@@ -58,7 +58,7 @@ export class GetOtzCalhivVlEligibleHandler
         }
 
         if (query.gender) {
-            OTZCALHIVVLEligible.andWhere('f.Gender IN (:...genders)', {
+            OTZCALHIVVLEligible.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetOtzNotEnrolledByPartnerQuery } from '../impl/get-otz-not-enrolled-by-partner.query';
-import { AggregateOtz } from './../../entities/aggregate-otz.model';
+import { AggregateOtz } from '../../entities/aggregate-otz.model';
 
 @QueryHandler(GetOtzNotEnrolledByPartnerQuery)
 export class GetOtzNotEnrolledByPartnerHandler
@@ -61,7 +61,7 @@ export class GetOtzNotEnrolledByPartnerHandler
 
         if (query.gender) {
             proportionWhoCompletedTraining.andWhere(
-                'f.Gender IN (:...genders)',
+                'f.Sex IN (:...genders)',
                 { genders: query.gender },
             );
         }

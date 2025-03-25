@@ -64,7 +64,7 @@ export class GetOtzEnrollmentTrentHandler
         }
 
         if (query.gender) {
-            otzEnrolled.andWhere('f.Gender IN (:...genders)', {
+            otzEnrolled.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

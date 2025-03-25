@@ -41,7 +41,7 @@ export class GetOtzOutcomesByPartnerHandler implements IQueryHandler<GetOtzOutco
         }
 
         if (query.gender) {
-            otzOutcomesByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            otzOutcomesByPartner.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

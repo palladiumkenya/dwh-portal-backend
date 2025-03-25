@@ -2,7 +2,6 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByCountyQuery } from '../impl/get-otz-enrollment-among-alhiv-and-on-art-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateOtz } from './../../entities/aggregate-otz.model';
 import { LineListOTZEligibilityAndEnrollments } from '../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetOtzEnrollmentAmongAlhivAndOnArtByCountyQuery)
@@ -45,7 +44,7 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler implements IQuery
         }
 
         if (query.gender) {
-            otzEnrollmentsCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            otzEnrollmentsCounty.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
         return await otzEnrollmentsCounty
             .groupBy('County')

@@ -17,7 +17,7 @@ export class GetAlhivOnArtByAgeSexHandler
     async execute(query: GetAlhivOnArtByAgeSexQuery): Promise<any> {
         const CALHIVOnART = this.repository
             .createQueryBuilder('f')
-            .select(['Count (*) CALHIVonART, AgeGroup, Gender']);
+            .select(['Count (*) CALHIVonART, AgeGroup, Sex Gender']);
 
         if (query.county) {
             CALHIVOnART.andWhere('f.County IN (:...counties)', {
@@ -56,11 +56,11 @@ export class GetAlhivOnArtByAgeSexHandler
         }
 
         if (query.gender) {
-            CALHIVOnART.andWhere('f.Gender IN (:...genders)', {
+            CALHIVOnART.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
 
-        return await CALHIVOnART.groupBy('AgeGroup, Gender').getRawMany();
+        return await CALHIVOnART.groupBy('AgeGroup, Sex').getRawMany();
     }
 }

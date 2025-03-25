@@ -45,7 +45,7 @@ export class GetOtzTotalWithVlLessThan1000Handler implements IQueryHandler<GetOt
         }
 
         if (query.gender) {
-            totalWithVLLessThan1000.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            totalWithVLLessThan1000.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await totalWithVLLessThan1000.getRawOne();

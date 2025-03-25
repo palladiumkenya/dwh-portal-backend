@@ -42,7 +42,7 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzByCountyHandler implements IQuery
         }
 
         if (query.gender) {
-            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlUptakeAmongAlHivEnrolledInOtzByCounty.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlUptakeAmongAlHivEnrolledInOtzByCounty

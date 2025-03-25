@@ -16,7 +16,7 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHa
         const proportionWhoCompletedTrainingByGender = this.repository
             .createQueryBuilder('f')
             .select([
-                '[Gender], [CompletedTraining] training, COUNT([CompletedTraining]) count_training',
+                'Sex [Gender], [CompletedTraining] training, COUNT([CompletedTraining]) count_training',
             ]);
 
         if (query.county) {
@@ -44,10 +44,10 @@ export class GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingBySexHa
         }
 
         if (query.gender) {
-            proportionWhoCompletedTrainingByGender.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            proportionWhoCompletedTrainingByGender.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
         return await proportionWhoCompletedTrainingByGender
-            .groupBy('CompletedTraining, [Gender]')
+            .groupBy('CompletedTraining, [Sex]')
             .getRawMany();
     }
 }
