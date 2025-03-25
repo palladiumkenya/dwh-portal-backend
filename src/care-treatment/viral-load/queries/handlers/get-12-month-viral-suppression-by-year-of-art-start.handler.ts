@@ -1,7 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Get12MonthViralSuppressionByYearOfArtStartQuery } from '../impl/get-12-month-viral-suppression-by-year-of-art-start.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransVlSuppressionArtStart } from '../../entities/fact-trans-vl-suppression-art-start.model';
 import { Repository } from 'typeorm';
 import { AggregateVLUptakeOutcome } from '../../entities/aggregate-vl-uptake-outcome.model';
 
@@ -47,8 +46,7 @@ export class Get12MonthViralSuppressionByYearOfArtStartHandler implements IQuery
         }
 
         if (query.gender) {
-            // lacking gender
-            // sixMonthViralSupByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            twelveMonthViralSupByYearOfArtStart.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await twelveMonthViralSupByYearOfArtStart

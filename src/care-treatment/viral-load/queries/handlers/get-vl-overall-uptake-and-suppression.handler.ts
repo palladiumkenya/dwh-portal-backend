@@ -42,7 +42,7 @@ export class GetVlOverallUptakeAndSuppressionHandler implements IQueryHandler<Ge
         }
 
         if (query.gender) {
-            vlOverallUptakeAndSuppression.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlOverallUptakeAndSuppression.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlOverallUptakeAndSuppression.getRawOne();

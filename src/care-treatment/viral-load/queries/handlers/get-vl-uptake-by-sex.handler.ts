@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { GetVlUptakeBySexQuery } from '../impl/get-vl-uptake-by-sex.query';
-import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
+import { AggregateVLUptakeOutcome } from '../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlUptakeBySexQuery)
 export class GetVlUptakeBySexHandler implements IQueryHandler<GetVlUptakeBySexQuery> {
@@ -16,10 +16,10 @@ export class GetVlUptakeBySexHandler implements IQueryHandler<GetVlUptakeBySexQu
         const vlUptakeBySex = this.repository
             .createQueryBuilder('f')
             .select([
-                'Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(HasValidVL) vlDone, SUM(VirallySuppressed) suppressed',
+                'Sex gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(HasValidVL) vlDone, SUM(VirallySuppressed) suppressed',
             ])
             .where('f.MFLCode > 0')
-            .andWhere('f.Gender IS NOT NULL');
+            .andWhere('f.Sex IS NOT NULL');
 
         if (query.county) {
             vlUptakeBySex.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -46,11 +46,11 @@ export class GetVlUptakeBySexHandler implements IQueryHandler<GetVlUptakeBySexQu
         }
 
         if (query.gender) {
-            vlUptakeBySex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlUptakeBySex.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlUptakeBySex
-            .groupBy('f.Gender')
+            .groupBy('f.Sex')
             .getRawMany();
     }
 }

@@ -43,7 +43,7 @@ export class GetVlOutcomesOverallHandler implements IQueryHandler<GetVlOutcomesO
         }
 
         if (query.gender) {
-            vlOutcomesOverall.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlOutcomesOverall.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlOutcomesOverall

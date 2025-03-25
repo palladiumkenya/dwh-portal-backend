@@ -19,7 +19,7 @@ export class GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegiment
         const vlOverallNumberFollowSecondlineRegiment = this.repository
             .createQueryBuilder('cohort')
             .select([
-                `cohort.SiteCode, cohort.PatientIDHash, cohort.County, cohort.SubCounty, DOB, cohort.Gender,LatestVL1 as LastVL,
+                `cohort.SiteCode, cohort.PatientIDHash, cohort.County, cohort.SubCounty, DOB, cohort.Sex Gender,LatestVL1 as LastVL,
                 LatestVLDate2Key, LatestVLDate1Key, ARTOutcomeDescription, CurrentRegimenLine As CurrentARTLine, SwitchedToSecondLineLast12Months,
                 CASE
                     WHEN ISNUMERIC(LatestVL1)=1 THEN
@@ -47,49 +47,49 @@ export class GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegiment
         if (query.county) {
             vlOverallNumberFollowSecondlineRegiment.andWhere('cohort.County IN (:...counties)', {counties: query.county});
         }
-        
+
         if (query.subCounty) {
             vlOverallNumberFollowSecondlineRegiment.andWhere(
                 'cohort.SubCounty IN (:...subCounties)',
                 { subCounties: query.subCounty },
             );
         }
-        
+
         if (query.facility) {
             vlOverallNumberFollowSecondlineRegiment.andWhere(
                 'cohort.FacilityName IN (:...facilities)',
                 { facilities: query.facility },
             );
         }
-        
+
         if (query.partner) {
             vlOverallNumberFollowSecondlineRegiment.andWhere(
                 'cohort.PartnerName IN (:...partners)',
                 { partners: query.partner },
             );
         }
-        
+
         if (query.agency) {
             vlOverallNumberFollowSecondlineRegiment.andWhere(
                 'cohort.AgencyName IN (:...agencies)',
                 { agencies: query.agency },
             );
         }
-        
+
         if (query.datimAgeGroup) {
             vlOverallNumberFollowSecondlineRegiment.andWhere(
                 'cohort.AgeGroup IN (:...ageGroups)',
                 { ageGroups: query.datimAgeGroup },
             );
         }
-        
+
         if (query.gender) {
             vlOverallNumberFollowSecondlineRegiment.andWhere(
-                'cohort.Gender IN (:...genders)',
+                'cohort.Sex IN (:...genders)',
                 { genders: query.gender },
             );
         }
-        
+
         const originalQuery = vlOverallNumberFollowSecondlineRegiment.getQuery;
         const originalParams = vlOverallNumberFollowSecondlineRegiment.getParameters;
         vlOverallNumberFollowSecondlineRegiment.getQuery = () => {

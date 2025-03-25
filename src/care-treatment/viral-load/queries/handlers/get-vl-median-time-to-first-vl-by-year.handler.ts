@@ -2,9 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetVlMedianTimeToFirstVlByYearQuery } from '../impl/get-vl-median-time-to-first-vl-by-year.query';
-import { FactTransTimeToVl } from '../../entities/fact-trans-time-to-vl.model';
-import { AggregateTimeToART } from './../../../new-on-art/entities/aggregate-time-to-art.model';
-import { AggregateTimeToVL } from './../../entities/aggregate-time-to-vl.model';
+import { AggregateTimeToVL } from '../../entities/aggregate-time-to-vl.model';
 
 @QueryHandler(GetVlMedianTimeToFirstVlByYearQuery)
 export class GetVlMedianTimeToFirstVlByYearHandler implements IQueryHandler<GetVlMedianTimeToFirstVlByYearQuery> {
@@ -95,7 +93,7 @@ export class GetVlMedianTimeToFirstVlByYearHandler implements IQueryHandler<GetV
         }
 
         if (query.gender) {
-            medianTimeToFirstVlSql.andWhere('f.Gender IN (:...genders)', {
+            medianTimeToFirstVlSql.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

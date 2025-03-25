@@ -16,11 +16,11 @@ export class GetVlOutcomesBySexHandler
         const vlOutcomesBySex = this.repository
             .createQueryBuilder('f')
             .select([
-                'f.Gender gender, f.ValidVLResultCategory2 outcome, COUNT(f.ValidVLResult) count',
+                'f.Sex gender, f.ValidVLResultCategory2 outcome, COUNT(f.ValidVLResult) count',
             ])
             .where('f.SiteCode > 0')
             .andWhere('f.isTxCurr > 0')
-            .andWhere('f.Gender IS NOT NULL')
+            .andWhere('f.Sex IS NOT NULL')
             .andWhere('f.ValidVLResultCategory2 IS NOT NULL');
 
         if (query.county) {
@@ -60,14 +60,14 @@ export class GetVlOutcomesBySexHandler
         }
 
         if (query.gender) {
-            vlOutcomesBySex.andWhere('f.Gender IN (:...genders)', {
+            vlOutcomesBySex.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
 
         return await vlOutcomesBySex
-            .groupBy('f.Gender, f.ValidVLResultCategory2')
-            .orderBy('f.Gender, f.ValidVLResultCategory2')
+            .groupBy('f.Sex, f.ValidVLResultCategory2')
+            .orderBy('f.Sex, f.ValidVLResultCategory2')
             .getRawMany();
     }
 }

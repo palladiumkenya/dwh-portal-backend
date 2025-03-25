@@ -47,7 +47,7 @@ export class GetVlOutcomesHvlByFacilityHandler implements IQueryHandler<GetVlOut
         // }
 
         if (query.gender) {
-            vlOutcomeHvlByFacility.andWhere('Gender IN (:...gender)', { gender: query.gender });
+            vlOutcomeHvlByFacility.andWhere('Sex IN (:...gender)', { gender: query.gender });
         }
 
         if (query.datimAgeGroup) {

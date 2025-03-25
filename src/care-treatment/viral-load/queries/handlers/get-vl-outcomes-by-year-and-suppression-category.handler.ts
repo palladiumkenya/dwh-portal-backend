@@ -47,7 +47,7 @@ export class GetVlOutcomesByYearAndSuppressionCategoryHandler implements IQueryH
         }
 
         if (query.gender) {
-            vlSuppressionByYear.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlSuppressionByYear.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlSuppressionByYear
