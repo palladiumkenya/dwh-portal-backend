@@ -41,7 +41,7 @@ export class GetConsistencyByCountyPartnerHandler implements IQueryHandler<GetCo
             }
             if (query.reportingType == 'county') {
                 consistencyResult = consistencyResult.map(e => {
-                    return {...e, county: e.county.toUpperCase()} 
+                    return {...e, county: e.county.toUpperCase()}
                 });
                 consistencyValue =  countBy(consistencyResult, 'county');
                 consistencyValue = fromPairs(sortBy(toPairs(consistencyValue), 1).reverse());

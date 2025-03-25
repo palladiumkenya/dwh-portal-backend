@@ -20,6 +20,7 @@ export class GetFacilityInfoHandler
 
     async execute(query: GetFacilityInfoQuery): Promise<any> {
         const params = [];
+        const escapeQuotes = (str) => str.replace(/'/g, "''");
         params.push(query.docket);
 
         let expectedSql = `SELECT DISTINCT MFLCode AS expected
@@ -28,21 +29,25 @@ export class GetFacilityInfoHandler
                 WHERE (isCT = 1)`;
         if (query.county) {
             expectedSql = `${expectedSql} and f.County IN ('${query.county
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
         if (query.subCounty) {
             expectedSql = `${expectedSql} and f.subCounty IN ('${query.subCounty
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
         if (query.agency) {
             expectedSql = `${expectedSql} and SDP_Agency IN ('${query.agency
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
         if (query.partner) {
             expectedSql = `${expectedSql} and SDP IN ('${query.partner
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`;
         }

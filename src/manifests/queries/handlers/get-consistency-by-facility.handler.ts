@@ -18,6 +18,7 @@ export class GetConsistencyByFacilityHandler
         query: GetConsistencyByFacilityQuery,
     ): Promise<ConsistencyByFacilityDto> {
         const params = [];
+        const escapeQuotes = (str) => str.replace(/'/g, "''");
         params.push(query.docket.toLowerCase());
         let fromDate
         let toDate
@@ -91,30 +92,35 @@ export class GetConsistencyByFacilityHandler
 
         if (query.county) {
             consistencyByFacilitySql = `${consistencyByFacilitySql} and County IN ('${query.county
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.subCounty) {
             consistencyByFacilitySql = `${consistencyByFacilitySql} and subCounty IN ('${query.subCounty
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.facility) {
             consistencyByFacilitySql = `${consistencyByFacilitySql} and FacilityName IN ('${query.facility
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.partner) {
             consistencyByFacilitySql = `${consistencyByFacilitySql} and PartnerName IN ('${query.partner
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.agency) {
             consistencyByFacilitySql = `${consistencyByFacilitySql} and agencyName IN ('${query.agency
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }

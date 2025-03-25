@@ -18,6 +18,7 @@ export class GetOverallReportingByFacilityHandler
         query: GetOverallReportingByFacilityQuery,
     ): Promise<OverallReportingByFacilityDto> {
         const params = [];
+        const escapeQuotes = (str) => str.replace(/'/g, "''");
         let year = moment()
                 .startOf('month')
                 .subtract(1, 'month')
@@ -141,30 +142,35 @@ export class GetOverallReportingByFacilityHandler
 
         if (query.county) {
             overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and County IN ('${query.county
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.subCounty) {
             overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and subCounty IN ('${query.subCounty
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.facility) {
             overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and FacilityName IN ('${query.facility
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.partner) {
             overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and Partner IN ('${query.partner
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.agency) {
             overAllReportingByFacilitySql = `${overAllReportingByFacilitySql} and agency IN ('${query.agency
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
