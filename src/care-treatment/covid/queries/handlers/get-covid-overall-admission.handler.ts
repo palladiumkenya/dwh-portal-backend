@@ -53,7 +53,7 @@ export class GetCovidOverallAdmissionHandler
         }
 
         if (query.gender) {
-            covidOverallAdmission.andWhere('f.Gender IN (:...genders)', {
+            covidOverallAdmission.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

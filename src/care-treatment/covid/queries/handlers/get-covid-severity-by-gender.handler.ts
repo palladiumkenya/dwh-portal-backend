@@ -1,11 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCovidSeverityByGenderQuery } from '../impl/get-covid-severity-by-gender.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines.model';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
-import { LineListCovid } from './../../entities/linelist-covid.model';
+import { LineListCovid } from '../../entities/linelist-covid.model';
 
 @QueryHandler(GetCovidSeverityByGenderQuery)
 export class GetCovidSeverityByGenderHandler implements IQueryHandler<GetCovidSeverityByGenderQuery> {
@@ -19,7 +16,7 @@ export class GetCovidSeverityByGenderHandler implements IQueryHandler<GetCovidSe
         const covidSeverityByGender = this.repository
             .createQueryBuilder('g')
             .select([
-                'PatientStatus, Gender, Case ' +
+                'PatientStatus, Sex Gender, Case ' +
                     "When PatientStatus='No' then 'Asymptomatic' " +
                     "When PatientStatus= 'Yes' then 'Symptomatic' " +
                     'Else PatientStatus end as PatientStatusComputed, ' +
@@ -48,7 +45,7 @@ export class GetCovidSeverityByGenderHandler implements IQueryHandler<GetCovidSe
         }
 
         if (query.gender) {
-            covidSeverityByGender.andWhere('Gender IN (:...genders)', { genders: query.gender });
+            covidSeverityByGender.andWhere('Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
@@ -56,7 +53,7 @@ export class GetCovidSeverityByGenderHandler implements IQueryHandler<GetCovidSe
         }
 
         return await covidSeverityByGender
-            .groupBy('Gender, PatientStatus')
+            .groupBy('Sex, PatientStatus')
             .getRawMany();
     }
 }

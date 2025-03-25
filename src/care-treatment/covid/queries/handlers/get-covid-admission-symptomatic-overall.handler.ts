@@ -38,7 +38,7 @@ export class GetCovidAdmissionSymptomaticOverallHandler implements IQueryHandler
         }
 
         if (query.gender) {
-            covidAdmissionSymptomaticOverall.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            covidAdmissionSymptomaticOverall.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

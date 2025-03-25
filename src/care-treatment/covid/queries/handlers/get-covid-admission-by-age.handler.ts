@@ -1,10 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCovidAdmissionByAgeQuery } from '../impl/get-covid-admission-by-age.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines.model';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 import { LineListCovid } from '../../entities/linelist-covid.model';
 //Margaret
 @QueryHandler(GetCovidAdmissionByAgeQuery)
@@ -19,8 +16,8 @@ export class GetCovidAdmissionByAgeHandler implements IQueryHandler<GetCovidAdmi
         const covidAdmissionByAge = this.repository
             .createQueryBuilder('f')
             .select(['AgeGroup, count (*) Num'])
-          
-            
+
+
             .where(
                 "PatientStatus in ('Yes','Symptomatic') and AdmissionStatus='Yes'",
             );
@@ -46,7 +43,7 @@ export class GetCovidAdmissionByAgeHandler implements IQueryHandler<GetCovidAdmi
         }
 
         if (query.gender) {
-            covidAdmissionByAge.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            covidAdmissionByAge.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

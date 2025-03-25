@@ -38,7 +38,7 @@ export class GetCovidOverallMissedAppointmentsHandler implements IQueryHandler<G
         }
 
         if (query.gender) {
-            overallMissedAppointments.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            overallMissedAppointments.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

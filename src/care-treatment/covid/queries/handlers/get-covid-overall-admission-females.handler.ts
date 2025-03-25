@@ -21,7 +21,7 @@ export class GetCovidOverallAdmissionFemalesHandler implements IQueryHandler<Get
                 "AdmissionStatus, CASE WHEN AdmissionStatus='Yes' THEN 'Admitted' WHEN AdmissionStatus='No' THEN 'Not Admitted' ELSE 'Unclassified' END as Admission, count (*)Num",
             ])
             .where(
-                "f.Gender in ('Female', 'F') and PatientStatus in ('Yes','Symptomatic')",
+                "f.Sex IN ('Female', 'F') and PatientStatus in ('Yes','Symptomatic')",
             );
 
         if (query.county) {
@@ -45,7 +45,7 @@ export class GetCovidOverallAdmissionFemalesHandler implements IQueryHandler<Get
         }
 
         if (query.gender) {
-            covidOverallAdmissionFemales.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            covidOverallAdmissionFemales.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

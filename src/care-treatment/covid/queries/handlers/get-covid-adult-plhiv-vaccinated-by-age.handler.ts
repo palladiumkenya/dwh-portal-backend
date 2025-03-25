@@ -40,7 +40,7 @@ export class GetCovidAdultPLHIVVaccinatedByAgeHandler implements IQueryHandler<G
         }
 
         if (query.gender) {
-            adultPLHIVVaccinatedByAge.andWhere('Gender IN (:...genders)', { genders: query.gender });
+            adultPLHIVVaccinatedByAge.andWhere('Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.ageGroup) {

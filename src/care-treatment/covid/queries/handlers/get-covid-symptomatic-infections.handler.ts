@@ -41,7 +41,7 @@ export class GetCovidSymptomaticInfectionsHandler implements IQueryHandler<GetCo
         }
 
         if (query.gender) {
-            covidSymptomaticInfections.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            covidSymptomaticInfections.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

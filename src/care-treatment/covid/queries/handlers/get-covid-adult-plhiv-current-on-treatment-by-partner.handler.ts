@@ -37,7 +37,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByPartnerHandler implements IQu
         }
 
         if (query.gender) {
-            covidAdultsCurrentOnTreatmentByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            covidAdultsCurrentOnTreatmentByPartner.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

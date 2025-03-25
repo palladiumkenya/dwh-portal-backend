@@ -57,7 +57,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentHandler
 
         if (query.gender) {
             covidAdultsCurrentOnTreatment.andWhere(
-                'f.Gender IN (:...genders)',
+                'f.Sex IN (:...genders)',
                 { genders: query.gender },
             );
         }

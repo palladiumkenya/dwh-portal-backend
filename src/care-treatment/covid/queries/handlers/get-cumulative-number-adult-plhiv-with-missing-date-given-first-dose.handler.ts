@@ -43,7 +43,7 @@ export class GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler i
         }
 
         if (query.gender) {
-            cumulativeWithMissingDate.andWhere('Gender IN (:...genders)', { genders: query.gender });
+            cumulativeWithMissingDate.andWhere('Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
