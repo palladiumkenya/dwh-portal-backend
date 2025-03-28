@@ -19,9 +19,9 @@ export class GetCtViralLoadSuppressionPercentageHandler
         const viralLoadPercentage = this.repository
             .createQueryBuilder('f')
             .select([
-                '[Gender], SUM([Last12MVLSup]) Suppressed, SUM([Last12MonthVL]) Last12MonthVL',
+                '[Sex] Gender, SUM([Last12MVLSup]) Suppressed, SUM([Last12MonthVL]) Last12MonthVL',
             ])
-            .where('f.[Gender] IS NOT NULL');
+            .where('f.[Sex] IS NOT NULL');
 
         if (query.county) {
             viralLoadPercentage.andWhere('f.County IN (:...counties)', {
@@ -49,6 +49,6 @@ export class GetCtViralLoadSuppressionPercentageHandler
             viralLoadCascade.andWhere('f.Start_Year = :startYear', { startYear: query.year });
         }*/
 
-        return await viralLoadPercentage.groupBy('f.[Gender]').getRawMany();
+        return await viralLoadPercentage.groupBy('f.[Sex]').getRawMany();
     }
 }
