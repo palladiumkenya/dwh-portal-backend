@@ -2,8 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetActiveArtQuery } from '../impl/get-active-art.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
-import { LinelistFACTART } from './../../../common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetActiveArtQuery)
 export class GetActiveArtHandler implements IQueryHandler<GetActiveArtQuery> {

@@ -58,7 +58,7 @@ export class GetCtViralLoadCascadeActiveArtClientsHandler implements IQueryHandl
         }
 
         if (query.gender) {
-            viralLoadCascade.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            viralLoadCascade.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await viralLoadCascade

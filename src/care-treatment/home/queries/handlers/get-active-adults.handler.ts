@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
 import { GetActiveArtAdultsQuery } from '../impl/get-active-art-adults.query';
-import { LinelistFACTART } from './../../../common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetActiveArtAdultsQuery)
 export class GetActiveAdultsHandler implements IQueryHandler<GetActiveArtAdultsQuery> {

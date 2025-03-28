@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetActiveArtByGenderQuery } from '../impl/get-active-art-by-gender.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
-import { LinelistFACTART } from './../../../common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetActiveArtByGenderQuery)
 export class GetActiveArtByGenderHandler implements IQueryHandler<GetActiveArtByGenderQuery> {
@@ -16,8 +15,8 @@ export class GetActiveArtByGenderHandler implements IQueryHandler<GetActiveArtBy
     async execute(query: GetActiveArtByGenderQuery): Promise<any> {
         const activeArt = this.repository
             .createQueryBuilder('f')
-            .select(['SUM([ISTxCurr]) ActiveART,[Gender]'])
-            .groupBy('[Gender]');
+            .select(['SUM([ISTxCurr]) ActiveART,Sex Gender'])
+            .groupBy('[Sex]');
 
         if (query.county) {
             activeArt
