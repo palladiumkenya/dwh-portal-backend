@@ -1,9 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
 import { GetTreatmentOutcomesUndocumentedByFacilityQuery } from '../impl/get-treatment-outcomes-undocumented-by-facility.query';
-import { AggregateTreatmentOutcomes } from './../../entities/aggregate-treatment-outcomes.model';
+import { AggregateTreatmentOutcomes } from '../../entities/aggregate-treatment-outcomes.model';
 
 @QueryHandler(GetTreatmentOutcomesUndocumentedByFacilityQuery)
 export class GetTreatmentOutcomesUndocumentedByFacilityHandler implements IQueryHandler<GetTreatmentOutcomesUndocumentedByFacilityQuery> {
@@ -48,7 +47,7 @@ export class GetTreatmentOutcomesUndocumentedByFacilityHandler implements IQuery
         // }
 
         if (query.gender) {
-            treatmentOutcomesUndocumentedByFacility.andWhere('Gender IN (:...gender)', { gender: query.gender });
+            treatmentOutcomesUndocumentedByFacility.andWhere('Sex IN (:...gender)', { gender: query.gender });
         }
 
         if (query.datimAgeGroup) {

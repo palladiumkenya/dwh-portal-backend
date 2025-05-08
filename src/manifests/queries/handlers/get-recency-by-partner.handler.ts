@@ -17,6 +17,7 @@ export class GetRecencyByPartnerHandler
         query: GetRecencyByPartnerQuery,
     ): Promise<RecencyByPartnerDto> {
         const params = [];
+        const escapeQuotes = (str) => str.replace(/'/g, "''");
         params.push(query.docket);
         let recencyOfReportingByPartnerSql = `SELECT CASE WHEN b.partner IS NULL OR b.partner = 'NULL' THEN 'No Partner' ELSE b.partner END AS partner
                                     ,CASE WHEN recency IS NULL THEN 0 ELSE recency END AS recency
@@ -30,12 +31,14 @@ export class GetRecencyByPartnerHandler
 
         if (query.county) {
             recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and County IN ('${query.county
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.subCounty) {
             recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and subCounty IN ('${query.subCounty
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
@@ -47,12 +50,14 @@ export class GetRecencyByPartnerHandler
 
         if (query.partner) {
             recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and Partner IN ('${query.partner
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.agency) {
             recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and agency IN ('${query.agency
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
@@ -101,6 +106,7 @@ export class GetRecencyByPartnerHandler
 
         if (query.agency) {
             recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} and agency IN ('${query.agency
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
@@ -109,6 +115,7 @@ export class GetRecencyByPartnerHandler
                                     ) b ON b.partner = a.partner`;
 
         recencyOfReportingByPartnerSql = `${recencyOfReportingByPartnerSql} ORDER BY b.expected DESC`;
+        console.log(recencyOfReportingByPartnerSql)
 
         return await this.repository.query(
             recencyOfReportingByPartnerSql,

@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeQuery } from '../impl/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-age.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LineListOTZ } from './../../entities/line-list-otz.model';
+import { LineListOTZ } from '../../entities/line-list-otz.model';
 
 @QueryHandler(GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeQuery)
 export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeHandler implements IQueryHandler<GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeQuery> {
@@ -47,7 +47,7 @@ export class GetOtzVlSuppressionAmongAlhivEnrolledInOtzByAgeHandler implements I
         }
 
         if (query.gender) {
-            vlSuppressionOtzByAge.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlSuppressionOtzByAge.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlSuppressionOtzByAge

@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { GetVlOverallUptakeAndSuppressionBySexQuery } from '../impl/get-vl-overall-uptake-and-suppression-by-sex.query';
-import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
+import { AggregateVLUptakeOutcome } from '../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlOverallUptakeAndSuppressionBySexQuery)
 export class GetVlOverallUptakeAndSuppressionBySexHandler implements IQueryHandler<GetVlOverallUptakeAndSuppressionBySexQuery> {
@@ -16,11 +16,11 @@ export class GetVlOverallUptakeAndSuppressionBySexHandler implements IQueryHandl
         const vlOverallUptakeAndSuppressionBySex = this.repository
             .createQueryBuilder('f')
             .select([
-                'Gender gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(HasValidVL) vlDone, SUM(VirallySuppressed) suppressed',
+                'Sex gender, SUM(TXCurr) txCurr, SUM(EligibleVL12Mnths) eligible, SUM(HasValidVL) vlDone, SUM(VirallySuppressed) suppressed',
             ])
             // .where('f.MFLCode > 0')
             .where('f.TXCurr > 0')
-            .andWhere('f.Gender IS NOT NULL');
+            .andWhere('f.Sex IS NOT NULL');
 
         if (query.county) {
             vlOverallUptakeAndSuppressionBySex.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -47,11 +47,11 @@ export class GetVlOverallUptakeAndSuppressionBySexHandler implements IQueryHandl
         }
 
         if (query.gender) {
-            vlOverallUptakeAndSuppressionBySex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlOverallUptakeAndSuppressionBySex.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlOverallUptakeAndSuppressionBySex
-            .groupBy('f.Gender')
+            .groupBy('f.Sex')
             .getRawMany();
     }
 }

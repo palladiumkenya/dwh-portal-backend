@@ -1,8 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GetCtTxCurrVerifiedByFacilityQuery } from './../impl/get-ct-tx-curr-verified-by-facility.query';
-import { AggregateNupi } from './../../entities/aggregate-nupi.model';
+import { GetCtTxCurrVerifiedByFacilityQuery } from '../impl/get-ct-tx-curr-verified-by-facility.query';
+import { AggregateNupi } from '../../entities/aggregate-nupi.model';
 
 @QueryHandler(GetCtTxCurrVerifiedByFacilityQuery)
 export class GetCtTxCurrVerifiedByFacilityHandler
@@ -18,27 +18,28 @@ export class GetCtTxCurrVerifiedByFacilityHandler
             .select([
                 'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, SiteCode MFLCode, sum (numnupi) NumNupi',
             ])
-            .where('f.[Gender] IS NOT NULL');
+            .where('f.[Sex] IS NOT NULL');
 
         if (query.datimAgePopulations) {
             if (
                 query.datimAgePopulations.includes('>18') &&
                 query.datimAgePopulations.includes('<18')
             ) {
-            } else if (query.datimAgePopulations.includes('>18'))
+            } else if (query.datimAgePopulations.includes('>18')) {
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
                     .select([
                         'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, SiteCode MFLCode, sum (adults) NumNupi',
                     ])
-                    .where('f.[Gender] IS NOT NULL');
-            else if (query.datimAgePopulations.includes('<18'))
+                    .where('f.[Sex] IS NOT NULL');
+            } else if (query.datimAgePopulations.includes('<18')) {
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
                     .select([
                         'FacilityName,PartnerName CTPartner, County, Subcounty,AgencyName CTAgency, SiteCode MFLCode, sum (children) NumNupi',
                     ])
-                    .where('f.[Gender] IS NOT NULL');
+                    .where('f.[Sex] IS NOT NULL');
+            }
         }
 
         if (query.county) {
@@ -78,7 +79,7 @@ export class GetCtTxCurrVerifiedByFacilityHandler
         }
 
         if (query.gender) {
-            txCurrByPartner.andWhere('f.Gender IN (:...genders)', {
+            txCurrByPartner.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

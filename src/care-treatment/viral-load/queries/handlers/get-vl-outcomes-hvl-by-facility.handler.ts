@@ -1,9 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransVLOutcome } from '../../entities/fact-trans-vl-outcome.model';
 import { GetVlOutcomesHvlByFacilityQuery } from '../impl/get-vl-outcomes-hvl-by-facility.query';
-import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
+import { AggregateVLUptakeOutcome } from '../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlOutcomesHvlByFacilityQuery)
 export class GetVlOutcomesHvlByFacilityHandler implements IQueryHandler<GetVlOutcomesHvlByFacilityQuery> {
@@ -48,7 +47,7 @@ export class GetVlOutcomesHvlByFacilityHandler implements IQueryHandler<GetVlOut
         // }
 
         if (query.gender) {
-            vlOutcomeHvlByFacility.andWhere('Gender IN (:...gender)', { gender: query.gender });
+            vlOutcomeHvlByFacility.andWhere('Sex IN (:...gender)', { gender: query.gender });
         }
 
         if (query.datimAgeGroup) {

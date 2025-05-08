@@ -2,8 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCtTxCurrAgeGroupDistributionByCountyQuery } from '../impl/get-ct-tx-curr-age-group-distribution-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
-import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
+import { AggregateTXCurr } from '../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrAgeGroupDistributionByCountyQuery)
 export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHandler<GetCtTxCurrAgeGroupDistributionByCountyQuery> {
@@ -17,7 +16,7 @@ export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHan
         let txCurrAgeGroupDistributionByCounty = this.repository
             .createQueryBuilder('f')
             .select([
-                '[County], f.[DATIMAgeGroup] ageGroup, Gender, SUM([CountClientsTXCur]) txCurr',
+                '[County], f.[DATIMAgeGroup] ageGroup, Sex Gender, SUM([CountClientsTXCur]) txCurr',
             ])
             .where(
                 'f.[CountClientsTXCur] IS NOT NULL AND f.DATIMAgeGroup IS NOT NULL',
@@ -59,7 +58,7 @@ export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHan
 
         if (query.gender) {
             txCurrAgeGroupDistributionByCounty
-                .andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+                .andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
@@ -76,7 +75,7 @@ export class GetCtTxCurrAgeGroupDistributionByCountyHandler implements IQueryHan
                 .getRawMany();
         } else {
             return await txCurrAgeGroupDistributionByCounty
-                .groupBy('[County], f.[DATIMAgeGroup], Gender')
+                .groupBy('[County], f.[DATIMAgeGroup], Sex')
                 .orderBy('SUM([CountClientsTXCur])', 'DESC')
                 .getRawMany();
         }

@@ -1,10 +1,9 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransTreatmentOutcomes } from '../../entities/fact-trans-treatment-outcomes.model';
 import { Repository } from 'typeorm';
 import { GetTreatmentOutcomesByPopulationTypeQuery } from '../impl/get-treatment-outcomes-by-population-type.query';
 import moment = require('moment');
-import { AggregateTreatmentOutcomes } from './../../entities/aggregate-treatment-outcomes.model';
+import { AggregateTreatmentOutcomes } from '../../entities/aggregate-treatment-outcomes.model';
 
 @QueryHandler(GetTreatmentOutcomesByPopulationTypeQuery)
 export class GetTreatmentOutcomesByPopulationTypeHandler
@@ -89,7 +88,7 @@ export class GetTreatmentOutcomesByPopulationTypeHandler
         }
 
         if (query.gender) {
-            treatmentOutcomes.andWhere('f.Gender IN (:...genders)', {
+            treatmentOutcomes.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

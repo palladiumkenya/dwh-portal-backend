@@ -38,7 +38,7 @@ export class GetCumulativeNumberAdultPlhivWhoReceivedAtleastOneDoseHandler imple
         }
 
         if (query.gender) {
-            cumulativeWhoReceivedOneDose.andWhere('Gender IN (:...genders)', { genders: query.gender });
+            cumulativeWhoReceivedOneDose.andWhere('Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

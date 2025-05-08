@@ -1,7 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetHtsFacilitiesQuery } from '../impl/get-hts-facilities.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
 import { AllEmrSites } from './../../../../care-treatment/common/entities/all-emr-sites.model';
 

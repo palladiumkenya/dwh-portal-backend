@@ -15,7 +15,7 @@ export class GetCovidPLHIVCurrentOnArtHandler implements IQueryHandler<GetCovidP
 
     async execute(query: GetCovidPlhivCurrentOnArtQuery): Promise<any> {
         const covidPLHIVCurrentOnART = this.repository.createQueryBuilder('f')
-            .select(['Count (*) Adults, Gender'])
+            .select(['Count (*) Adults, Sex Gender'])
 
         if (query.county) {
             covidPLHIVCurrentOnART.andWhere('County IN (:...counties)', { counties: query.county });
@@ -38,7 +38,7 @@ export class GetCovidPLHIVCurrentOnArtHandler implements IQueryHandler<GetCovidP
         }
 
         if (query.gender) {
-            covidPLHIVCurrentOnART.andWhere('Gender IN (:...genders)', { genders: query.gender });
+            covidPLHIVCurrentOnART.andWhere('Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
@@ -47,7 +47,7 @@ export class GetCovidPLHIVCurrentOnArtHandler implements IQueryHandler<GetCovidP
 
 
         return await covidPLHIVCurrentOnART
-            .groupBy('Gender')
+            .groupBy('Sex')
             .getRawMany();
     }
 }

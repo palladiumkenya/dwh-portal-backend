@@ -56,7 +56,7 @@ export class GetOTZCalhivOnArtHandler
         }
 
         if (query.gender) {
-            CALHIVOnART.andWhere('f.Gender IN (:...genders)', {
+            CALHIVOnART.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

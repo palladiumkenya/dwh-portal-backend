@@ -1,9 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransVLOverallUptake } from '../../entities/fact-trans-vl-overall-uptake.model';
 import { GetVlUptakeByPartnerQuery } from '../impl/get-vl-uptake-by-partner.query';
-import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
+import { AggregateVLUptakeOutcome } from '../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlUptakeByPartnerQuery)
 export class GetVlUptakeByPartnerHandler implements IQueryHandler<GetVlUptakeByPartnerQuery> {
@@ -47,7 +46,7 @@ export class GetVlUptakeByPartnerHandler implements IQueryHandler<GetVlUptakeByP
         }
 
         if (query.gender) {
-            vlUptakeByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlUptakeByPartner.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlUptakeByPartner

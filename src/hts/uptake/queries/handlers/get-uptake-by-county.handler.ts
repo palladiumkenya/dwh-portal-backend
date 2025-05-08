@@ -1,16 +1,15 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeByCountyQuery } from '../impl/get-uptake-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsUptake } from '../../entities/fact-htsuptake.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetUptakeByCountyQuery)
 export class GetUptakeByCountyHandler
     implements IQueryHandler<GetUptakeByCountyQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetUptakeByCountyQuery): Promise<any> {
@@ -18,84 +17,73 @@ export class GetUptakeByCountyHandler
         let uptakeByCountySql = null;
 
         if (query.county) {
-            uptakeByCountySql = `SELECT
+            uptakeByCountySql = this.repository.createQueryBuilder('f')
+                .select([`
                     SubCounty AS County,
                     SUM(Tested) Tested,
                     SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive,
                     ((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity
-                FROM
-                    NDWH.dbo.FactHTSClientTests AS link
-                    LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                    LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                    LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                    LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                    LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-                WHERE SubCounty IS NOT NULL and TestType IN ('Initial', 'Initial Test')`;
+                `])
+                .where(`SubCounty IS NOT NULL`);
         } else {
-            uptakeByCountySql = `SELECT
+            uptakeByCountySql = this.repository.createQueryBuilder('f')
+                .select([`
                     County AS County,
                     SUM(Tested) Tested,
                     SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) positive,
                     ((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity
-                FROM
-                    NDWH.dbo.FactHTSClientTests AS link
-                    LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                    LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                    LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                    LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                    LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-                WHERE County IS NOT NULL and TestType IN ('Initial', 'Initial Test')`;
+                `])
+                .where(`County IS NOT NULL`);
         }
 
+
         if (query.county) {
-            uptakeByCountySql = `${uptakeByCountySql} and County IN ('${query.county
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByCountySql.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
 
         if (query.subCounty) {
-            uptakeByCountySql = `${uptakeByCountySql} and SubCounty IN ('${query.subCounty
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByCountySql.andWhere(
+                'f.SubCounty IN (:...subCounties)',
+                { subCounties: query.subCounty },
+            );
         }
 
         if (query.facility) {
-            uptakeByCountySql = `${uptakeByCountySql} and FacilityName IN ('${query.facility
-                .toString()
-                .replace(/,/g, "','")}')`
+            uptakeByCountySql.andWhere(
+                'f.FacilityName IN (:...facilities)',
+                { facilities: query.facility },
+            );
         }
 
         if (query.partner) {
-            uptakeByCountySql = `${uptakeByCountySql} and PartnerName IN ('${query.partner
-                .toString()
-                .replace(/,/g, "','")}')`;
-            params.push(query.partner);
+            uptakeByCountySql.andWhere(
+                'f.PartnerName IN (:...partners)',
+                { partners: query.partner },
+            );
         }
 
-        // if(query.month) {
-        //     uptakeByCountySql = `${uptakeByCountySql} and month=?`;
-        //     params.push(query.month);
-        // }
-
-        // if(query.year) {
-        //     uptakeByCountySql = `${uptakeByCountySql} and year=?`;
-        //     params.push(query.year);
-        // }
-
         if (query.fromDate) {
-            uptakeByCountySql = `${uptakeByCountySql} and DateTestedKey >= ${query.fromDate}01`;
+            uptakeByCountySql.andWhere(`year >= ${query.fromDate.substring(0, 4)}`);
+            uptakeByCountySql.andWhere(`month >= ${query.fromDate.substring(4)}`);
         }
 
         if (query.toDate) {
-            uptakeByCountySql = `${uptakeByCountySql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
+            uptakeByCountySql.andWhere(
+                `year <= ${query.toDate.substring(0, 4)}`,
+            );
+            uptakeByCountySql.andWhere(
+                `month <= ${query.toDate.substring(4)}`,
+            );
         }
 
         if (query.county) {
-            uptakeByCountySql = `${uptakeByCountySql} GROUP BY SubCounty ORDER BY SUM(Tested) DESC`;
+            uptakeByCountySql = await uptakeByCountySql.groupBy(`SubCounty`);
         } else {
-            uptakeByCountySql = `${uptakeByCountySql} GROUP BY County ORDER BY SUM(Tested) DESC`;
+            uptakeByCountySql =  await uptakeByCountySql.groupBy(`County`);
         }
 
-        return await this.repository.query(uptakeByCountySql, params);
+        return await uptakeByCountySql
+            .orderBy(`SUM(Tested)`, `DESC`)
+            .getRawMany();
     }
 }

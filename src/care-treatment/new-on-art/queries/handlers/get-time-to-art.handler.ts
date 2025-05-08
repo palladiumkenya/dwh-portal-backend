@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactCTTimeToArt } from '../../entities/fact-ct-time-to-art-grp.model';
 import { Repository } from 'typeorm';
 import { GetTimeToArtQuery } from '../impl/get-time-to-art.query';
-import { AggregateTimeToARTGrp } from './../../entities/aggregate-time-to-art-grp.model';
+import { AggregateTimeToARTGrp } from '../../entities/aggregate-time-to-art-grp.model';
 
 @QueryHandler(GetTimeToArtQuery)
 export class GetTimeToArtHandler implements IQueryHandler<GetTimeToArtQuery> {
@@ -51,7 +50,7 @@ export class GetTimeToArtHandler implements IQueryHandler<GetTimeToArtQuery> {
         }
 
         if (query.gender) {
-            timeToArt.andWhere('f.Gender IN (:...genders)', {
+            timeToArt.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

@@ -37,7 +37,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByCountyHandler implements IQue
         }
 
         if (query.gender) {
-            covidAdultsCurrentOnTreatmentByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            covidAdultsCurrentOnTreatmentByCounty.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

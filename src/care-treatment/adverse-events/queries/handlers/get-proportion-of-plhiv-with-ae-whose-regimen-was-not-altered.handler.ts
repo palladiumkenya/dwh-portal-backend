@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery } from '../impl/get-proportion-of-plhiv-with-ae-whose-regimen-was-not-altered.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAeActionDrug } from '../../entities/fact-trans-ae-action-drug.model';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery)
 export class GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler implements IQueryHandler<GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredQuery> {
@@ -17,7 +16,7 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler implemen
         const proportionOfPLHIVWithAeWhoseRegimenNotAltered = this.repository
             .createQueryBuilder('f')
             .select(
-                'AdverseEventActionTaken adverseEventActionTaken, SUM(AdverseEventCount) numberOfPatientsAe',
+                'AdverseEventActionTaken adverseEventActionTaken, SUM(AdverseEventsCount) numberOfPatientsAe',
             )
             .andWhere('f.AdverseEventActionTaken in (:...AdverseEventActionTaken)', {
                 AdverseEventActionTaken: ['Medicine not changed', 'Drug not Changed'],
@@ -49,7 +48,7 @@ export class GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler implemen
 
         if (query.gender) {
             proportionOfPLHIVWithAeWhoseRegimenNotAltered.andWhere(
-                'f.Gender IN (:...genders)',
+                'f.Sex IN (:...genders)',
                 { genders: query.gender },
             );
         }

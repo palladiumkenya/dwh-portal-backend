@@ -23,10 +23,10 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler
         const vlSuppressionOtzByCounty = this.repository
             .createQueryBuilder('f')
             .select([
-                '[County], ValidVLResultCategory Last12MVLResult, SUM([HasValidVL]) AS vlSuppression',
+                '[County], ValidVLResultCategory2 Last12MVLResult, SUM([HasValidVL]) AS vlSuppression',
             ])
             .andWhere(
-                'f.MFLCode IS NOT NULL AND ValidVLResultCategory IS NOT NULL AND Enrolled = 0',
+                'f.MFLCode IS NOT NULL AND ValidVLResultCategory2 IS NOT NULL AND Enrolled = 0',
             );
 
         if (query.county) {
@@ -74,13 +74,13 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByCountyHandler
         }
 
         if (query.gender) {
-            vlSuppressionOtzByCounty.andWhere('f.Gender IN (:...genders)', {
+            vlSuppressionOtzByCounty.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
 
         return await vlSuppressionOtzByCounty
-            .groupBy('[County], ValidVLResultCategory')
+            .groupBy('[County], ValidVLResultCategory2')
             .orderBy('[County]')
             .getRawMany();
     }

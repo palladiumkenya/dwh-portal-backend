@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCtViralLoadCascadeActiveArtClientsQuery } from '../impl/get-ct-viral-load-cascade-active-art-clients.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LinelistFACTART } from 'src/care-treatment/common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetCtViralLoadCascadeActiveArtClientsQuery)
 export class GetCtViralLoadCascadeActiveArtClientsHandler implements IQueryHandler<GetCtViralLoadCascadeActiveArtClientsQuery> {
@@ -21,7 +21,8 @@ export class GetCtViralLoadCascadeActiveArtClientsHandler implements IQueryHandl
                 SUM(CASE WHEN ValidVLResultCategory2 = 'High Risk LLV ' THEN 1 END) HighRisk, 
                 SUM(CASE WHEN ValidVLResultCategory2 = 'LDL' THEN 1 END) LDL, 
                 SUM(CASE WHEN ValidVLResultCategory2 = 'Low Risk LLV' THEN 1 END) LowRisk, 
-                SUM(CASE WHEN ValidVLResultCategory2 = 'UNSUPPRESSED' THEN 1 END) Unsuppressed
+                SUM(CASE WHEN ValidVLResultCategory2 = 'UNSUPPRESSED' THEN 1 END) Unsuppressed,
+                EndofMonthDate
                 `,
             ])
             .where('f.[ISTxCurr] > 0');
@@ -57,10 +58,11 @@ export class GetCtViralLoadCascadeActiveArtClientsHandler implements IQueryHandl
         }
 
         if (query.gender) {
-            viralLoadCascade.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            viralLoadCascade.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await viralLoadCascade
+            .groupBy('EndofMonthDate')
             .getRawOne();
     }
 }

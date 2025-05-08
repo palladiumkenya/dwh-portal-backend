@@ -1,11 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCtTxCurrDistributionByPartnerQuery } from '../impl/get-ct-tx-curr-distribution-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
 import { Repository } from 'typeorm';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
-import { FactTransNewCohort } from 'src/care-treatment/new-on-art/entities/fact-trans-new-cohort.model';
-import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
+import { AggregateTXCurr } from '../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrDistributionByPartnerQuery)
 export class GetCtTxCurrDistributionByPartnerHandler
@@ -57,7 +54,7 @@ export class GetCtTxCurrDistributionByPartnerHandler
         }
 
         if (query.gender) {
-            txCurrDistributionByPartner.andWhere('f.Gender IN (:...genders)', {
+            txCurrDistributionByPartner.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

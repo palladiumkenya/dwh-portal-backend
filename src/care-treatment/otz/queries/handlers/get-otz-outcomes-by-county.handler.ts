@@ -41,7 +41,7 @@ export class GetOtzOutcomesByCountyHandler implements IQueryHandler<GetOtzOutcom
         }
 
         if (query.gender) {
-            otzOutcomesByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            otzOutcomesByCounty.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

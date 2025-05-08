@@ -38,7 +38,7 @@ export class GetOvcDistributionByCountyHandler implements IQueryHandler<GetOvcDi
         }
 
         if (query.gender) {
-            overOvcServByCounty.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            overOvcServByCounty.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

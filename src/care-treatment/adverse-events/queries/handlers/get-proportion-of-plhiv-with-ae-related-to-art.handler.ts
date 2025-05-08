@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfPLHIVWithAeRelatedToArtQuery } from '../impl/get-proportion-of-plhiv-with-ae-related-to-art.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAeCausativeDrugs } from '../../entities/fact-trans-ae-causitive-drugs.model';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetProportionOfPLHIVWithAeRelatedToArtQuery)
 export class GetProportionOfPLHIVWithAeRelatedToArtHandler implements IQueryHandler<GetProportionOfPLHIVWithAeRelatedToArtQuery> {
@@ -17,7 +16,7 @@ export class GetProportionOfPLHIVWithAeRelatedToArtHandler implements IQueryHand
         const proportionOfPlHIVWithAeRelatedToArt = this.repository
             .createQueryBuilder('f')
             .select([
-                'AdverseEventCause adverseEventCause, SUM(AdverseEventCount) count_cat',
+                'AdverseEventCause adverseEventCause, SUM(AdverseEventsCount) count_cat',
             ])
             .andWhere(
                 "AdverseEventCause IN ('Dolutegravir','Atazanavir','TLE','Efavirenz','Tenofavir','Didanosin','Lamivudine','Lamivudine','Lopinavir','Abacavir','TLD','Nevirapine','Zidovudine','Stavudine')",
@@ -49,14 +48,14 @@ export class GetProportionOfPLHIVWithAeRelatedToArtHandler implements IQueryHand
 
         if (query.gender) {
             proportionOfPlHIVWithAeRelatedToArt.andWhere(
-                'f.Gender IN (:...genders)',
+                'f.Sex IN (:...genders)',
                 { genders: query.gender },
             );
         }
 
         return await proportionOfPlHIVWithAeRelatedToArt
             .groupBy('f.AdverseEventCause')
-            .orderBy('SUM(AdverseEventCount)', 'DESC')
+            .orderBy('SUM(AdverseEventsCount)', 'DESC')
             .getRawMany();
     }
 }

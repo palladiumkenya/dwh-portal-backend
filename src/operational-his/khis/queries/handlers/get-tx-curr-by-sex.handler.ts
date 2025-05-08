@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {GetTxCurrBySexQuery} from "../impl/get-tx-curr-by-sex.query";
 import { FactCtDhis2 } from '../../entities/fact-ct-dhis2.model';
-import {AllEmrSites} from "../../../../care-treatment/common/entities/all-emr-sites.model";
 
 @QueryHandler(GetTxCurrBySexQuery)
 export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery> {
@@ -18,7 +17,7 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
         let txCurrBySex = this.repository
             .createQueryBuilder('a')
             .select(
-                'a.FacilityName, a.County, a.SubCounty, SiteCode,' +
+                'a.FacilityName, a.County, a.SubCounty, MFLCode SiteCode,' +
                     'isnull(SUM ( CurrentOnART_Total ), 0) KHIStxCurr,' +
                     'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHISMale,' +
                     'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 ) KHISFemale,' +
@@ -37,7 +36,7 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
             txCurrBySex = this.repository
                 .createQueryBuilder('a')
                 .select(
-                    'a.FacilityName,a.County,a.SubCounty,SiteCode,' +
+                    'a.FacilityName,a.County,a.SubCounty, MFLCode SiteCode,' +
                         'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 )  KHIStxCurr,' +
                         'isnull( SUM ( On_ART_20_24_F ), 0 ) + isnull( SUM ( On_ART_25_Plus_F ), 0 ) + isnull( SUM ( On_ART_10_14_F ), 0 ) + isnull( SUM ( On_ART_15_19_F ), 0 ) KHISFemale,' +
                         'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender"' +
@@ -49,7 +48,7 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
             txCurrBySex = this.repository
                 .createQueryBuilder('a')
                 .select(
-                    'a.FacilityName,a.County,a.SubCounty,SiteCode,' +
+                    'a.FacilityName,a.County,a.SubCounty, MFLCode SiteCode,' +
                         'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHIStxCurr,' +
                         'isnull( SUM ( On_ART_10_14_M ), 0 ) + isnull( SUM ( On_ART_15_19_M ), 0 ) + isnull( SUM ( On_ART_25_Plus_M ), 0 ) + isnull( SUM ( On_ART_20_24_M ), 0 ) KHISMale,' +
                         'isnull( SUM ( On_ART_Under_1 ), 0 ) + isnull( SUM ( On_ART_1_9 ), 0 ) "No gender"' +
@@ -58,7 +57,7 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
                         '0 OnART10_14_F, isnull( SUM ( On_ART_10_14_M ), 0 ) OnART10_14_M, 0 OnART15_19_F, isnull( SUM ( On_ART_15_19_M ), 0 ) OnART15_19_M, 0 OnART1_9, 0 OnARTUnder_1',
                 );
         }
-        
+
         if (query.county) {
             txCurrBySex
                 .andWhere('a.County IN (:...counties)', { counties: query.county });
@@ -87,14 +86,14 @@ export class GetTxCurrBySexHandler implements IQueryHandler<GetTxCurrBySexQuery>
         if (query.year) {
             txCurrBySex
                 .andWhere('ReportMonth_Year = :year', { year: query.year.toString() + query.month.toString()  });
-            
+
         }
         if (query.month) {
             // txCurrBySex.andWhere('StartART_Month = :month', { month: query.month })
         }
 
         return await txCurrBySex
-            .groupBy('a.FacilityName, a.County, a.SubCounty, SiteCode')
+            .groupBy('a.FacilityName, a.County, a.SubCounty, MFLCode')
             .orderBy('a.FacilityName')
             .getRawMany();
     }

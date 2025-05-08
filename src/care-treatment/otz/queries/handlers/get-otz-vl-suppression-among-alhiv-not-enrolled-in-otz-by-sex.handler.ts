@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexQuery } from '../impl/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-sex.query';
-import { LineListOTZEligibilityAndEnrollments } from './../../entities/line-list-otz-eligibility-and-enrollments.model';
+import { LineListOTZEligibilityAndEnrollments } from '../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexQuery)
 export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexHandler
@@ -21,10 +21,10 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexHandler
         const vlSuppressionOtzBySex = this.repository
             .createQueryBuilder('f')
             .select([
-                '[Gender], ValidVLResultCategory Last12MVLResult, SUM([HasValidVL]) AS vlSuppression',
+                'Sex Gender, ValidVLResultCategory2 Last12MVLResult, SUM([HasValidVL]) AS vlSuppression',
             ])
             .andWhere(
-                'f.MFLCode IS NOT NULL AND ValidVLResultCategory IS NOT NULL AND Enrolled = 0',
+                'f.MFLCode IS NOT NULL AND ValidVLResultCategory2 IS NOT NULL AND Enrolled = 0',
             );
 
         if (query.county) {
@@ -65,14 +65,14 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzBySexHandler
         }
 
         if (query.gender) {
-            vlSuppressionOtzBySex.andWhere('f.Gender IN (:...genders)', {
+            vlSuppressionOtzBySex.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
 
         return await vlSuppressionOtzBySex
-            .groupBy('[Gender], ValidVLResultCategory')
-            .orderBy('[Gender]')
+            .groupBy('[Sex], ValidVLResultCategory2')
+            .orderBy('[Sex]')
             .getRawMany();
     }
 }

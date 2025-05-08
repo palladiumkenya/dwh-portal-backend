@@ -16,7 +16,7 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
         let txNewBySex = this.repository
             .createQueryBuilder('a')
             .select(
-                'a.FacilityName,a.County,a.SubCounty,SiteCode,isnull(SUM ( StartedART_Total ),0 ) KHIStxNew,' +
+                'a.FacilityName,a.County,a.SubCounty, MFLCode SiteCode,isnull(SUM ( StartedART_Total ),0 ) KHIStxNew,' +
                     'isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM (Start_ART_15_19_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_20_24_M ), 0 ) KHISMale,' +
                     'isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 ) KHISFemale,' +
                     'isnull( SUM ( Start_ART_Under_1 ), 0 ) + isnull( SUM ( Start_ART_1_9 ), 0 ) "No gender",' +
@@ -35,7 +35,7 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
             txNewBySex = this.repository
                 .createQueryBuilder('a')
                 .select(
-                    'a.FacilityName,a.County,a.SubCounty,SiteCode,' +
+                    'a.FacilityName,a.County,a.SubCounty, MFLCode SiteCode,' +
                         'isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 )  KHIStxNew,' +
                         'isnull( SUM ( Start_ART_20_24_F ), 0 ) + isnull( SUM ( Start_ART_25_Plus_F ), 0 ) + isnull( SUM ( Start_ART_10_14_F ), 0 ) + isnull( SUM ( Start_ART_15_19_F ), 0 ) KHISFemale,' +
                         'isnull( SUM ( Start_ART_Under_1 ), 0 ) + isnull( SUM ( Start_ART_1_9 ), 0 ) "No gender"' +
@@ -47,7 +47,7 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
             txNewBySex = this.repository
                 .createQueryBuilder('a')
                 .select(
-                    'a.FacilityName,a.County,a.SubCounty,SiteCode,' +
+                    'a.FacilityName,a.County,a.SubCounty, MFLCode SiteCode,' +
                         'isnull( SUM ( Start_ART_20_24_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM ( Start_ART_15_19_M ), 0 )  KHIStxNew,' +
                         'isnull( SUM ( Start_ART_20_24_M ), 0 ) + isnull( SUM ( Start_ART_25_Plus_M ), 0 ) + isnull( SUM ( Start_ART_10_14_M ), 0 ) + isnull( SUM ( Start_ART_15_19_M ), 0 ) KHISMale,' +
                         'isnull( SUM ( Start_ART_Under_1 ), 0 ) + isnull( SUM ( Start_ART_1_9 ), 0 ) "No gender",' +
@@ -56,7 +56,7 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
                         '0 StartART20_24_F, 0 StartART25_Plus_F, 0 StartART10_14_F, 0 StartART15_19_F',
                 );
         }
-        
+
         if (query.county) {
             txNewBySex
                 .andWhere('a.County IN (:...counties)', {counties: query.county});
@@ -86,7 +86,7 @@ export class GetTxNewBySexHandler implements IQueryHandler<GetTxNewBySexQuery> {
         }
 
         return await txNewBySex
-            .groupBy('a.FacilityName, a.County, a.SubCounty, SiteCode')
+            .groupBy('a.FacilityName, a.County, a.SubCounty, MFLCode')
             .orderBy('a.FacilityName')
             .getRawMany();
     }

@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetAeSeverityGradingQuery } from '../impl/get-ae-severity-grading.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAdverseEvents } from '../../entities/fact-trans-adverse-events.model';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetAeSeverityGradingQuery)
 export class GetAeSeverityGradingHandler
@@ -17,7 +16,7 @@ export class GetAeSeverityGradingHandler
         const aeSeverityGrading = this.repository
             .createQueryBuilder('f')
             .select(
-                '[Severity], DATIMAgeGroup ageGroup, SUM([AdverseEventCount]) total',
+                '[Severity], DATIMAgeGroup ageGroup, SUM([AdverseEventsCount]) total',
             )
             .where("ISNULL([Severity],'') <> ''");
 
@@ -58,7 +57,7 @@ export class GetAeSeverityGradingHandler
         }
 
         if (query.gender) {
-            aeSeverityGrading.andWhere('f.Gender IN (:...genders)', {
+            aeSeverityGrading.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

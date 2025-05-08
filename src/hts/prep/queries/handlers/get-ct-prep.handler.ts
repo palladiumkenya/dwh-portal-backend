@@ -16,7 +16,7 @@ export class GetCTPrepHandler implements IQueryHandler<GetCTPrepQuery> {
         let newOnPrep = `Select 
                     SUM(PrepCT) As PrepCT
                 from AggregatePrepCascade prep
-                where AssYear is not null
+                where Year is not null
         `;
 
         if (query.county) {
@@ -50,7 +50,7 @@ export class GetCTPrepHandler implements IQueryHandler<GetCTPrepQuery> {
         }
 
         if (query.gender) {
-            newOnPrep = `${newOnPrep} and Gender IN ('${query.gender
+            newOnPrep = `${newOnPrep} and Sex IN ('${query.gender
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
@@ -62,11 +62,11 @@ export class GetCTPrepHandler implements IQueryHandler<GetCTPrepQuery> {
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and AssYear = ${query.year}`;
+            newOnPrep = `${newOnPrep} and Year = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and AssMonth = ${query.month}`;
+            newOnPrep = `${newOnPrep} and Month = ${query.month}`;
         }
 
         return await this.repository.query(newOnPrep, params);

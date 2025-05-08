@@ -44,7 +44,7 @@ export class GetCovidTrendsOfAdultPlhivVaccinationInTheLast12MonthsHandler imple
         }
 
         if (query.gender) {
-            trendsOfPLHIVVaccination.andWhere('Gender IN (:...genders)', { genders: query.gender });
+            trendsOfPLHIVVaccination.andWhere('Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

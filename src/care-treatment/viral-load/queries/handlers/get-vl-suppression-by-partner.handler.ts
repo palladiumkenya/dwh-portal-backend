@@ -1,9 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransVLOverallUptake } from '../../entities/fact-trans-vl-overall-uptake.model';
 import { GetVlSuppressionByPartnerQuery } from '../impl/get-vl-suppression-by-partner.query';
-import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
+import { AggregateVLUptakeOutcome } from '../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlSuppressionByPartnerQuery)
 export class GetVlSuppressionByPartnerHandler implements IQueryHandler<GetVlSuppressionByPartnerQuery> {
@@ -44,7 +43,7 @@ export class GetVlSuppressionByPartnerHandler implements IQueryHandler<GetVlSupp
         }
 
         if (query.gender) {
-            vlSuppressionByPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlSuppressionByPartner.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlSuppressionByPartner

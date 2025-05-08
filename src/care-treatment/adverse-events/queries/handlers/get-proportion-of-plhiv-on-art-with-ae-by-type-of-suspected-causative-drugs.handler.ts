@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsQuery } from '../impl/get-proportion-of-plhiv-on-art-with-ae-by-type-of-suspected-causative-drugs.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsQuery)
 export class GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandler implements IQueryHandler<GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsQuery> {
@@ -16,7 +16,7 @@ export class GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandl
         const proportionOfPlHIVByCausativeDrugs = this.repository
             .createQueryBuilder('f')
             .select([
-                'AdverseEventCause adverseEventCause, SUM(AdverseEventCount) count_cat',
+                'AdverseEventCause adverseEventCause, SUM(AdverseEventsCount) count_cat',
             ])
             .andWhere('f.MFLCode IS NOT NULL');
 
@@ -45,13 +45,12 @@ export class GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandl
         }
 
         if (query.gender) {
-            // lacking gender
-            proportionOfPlHIVByCausativeDrugs.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            proportionOfPlHIVByCausativeDrugs.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await proportionOfPlHIVByCausativeDrugs
             .groupBy('f.AdverseEventCause')
-            .orderBy('SUM(AdverseEventCount)', 'DESC')
+            .orderBy('SUM(AdverseEventsCount)', 'DESC')
             .getRawMany();
     }
 }

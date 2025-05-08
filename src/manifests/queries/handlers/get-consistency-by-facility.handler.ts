@@ -18,6 +18,7 @@ export class GetConsistencyByFacilityHandler
         query: GetConsistencyByFacilityQuery,
     ): Promise<ConsistencyByFacilityDto> {
         const params = [];
+        const escapeQuotes = (str) => str.replace(/'/g, "''");
         params.push(query.docket.toLowerCase());
         let fromDate
         let toDate
@@ -57,29 +58,13 @@ export class GetConsistencyByFacilityHandler
                     SELECT DISTINCT facilityId,NumberOfUploads FROM (
                         SELECT fm.facilityId,fm.docketid as docket,
                             count(*) NumberOfUploads
-                        FROM  NDWH.dbo.Fact_manifest fm
+                        FROM  NDWH.Fact.Fact_manifest fm
                         WHERE fm.docketid = '${query.docket.toLowerCase()}' AND
                             fm.timeId BETWEEN DATEADD(MONTH, -2, EOMONTH(cast('${fromDate}' as date), -1)) AND EOMONTH(cast('${toDate}' as date)) 
                         GROUP BY facilityId, docketId
                     ) X
                 ) f on d.MFLCode = f.facilityId 
                 where isHts = 1 and (NumberOfUploads <3 OR NumberOfUploads is NULL) `;
-        } else if (query.docket.toLowerCase() === 'pkv') {
-            consistencyByFacilitySql = `select
-                MFLCode, FacilityName,County,Subcounty, AgencyName Agency,PartnerName Partner,
-                case when NumberOfUploads is NULL THEN 0 ELSE NumberOfUploads END AS NumberOfUploads
-                from all_EMRSites d
-                left join (
-                    SELECT DISTINCT facilityId,NumberOfUploads FROM (
-                        SELECT fm.facilityId,fm.docketid as docket,
-                            count(*) NumberOfUploads
-                        FROM  NDWH.dbo.Fact_manifest fm
-                        WHERE fm.docketid = '${query.docket.toLowerCase()}' AND
-                            fm.timeId BETWEEN DATEADD(MONTH, -2, EOMONTH(cast('${fromDate}' as date), -1)) AND EOMONTH(cast('${toDate}' as date)) 
-                        GROUP BY facilityId, docketId
-                    ) X
-                ) f on d.MFLCode = f.facilityId 
-                where isPkv = 1 and (NumberOfUploads <3 OR NumberOfUploads is NULL) `;
         } else {
             consistencyByFacilitySql = `select
                 MFLCode,FacilityName,County,Subcounty, AgencyName Agency,PartnerName Partner,
@@ -89,7 +74,7 @@ export class GetConsistencyByFacilityHandler
                     SELECT DISTINCT facilityId,NumberOfUploads FROM (
                         SELECT fm.facilityId,fm.docketid as docket,
                             count(*) NumberOfUploads
-                        FROM  NDWH.dbo.Fact_manifest fm
+                        FROM  NDWH.Fact.Fact_manifest fm
                         WHERE fm.docketid = '${query.docket.toLowerCase()}' AND
                             fm.timeId BETWEEN DATEADD(MONTH, -2, EOMONTH(cast('${fromDate}' as date), -1)) AND EOMONTH(cast('${toDate}' as date)) 
                         GROUP BY facilityId, docketId
@@ -107,30 +92,35 @@ export class GetConsistencyByFacilityHandler
 
         if (query.county) {
             consistencyByFacilitySql = `${consistencyByFacilitySql} and County IN ('${query.county
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.subCounty) {
             consistencyByFacilitySql = `${consistencyByFacilitySql} and subCounty IN ('${query.subCounty
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.facility) {
             consistencyByFacilitySql = `${consistencyByFacilitySql} and FacilityName IN ('${query.facility
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.partner) {
             consistencyByFacilitySql = `${consistencyByFacilitySql} and PartnerName IN ('${query.partner
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }
 
         if (query.agency) {
             consistencyByFacilitySql = `${consistencyByFacilitySql} and agencyName IN ('${query.agency
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }

@@ -1,10 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCovidAdultPlhivVaccinatedByGenderQuery } from '../impl/get-covid-adult-plhiv-vaccinated-by-gender.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransCovidVaccines } from '../../entities/fact-trans-covid-vaccines.model';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
-import { DimAgeGroups } from '../../../common/entities/dim-age-groups.model';
 import {LineListCovid} from "../../entities/linelist-covid.model";
 
 @QueryHandler(GetCovidAdultPlhivVaccinatedByGenderQuery)
@@ -17,7 +14,7 @@ export class GetCovidAdultPLHIVVaccinatedByGenderHandler implements IQueryHandle
 
     async execute(query: GetCovidAdultPlhivVaccinatedByGenderQuery): Promise<any> {
         const adultPLHIVVaccinatedByGender = this.repository.createQueryBuilder('g')
-            .select(['g.VaccinationStatus, g.gender, Count (*) Num'])
+            .select(['g.VaccinationStatus, g.Sex gender, Count (*) Num'])
 
         if (query.county) {
             adultPLHIVVaccinatedByGender.andWhere('g.County IN (:...counties)', { counties: query.county });
@@ -40,7 +37,7 @@ export class GetCovidAdultPLHIVVaccinatedByGenderHandler implements IQueryHandle
         }
 
         if (query.gender) {
-            adultPLHIVVaccinatedByGender.andWhere('Gender IN (:...genders)', { genders: query.gender });
+            adultPLHIVVaccinatedByGender.andWhere('Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.ageGroup) {
@@ -48,7 +45,7 @@ export class GetCovidAdultPLHIVVaccinatedByGenderHandler implements IQueryHandle
         }
 
         return await adultPLHIVVaccinatedByGender
-            .groupBy('g.gender,g.VaccinationStatus')
+            .groupBy('g.Sex, g.VaccinationStatus')
             .getRawMany();
     }
 }

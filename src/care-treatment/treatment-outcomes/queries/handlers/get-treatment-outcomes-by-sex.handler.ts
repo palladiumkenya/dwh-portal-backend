@@ -1,6 +1,5 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransTreatmentOutcomes } from '../../entities/fact-trans-treatment-outcomes.model';
 import { Repository } from 'typeorm';
 import { GetTreatmentOutcomesBySexQuery } from '../impl/get-treatment-outcomes-by-sex.query';
 import moment = require('moment');
@@ -38,11 +37,11 @@ export class GetTreatmentOutcomesBySexHandler
         const treatmentOutcomes = this.repository
             .createQueryBuilder('f')
             .select([
-                'ARTOutcomeDescription artOutcome, SUM(TotalOutcomes) totalOutcomes, Gender gender',
+                'ARTOutcomeDescription artOutcome, SUM(TotalOutcomes) totalOutcomes, Sex gender',
             ])
             .where('f.MFLCode IS NOT NULL')
             .andWhere('f.artOutcomeDescription IS NOT NULL')
-            .andWhere('f.Gender IS NOT NULL')
+            .andWhere('f.Sex IS NOT NULL')
             .andWhere(
                 "CAST(CONCAT(StartYear , '-' , StartMonth,'-' , '01') AS Date) BETWEEN :fromDate AND :toDate",
                 {
@@ -88,14 +87,14 @@ export class GetTreatmentOutcomesBySexHandler
         }
 
         if (query.gender) {
-            treatmentOutcomes.andWhere('f.Gender IN (:...genders)', {
+            treatmentOutcomes.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
 
         return await treatmentOutcomes
-            .groupBy('f.Gender, f.ARTOutcomeDescription')
-            .orderBy('f.ARTOutcomeDescription, f.Gender')
+            .groupBy('f.Sex, f.ARTOutcomeDescription')
+            .orderBy('f.ARTOutcomeDescription, f.Sex')
             .getRawMany();
     }
 }

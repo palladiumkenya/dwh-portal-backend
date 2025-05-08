@@ -51,7 +51,7 @@ export class GetOvcOverallCalhivHandler
         }
 
         if (query.gender) {
-            overAllCalHiv.andWhere('f.Gender IN (:...genders)', {
+            overAllCalHiv.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

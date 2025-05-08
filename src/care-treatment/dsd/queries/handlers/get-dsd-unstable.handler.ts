@@ -58,7 +58,7 @@ export class GetDsdUnstableHandler
 
         // lacking gender
         if (query.gender) {
-            dsdUnstable.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            dsdUnstable.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await dsdUnstable.getRawOne();

@@ -41,7 +41,7 @@ export class GetOtzEnrolledHandler implements IQueryHandler<GetOtzEnrolledQuery>
         }
 
         if (query.gender) {
-            otzEnrolled.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            otzEnrolled.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await otzEnrolled.getRawOne();

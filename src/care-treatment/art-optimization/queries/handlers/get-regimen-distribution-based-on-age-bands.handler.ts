@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetRegimenDistributionBasedOnAgeBandsQuery } from '../impl/get-regimen-distribution-based-on-age-bands.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOptimizeRegLines } from '../../entities/fact-trans-optimize-reg-lines.model';
 import { Repository } from 'typeorm';
-import { AggregateOptimizeCurrentRegimens } from './../../entities/aggregate-optimize-current-regimens.model';
+import { AggregateOptimizeCurrentRegimens } from '../../entities/aggregate-optimize-current-regimens.model';
 
 @QueryHandler(GetRegimenDistributionBasedOnAgeBandsQuery)
 export class GetRegimenDistributionBasedOnAgeBandsHandler implements IQueryHandler<GetRegimenDistributionBasedOnAgeBandsQuery> {
@@ -49,7 +48,7 @@ export class GetRegimenDistributionBasedOnAgeBandsHandler implements IQueryHandl
         }
 
         if (query.gender) {
-            regimenDistributionBasedOnAgeBands.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+            regimenDistributionBasedOnAgeBands.andWhere('f.Sex IN (:...gender)', { gender: query.gender });
         }
 
         if (query.datimAgeGroup) {

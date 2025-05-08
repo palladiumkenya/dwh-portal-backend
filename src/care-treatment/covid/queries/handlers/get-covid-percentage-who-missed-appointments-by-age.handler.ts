@@ -41,7 +41,7 @@ export class GetCovidPercentageWhoMissedAppointmentsByAgeHandler implements IQue
         }
 
         if (query.gender) {
-            covidPercentageWhoMissedAppointmentsByAge.andWhere('Gender IN (:...genders)', { genders: query.gender });
+            covidPercentageWhoMissedAppointmentsByAge.andWhere('Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

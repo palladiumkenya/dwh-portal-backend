@@ -18,7 +18,7 @@ export class GetOtzTotalWithVlLessThan1000Handler implements IQueryHandler<GetOt
         const totalWithVLLessThan1000 = this.repository.createQueryBuilder('f')
             .select(['count(*) totalWithVlLessThan1000'])
             .where('f.lastVL IS NOT NULL')
-            .andWhere('CASE WHEN ISNUMERIC(f.lastVL) = 0 THEN 1 ELSE CAST(CONVERT(numeric, f.lastVL) as int) END < 1000');
+            .andWhere('CASE WHEN ISNUMERIC(f.lastVL) = 0 THEN 1 ELSE CAST(CONVERT(numeric, f.lastVL) as int) END < 200');
 
         if (query.county) {
             totalWithVLLessThan1000.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -45,7 +45,7 @@ export class GetOtzTotalWithVlLessThan1000Handler implements IQueryHandler<GetOt
         }
 
         if (query.gender) {
-            totalWithVLLessThan1000.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            totalWithVLLessThan1000.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await totalWithVLLessThan1000.getRawOne();

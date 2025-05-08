@@ -17,7 +17,7 @@ export class GetCtTxCurrByAgeAndSexHandler
         const txCurrByAgeAndSex = this.repository
             .createQueryBuilder('f')
             .select([
-                'f.[DATIMAgeGroup] ageGroup, [Gender], Sum(CountClientsTXCur) txCurr',
+                'f.[DATIMAgeGroup] ageGroup, Sex [Gender], Sum(CountClientsTXCur) txCurr',
             ]);
             // .innerJoin(DimAgeGroups, 'v', 'f.ageGroup = v.AgeGroup')
             // .where(`ARTOutcome ='V' AND ageLV BETWEEN 0 and 120`);
@@ -53,7 +53,7 @@ export class GetCtTxCurrByAgeAndSexHandler
         }
 
         if (query.gender) {
-            txCurrByAgeAndSex.andWhere('f.Gender IN (:...genders)', {
+            txCurrByAgeAndSex.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
@@ -76,7 +76,7 @@ export class GetCtTxCurrByAgeAndSexHandler
         }
 
         const result = await txCurrByAgeAndSex
-            .groupBy('f.[DATIMAgeGroup], [Gender]')
+            .groupBy('f.[DATIMAgeGroup], [Sex]')
             .orderBy('f.[DATIMAgeGroup]')
             .getRawMany();
 

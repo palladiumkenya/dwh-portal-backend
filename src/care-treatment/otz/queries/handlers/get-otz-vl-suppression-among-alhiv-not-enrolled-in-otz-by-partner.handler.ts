@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerQuery } from '../impl/get-otz-vl-suppression-among-alhiv-not-enrolled-in-otz-by-partner.query';
-import { LineListOTZEligibilityAndEnrollments } from './../../entities/line-list-otz-eligibility-and-enrollments.model';
+import { LineListOTZEligibilityAndEnrollments } from '../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerQuery)
 export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerHandler
@@ -23,10 +23,10 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerHandler
         const vlSuppressionOtzByPartner = this.repository
             .createQueryBuilder('f')
             .select([
-                '[PartnerName] CTPartner, ValidVLResultCategory Last12MVLResult, SUM([HasValidVL]) AS vlSuppression',
+                '[PartnerName] CTPartner, ValidVLResultCategory2 Last12MVLResult, SUM([HasValidVL]) AS vlSuppression',
             ])
             .andWhere(
-                'f.MFLCode IS NOT NULL AND ValidVLResultCategory IS NOT NULL AND Enrolled = 0',
+                'f.MFLCode IS NOT NULL AND ValidVLResultCategory2 IS NOT NULL AND Enrolled = 0',
             );
 
         if (query.county) {
@@ -73,13 +73,13 @@ export class GetOtzVlSuppressionAmongAlhivNotEnrolledInOtzByPartnerHandler
         }
 
         if (query.gender) {
-            vlSuppressionOtzByPartner.andWhere('f.Gender IN (:...genders)', {
+            vlSuppressionOtzByPartner.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
 
         return await vlSuppressionOtzByPartner
-            .groupBy('[PartnerName], ValidVLResultCategory')
+            .groupBy('[PartnerName], ValidVLResultCategory2')
             .orderBy('[PartnerName]')
             .getRawMany();
     }

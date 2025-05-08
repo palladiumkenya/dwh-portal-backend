@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCalhivDeadQuery } from '../impl/get-calhiv-dead.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LineListOVCEnrollments } from './../../entities/linelist-ovc-enrollments.model';
+import { LineListOVCEnrollments } from '../../entities/linelist-ovc-enrollments.model';
 
 @QueryHandler(GetCalhivDeadQuery)
 export class GetCalhivDeadHandler implements IQueryHandler<GetCalhivDeadQuery> {
@@ -39,7 +39,7 @@ export class GetCalhivDeadHandler implements IQueryHandler<GetCalhivDeadQuery> {
         }
 
         if (query.gender) {
-            CALHIVonART.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            CALHIVonART.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

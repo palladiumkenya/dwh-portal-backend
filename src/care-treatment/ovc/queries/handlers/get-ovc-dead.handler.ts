@@ -41,7 +41,7 @@ export class GetOvcDeadHandler implements IQueryHandler<GetOvcDeadQuery> {
         }
 
         if (query.gender) {
-            OVCDead.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            OVCDead.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

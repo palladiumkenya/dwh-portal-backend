@@ -15,7 +15,7 @@ export class GetDsdStabilityStatusByAgeSexHandler implements IQueryHandler<GetDs
         const dsdStabilityStatusByAgeSex = this.repository
             .createQueryBuilder('f')
             .select([
-                '[AgeGroup] ageGroup, SUM([TXCurr]) patients, SUM(TXCurr) TXCurr, Gender gender',
+                '[AgeGroup] ageGroup, SUM([TXCurr]) patients, SUM(TXCurr) TXCurr, Sex gender',
             ])
             .andWhere('f.StabilityAssessment = :stability', {
                 stability: 'Stable',
@@ -63,14 +63,14 @@ export class GetDsdStabilityStatusByAgeSexHandler implements IQueryHandler<GetDs
         }
 
         if (query.gender) {
-            dsdStabilityStatusByAgeSex.andWhere('f.Gender IN (:...genders)', {
+            dsdStabilityStatusByAgeSex.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
 
         return await dsdStabilityStatusByAgeSex
-            .groupBy('f.AgeGroup, f.Gender')
-            .orderBy('f.AgeGroup, f.Gender')
+            .groupBy('f.AgeGroup, f.Sex')
+            .orderBy('f.AgeGroup, f.Sex')
             .getRawMany();
     }
 }

@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetArtOptimizationOverviewQuery } from '../impl/get-art-optimization-overview.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOptimizeRegLines } from '../../entities/fact-trans-optimize-reg-lines.model';
 import { Repository } from 'typeorm';
-import { AggregateOptimizeCurrentRegimens } from './../../entities/aggregate-optimize-current-regimens.model';
+import { AggregateOptimizeCurrentRegimens } from '../../entities/aggregate-optimize-current-regimens.model';
 
 @QueryHandler(GetArtOptimizationOverviewQuery)
 export class GetArtOptimizationOverviewHandler implements IQueryHandler<GetArtOptimizationOverviewQuery> {
@@ -16,7 +15,7 @@ export class GetArtOptimizationOverviewHandler implements IQueryHandler<GetArtOp
 
     async execute(query: GetArtOptimizationOverviewQuery): Promise<any> {
         const artOptimizationOverview = this.repository.createQueryBuilder('f')
-            .select(['Agegroup ageGroup, Gender gender, CurrentRegimen currentRegimen, RegimenLine regimenLine, sum(TXCurr) txCurr'])
+            .select(['Agegroup ageGroup, Sex gender, CurrentRegimen currentRegimen, RegimenLine regimenLine, sum(TXCurr) txCurr'])
             .where('SiteCode IS NOT NULL');
 
         if (query.county) {
@@ -39,20 +38,8 @@ export class GetArtOptimizationOverviewHandler implements IQueryHandler<GetArtOp
             artOptimizationOverview.andWhere('f.AgencyName IN (:...agency)', { agency: query.agency });
         }
 
-        // if (query.project) {
-        //     artOptimizationOverview.andWhere('f.project IN (:...project)', { project: query.project });
-        // }
-
-        // if(query.month) {
-        //     artOptimizationOverview.andWhere('f.StartARTMonth IN (:...month)', { month: query.month });
-        // }
-
-        // if (query.year) {
-        //     artOptimizationOverview.andWhere('f.StartARTYr IN (:...year)', { year: query.year });
-        // }
-
         if (query.gender) {
-            artOptimizationOverview.andWhere('f.Gender IN (:...gender)', { gender: query.gender });
+            artOptimizationOverview.andWhere('f.Sex IN (:...gender)', { gender: query.gender });
         }
 
         if (query.datimAgeGroup) {
@@ -69,8 +56,8 @@ export class GetArtOptimizationOverviewHandler implements IQueryHandler<GetArtOp
 
 
         return await artOptimizationOverview
-            .groupBy('Agegroup, Gender, CurrentRegimen, RegimenLine')
-            .orderBy('Agegroup, Gender, CurrentRegimen, RegimenLine')
+            .groupBy('Agegroup, Sex, CurrentRegimen, RegimenLine')
+            .orderBy('Agegroup, Sex, CurrentRegimen, RegimenLine')
             .getRawMany();
     }
 }

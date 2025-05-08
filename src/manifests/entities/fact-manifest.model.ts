@@ -1,6 +1,6 @@
 import { Entity, PrimaryColumn, Column } from 'typeorm';
 
-@Entity('NDWH.dbo.Fact_manifest')
+@Entity('NDWH.Fact.Fact_manifest')
 export class FactManifest {
     @PrimaryColumn({ type: 'uuid' })
     manifestId: string;

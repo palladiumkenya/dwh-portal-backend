@@ -40,7 +40,7 @@ export class GetOvcEligibleVlHandler implements IQueryHandler<GetOvcEligibleVlQu
         }
 
         if (query.gender) {
-            OVCEligible.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            OVCEligible.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

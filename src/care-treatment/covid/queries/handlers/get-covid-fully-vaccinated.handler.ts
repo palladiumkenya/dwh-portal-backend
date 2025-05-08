@@ -38,7 +38,7 @@ export class GetCovidFullyVaccinatedHandler implements IQueryHandler<GetCovidFul
         }
 
         if (query.gender) {
-            covidFullyVaccinated.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            covidFullyVaccinated.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.ageGroup) {

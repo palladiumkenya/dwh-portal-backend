@@ -1,15 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByPartnerQuery } from '../impl/get-otz-enrollment-among-alhiv-and-on-art-by-partner.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransOtzEnrollments } from '../../entities/fact-trans-otz-enrollments.model';
 import { Repository } from 'typeorm';
-import { AggregateOtz } from './../../entities/aggregate-otz.model';
+import { LineListOTZEligibilityAndEnrollments } from '../../entities/line-list-otz-eligibility-and-enrollments.model';
 
 @QueryHandler(GetOtzEnrollmentAmongAlhivAndOnArtByPartnerQuery)
 export class GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler implements IQueryHandler<GetOtzEnrollmentAmongAlhivAndOnArtByPartnerQuery> {
     constructor(
-        @InjectRepository(AggregateOtz, 'mssql')
-        private readonly repository: Repository<AggregateOtz>
+        @InjectRepository(LineListOTZEligibilityAndEnrollments, 'mssql')
+        private readonly repository: Repository<LineListOTZEligibilityAndEnrollments>
     ) {
     }
 
@@ -17,7 +16,7 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler implements IQuer
         const otzEnrollmentsPartner = this.repository
             .createQueryBuilder('f')
             .select([
-                '[PartnerName] partner, SUM(CompletedTraining) count_training, SUM(Enrolled) TXCurr, SUM(Enrolled) * 100.0 / SUM(SUM(Enrolled)) OVER () AS Percentage',
+                '[PartnerName] partner, SUM(CompletedTraining) count_training, SUM(Enrolled) TXCurr, COUNT(1) alhiv, SUM(Enrolled) * 100.0 / SUM(SUM(Enrolled)) OVER () AS Percentage',
             ]);
 
         if (query.county) {
@@ -45,7 +44,7 @@ export class GetOtzEnrollmentAmongAlhivAndOnArtByPartnerHandler implements IQuer
         }
 
         if (query.gender) {
-            otzEnrollmentsPartner.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            otzEnrollmentsPartner.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await otzEnrollmentsPartner

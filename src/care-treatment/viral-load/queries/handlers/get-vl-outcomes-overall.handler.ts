@@ -1,7 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransVLOutcome } from '../../entities/fact-trans-vl-outcome.model';
 import { GetVlOutcomesOverallQuery } from '../impl/get-vl-outcomes-overall.query';
 import { AggregateVLUptakeOutcome } from '../../entities/aggregate-vl-uptake-outcome.model';
 
@@ -44,7 +43,7 @@ export class GetVlOutcomesOverallHandler implements IQueryHandler<GetVlOutcomesO
         }
 
         if (query.gender) {
-            vlOutcomesOverall.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlOutcomesOverall.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlOutcomesOverall

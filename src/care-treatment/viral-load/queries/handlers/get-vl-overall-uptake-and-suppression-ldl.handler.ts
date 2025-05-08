@@ -1,10 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransVLOverallUptake } from '../../entities/fact-trans-vl-overall-uptake.model';
 import { GetVlOverallUptakeAndSuppressionLdlQuery } from '../impl/get-vl-overall-uptake-and-suppression-ldl.query';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
-import { LinelistFACTART } from './../../../common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetVlOverallUptakeAndSuppressionLdlQuery)
 export class GetVlOverallUptakeAndSuppressionLdlHandler
@@ -25,8 +23,6 @@ export class GetVlOverallUptakeAndSuppressionLdlHandler
             .where(
                 "ARTOutcomeDescription ='Active' and DATEDIFF(MONTH,lastVLDate,GETDATE())<= 14",
             );
-
-        // const vlOverallUptakeAndSuppressinLDL = "With VL AS (SELECT LastVL, lastVLDate, CASE  WHEN ISNUMERIC(LastVL)=1  THEN CASE  WHEN CAST(Replace(LastVL,',','')AS FLOAT) <=50.90 THEN '<50 Copies' WHEN CAST(Replace(LastVL,',','') AS FLOAT) between 51.00 and 399.00 THEN '51-399' WHEN CAST(Replace(LastVL,',','')AS FLOAT) between 400.00 and 999.00 THEN '400-999' WHEN CAST(Replace(LastVL,',','')AS FLOAT) >=1000 THEN '>1000 Copies' END WHEN LastVL IN ('undetectable','NOT DETECTED','0 copies/ml','LDL','ND','Target Not Detected',' Not detected','Target Not Detected.','Less than Low Detectable Level') THEN '<50 Copies' ELSE NULL END AS [Last12MVLResult] FROM PortalDev.dbo.Fact_Trans_New_Cohort where ARTOutcome='V' and DATEDIFF(MONTH,lastVLDate,GETDATE())<= 14 )  SELECT Last12MVLResult, Count(*) Num FROM VL where Last12MVLResult in ('<50 Copies','400-999','51-399') Group by Last12MVLResult"
 
         if (query.county) {
             vlOverallUptakeAndSuppressinLDL.andWhere(
@@ -74,7 +70,7 @@ export class GetVlOverallUptakeAndSuppressionLdlHandler
 
         if (query.gender) {
             vlOverallUptakeAndSuppressinLDL.andWhere(
-                'f.Gender IN (:...genders)',
+                'f.Sex IN (:...genders)',
                 { genders: query.gender },
             );
         }

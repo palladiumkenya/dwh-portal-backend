@@ -3,7 +3,7 @@ import {InjectRepository} from '@nestjs/typeorm';
 
 import {Repository} from 'typeorm';
 import {GetTxNewBySexDwhQuery} from "../impl/get-tx-new-by-sex-dwh.query";
-import { AggregateCohortRetention } from 'src/care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
+import { AggregateCohortRetention } from '../../../../care-treatment/new-on-art/entities/aggregate-cohort-retention.model';
 
 @QueryHandler(GetTxNewBySexDwhQuery)
 export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQuery> {
@@ -16,7 +16,7 @@ export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQu
     async execute(query: GetTxNewBySexDwhQuery): Promise<any> {
         const txNewBySex = this.repository.createQueryBuilder('a')
             .select('a.FacilityName,a.County,a.SubCounty,MFLCode, AgencyName CTAgency, PartnerName CTPartner,' +
-                'SUM ( CASE WHEN Gender = \'Male\' THEN patients_startedART ELSE 0 END ) DWHmale,SUM ( CASE WHEN Gender = \'Female\' THEN patients_startedART ELSE 0 END ) DWHFemale,SUM ( a.patients_startedART ) DWHtxNew')
+                'SUM ( CASE WHEN Sex = \'Male\' THEN patients_startedART ELSE 0 END ) DWHmale,SUM ( CASE WHEN Sex = \'Female\' THEN patients_startedART ELSE 0 END ) DWHFemale,SUM ( a.patients_startedART ) DWHtxNew')
 
         if (query.county) {
             txNewBySex
@@ -49,7 +49,7 @@ export class GetTxNewBySexDwhHandler implements IQueryHandler<GetTxNewBySexDwhQu
         }
 
         if (query.gender) {
-            txNewBySex.andWhere('a.Gender IN (:...genders)', {
+            txNewBySex.andWhere('a.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

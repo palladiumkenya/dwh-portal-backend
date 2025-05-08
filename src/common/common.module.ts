@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { DimFacility } from './entities/dim-facility.entity';
 import { ConfigurationModule } from '../config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -9,14 +8,27 @@ import { GetFacilitiesHandler } from './queries/handlers/get-facilities.handler'
 import { GetPartnersHandler } from './queries/handlers/get-partners.handler';
 import { GetAgenciesHandler } from './queries/handlers/get-agencies.handler';
 import { GetSitesHandler } from './queries/handlers/get-sites.handler';
+import { GetFacilityStatusHandler } from './queries/handlers/get-facility-status.handler';
+import { GetFacilityStatusByPartnerHandler } from './queries/handlers/get-facility-status-by-partner.handler';
+import { GetFacilityLevelByOwnershipPartnerHandler } from './queries/handlers/get-facility-level-by-ownership-partner.handler';
+import { GetFacilityLevelByOwnershipCountyHandler } from './queries/handlers/get-facility-level-by-ownership-county.handler';
+import { GetFacilityByInfrastructureHandler } from './queries/handlers/get-facility-by-infrastructure.handler';
+import { GetFacilityLinelistHandler } from './queries/handlers/get-facility-linelist.handler';
+import { GetFacilityTxcurrHandler } from './queries/handlers/get-facility-txcurr.handler';
+import { GetFacilityStatusByCountyHandler } from './queries/handlers/get-facility-status-by-county.handler';
+import { GetFacilityByInfrastructureCountyHandler } from './queries/handlers/get-facility-by-infrastructure-county.handler';
+import { GetFacilityArtHtsMnchHandler } from './queries/handlers/get-facility-art-hts-mnch.handler';
+import { GetCountyCoverageHtsHandler } from './queries/handlers/get-county-coverage-hts.handler';
 import { CommonController } from './common.controller';
-import { AllEmrSites } from 'src/care-treatment/common/entities/all-emr-sites.model';
+import { AllEmrSites } from '../care-treatment/common/entities/all-emr-sites.model';
+import { LinelistFACTART } from '../care-treatment/common/entities/linelist-fact-art.model';
 
 @Module({
     imports: [
         CqrsModule,
         ConfigurationModule,
-        TypeOrmModule.forFeature([AllEmrSites], 'mssql')],
+        TypeOrmModule.forFeature([AllEmrSites, LinelistFACTART], 'mssql')
+    ],
     providers: [
         GetCountiesHandler,
         GetSubCountiesHandler,
@@ -24,6 +36,17 @@ import { AllEmrSites } from 'src/care-treatment/common/entities/all-emr-sites.mo
         GetPartnersHandler,
         GetAgenciesHandler,
         GetSitesHandler,
+        GetFacilityStatusHandler,
+        GetFacilityStatusByPartnerHandler,
+        GetFacilityLevelByOwnershipPartnerHandler,
+        GetFacilityLevelByOwnershipCountyHandler,
+        GetFacilityByInfrastructureHandler,
+        GetFacilityLinelistHandler,
+        GetFacilityTxcurrHandler,
+        GetFacilityStatusByCountyHandler,
+        GetFacilityByInfrastructureCountyHandler,
+        GetFacilityArtHtsMnchHandler,
+        GetCountyCoverageHtsHandler
     ],
     controllers: [CommonController],
 })

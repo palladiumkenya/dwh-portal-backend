@@ -17,7 +17,7 @@ export class GetTxNewTrendsHandler
         const txNew = this.repository
             .createQueryBuilder('f')
             .select([
-                `YEAR (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) year, MONTH (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) month, SUM([patients_startedART]) txNew, Gender gender`,
+                `YEAR (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) year, MONTH (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)) month, SUM([patients_startedART]) txNew, Sex gender`,
             ])
             .where('f.[patients_startedART] > 0');
 
@@ -56,7 +56,7 @@ export class GetTxNewTrendsHandler
         }
 
         if (query.gender) {
-            txNew.andWhere('f.Gender IN (:...genders)', {
+            txNew.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
@@ -84,7 +84,7 @@ export class GetTxNewTrendsHandler
 
         return await txNew
             .groupBy(
-                `YEAR (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)), MONTH (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)), f.Gender`,
+                `YEAR (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)), MONTH (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)), f.Sex`,
             )
             .orderBy(
                 `YEAR (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE)), MONTH (CAST(REPLACE(StartARTYearMonth , '-', '') + '01' AS DATE))`,

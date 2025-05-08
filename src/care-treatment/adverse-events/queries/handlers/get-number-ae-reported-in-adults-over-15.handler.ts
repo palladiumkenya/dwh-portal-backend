@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetNumberAeReportedInAdultsOver15Query } from '../impl/get-number-ae-reported-in-adults-over-15.query';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetNumberAeReportedInAdultsOver15Query)
 export class GetNumberAeReportedInAdultsOver15Handler implements IQueryHandler<GetNumberAeReportedInAdultsOver15Query> {
@@ -15,7 +15,7 @@ export class GetNumberAeReportedInAdultsOver15Handler implements IQueryHandler<G
     async execute(query: GetNumberAeReportedInAdultsOver15Query): Promise<any> {
         const noOfReportedAeinAdults = this.repository
             .createQueryBuilder('f')
-            .select('SUM([AdverseEventCount]) total')
+            .select('SUM([AdverseEventsCount]) total')
             .where(
                 "[DATIMAgeGroup] NOT IN (' Under 1', '01 to 04', '05 to 09', '10 to 14')",
             );
@@ -49,7 +49,7 @@ export class GetNumberAeReportedInAdultsOver15Handler implements IQueryHandler<G
         }
 
         if (query.gender) {
-            noOfReportedAeinAdults.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            noOfReportedAeinAdults.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await noOfReportedAeinAdults.getRawOne();

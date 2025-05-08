@@ -2,8 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Get6MonthViralSuppressionByYearOfArtStartQuery } from '../impl/get-6-month-viral-suppression-by-year-of-art-start.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactTransVlSuppressionArtStart } from '../../entities/fact-trans-vl-suppression-art-start.model';
-import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
+import { AggregateVLUptakeOutcome } from '../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(Get6MonthViralSuppressionByYearOfArtStartQuery)
 export class Get6MonthViralSuppressionByYearOfArtStartHandler implements IQueryHandler<Get6MonthViralSuppressionByYearOfArtStartQuery> {
@@ -43,13 +42,11 @@ export class Get6MonthViralSuppressionByYearOfArtStartHandler implements IQueryH
         }
 
         if (query.datimAgeGroup) {
-            // lacking age group
-            // sixMonthViralSupByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            sixMonthViralSupByYearOfArtStart.andWhere('f.AgeGroup IN (:...agegroups)', { agegroups: query.datimAgeGroup });
         }
 
         if (query.gender) {
-            // lacking gender
-            // sixMonthViralSupByYearOfArtStart.andWhere('f.CTAgency IN (:...agencies)', { agencies: query.agency });
+            sixMonthViralSupByYearOfArtStart.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await sixMonthViralSupByYearOfArtStart

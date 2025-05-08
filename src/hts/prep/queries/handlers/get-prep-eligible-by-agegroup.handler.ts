@@ -18,7 +18,7 @@ export class GetPrepEligibleByAgegroupHandler
                 AgeGroup DATIMAgeGroup,
                 Sum(EligiblePrep) As EligiblePrep
             from AggregatePrepCascade prep
-            where AssYear is not null
+            where Year is not null
         `;
 
         if (query.county) {
@@ -52,7 +52,7 @@ export class GetPrepEligibleByAgegroupHandler
         }
 
         if (query.gender) {
-            newOnPrep = `${newOnPrep} and Gender IN ('${query.gender
+            newOnPrep = `${newOnPrep} and Sex IN ('${query.gender
                 .toString()
                 .replace(/,/g, "','")}')`;
         }
@@ -64,11 +64,11 @@ export class GetPrepEligibleByAgegroupHandler
         }
 
         if (query.year) {
-            newOnPrep = `${newOnPrep} and AssYear = ${query.year}`;
+            newOnPrep = `${newOnPrep} and Year = ${query.year}`;
         }
 
         if (query.month) {
-            newOnPrep = `${newOnPrep} and AssMonth = ${query.month}`;
+            newOnPrep = `${newOnPrep} and Month = ${query.month}`;
         }
 
         newOnPrep = `${newOnPrep} GROUP BY AgeGroup`;

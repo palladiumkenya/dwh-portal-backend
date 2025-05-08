@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { AggregateAppointments } from '../../entities/aggregate-appointments.model';
-import { GetQuaterlyIITQuery } from './../impl/get-quaterly-iit.query';
+import { GetQuaterlyIITQuery } from '../impl/get-quaterly-iit.query';
 
 @QueryHandler(GetQuaterlyIITQuery)
 export class GetQuaterlyIITHandler
@@ -57,7 +57,7 @@ export class GetQuaterlyIITHandler
         }
 
         if (query.gender) {
-            treatmentOutcomes.andWhere('f.Gender IN (:...genders)', {
+            treatmentOutcomes.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

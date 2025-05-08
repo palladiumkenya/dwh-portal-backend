@@ -15,6 +15,7 @@ export class GetTrendsRecencyHandler
 
     async execute(query: GetTrendsRecencyQuery): Promise<RecencyUploadsDto> {
         const params = [];
+        const escapeQuotes = (str) => str.replace(/'/g, "''");
         params.push(query.docket);
         let recencySql = `select * from AggregateRecencyUploads where docket='${query.docket}'`;
         if (query.county) {
@@ -38,6 +39,7 @@ export class GetTrendsRecencyHandler
         }
         if (query.agency) {
             recencySql = `${recencySql} and agency IN ('${query.agency
+                .map(escapeQuotes)
                 .toString()
                 .replace(/,/g, "','")}')`
         }

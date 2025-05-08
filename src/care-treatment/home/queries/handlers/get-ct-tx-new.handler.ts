@@ -14,7 +14,7 @@ export class GetCtTxNewHandler implements IQueryHandler<GetCtTxNewQuery> {
 
     async execute(query: GetCtTxNewQuery): Promise<any> {
         const txNew = this.repository.createQueryBuilder('f')
-            .select(['[Gender], [Start_Year] year, [StartART_Month] month, SUM([StartedART]) tx_new'])
+            .select(['[Sex] Gender, [Start_Year] year, [StartART_Month] month, SUM([StartedART]) tx_new'])
             .where('f.[StartedART] > 0');
 
         if (query.county) {
@@ -34,7 +34,7 @@ export class GetCtTxNewHandler implements IQueryHandler<GetCtTxNewQuery> {
 
         if (query.partner) {
             txNew
-                .andWhere('f.CTPartner IN (:...partners)', { partners: query.partner });
+                .andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
 
         if(query.month) {
@@ -53,7 +53,7 @@ export class GetCtTxNewHandler implements IQueryHandler<GetCtTxNewQuery> {
         }
 
         return await txNew
-            .groupBy('f.[Gender], f.[Start_Year], f.[StartART_Month]')
+            .groupBy('f.[Sex], f.[Start_Year], f.[StartART_Month]')
             .orderBy('f.[Start_Year], f.[StartART_Month]')
             .getRawMany();
     }

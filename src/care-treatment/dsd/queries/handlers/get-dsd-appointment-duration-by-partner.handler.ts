@@ -21,7 +21,7 @@ export class GetDsdAppointmentDurationByPartnerHandler implements IQueryHandler<
             .innerJoin(AggregateDSDApptsByStability, 'df', 'df.MFLCode = f.MFLCode')
             .where('f.MFLCode > 1')
             .andWhere('CAST(f.StabilityAssessment AS NVARCHAR(10)) = :stability', { stability: "Stable"})
-            
+
         if (query.county) {
             dsdAppointmentDuration.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
@@ -47,7 +47,7 @@ export class GetDsdAppointmentDurationByPartnerHandler implements IQueryHandler<
         }
 
         if (query.gender) {
-            dsdAppointmentDuration.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            dsdAppointmentDuration.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await dsdAppointmentDuration

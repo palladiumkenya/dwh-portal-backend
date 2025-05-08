@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetAdultsAdverseEventsQuery } from '../impl/get-adults-adverse-events.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetAdultsAdverseEventsQuery)
 export class GetAdultsAdverseEventsHandler implements IQueryHandler<GetAdultsAdverseEventsQuery> {
@@ -16,7 +16,7 @@ export class GetAdultsAdverseEventsHandler implements IQueryHandler<GetAdultsAdv
         const adultsAEs = this.repository
             .createQueryBuilder('f')
             .select(
-                'SUM([AdverseEventCount]) total, DATIMAgeGroup, Gender, CAST((cast(SUM([AdverseEventCount]) as decimal (9,2))/ (SUM(SUM([AdverseEventCount])) OVER (PARTITION BY DATIMAgeGroup ORDER BY DATIMAgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup',
+                'SUM([AdverseEventsCount]) total, DATIMAgeGroup, Sex Gender, CAST((cast(SUM([AdverseEventsCount]) as decimal (9,2))/ (SUM(SUM([AdverseEventsCount])) OVER (PARTITION BY DATIMAgeGroup ORDER BY DATIMAgeGroup))*100) as decimal(9,2))  AS adverseEventsByAgeGroup',
             )
             .where(
                 "[DATIMAgeGroup] NOT IN (' Under 1', '01 to 04', '05 to 09', '10 to 14')",
@@ -51,9 +51,9 @@ export class GetAdultsAdverseEventsHandler implements IQueryHandler<GetAdultsAdv
         }
 
         if (query.gender) {
-            adultsAEs.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            adultsAEs.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
-        return await adultsAEs.groupBy('DATIMAgeGroup, Gender').getRawMany();
+        return await adultsAEs.groupBy('DATIMAgeGroup, Sex').getRawMany();
     }
 }

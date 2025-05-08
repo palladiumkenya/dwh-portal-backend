@@ -38,7 +38,7 @@ export class GetOvcTotalOnMmdHandler implements IQueryHandler<GetOvcTotalOnMmdQu
         }
 
         if (query.gender) {
-            ovcTotalOnMmd.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            ovcTotalOnMmd.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

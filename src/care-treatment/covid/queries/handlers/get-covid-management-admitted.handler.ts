@@ -43,7 +43,7 @@ export class GetCovidManagementAdmittedHandler implements IQueryHandler<GetCovid
         }
 
         if (query.gender) {
-            covidManagementAdmitted.andWhere('Gender IN (:...genders)', { genders: query.gender });
+            covidManagementAdmitted.andWhere('Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

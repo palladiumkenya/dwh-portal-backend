@@ -1,9 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
-import { FactTransVLOutcome } from '../../entities/fact-trans-vl-outcome.model';
 import { GetVlSuppressionByYearArtStartQuery } from '../impl/get-vl-suppression-by-year-art-start.query';
-import { AggregateVLUptakeOutcome } from './../../entities/aggregate-vl-uptake-outcome.model';
+import { AggregateVLUptakeOutcome } from '../../entities/aggregate-vl-uptake-outcome.model';
 
 @QueryHandler(GetVlSuppressionByYearArtStartQuery)
 export class GetVlSuppressionByYearArtStartHandler implements IQueryHandler<GetVlSuppressionByYearArtStartQuery> {
@@ -45,7 +44,7 @@ export class GetVlSuppressionByYearArtStartHandler implements IQueryHandler<GetV
         }
 
         if (query.gender) {
-            vlSuppressionByYearArtStart.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlSuppressionByYearArtStart.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlSuppressionByYearArtStart

@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetNumberOfClientWithAeQuery } from '../impl/get-number-of-client-with-ae.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetNumberOfClientWithAeQuery)
 export class GetNumberOfClientWithAeHandler implements IQueryHandler<GetNumberOfClientWithAeQuery> {
@@ -49,7 +49,7 @@ export class GetNumberOfClientWithAeHandler implements IQueryHandler<GetNumberOf
         }
 
         if (query.gender) {
-            noOfClientsAdultsWithAe.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            noOfClientsAdultsWithAe.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await noOfClientsAdultsWithAe.getRawOne();

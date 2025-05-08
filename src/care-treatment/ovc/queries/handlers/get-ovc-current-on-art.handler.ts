@@ -39,7 +39,7 @@ export class GetOvcCurrentOnArtHandler implements IQueryHandler<GetOvcCurrentOnA
         }
 
         if (query.gender) {
-            ovcCurrentOnART.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            ovcCurrentOnART.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

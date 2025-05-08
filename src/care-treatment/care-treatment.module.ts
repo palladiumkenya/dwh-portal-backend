@@ -6,6 +6,74 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CareTreatmentController } from './care-treatment.controller';
 
 import { AllEmrSites } from './common/entities/all-emr-sites.model';
+import { FactTransHmisStatsTxcurr } from './home/entities/fact-trans-hmis-stats-txcurr.model';
+import { FactTransDsdCascade } from './home/entities/fact-trans-dsd-cascade.model';
+import { FactCtTimeToArt } from './new-on-art/entities/fact-ct-time-to-art.model';
+import { FactTransNewCohort } from './new-on-art/entities/fact-trans-new-cohort.model';
+import { FactTransNewlyStarted } from './new-on-art/entities/fact-trans-newly-started.model';
+import { FactCTTimeToArt } from './new-on-art/entities/fact-ct-time-to-art-grp.model';
+import { FactTransDsdUnstable } from './dsd/entities/fact-trans-dsd-unstable.model';
+import { FactTransDsdMmdActivePatients } from './dsd/entities/fact-trans-dsd-mmd-active-patients.model';
+import { FactTransDsdMmdUptake } from './dsd/entities/fact-trans-dsd-mmd-uptake.model';
+import { FactTransDsdStabilityStatus } from './dsd/entities/fact-trans-dsd-stability-status.model';
+import { FactTransDsdAppointmentByStabilityStatus } from './dsd/entities/fact-trans-dsd-appointment-by-stability-status.model';
+import { FactTransRetention } from './treatment-outcomes/entities/fact-trans-retention.model';
+import { FactTransTreatmentOutcomes } from './treatment-outcomes/entities/fact-trans-treatment-outcomes.model';
+import { AggregateVLDurable } from './viral-load/entities/aggregate-vl-durable.model';
+import { FactCTTimeToFirstVL } from './viral-load/entities/fact-ct-time-to-first-vl-grp.model';
+import { FactTransVLOutcome } from './viral-load/entities/fact-trans-vl-outcome.model';
+import { FactTransVLOverallUptake } from './viral-load/entities/fact-trans-vl-overall-uptake.model';
+import { FactTransOptimizeStartRegimen } from './viral-load/entities/fact-trans-optimize-start-regimen.model';
+import { FactTransAdverseEvents } from './adverse-events/entities/fact-trans-adverse-events.model';
+import { FactTransAeActionDrug } from './adverse-events/entities/fact-trans-ae-action-drug.model';
+import { FactTransAeSeverity } from './adverse-events/entities/fact-trans-ae-severity.model';
+import { FactTransAeCauses } from './adverse-events/entities/fact-trans-ae-causes.model';
+import { FactTransAeCategories } from './adverse-events/entities/fact-trans-ae-categories.model';
+import { FactTransAeClients } from './adverse-events/entities/fact-trans-ae-clients.model';
+import { FactTransOptimizeRegLines } from './art-optimization/entities/fact-trans-optimize-reg-lines.model';
+import { FactTimeToVlLast12M } from './viral-load/entities/fact-time-to-vl-last-12m.model';
+import { FactTransTimeToVl } from './viral-load/entities/fact-trans-time-to-vl.model';
+import { FactTransAeCausativeDrugs } from './adverse-events/entities/fact-trans-ae-causitive-drugs.model';
+import { FactTransVlSuppressionArtStart } from './viral-load/entities/fact-trans-vl-suppression-art-start.model';
+import { FactCtTimeToArtLast12M } from './new-on-art/entities/fact-ct-time-to-art-last-12-m.model';
+import { FactTransOtzEnrollments } from './otz/entities/fact-trans-otz-enrollments.model';
+import { FactTransOtzOutcome } from './otz/entities/fact-trans-otz-outcome.model';
+import { FactTransOvcEnrollments } from './ovc/entities/fact-trans-ovc-enrollments.model';
+import { FactTransCohortRetention } from './treatment-outcomes/entities/fact-trans-cohort-retention.model';
+import { FactTransCovidVaccines } from './covid/entities/fact-trans-covid-vaccines.model';
+import { DimAgeGroups } from './common/entities/dim-age-groups.model';
+import { AggregateOtz } from './otz/entities/aggregate-otz.model';
+import { AggregateOTZOutcome } from './otz/entities/aggregate-otz-outcome.model';
+import { LineListOTZ } from './otz/entities/line-list-otz.model';
+import { LineListOTZEligibilityAndEnrollments } from './otz/entities/line-list-otz-eligibility-and-enrollments.model';
+import { AggregateDSDApptsByStability } from './dsd/entities/aggregate-dsd-appts-by-stability.model';
+import { AggregateDSDStable } from './dsd/entities/aggregate-dsd-stable.model';
+import { AggregateNupi } from './current-on-art/entities/aggregate-nupi.model';
+import { AggregateTXCurr } from './current-on-art/entities/aggregate-txcurr.model';
+import { AggregateDSDUnstable } from './dsd/entities/AggregateDSDUnstable.model';
+import { AggregateDSD } from './dsd/entities/AggregateDSD.model';
+import { AggregateCovid } from './covid/entities/aggregate-covid.model';
+import { LineListCovid } from './covid/entities/linelist-covid.model';
+import { AggregateOVCCount } from './ovc/entities/aggregate-ovc-count.model';
+import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.model';
+import { LinelistFACTART } from './common/entities/linelist-fact-art.model';
+import { AggregateAdverseEvents } from './adverse-events/entities/aggregate-adverse-events.model';
+import { AggregateTimeToARTLast12M } from './new-on-art/entities/aggregate-time-to-art-last-12-m.model';
+import { AggregateCohortRetention } from './new-on-art/entities/aggregate-cohort-retention.model';
+import { AggregateTimeToART } from './new-on-art/entities/aggregate-time-to-art.model';
+import { AggregateTimeToARTGrp } from './new-on-art/entities/aggregate-time-to-art-grp.model';
+import { AggregateOptimizeCurrentRegimens } from './art-optimization/entities/aggregate-optimize-current-regimens.model';
+import { AggregateOptimizeStartRegimens } from './art-optimization/entities/aggregate-optimize-start-regimens.model';
+import { AggregateVLUptakeOutcome } from './viral-load/entities/aggregate-vl-uptake-outcome.model';
+import { AggregateTimeToFirstVLGrp } from './viral-load/entities/aggregate-time-to-first-vl-grp.model';
+import { AggregateTimeToVL } from './viral-load/entities/aggregate-time-to-vl.model';
+import { AggregateTimeToVL12M } from './viral-load/entities/aggregate-time-to-vl-last-12m.model';
+import { AggregateTreatmentOutcomes } from './treatment-outcomes/entities/aggregate-treatment-outcomes.model';
+import { LineListViralLoad } from './viral-load/entities/linelist-viral-load.model';
+import { AggregateAppointments } from './treatment-outcomes/entities/aggregate-appointments.model';
+import { AggregateDefaulterTracingOutcome } from './treatment-outcomes/entities/aggregate-defaulter-tracing-outcome.model';
+import { AggregateIITTracingStatus } from './treatment-outcomes/entities/aggregate-iit-tracing-status.model';
+import { LineListOVCEligibilityAndEnrollments } from './ovc/entities/linelist-ovc-eligibility-and-enrollments.model';
 
 import { GetCtCountyHandler } from './common/queries/handlers/get-ct-county.handler';
 import { GetCtSubCountyHandler } from './common/queries/handlers/get-ct-sub-county.handler';
@@ -15,10 +83,6 @@ import { GetCtAgenciesHandler } from './common/queries/handlers/get-ct-agencies.
 import { GetCtProjectsHandler } from './common/queries/handlers/get-ct-projects.handler';
 import { GetCtSitesHandler } from './common/queries/handlers/get-ct-sites.handler';
 import { GetCtSiteGpsHandler } from './common/queries/handlers/get-ct-site-gps.handler';
-
-import { FactTransHmisStatsTxcurr } from './home/entities/fact-trans-hmis-stats-txcurr.model';
-import { FactTransDsdCascade } from './home/entities/fact-trans-dsd-cascade.model';
-import { FactCtTimeToArt } from './new-on-art/entities/fact-ct-time-to-art.model';
 
 import { GetActiveArtHandler } from './home/queries/handlers/get-active-art.handler';
 import { GetActiveChildrenHandler } from './home/queries/handlers/get-active-children.handler';
@@ -37,10 +101,6 @@ import { GetCtTxCurrBySexHandler } from './current-on-art/queries/handlers/get-c
 import { GetCtTxCurrDistributionByCountyHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-distribution-by-county.handler';
 import { GetCtTxCurrDistributionByPartnerHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-distribution-by-partner.handler';
 
-import { FactTransNewCohort } from './new-on-art/entities/fact-trans-new-cohort.model';
-import { FactTransNewlyStarted } from './new-on-art/entities/fact-trans-newly-started.model';
-import { FactCTTimeToArt } from './new-on-art/entities/fact-ct-time-to-art-grp.model';
-
 import { GetTxNewTrendsHandler } from './new-on-art/queries/handlers/get-tx-new-trends.handler';
 import { GetTxNewByAgeSexHandler } from './new-on-art/queries/handlers/get-tx-new-by-age-sex.handler';
 import { GetTxNewBySexHandler } from './new-on-art/queries/handlers/get-tx-new-by-sex.handler';
@@ -49,12 +109,6 @@ import { GetTimeToArtFacilitiesHandler } from './new-on-art/queries/handlers/get
 import { GetMedianTimeToArtByYearHandler } from './new-on-art/queries/handlers/get-median-time-to-art-by-year.handler';
 import { GetMedianTimeToArtByCountyHandler } from './new-on-art/queries/handlers/get-median-time-to-art-by-county.handler';
 import { GetMedianTimeToArtByPartnerHandler } from './new-on-art/queries/handlers/get-median-time-to-art-by-partner.handler';
-
-import { FactTransDsdUnstable } from './dsd/entities/fact-trans-dsd-unstable.model';
-import { FactTransDsdMmdActivePatients } from './dsd/entities/fact-trans-dsd-mmd-active-patients.model';
-import { FactTransDsdMmdUptake } from './dsd/entities/fact-trans-dsd-mmd-uptake.model';
-import { FactTransDsdStabilityStatus } from './dsd/entities/fact-trans-dsd-stability-status.model';
-import { FactTransDsdAppointmentByStabilityStatus } from './dsd/entities/fact-trans-dsd-appointment-by-stability-status.model';
 
 import { GetDsdCascadeHandler } from './dsd/queries/handlers/get-dsd-cascade.handler';
 import { GetDsdUnstableHandler } from './dsd/queries/handlers/get-dsd-unstable.handler';
@@ -71,9 +125,6 @@ import { GetDsdAppointmentDurationByCountyHandler } from './dsd/queries/handlers
 import { GetDsdAppointmentDurationByPartnerHandler } from './dsd/queries/handlers/get-dsd-appointment-duration-by-partner.handler';
 import { GetDsdAppointmentDurationCategorizationByStabilityStatusHandler } from './dsd/queries/handlers/get-dsd-appointment-duration-categorization-by-stability-status.handler';
 
-import { FactTransRetention } from './treatment-outcomes/entities/fact-trans-retention.model';
-import { FactTransTreatmentOutcomes } from './treatment-outcomes/entities/fact-trans-treatment-outcomes.model';
-
 import { GetTreatmentOutcomesOverallHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-overall.handler';
 import { GetTreatmentOutcomesOverallLast12mHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-overall-last-12m.handler';
 import { GetTreatmentOutcomesBySexHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-by-sex.handler';
@@ -88,11 +139,6 @@ import { GetTreatmentOutcomesRetention6mHandler } from './treatment-outcomes/que
 import { GetTreatmentOutcomesRetention12mHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-retention-12m.handler';
 import { GetTreatmentOutcomesRetention24mHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-retention-24m.handler';
 import { GetTreatmentOutcomesUndocumentedByFacilityHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-undocumented-by-facility.handler';
-
-import { FactCTTimeToFirstVL } from './viral-load/entities/fact-ct-time-to-first-vl-grp.model';
-import { FactTransVLOutcome } from './viral-load/entities/fact-trans-vl-outcome.model';
-import { FactTransVLOverallUptake } from './viral-load/entities/fact-trans-vl-overall-uptake.model';
-import { FactTransOptimizeStartRegimen } from './viral-load/entities/fact-trans-optimize-start-regimen.model';
 
 import { GetVlOverallUptakeAndSuppressionHandler } from './viral-load/queries/handlers/get-vl-overall-uptake-and-suppression.handler';
 import { GetVlOverallUptakeAndSuppressionBySexHandler } from './viral-load/queries/handlers/get-vl-overall-uptake-and-suppression-by-sex.handler';
@@ -120,31 +166,22 @@ import {
     GetVlOverallUptakeAndSuppressionReferedLessIntenseHandler
 } from "./viral-load/queries/handlers/get-vl-overall-uptake-and-suppression-refered-less-intense.handler";
 
-import { FactTransAdverseEvents } from './adverse-events/entities/fact-trans-adverse-events.model';
-import { FactTransAeActionDrug } from './adverse-events/entities/fact-trans-ae-action-drug.model';
-
 import { GetChildrenAdverseEventsHandler } from './adverse-events/queries/handlers/get-children-adverse-events.handler';
 import { GetAdultsAdverseEventsHandler } from './adverse-events/queries/handlers/get-adults-adverse-events.handler';
 import { GetAdverseEventsHandler } from './adverse-events/queries/handlers/get-adverse-events.handler';
 import { GetAdverseEventsClientsHandler } from './adverse-events/queries/handlers/get-adverse-events-clients.handler';
-import { FactTransAeSeverity } from './adverse-events/entities/fact-trans-ae-severity.model';
 import { GetAeSeverityGradingHandler } from './adverse-events/queries/handlers/get-ae-severity-grading.handler';
 import { GetAeActionsBySeverityHandler } from './adverse-events/queries/handlers/get-ae-actions-by-severity.handler';
-import { FactTransAeCauses } from './adverse-events/entities/fact-trans-ae-causes.model';
 import { GetReportedCausesOfAeHandler } from './adverse-events/queries/handlers/get-reported-causes-of-ae.handler';
-import { FactTransAeCategories } from './adverse-events/entities/fact-trans-ae-categories.model';
 import { GetReportedAesWithSeverityLevelsHandler } from './adverse-events/queries/handlers/get-reported-aes-with-severity-levels.handler';
 import { GetAeActionsByDrugsHandler } from './adverse-events/queries/handlers/get-ae-actions-by-drugs.handler';
 import { GetAeActionsByDrugsNewHandler } from './adverse-events/queries/handlers/get-ae-actions-by-drugs-new.handler';
 import { GetNumberOfClientChildrenWithAeHandler } from './adverse-events/queries/handlers/get-number-of-client-children-with-ae.handler';
-import { FactTransAeClients } from './adverse-events/entities/fact-trans-ae-clients.model';
 import { GetNumberOfClientWithAeHandler } from './adverse-events/queries/handlers/get-number-of-client-with-ae.handler';
 import { GetNumberAeReportedInAdultsOver15Handler } from './adverse-events/queries/handlers/get-number-ae-reported-in-adults-over-15.handler';
 import { GetNumberAeReportedInChildrenOver15Handler } from './adverse-events/queries/handlers/get-number-ae-reported-in-children-over-15.handler';
 import { GetAeTypeBySeverityHandler } from './adverse-events/queries/handlers/get-ae-type-by-severity.handler';
 import { GetNewlyStartedDesegregatedHandler } from './new-on-art/queries/handlers/get-newly-started-desegregated.handler';
-
-import { FactTransOptimizeRegLines } from './art-optimization/entities/fact-trans-optimize-reg-lines.model';
 
 import { GetArtOptimizationOverviewHandler } from './art-optimization/queries/handlers/get-art-optimization-overview.handler';
 import { GetArtOptimizationCurrentByAgeSexHandler } from './art-optimization/queries/handlers/get-art-optimization-current-by-age-sex.handler';
@@ -156,22 +193,16 @@ import { GetArtOptimizationNewByPartnerHandler } from './art-optimization/querie
 import { GetArtOptimizationNewByYearHandler } from './art-optimization/queries/handlers/get-art-optimization-new-by-year.handler';
 import { GetDsdStableOverallHandler } from './dsd/queries/handlers/get-dsd-stable-overall.handler';
 import { GetVlOutcomesByYearAndSuppressionCategoryHandler } from './viral-load/queries/handlers/get-vl-outcomes-by-year-and-suppression-category.handler';
-import { FactTimeToVlLast12M } from './viral-load/entities/fact-time-to-vl-last-12m.model';
-import { FactTransTimeToVl } from './viral-load/entities/fact-trans-time-to-vl.model';
 import { GetProportionOfPlHIVOnArtWithAeByTypeOfSuspectedCausativeDrugsHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-on-art-with-ae-by-type-of-suspected-causative-drugs.handler';
-import { FactTransAeCausativeDrugs } from './adverse-events/entities/fact-trans-ae-causitive-drugs.model';
 import { GetProportionOfPLHIVWithAeRelatedToArtHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-related-to-art.handler';
 import { GetProportionOfPLHIVWithAeWhoseRegimenChangedHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-whose-regimen-changed.handler';
 import { GetProportionOfPLHIVWithAeWhoseRegimenWasStoppedHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-whose-regimen-was-stopped.handler';
 import { GetProportionOfPLHIVWithAeWhoseRegimenWasNotAlteredHandler } from './adverse-events/queries/handlers/get-proportion-of-plhiv-with-ae-whose-regimen-was-not-altered.handler';
-import { FactTransVlSuppressionArtStart } from './viral-load/entities/fact-trans-vl-suppression-art-start.model';
 import { Get6MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-6-month-viral-suppression-by-year-of-art-start.handler';
 import { Get24MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-24-month-viral-suppression-by-year-of-art-start.handler';
 import { Get12MonthViralSuppressionByYearOfArtStartHandler } from './viral-load/queries/handlers/get-12-month-viral-suppression-by-year-of-art-start.handler';
-import { FactCtTimeToArtLast12M } from './new-on-art/entities/fact-ct-time-to-art-last-12-m.model';
 import { GetRegimenDistributionBasedOnWeightBandsHandler } from './art-optimization/queries/handlers/get-regimen-distribution-based-on-weight-bands.handler';
 import { GetRegimenDistributionBasedOnAgeBandsHandler } from './art-optimization/queries/handlers/get-regimen-distribution-based-on-age-bands.handler';
-import { FactTransOtzEnrollments } from './otz/entities/fact-trans-otz-enrollments.model';
 import { GetOtzEnrollmentAmongAlhivAndOnArtBySexHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-sex.handler';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByAgeHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-age.handler';
 import { GetOtzEnrollmentAmongAlhivAndOnArtByCountyHandler } from './otz/queries/handlers/get-otz-enrollment-among-alhiv-and-on-art-by-county.handler';
@@ -183,7 +214,6 @@ import { GetVlUptakeAmongAlhivEnrolledInOtzByPartnerHandler } from './otz/querie
 import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training.handler';
 import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByCountyHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-county.handler';
 import { GetProportionOfAlhivEnrolledInOtzWhoHaveCompletedOtzTrainingByPartnerHandler } from './otz/queries/handlers/get-proportion-of-alhiv-enrolled-in-otz-who-have-completed-otz-training-by-partner.handler';
-import { FactTransOtzOutcome } from './otz/entities/fact-trans-otz-outcome.model';
 import { GetOtzOutcomesAmongAlhivWithReSuppressionHandler } from './otz/queries/handlers/get-otz-outcomes-among-alhiv-with-re-suppression.handler';
 import { GetOtzOutcomesAmongAlhivWithBaselineVlHandler } from './otz/queries/handlers/get-otz-outcomes-among-alhiv-with-baseline-vl.handler';
 import { GetOtzOutcomesAmongAlhivWithSustainedSuppressionHandler } from './otz/queries/handlers/get-otz-outcomes-among-alhiv-with-sustained-suppression.handler';
@@ -196,7 +226,6 @@ import { GetOtzAdolescentsHandler } from './otz/queries/handlers/get-otz-adolesc
 import { GetOtzEnrolledHandler } from './otz/queries/handlers/get-otz-enrolled.handler';
 import { GetOtzTotalWithVlResultsHandler } from './otz/queries/handlers/get-otz-total-with-vl-results.handler';
 import { GetOtzTotalWithVlLessThan1000Handler } from './otz/queries/handlers/get-otz-total-with-vl-less-than-1000.handler';
-import { FactTransOvcEnrollments } from './ovc/entities/fact-trans-ovc-enrollments.model';
 import { GetOvcOverallOvcServHandler } from './ovc/queries/handlers/get-ovc-overall-ovc-serv.handler';
 import { GetOvcServBySexHandler } from './ovc/queries/handlers/get-ovc-serv-by-sex.handler';
 import { GetOvcCaregiversRelationshipToOvcClientHandler } from './ovc/queries/handlers/get-ovc-caregivers-relationship-to-ovc-client.handler';
@@ -209,7 +238,6 @@ import { GetOvcViralSuppressionAmongOvcPatientsGenderHandler } from './ovc/queri
 import { GetOvcViralSuppressionAmongOvcPatientsOverallHandler } from './ovc/queries/handlers/get-ovc-viral-suppression-among-ovc-patients-overall.handler';
 import { GetMissingDiagnosisDateByFacilityHandler } from './new-on-art/queries/handlers/get-missing-diagnosis-date-by-facility.handler';
 import { GetTreatmentOutcomesNetCohortHandler } from './treatment-outcomes/queries/handlers/get-treatment-outcomes-net-cohort.handler';
-import { FactTransCohortRetention } from './treatment-outcomes/entities/fact-trans-cohort-retention.model';
 import { GetOtzEnrolledAdolescentsByAgeHandler } from './otz/queries/handlers/get-otz-enrolled-adolescents-by-age.handler';
 import { GetOtzAdolescentsEnrolledByPartnerHandler } from './otz/queries/handlers/get-otz-adolescents-enrolled-by-partner.handler';
 import { GetOtzAdolescentsEnrolledByCountyHandler } from './otz/queries/handlers/get-otz-adolescents-enrolled-by-county.handler';
@@ -220,10 +248,8 @@ import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByCountyHandler } from './otz
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzByPartnerHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-partner.handler';
 import { GetOtzVlSuppressionAmongAlhivEnrolledInOtzBySexHandler } from './otz/queries/handlers/get-otz-vl-suppression-among-alhiv-enrolled-in-otz-by-sex.handler';
 import { GetCovidAdultPLHIVCurrentOnTreatmentHandler } from './covid/queries/handlers/get-covid-adult-plhiv-current-on-treatment.handler';
-import { FactTransCovidVaccines } from './covid/entities/fact-trans-covid-vaccines.model';
 import { GetCovidPartiallyVaccinatedHandler } from './covid/queries/handlers/get-covid-partially-vaccinated.handler';
 import { GetCovidFullyVaccinatedHandler } from './covid/queries/handlers/get-covid-fully-vaccinated.handler';
-import { DimAgeGroups } from './common/entities/dim-age-groups.model';
 import { GetCovidAdultPLHIVVaccinatedByAgeHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-age.handler';
 import { GetCovidAdultPLHIVVaccinatedByGenderHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-gender.handler';
 import { GetCovidAdultPLHIVVaccinatedByPartnerHandler } from './covid/queries/handlers/get-covid-adult-plhiv-vaccinated-by-partner.handler';
@@ -266,7 +292,6 @@ import { GetOvcDeadHandler } from './ovc/queries/handlers/get-ovc-dead.handler';
 import { GetOvcEligibleVlHandler } from './ovc/queries/handlers/get-ovc-eligible-vl.handler';
 import { GetOvcVirallySuppressedHandler } from './ovc/queries/handlers/get-ovc-virally-suppressed.handler';
 import { GetOvcVldoneHandler } from './ovc/queries/handlers/get-ovc-vldone.handler';
-import { GetOTZCalhivOnArtQuery } from './otz/queries/impl/get-calhiv-on-art.query';
 import { GetOTZCalhivOnArtHandler } from './otz/queries/handlers/get-calhiv-on-art.handler';
 import { GetOtzCalhivVlEligibleHandler } from './otz/queries/handlers/get-otz-calhiv-vl-eligible.handler';
 import { GetCovidNumberScreenedHandler } from './covid/queries/handlers/get-covid-number-screened.handler';
@@ -282,10 +307,11 @@ import { GetVlOverallGt1000CopiesHandler } from "./viral-load/queries/handlers/g
 import { GetVlOverallGt1000CopiesReceivedEacHandler } from "./viral-load/queries/handlers/get-vl-overall-gt-1000-copies-received-eac.handler";
 import { GetVlOverallUptakeReceivedFollowTestsAllHandler } from "./viral-load/queries/handlers/get-vl-overall-uptake-received-follow-tests-all.handler";
 import { GetVlOverallUptakeReceivedFollowTestsHandler } from "./viral-load/queries/handlers/get-vl-overall-uptake-received-follow-tests.handler";
+import { GetVlUptakeUToUHandler } from './viral-load/queries/handlers/get-vl-uptake-U-to-U.handler';
+import { GetVlCategorizationUToUHandler } from './viral-load/queries/handlers/get-vl-categorization-U-to-U.handler';
 import {
     GetVlOverallNumberWithFollowVlTestsAtGt1000CopiesSecondLineRegimentHandler
 } from "./viral-load/queries/handlers/get-vl-overall-number-with-follow-vl-tests-at-gt1000-copies-second-line-regiment.handler";
-import { FactNUPI } from './current-on-art/entities/fact-nupi.model';
 import { GetCtTxCurrVerifiedHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-verified.handler';
 import { GetCtTxCurrVerifiedByCountyHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-verified-by-county.handler';
 import { GetCtTxCurrVerifiedByPartnerHandler } from './current-on-art/queries/handlers/get-ct-tx-curr-verified-by-parnter.handler';
@@ -307,42 +333,16 @@ import { GetCtTxCurrHandler } from './current-on-art/queries/handlers/get-ct-tx-
 import { GetArtVerificationPendingSurveysByPartnerHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-partner.handler';
 import { GetArtVerificationPendingSurveysByCountyHandler } from './art-verification/queries/handlers/get-art-verification-pending-surveys-by-county.handler';
 import { GetArtVerificationReasonsHandler } from './art-verification/queries/handlers/get-art-verification-reasons.handler';
-import { AggregateOtz } from './otz/entities/aggregate-otz.model';
-import { AggregateOTZOutcome } from './otz/entities/aggregate-otz-outcome.model';
-import { LineListOTZ } from './otz/entities/line-list-otz.model';
-import { LineListOTZEligibilityAndEnrollments } from './otz/entities/line-list-otz-eligibility-and-enrollments.model';
-import { AggregateDSDApptsByStability } from './dsd/entities/aggregate-dsd-appts-by-stability.model';
-import { AggregateDSDStable } from './dsd/entities/aggregate-dsd-stable.model';
-import { AggregateNupi } from './current-on-art/entities/aggregate-nupi.model';
-import { AggregateTXCurr } from './current-on-art/entities/aggregate-txcurr.model';
-import { AggregateDSDUnstable } from './dsd/entities/AggregateDSDUnstable.model';
-import { AggregateDSD } from './dsd/entities/AggregateDSD.model';
-import { AggregateCovid } from './covid/entities/aggregate-covid.model';
-import { LineListCovid } from './covid/entities/linelist-covid.model';
-import { AggregateOVCCount } from './ovc/entities/aggregate-ovc-count.model';
-import { LineListOVCEnrollments } from './ovc/entities/linelist-ovc-enrollments.model';
-import { LinelistFACTART } from './common/entities/linelist-fact-art.model';
-import { AggregateAdverseEvents } from './adverse-events/entities/aggregate-adverse-events.model';
-import { AggregateTimeToARTLast12M } from './new-on-art/entities/aggregate-time-to-art-last-12-m.model';
-import { AggregateCohortRetention } from './new-on-art/entities/aggregate-cohort-retention.model';
-import { AggregateTimeToART } from './new-on-art/entities/aggregate-time-to-art.model';
-import { AggregateTimeToARTGrp } from './new-on-art/entities/aggregate-time-to-art-grp.model';
-import { AggregateOptimizeCurrentRegimens } from './art-optimization/entities/aggregate-optimize-current-regimens.model';
-import { AggregateOptimizeStartRegimens } from './art-optimization/entities/aggregate-optimize-start-regimens.model';
-import { AggregateVLUptakeOutcome } from './viral-load/entities/aggregate-vl-uptake-outcome.model';
-import { AggregateTimeToFirstVLGrp } from './viral-load/entities/aggregate-time-to-first-vl-grp.model';
-import { AggregateTimeToVL } from './viral-load/entities/aggregate-time-to-vl.model';
-import { AggregateTimeToVL12M } from './viral-load/entities/aggregate-time-to-vl-last-12m.model';
-import { AggregateTreatmentOutcomes } from './treatment-outcomes/entities/aggregate-treatment-outcomes.model';
-import { LineListViralLoad } from './viral-load/entities/linelist-viral-load.model';
 import { GetAppointmentKeepingWaterfallHandler } from './treatment-outcomes/queries/handlers/get-appointment-keeping-waterfall.handler';
 import { GetQuaterlyIITHandler } from './treatment-outcomes/queries/handlers/get-quaterly-iit.handler';
-import { AggregateAppointments } from './treatment-outcomes/entities/aggregate-appointments.model';
-import { AggregateDefaulterTracingOutcome } from './treatment-outcomes/entities/aggregate-defaulter-tracing-outcome.model';
 import { GetIITTracingHandler } from './treatment-outcomes/queries/handlers/get-iit-tracing.handler';
 import { GetIITTracingOutcomesHandler } from './treatment-outcomes/queries/handlers/get-iit-tracing-outcomes.handler';
-import { AggregateIITTracingStatus } from './treatment-outcomes/entities/aggregate-iit-tracing-status.model';
-import { LineListOVCEligibilityAndEnrollments } from './ovc/entities/linelist-ovc-eligibility-and-enrollments.model';
+import { GetAlhivOnArtByAgeSexHandler } from './otz/queries/handlers/get-alhiv-on-art-by-age-sex.handler';
+import { GetOtzTotalWithDurableVlHandler } from './otz/queries/handlers/get-otz-total-with-durable-vl.handler';
+
+import { GetAhdScreeningHandler } from './ahd/queries/handlers/get-ahd-screening.handler';
+import { GetAhdNutritionAssessmentHandler } from './ahd/queries/handlers/get-ahd-nutrition-assessment.handler';
+import { GetAhdOutcomesHandler } from './ahd/queries/handlers/get-ahd-outcomes.handler';
 
 
 @Module({
@@ -387,13 +387,13 @@ import { LineListOVCEligibilityAndEnrollments } from './ovc/entities/linelist-ov
                 AggregateTimeToFirstVLGrp,
                 AggregateTimeToVL12M,
                 AggregateTimeToVL,
+                AggregateVLDurable,
+                LineListViralLoad,
 
                 AggregateTreatmentOutcomes,
                 AggregateAppointments,
                 AggregateDefaulterTracingOutcome,
                 AggregateIITTracingStatus,
-
-                LineListViralLoad,
 
                 AllEmrSites,
 
@@ -432,7 +432,6 @@ import { LineListOVCEligibilityAndEnrollments } from './ovc/entities/linelist-ov
                 FactTransCohortRetention,
                 FactTransCovidVaccines,
                 DimAgeGroups,
-                FactNUPI,
             ],
             'mssql',
         ),
@@ -529,6 +528,8 @@ import { LineListOVCEligibilityAndEnrollments } from './ovc/entities/linelist-ov
         GetVlMedianTimeToFirstVlByYearHandler,
         GetVlMedianTimeToFirstVlByCountyHandler,
         GetVlMedianTimeToFirstVlByPartnerHandler,
+        GetVlUptakeUToUHandler,
+        GetVlCategorizationUToUHandler,
         GetChildrenAdverseEventsHandler,
         GetAdultsAdverseEventsHandler,
         GetAdverseEventsHandler,
@@ -667,6 +668,8 @@ import { LineListOVCEligibilityAndEnrollments } from './ovc/entities/linelist-ov
         GetOvcVldoneHandler,
         GetOTZCalhivOnArtHandler,
         GetOtzCalhivVlEligibleHandler,
+        GetOtzTotalWithDurableVlHandler,
+        GetAlhivOnArtByAgeSexHandler,
         GetCovidNumberScreenedHandler,
         GetCumulativeNumberAdultPlhivWithMissingDateGivenFirstDoseHandler,
         GetCovidAdmissionSymptomaticOverallHandler,
@@ -683,6 +686,10 @@ import { LineListOVCEligibilityAndEnrollments } from './ovc/entities/linelist-ov
         GetArtVerificationPendingSurveysByPartnerHandler,
         GetArtVerificationPendingSurveysByCountyHandler,
         GetArtVerificationReasonsHandler,
+
+        GetAhdScreeningHandler,
+        GetAhdNutritionAssessmentHandler,
+        GetAhdOutcomesHandler
     ],
     controllers: [CareTreatmentController],
 })

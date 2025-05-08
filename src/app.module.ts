@@ -1,4 +1,6 @@
 import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+import { CacheModule, CacheInterceptor } from '@nestjs/cache-manager';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,9 +13,10 @@ import { HtsModule } from './hts/hts.module';
 import { CareTreatmentModule } from './care-treatment/care-treatment.module';
 import { OperationalHisModule } from './operational-his/operational-his.module';
 import { PmtctRRIModule } from './pmtct-rri/pmtct-rri.module';
-// import { SelfServiceModule } from './self-service/self-service.module';
+import { SelfServiceModule } from './self-service/self-service.module';
 
 import { AgeGroupMappingMiddleware } from './ageGroupMapping.middleware';
+
 @Module({
     imports: [
         ConfigModule.forRoot({
@@ -57,6 +60,9 @@ import { AgeGroupMappingMiddleware } from './ageGroupMapping.middleware';
                 cli: {
                     migrationsDir: 'migration',
                 },
+                extra: {
+                    trustServerCertificate: true,
+                }
             }),
         }),
         TypeOrmModule.forRootAsync({
@@ -76,6 +82,7 @@ import { AgeGroupMappingMiddleware } from './ageGroupMapping.middleware';
                     'DATABASE_USER_MSSQL',
                     dbConfig.usernameMssql,
                 ),
+                port: dbConfig.portMssql,
                 password: configService.get<string>(
                     'DATABASE_PASSWORD_MSSQL',
                     dbConfig.passwordMssql,
@@ -86,6 +93,9 @@ import { AgeGroupMappingMiddleware } from './ageGroupMapping.middleware';
                 ),
                 requestTimeout: 300000000,
                 entities: [__dirname + '/**/*.model{.ts,.js}'],
+                extra: {
+                    trustServerCertificate: true,
+                }
             }),
         }),
         ConfigurationModule,
@@ -95,10 +105,21 @@ import { AgeGroupMappingMiddleware } from './ageGroupMapping.middleware';
         CareTreatmentModule,
         OperationalHisModule,
         PmtctRRIModule,
-        // SelfServiceModule,
+        CacheModule.register({
+            isGlobal: true,
+            ttl: 60 * 60 * 24 * 1000, // Cache responses for a day
+            max: 1000,
+        }),
+        SelfServiceModule,
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: CacheInterceptor,
+        },
+    ],
 })
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {

@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {FactCtDhis2} from "../../entities/fact-ct-dhis2.model";
 import {GetTxCurrBySexDwhQuery} from "../impl/get-tx-curr-by-sex-dwh.query";
-import { AggregateTXCurr } from 'src/care-treatment/current-on-art/entities/aggregate-txcurr.model';
+import { AggregateTXCurr } from '../../../../care-treatment/current-on-art/entities/aggregate-txcurr.model';
 
 @QueryHandler(GetTxCurrBySexDwhQuery)
 export class GetTxCurrBySexDwhHandler implements IQueryHandler<GetTxCurrBySexDwhQuery> {
@@ -16,7 +15,7 @@ export class GetTxCurrBySexDwhHandler implements IQueryHandler<GetTxCurrBySexDwh
     async execute(query: GetTxCurrBySexDwhQuery): Promise<any> {
         const txCurrBySex = this.repository.createQueryBuilder('a')
             .select('a.FacilityName,a.County,a.SubCounty,MFLCode,AgencyName CTAgency, PartnerName CTPartner,' +
-                'SUM ( CASE WHEN Gender = \'Male\' THEN COUNTCLIENTSTXCUR ELSE 0 END ) DWHmale, SUM ( CASE WHEN Gender = \'Female\' THEN COUNTCLIENTSTXCUR ELSE 0 END ) DWHFemale, SUM ( COUNTCLIENTSTXCUR ) DWHtxCurr ')
+                'SUM ( CASE WHEN Sex = \'Male\' THEN COUNTCLIENTSTXCUR ELSE 0 END ) DWHmale, SUM ( CASE WHEN Sex = \'Female\' THEN COUNTCLIENTSTXCUR ELSE 0 END ) DWHFemale, SUM ( COUNTCLIENTSTXCUR ) DWHtxCurr ')
 
 
         if (query.county) {
@@ -50,7 +49,7 @@ export class GetTxCurrBySexDwhHandler implements IQueryHandler<GetTxCurrBySexDwh
         }
 
         if (query.gender) {
-            txCurrBySex.andWhere('a.Gender IN (:...genders)', {
+            txCurrBySex.andWhere('a.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

@@ -14,7 +14,7 @@ export class GetOvcServBySexHandler implements IQueryHandler<GetOvcServBySexQuer
 
     async execute(query: GetOvcServBySexQuery): Promise<any> {
         const ovcServBySex = this.repository.createQueryBuilder('f')
-            .select(['COUNT(*) overallOvcServ, Gender'])
+            .select(['COUNT(*) overallOvcServ, Sex Gender'])
             .andWhere('f.OVCEnrollmentDate IS NOT NULL and TXCurr=1');
 
         if (query.county) {
@@ -38,7 +38,7 @@ export class GetOvcServBySexHandler implements IQueryHandler<GetOvcServBySexQuer
         }
 
         if (query.gender) {
-            ovcServBySex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            ovcServBySex.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
@@ -46,7 +46,7 @@ export class GetOvcServBySexHandler implements IQueryHandler<GetOvcServBySexQuer
         }
 
         return await ovcServBySex
-            .groupBy('Gender')
+            .groupBy('Sex')
             .getRawMany();
     }
 }

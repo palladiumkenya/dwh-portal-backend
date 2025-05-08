@@ -37,7 +37,7 @@ export class GetCovidAdultPLHIVCurrentOnTreatmentByAgeGroupHandler implements IQ
         }
 
         if (query.gender) {
-            covidAdultsCurrentOnTreatmentByAgeGroup.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            covidAdultsCurrentOnTreatmentByAgeGroup.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetCtTxCurrByFacilityQuery } from '../impl/get-ct-tx-curr-by-facility.query';
-import { LinelistFACTART } from './../../../common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetCtTxCurrByFacilityQuery)
 export class GetCtTxCurrByFacilityHandler
@@ -19,7 +19,7 @@ export class GetCtTxCurrByFacilityHandler
                 'FacilityName, PartnerName CTPartner, County, Subcounty, AgencyName CTAgency, SiteCode MFLCode, SUM(ISTXCurr) TXCURR',
             ])
             .where(
-                "f.[Gender] IS NOT NULL ",
+                "f.[Sex] IS NOT NULL ",
             );
 
         if (query.county) {
@@ -64,14 +64,15 @@ export class GetCtTxCurrByFacilityHandler
                 query.datimAgePopulations.includes('>18') &&
                 query.datimAgePopulations.includes('<18')
             ) {
-            } else if (query.datimAgePopulations.includes('>18'))
+            } else if (query.datimAgePopulations.includes('>18')) {
                 txCurrByPartner.andWhere('f.age >= 18');
-            else if (query.datimAgePopulations.includes('<18'))
+            } else if (query.datimAgePopulations.includes('<18')) {
                 txCurrByPartner.andWhere('f.age < 18');
+            }
         }
 
         if (query.gender) {
-            txCurrByPartner.andWhere('f.Gender IN (:...genders)', {
+            txCurrByPartner.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

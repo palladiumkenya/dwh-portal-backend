@@ -43,7 +43,7 @@ export class GetOtzTotalWithVlResultsHandler implements IQueryHandler<GetOtzTota
         }
 
         if (query.gender) {
-            totalWithVlResults.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            totalWithVlResults.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await totalWithVlResults.getRawOne();

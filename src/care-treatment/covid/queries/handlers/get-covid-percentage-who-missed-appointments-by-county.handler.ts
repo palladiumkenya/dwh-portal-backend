@@ -38,7 +38,7 @@ export class GetCovidPercentageWhoMissedAppointmentsByCountyHandler implements I
         }
 
         if (query.gender) {
-            covidPercentageWhoMissedAppointmentsByCounty.andWhere('Gender IN (:...genders)', { genders: query.gender });
+            covidPercentageWhoMissedAppointmentsByCounty.andWhere('Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

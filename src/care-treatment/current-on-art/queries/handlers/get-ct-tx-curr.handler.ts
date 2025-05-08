@@ -2,9 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetCtTxCurrQuery } from '../impl/get-ct-tx-curr.query';
-import { FactTransHmisStatsTxcurr } from '../../entities/fact-trans-hmis-stats-txcurr.model';
-import { FactTransNewCohort } from '../../../new-on-art/entities/fact-trans-new-cohort.model';
-import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
+import { AggregateTXCurr } from '../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrQuery)
 export class GetCtTxCurrHandler implements IQueryHandler<GetCtTxCurrQuery> {
@@ -17,7 +15,7 @@ export class GetCtTxCurrHandler implements IQueryHandler<GetCtTxCurrQuery> {
         const txCurr = this.repository
             .createQueryBuilder('f')
             .select(['SUM(CountClientsTXCur) TXCURR'])
-            .where('f.[Gender] IS NOT NULL');
+            .where('f.[Sex] IS NOT NULL');
 
         if (query.county) {
             txCurr.andWhere('f.County IN (:...counties)', {
@@ -67,7 +65,7 @@ export class GetCtTxCurrHandler implements IQueryHandler<GetCtTxCurrQuery> {
         }
 
         if (query.gender) {
-            txCurr.andWhere('f.Gender IN (:...genders)', {
+            txCurr.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

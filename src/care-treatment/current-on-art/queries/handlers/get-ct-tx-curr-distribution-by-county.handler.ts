@@ -2,8 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCtTxCurrDistributionByCountyQuery } from '../impl/get-ct-tx-curr-distribution-by-county.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactTransNewCohort } from 'src/care-treatment/new-on-art/entities/fact-trans-new-cohort.model';
-import { AggregateTXCurr } from './../../entities/aggregate-txcurr.model';
+import { AggregateTXCurr } from '../../entities/aggregate-txcurr.model';
 
 @QueryHandler(GetCtTxCurrDistributionByCountyQuery)
 export class GetCtTxCurrDistributionByCountyHandler
@@ -16,7 +15,7 @@ export class GetCtTxCurrDistributionByCountyHandler
     async execute(query: GetCtTxCurrDistributionByCountyQuery): Promise<any> {
         let txCurrDistributionByCounty = this.repository
             .createQueryBuilder('f')
-            .select(['[County],Sum(CountClientsTXCur) txCurr']);
+            .select(['[County], Sum(CountClientsTXCur) txCurr']);
 
         if (query.county) {
             txCurrDistributionByCounty.andWhere('f.County IN (:...counties)', {
@@ -53,7 +52,7 @@ export class GetCtTxCurrDistributionByCountyHandler
         }
 
         if (query.gender) {
-            txCurrDistributionByCounty.andWhere('f.Gender IN (:...genders)', {
+            txCurrDistributionByCounty.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
@@ -80,6 +79,6 @@ export class GetCtTxCurrDistributionByCountyHandler
             .groupBy('[County]')
             .orderBy('count(*)', 'DESC')
             .getRawMany();
-        
+
     }
 }

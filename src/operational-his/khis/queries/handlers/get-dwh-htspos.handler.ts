@@ -2,15 +2,14 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetDWHHTSPOSPositiveQuery } from '../impl/get-dwh-htspos-positive.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { FactHtsUptakeAgeGender } from '../../../../hts/uptake/entities/fact-htsuptake-agegender.entity';
-import { FactHTSClientTests } from 'src/hts/linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../../../hts/uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetDWHHTSPOSPositiveQuery)
 export class GetDWHHTSPOSPositiveHandler
     implements IQueryHandler<GetDWHHTSPOSPositiveQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetDWHHTSPOSPositiveQuery): Promise<any> {
@@ -25,12 +24,12 @@ export class GetDWHHTSPOSPositiveHandler
             SUM( CASE WHEN DATIMAgeGroup IN ( '15 to 19', '20 to 24', '25 to 29', '30 to 34', '35 to 39', '40 to 44', '45 to 49', '50 to 54', '55 to 59', '60 to 64', '65+' ) THEN Tested ELSE 0  END ) AS adultTested,
             ((SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END)/SUM(Tested))*100) AS positivity 
             FROM
-                NDWH.dbo.FactHTSClientTests AS link
-                INNER JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                INNER JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                INNER JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                INNER JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                INNER JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
+                NDWH.Fact.FactHTSClientTests AS link
+                INNER JOIN NDWH.Dim.DimPatient AS pat ON link.PatientKey = pat.PatientKey
+                INNER JOIN NDWH.Dim.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
+                INNER JOIN NDWH.Dim.DimPartner AS part ON link.PartnerKey = part.PartnerKey
+                INNER JOIN NDWH.Dim.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
+                INNER JOIN NDWH.Dim.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
             WHERE Tested IS NOT NULL `;
 
         if (query.county) {
@@ -71,16 +70,6 @@ export class GetDWHHTSPOSPositiveHandler
                 .replace(/,/g, "','")}')`;
             params.push(query.datimAgeGroup);
         }
-
-        // if (query.fromDate) {
-        //     uptakeBySexSql = `${uptakeBySexSql} and CONCAT(year, LPAD(month, 2, '0'))>=?`;
-        //     params.push(query.fromDate);
-        // }
-
-        // if (query.toDate) {
-        //     uptakeBySexSql = `${uptakeBySexSql} and CONCAT(year, LPAD(month, 2, '0'))<=?`;
-        //     params.push(query.toDate);
-        // }
 
         uptakeBySexSql = `${uptakeBySexSql}`;
         return await this.repository.query(uptakeBySexSql, params);

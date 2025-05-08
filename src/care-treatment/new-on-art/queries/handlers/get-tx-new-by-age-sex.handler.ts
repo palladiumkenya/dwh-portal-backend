@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetTxNewByAgeSexQuery } from '../impl/get-tx-new-by-age-sex.query';
-import { AggregateCohortRetention } from './../../entities/aggregate-cohort-retention.model';
+import { AggregateCohortRetention } from '../../entities/aggregate-cohort-retention.model';
 
 @QueryHandler(GetTxNewByAgeSexQuery)
 export class GetTxNewByAgeSexHandler implements IQueryHandler<GetTxNewByAgeSexQuery> {
@@ -16,15 +16,15 @@ export class GetTxNewByAgeSexHandler implements IQueryHandler<GetTxNewByAgeSexQu
     async execute(query: GetTxNewByAgeSexQuery): Promise<any> {
         const txNewByAgeSex = this.repository
             .createQueryBuilder('f')
-            .select(['[AgeGroup], [Gender], SUM([patients_startedART]) txNew'])
+            .select(['[AgeGroup], Sex Gender, SUM([patients_startedART]) txNew'])
             .where('f.[patients_startedART] > 0')
             .andWhere('f.[AgeGroup] IS NOT NULL')
-            .andWhere('f.[Gender] IS NOT NULL');
+            .andWhere('f.[Sex] IS NOT NULL');
 
         if (query.partner) {
             txNewByAgeSex.andWhere('f.PartnerName IN (:...partners)', { partners: query.partner });
         }
-        
+
         if (query.county) {
             txNewByAgeSex.andWhere('f.County IN (:...counties)', { counties: query.county });
         }
@@ -46,7 +46,7 @@ export class GetTxNewByAgeSexHandler implements IQueryHandler<GetTxNewByAgeSexQu
         }
 
         if (query.gender) {
-            txNewByAgeSex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            txNewByAgeSex.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
@@ -63,8 +63,8 @@ export class GetTxNewByAgeSexHandler implements IQueryHandler<GetTxNewByAgeSexQu
         }
 
         return await txNewByAgeSex
-            .groupBy('f.[AgeGroup], f.[Gender]')
-            .orderBy('f.[AgeGroup], f.[Gender]')
+            .groupBy('f.[AgeGroup], f.[Sex]')
+            .orderBy('f.[AgeGroup], f.[Sex]')
             .getRawMany();
     }
 }

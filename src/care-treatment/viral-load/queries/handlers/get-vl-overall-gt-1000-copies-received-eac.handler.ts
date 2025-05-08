@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Repository } from 'typeorm';
 import { GetVlOverallUptakeGt1000CopiesReceivedEacQuery } from '../impl/get-vl-overall-uptake-gt-1000-copies-received-eac.query';
-import { LinelistFACTART } from 'src/care-treatment/common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 @QueryHandler(GetVlOverallUptakeGt1000CopiesReceivedEacQuery)
 export class GetVlOverallGt1000CopiesReceivedEacHandler
@@ -11,7 +11,6 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
         @InjectRepository(LinelistFACTART, 'mssql')
         private readonly repository: Repository<LinelistFACTART>,
     ) {}
-    //TODO::Add fact Enhanced Ahearacnce counceling
     async execute(
         query: GetVlOverallUptakeGt1000CopiesReceivedEacQuery,
     ): Promise<any> {
@@ -19,7 +18,7 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
             .createQueryBuilder('art')
             .select([`art.SiteCode, art.PatientPKHash, ValidVLResultCategory1`])
             .where(
-                `art.ARTOutcomeDescription ='Active' AND DATEDIFF( MONTH, lastVLDate, GETDATE( ) ) <= 14 AND ValidVLResult IS NOT NULL`,
+                `art.ARTOutcomeDescription ='Active' AND DATEDIFF( MONTH, lastVLDate, GETDATE( ) ) <= 12 AND ValidVLResult IS NOT NULL`,
             );
 
         if (query.county) {
@@ -63,7 +62,7 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
         }
 
         if (query.gender) {
-            vlOverallUptakeGt1000.andWhere('art.Gender IN (:...genders)', {
+            vlOverallUptakeGt1000.andWhere('art.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }
@@ -122,7 +121,7 @@ export class GetVlOverallGt1000CopiesReceivedEacHandler
                     COUNT(EACVisitDate_2) AS EACVisitDate_2,
                     COUNT(EACVisitDate_3) AS EACVisitDate_3 
                 FROM combined_dataset 
-                WHERE ValidVLResultCategory1 IN ('>1000') 
+                WHERE ValidVLResultCategory1 IN ('200-999', '>1000')
                 GROUP BY ValidVLResultCategory1;`;
         };
         vlOverallUptakeGt1000.getParameters = () => {

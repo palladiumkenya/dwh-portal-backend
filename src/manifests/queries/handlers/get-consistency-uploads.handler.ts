@@ -57,7 +57,7 @@ export class GetConsistencyUploadsHandler
             }
             totalconsistency = consistencyResult
                 .map(this.consistencyCount)
-                .reduce(this.consistencySum);
+                .reduce(this.consistencySum, 0);
         }
         return new ConsistencyUploadsTileDto(query.docket, totalconsistency);
     }

@@ -1,9 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetAeActionsByDrugsNewQuery } from '../impl/get-ae-actions-by-drugs-new.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactTransAeActionDrug } from '../../entities/fact-trans-ae-action-drug.model';
 import { Repository } from 'typeorm';
-import { AggregateAdverseEvents } from './../../entities/aggregate-adverse-events.model';
+import { AggregateAdverseEvents } from '../../entities/aggregate-adverse-events.model';
 
 @QueryHandler(GetAeActionsByDrugsNewQuery)
 export class GetAeActionsByDrugsNewHandler implements IQueryHandler<GetAeActionsByDrugsNewQuery> {
@@ -17,7 +16,7 @@ export class GetAeActionsByDrugsNewHandler implements IQueryHandler<GetAeActions
         const aeActionsByDrugsNew = this.repository
             .createQueryBuilder('f')
             .select(
-                '[AdverseEventCause], [AdverseEventActionTaken], SUM([AdverseEventCount]) total, DATIMAgeGroup ageGroup',
+                '[AdverseEventCause], [AdverseEventActionTaken], SUM([AdverseEventsCount]) total, DATIMAgeGroup ageGroup',
             )
             .where('[MFLCode] > 0')
             .andWhere('[AdverseEventCause] IS NOT NULL')
@@ -56,7 +55,7 @@ export class GetAeActionsByDrugsNewHandler implements IQueryHandler<GetAeActions
         }
 
         if (query.gender) {
-            aeActionsByDrugsNew.andWhere('f.Gender IN (:...genders)', {
+            aeActionsByDrugsNew.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

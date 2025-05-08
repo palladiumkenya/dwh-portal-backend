@@ -44,7 +44,7 @@ export class GetDsdCascadeHandler implements IQueryHandler<GetDsdCascadeQuery> {
         }
 
         if (query.gender) {
-            dsdCascade.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            dsdCascade.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await dsdCascade.getRawOne();

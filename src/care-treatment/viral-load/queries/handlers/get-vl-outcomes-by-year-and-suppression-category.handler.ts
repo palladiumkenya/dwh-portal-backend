@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetVlOutcomesByYearAndSuppressionCategoryQuery } from '../impl/get-vl-outcomes-by-year-and-suppression-category.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LinelistFACTART } from 'src/care-treatment/common/entities/linelist-fact-art.model';
+import { LinelistFACTART } from '../../../common/entities/linelist-fact-art.model';
 
 
 @QueryHandler(GetVlOutcomesByYearAndSuppressionCategoryQuery)
@@ -47,7 +47,7 @@ export class GetVlOutcomesByYearAndSuppressionCategoryHandler implements IQueryH
         }
 
         if (query.gender) {
-            vlSuppressionByYear.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlSuppressionByYear.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlSuppressionByYear

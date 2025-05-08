@@ -1,15 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeByPopulationTypeQuery } from '../impl/get-uptake-by-population-type.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsPopulationType } from '../../entities/fact-hts-populationtype.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetUptakeByPopulationTypeQuery)
 export class GetUptakeByPopulationTypeHandler implements IQueryHandler<GetUptakeByPopulationTypeQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>
     ){}
 
     async execute(query: GetUptakeByPopulationTypeQuery): Promise<any> {
@@ -44,7 +43,6 @@ export class GetUptakeByPopulationTypeHandler implements IQueryHandler<GetUptake
             uptakeByPopulationTypeSql = `${uptakeByPopulationTypeSql} and PartnerName IN ('${query.partner
                 .toString()
                 .replace(/,/g, "','")}')`;
-            params.push(query.partner);
         }
 
         if(query.month) {

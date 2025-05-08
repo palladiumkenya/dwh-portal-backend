@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetVlUptakeAmongAlhivEnrolledInOtzBySexQuery } from '../impl/get-vl-uptake-among-alhiv-enrolled-in-otz-by-sex.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LineListOTZ } from './../../entities/line-list-otz.model';
+import { LineListOTZ } from '../../entities/line-list-otz.model';
 
 @QueryHandler(GetVlUptakeAmongAlhivEnrolledInOtzBySexQuery)
 export class GetVlUptakeAmongAlhivEnrolledInOtzBySexHandler implements IQueryHandler<GetVlUptakeAmongAlhivEnrolledInOtzBySexQuery> {
@@ -14,7 +14,7 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzBySexHandler implements IQueryHan
 
     async execute(query: GetVlUptakeAmongAlhivEnrolledInOtzBySexQuery): Promise<any> {
         const vlUptakeAmongAlHivEnrolledInOtzBySex = this.repository.createQueryBuilder('f')
-            .select(['[Gender], COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent']);
+            .select(['Sex Gender, COUNT([lastVL]) lastVL, SUM([EligibleVL]) eligibleVL, COUNT([lastVL]) * 100.0/ SUM([EligibleVL]) as vl_uptake_percent']);
 
         if (query.county) {
             vlUptakeAmongAlHivEnrolledInOtzBySex.andWhere('f.County IN (:...counties)', { counties: query.county });
@@ -41,11 +41,11 @@ export class GetVlUptakeAmongAlhivEnrolledInOtzBySexHandler implements IQueryHan
         }
 
         if (query.gender) {
-            vlUptakeAmongAlHivEnrolledInOtzBySex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            vlUptakeAmongAlHivEnrolledInOtzBySex.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await vlUptakeAmongAlHivEnrolledInOtzBySex
-            .groupBy('Gender')
+            .groupBy('Sex')
             .getRawMany();
     }
 }

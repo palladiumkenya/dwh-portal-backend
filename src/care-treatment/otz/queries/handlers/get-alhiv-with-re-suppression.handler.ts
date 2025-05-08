@@ -18,9 +18,9 @@ export class GetAlhivWithReSuppressionHandler
             .createQueryBuilder('f')
             .select([
                 'DISTINCT ' +
-                    "AlHivWithVlGreaterThan1000 = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] b WHERE (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000)," +
-                    "ALHivWithVLLessThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] b WHERE (CASE WHEN [ValidVLResult] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [ValidVLResult]) END) < 1000 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000)," +
-                    "ALHivWithVLGreaterThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] b WHERE (CASE WHEN [ValidVLResult] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [ValidVLResult]) END) >= 1000 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000 )",
+                    "AlHivWithVlGreaterThan1000 = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] b WHERE (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 200)," +
+                    "ALHivWithVLLessThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] b WHERE (CASE WHEN [ValidVLResult] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [ValidVLResult]) END) < 200 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 200)," +
+                    "ALHivWithVLGreaterThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListOTZEligibilityAndEnrollments] b WHERE (CASE WHEN [ValidVLResult] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [ValidVLResult]) END) >= 200 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 200 )",
             ]);
 
         if (query.county) {
@@ -65,7 +65,7 @@ export class GetAlhivWithReSuppressionHandler
         }
 
         if (query.gender) {
-            baselineVlReSuppression.andWhere('f.Gender IN (:...genders)', {
+            baselineVlReSuppression.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

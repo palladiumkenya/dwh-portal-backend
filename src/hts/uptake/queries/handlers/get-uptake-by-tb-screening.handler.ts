@@ -1,16 +1,15 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUptakeByTbScreeningQuery } from '../impl/get-uptake-by-tb-screening.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactHtsTBScreening } from '../../entities/fact-hts-tbscreening.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetUptakeByTbScreeningQuery)
 export class GetUptakeByTBScreeningHandler
     implements IQueryHandler<GetUptakeByTbScreeningQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetUptakeByTbScreeningQuery): Promise<any> {
@@ -21,13 +20,8 @@ export class GetUptakeByTBScreeningHandler
                 SUM(Positive) Positive, 
                 ((CAST(SUM(CASE WHEN positive IS NULL THEN 0 ELSE positive END) AS FLOAT)/CAST(SUM(Tested) AS FLOAT))*100) AS positivity
             FROM
-                NDWH.dbo.FactHTSClientTests AS link
-                LEFT JOIN NDWH.dbo.DimPatient AS pat ON link.PatientKey = pat.PatientKey
-                LEFT JOIN NDWH.dbo.DimAgeGroup AS age ON link.AgeGroupKey = age.AgeGroupKey
-                LEFT JOIN NDWH.dbo.DimPartner AS part ON link.PartnerKey = part.PartnerKey
-                LEFT JOIN NDWH.dbo.DimFacility AS fac ON link.FacilityKey = fac.FacilityKey
-                LEFT JOIN NDWH.dbo.DimAgency AS agency ON link.AgencyKey = agency.AgencyKey
-            WHERE TBScreening IS NOT NULL and TestType IN ('Initial', 'Initial Test')`;
+                AggregateHTSTBscreening
+            WHERE TBScreening IS NOT NULL`;
 
         if (query.county) {
             uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and County IN ('${query.county
@@ -45,7 +39,6 @@ export class GetUptakeByTBScreeningHandler
             uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and PartnerName IN ('${query.partner
                 .toString()
                 .replace(/,/g, "','")}')`;
-            params.push(query.partner);
         }
 
         if (query.facility) {
@@ -54,22 +47,14 @@ export class GetUptakeByTBScreeningHandler
                 .replace(/,/g, "','")}')`
         }
 
-        // if(query.month) {
-        //     uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and month=?`;
-        //     params.push(query.month);
-        // }
-
-        // if(query.year) {
-        //     uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and year=?`;
-        //     params.push(query.year);
-        // }
-
         if (query.fromDate) {
-            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and DateTestedKey >= ${query.fromDate}01`;
+            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and year >= ${query.fromDate.substring(0, 4)}`;
+            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and month >= ${query.fromDate.substring(4)}`;
         }
 
         if (query.toDate) {
-            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and DateTestedKey <= EOMONTH('${query.toDate}01')`;
+            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and year <= ${query.toDate.substring(0, 4)}`;
+            uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} and month <= ${query.toDate.substring(4)}`;
         }
 
         uptakeByClientTestedAsSql = `${uptakeByClientTestedAsSql} GROUP BY TBScreening`;

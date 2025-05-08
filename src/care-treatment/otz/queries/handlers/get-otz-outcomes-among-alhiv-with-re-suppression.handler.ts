@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetOtzOutcomesAmongAlhivWithReSuppressionQuery } from '../impl/get-otz-outcomes-among-alhiv-with-re-suppression.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LineListOTZ } from './../../entities/line-list-otz.model';
+import { LineListOTZ } from '../../entities/line-list-otz.model';
 
 @QueryHandler(GetOtzOutcomesAmongAlhivWithReSuppressionQuery)
 export class GetOtzOutcomesAmongAlhivWithReSuppressionHandler implements IQueryHandler<GetOtzOutcomesAmongAlhivWithReSuppressionQuery> {
@@ -17,9 +17,9 @@ export class GetOtzOutcomesAmongAlhivWithReSuppressionHandler implements IQueryH
             .createQueryBuilder('f')
             .select([
                 'DISTINCT ' +
-                    "AlHivWithVlGreaterThan1000 = (SELECT COUNT(*) FROM [dbo].[LineListOTZ] b WHERE (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000),\n" +
-                    "ALHivWithVLLessThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListOTZ] b WHERE (CASE WHEN [ValidVLResult] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [ValidVLResult]) END) < 1000 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000)," +
-                    "ALHivWithVLGreaterThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListOTZ] b WHERE (CASE WHEN [ValidVLResult] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [ValidVLResult]) END) >= 1000 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 1000)",
+                    "AlHivWithVlGreaterThan1000 = (SELECT COUNT(*) FROM [dbo].[LineListOTZ] b WHERE (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 200),\n" +
+                    "ALHivWithVLLessThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListOTZ] b WHERE (CASE WHEN [ValidVLResult] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [ValidVLResult]) END) < 200 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 200)," +
+                    "ALHivWithVLGreaterThan1000WithRepeatVL = (SELECT COUNT(*) FROM [dbo].[LineListOTZ] b WHERE (CASE WHEN [ValidVLResult] = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, [ValidVLResult]) END) >= 200 AND (CASE WHEN FirstVL = 'Undetectable' THEN 1 ELSE TRY_CONVERT(decimal, FirstVL) END) >= 200)",
             ]);
 
         if (query.county) {
@@ -47,7 +47,7 @@ export class GetOtzOutcomesAmongAlhivWithReSuppressionHandler implements IQueryH
         }
 
         if (query.gender) {
-            baselineVlReSuppression.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            baselineVlReSuppression.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         return await baselineVlReSuppression.getRawMany();

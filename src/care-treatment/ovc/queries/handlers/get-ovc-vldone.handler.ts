@@ -38,7 +38,7 @@ export class GetOvcVldoneHandler implements IQueryHandler<GetOvcVldoneQuery> {
         }
 
         if (query.gender) {
-            OVCVLDone.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            OVCVLDone.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {

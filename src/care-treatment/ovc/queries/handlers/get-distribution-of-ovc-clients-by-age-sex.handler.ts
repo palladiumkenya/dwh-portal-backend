@@ -14,7 +14,7 @@ export class GetDistributionOfOvcClientsByAgeSexHandler implements IQueryHandler
 
     async execute(query: GetDistributionOfOvcClientsByAgeSexQuery): Promise<any> {
         const distributionOfOvcClientsByAgeSex = this.repository.createQueryBuilder('f')
-            .select(['Gender, DATIMAgeGroup, Count (*) OverallOVC'])
+            .select(['Sex Gender, DATIMAgeGroup, Count (*) OverallOVC'])
             .andWhere('f.OVCEnrollmentDate IS NOT NULL and f.TXCurr=1');
 
         if (query.county) {
@@ -38,13 +38,13 @@ export class GetDistributionOfOvcClientsByAgeSexHandler implements IQueryHandler
         }
 
         if (query.gender) {
-            distributionOfOvcClientsByAgeSex.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            distributionOfOvcClientsByAgeSex.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
             distributionOfOvcClientsByAgeSex.andWhere('f.DATIMAgeGroup IN (:...ageGroups)', { ageGroups: query.datimAgeGroup });
         }
 
-        return await distributionOfOvcClientsByAgeSex.groupBy('Gender, DATIMAgeGroup').orderBy('DATIMAgeGroup').getRawMany();
+        return await distributionOfOvcClientsByAgeSex.groupBy('Sex, DATIMAgeGroup').orderBy('DATIMAgeGroup').getRawMany();
     }
 }

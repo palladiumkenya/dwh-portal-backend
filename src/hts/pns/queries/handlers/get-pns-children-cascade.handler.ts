@@ -1,16 +1,15 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetPnsChildrenCascadeQuery } from '../impl/get-pns-children-cascade.query';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FactPNSChildren } from '../../entities/fact-pns-children.entity';
 import { Repository } from 'typeorm';
-import { FactHTSClientTests } from './../../../linkage/entities/fact-hts-client-tests.model';
+import { AggregateHTSUptake } from '../../../uptake/entities/aggregate-hts-uptake.model';
 
 @QueryHandler(GetPnsChildrenCascadeQuery)
 export class GetPnsChildrenCascadeHandler
     implements IQueryHandler<GetPnsChildrenCascadeQuery> {
     constructor(
-        @InjectRepository(FactHTSClientTests, 'mssql')
-        private readonly repository: Repository<FactHTSClientTests>,
+        @InjectRepository(AggregateHTSUptake, 'mssql')
+        private readonly repository: Repository<AggregateHTSUptake>,
     ) {}
 
     async execute(query: GetPnsChildrenCascadeQuery): Promise<any> {
@@ -36,7 +35,7 @@ export class GetPnsChildrenCascadeHandler
                 .replace(/,/g, "','")}')`;
         }
 
-        if (query.subCounty) { 
+        if (query.subCounty) {
             pnsChildrenCascade = `${pnsChildrenCascade} and subCounty IN ('${query.subCounty
                 .toString()
                 .replace(/,/g, "','")}')`;

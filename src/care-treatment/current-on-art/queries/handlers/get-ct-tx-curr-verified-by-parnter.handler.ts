@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetCtTxCurrVerifiedByPartnerQuery } from '../impl/get-ct-tx-curr-verified-partner.query';
-import { AggregateNupi } from './../../entities/aggregate-nupi.model';
+import { AggregateNupi } from '../../entities/aggregate-nupi.model';
 
 @QueryHandler(GetCtTxCurrVerifiedByPartnerQuery)
 export class GetCtTxCurrVerifiedByPartnerHandler
@@ -16,7 +16,7 @@ export class GetCtTxCurrVerifiedByPartnerHandler
         let txCurrByPartner = this.repository
             .createQueryBuilder('f')
             .select(['PartnerName CTPartner, sum (numnupi) NumNupi'])
-            .where('f.[Gender] IS NOT NULL');
+            .where('f.[Sex] IS NOT NULL');
 
         if (query.datimAgePopulations) {
             if (
@@ -29,14 +29,14 @@ export class GetCtTxCurrVerifiedByPartnerHandler
                     .select([
                         'PartnerName CTPartner, sum (adults) NumNupi',
                     ])
-                    .where('f.[Gender] IS NOT NULL');
+                    .where('f.[Sex] IS NOT NULL');
             else if (query.datimAgePopulations.includes('<18'))
                 txCurrByPartner = this.repository
                     .createQueryBuilder('f')
                     .select([
                         'PartnerName CTPartner, sum (children) NumNupi',
                     ])
-                    .where('f.[Gender] IS NOT NULL');
+                    .where('f.[Sex] IS NOT NULL');
         }
 
         if (query.county) {
@@ -76,7 +76,7 @@ export class GetCtTxCurrVerifiedByPartnerHandler
         }
 
         if (query.gender) {
-            txCurrByPartner.andWhere('f.Gender IN (:...genders)', {
+            txCurrByPartner.andWhere('f.Sex IN (:...genders)', {
                 genders: query.gender,
             });
         }

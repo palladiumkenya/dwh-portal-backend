@@ -38,7 +38,7 @@ export class GetCalhivVirallySuppressedNotInOvcHandler implements IQueryHandler<
         }
 
         if (query.gender) {
-            CALHIVVLSuppressed.andWhere('f.Gender IN (:...genders)', { genders: query.gender });
+            CALHIVVLSuppressed.andWhere('f.Sex IN (:...genders)', { genders: query.gender });
         }
 
         if (query.datimAgeGroup) {
