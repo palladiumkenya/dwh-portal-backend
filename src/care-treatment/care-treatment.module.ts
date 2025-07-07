@@ -343,6 +343,7 @@ import { GetOtzTotalWithDurableVlHandler } from './otz/queries/handlers/get-otz-
 import { GetAhdScreeningHandler } from './ahd/queries/handlers/get-ahd-screening.handler';
 import { GetAhdNutritionAssessmentHandler } from './ahd/queries/handlers/get-ahd-nutrition-assessment.handler';
 import { GetAhdOutcomesHandler } from './ahd/queries/handlers/get-ahd-outcomes.handler';
+import { GetAhdCmPreEmptiveTherapyHandler } from './ahd/queries/handlers/get-ahd-cm-pre-emptive-therapy.handler';
 
 
 @Module({
@@ -689,7 +690,8 @@ import { GetAhdOutcomesHandler } from './ahd/queries/handlers/get-ahd-outcomes.h
 
         GetAhdScreeningHandler,
         GetAhdNutritionAssessmentHandler,
-        GetAhdOutcomesHandler
+        GetAhdOutcomesHandler,
+        GetAhdCmPreEmptiveTherapyHandler
     ],
     controllers: [CareTreatmentController],
 })
