@@ -14059,37 +14059,46 @@ export class CareTreatmentController {
         @Query('gender') gender,
         @Query('datimAgeGroup') datimAgeGroup,
     ): Promise<any> {
-        const query = new GetAhdNutritionAssessmentQuery();
+        try {
+            const query = new GetAhdNutritionAssessmentQuery();
 
-        if (county) {
-            query.county = county;
+            if (county) {
+                query.county = county;
+            }
+
+            if (subCounty) {
+                query.subCounty = subCounty;
+            }
+
+            if (facility) {
+                query.facility = facility;
+            }
+
+            if (partner) {
+                query.partner = partner;
+            }
+
+            if (agency) {
+                query.agency = agency;
+            }
+
+            if (gender) {
+                query.gender = gender;
+            }
+
+            if (datimAgeGroup) {
+                query.datimAgeGroup = datimAgeGroup;
+            }
+
+            return this.queryBus.execute(query);
+        } catch (error) {
+            console.error('Controller Error:', error);
+            return {
+                success: false,
+                message: 'An error occurred while fetching AHD Nutrition Assessment.',
+                error: error.message,
+            };
         }
-
-        if (subCounty) {
-            query.subCounty = subCounty;
-        }
-
-        if (facility) {
-            query.facility = facility;
-        }
-
-        if (partner) {
-            query.partner = partner;
-        }
-
-        if (agency) {
-            query.agency = agency;
-        }
-
-        if (gender) {
-            query.gender = gender;
-        }
-
-        if (datimAgeGroup) {
-            query.datimAgeGroup = datimAgeGroup;
-        }
-
-        return this.queryBus.execute(query);
     }
 
     @Get('getAHDOutcomes')
