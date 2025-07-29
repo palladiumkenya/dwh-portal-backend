@@ -12,40 +12,41 @@ export class GetAhdNutritionAssessmentHandler implements IQueryHandler<GetAhdNut
     ) {}
 
     async execute(query: GetAhdNutritionAssessmentQuery): Promise<any> {
-        const filters = [];
-        if (query.county) {
-            filters.push('County In (:...counties)')
-        }
+        try {
+            const filters = [];
+            if (query.county) {
+                filters.push('County In (:...counties)')
+            }
 
-        if (query.subCounty) {
-            filters.push('SubCounty In (:...subCounties)')
-        }
+            if (query.subCounty) {
+                filters.push('SubCounty In (:...subCounties)')
+            }
 
-        if (query.facility) {
-            filters.push('FacilityName In (:...facilities)')
-        }
+            if (query.facility) {
+                filters.push('FacilityName In (:...facilities)')
+            }
 
-        if (query.partner) {
-            filters.push('PartnerName In (:...partners)')
-        }
+            if (query.partner) {
+                filters.push('PartnerName In (:...partners)')
+            }
 
-        if (query.agency) {
-            filters.push('AgencyName In (:...agencies)')
-        }
+            if (query.agency) {
+                filters.push('AgencyName In (:...agencies)')
+            }
 
-        if (query.datimAgeGroup) {
-            filters.push('AgeGroup In (:...ageGroups)')
-        }
+            if (query.datimAgeGroup) {
+                filters.push('AgeGroup In (:...ageGroups)')
+            }
 
-        if (query.gender) {
-            filters.push('Gender In (:...genders)')
-        }
+            if (query.gender) {
+                filters.push('Gender In (:...genders)')
+            }
 
-        const whereClause = filters.length ? `WHERE ${filters.join(' AND ')}` : ``;
+            const whereClause = filters.length ? `WHERE ${filters.join(' AND ')}` : ``;
 
-        const ahdAssessment = this.repository
-            .createQueryBuilder('f')
-            .select([`TOP 1
+            const ahdAssessment = this.repository
+                .createQueryBuilder('f')
+                .select([`TOP 1
                 (SELECT 
                   SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
                   SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
@@ -76,16 +77,20 @@ export class GetAhdNutritionAssessmentHandler implements IQueryHandler<GetAhdNut
                  AHD=1 and age <15 and MAM=1) AS NumberWithMAM
             `])
 
-        const params = {
-            facilities: query.facility,
-            counties: query.county,
-            subCounties: query.subCounty,
-            partners: query.partner,
-            agencies: query.agency,
-            ageGroups: query.datimAgeGroup,
-            genders: query.gender
-        }
+            const params = {
+                facilities: query.facility,
+                counties: query.county,
+                subCounties: query.subCounty,
+                partners: query.partner,
+                agencies: query.agency,
+                ageGroups: query.datimAgeGroup,
+                genders: query.gender
+            }
 
-        return await ahdAssessment.setParameters(params).getRawOne();
+            return await ahdAssessment.setParameters(params).getRawOne();
+        } catch (error) {
+            console.error('Error in GetAhdNutritionAssessmentHandler:', error);
+            throw new Error(`Failed to fetch AHD Nutrition Assessment: ${error.message}`);
+        }
     }
 }
