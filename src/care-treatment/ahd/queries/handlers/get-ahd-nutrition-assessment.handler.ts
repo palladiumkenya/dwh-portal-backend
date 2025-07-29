@@ -47,35 +47,39 @@ export class GetAhdNutritionAssessmentHandler implements IQueryHandler<GetAhdNut
             const ahdAssessment = this.repository
                 .createQueryBuilder('f')
                 .select([`TOP 1
-                (SELECT 
-                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
-                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
-                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
-                FROM REPORTING.dbo.linelist_FactART
-                    ${whereClause} ${filters.length ? ' AND ': 'WHERE '}
-                     AHD=1 and age <15) AS ChildrenWithAHD,
-                (SELECT 
-                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
-                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
-                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
-                FROM REPORTING.dbo.linelist_FactART
-                    ${whereClause} ${filters.length ? ' AND ': 'WHERE '}
-                 AHD=1 and age <15 and ScreenedForMalnutrition=1) AS ScreenedForMalnutrition,
-                (SELECT 
-                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
-                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
-                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
-                FROM REPORTING.dbo.linelist_FactART
-                    ${whereClause} ${filters.length ? ' AND ': 'WHERE '}
-                 AHD=1 and age <15 and SAM=1) AS NumberWithSAM,
-                (SELECT 
-                  SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
-                  SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
-                  SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
-                FROM REPORTING.dbo.linelist_FactART
-                    ${whereClause} ${filters.length ? ' AND ': 'WHERE '}
-                 AHD=1 and age <15 and MAM=1) AS NumberWithMAM
-            `])
+                    (SELECT 
+                      SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                      SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                      SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                    FROM REPORTING.dbo.linelist_FactART
+                        ${whereClause} ${filters.length ? ' AND ': 'WHERE '}
+                         AHD=1 and AgeLastVisit < 15) AS ChildrenWithAHD,
+                
+                    (SELECT 
+                      SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                      SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                      SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                    FROM REPORTING.dbo.linelist_FactART
+                        ${whereClause} ${filters.length ? ' AND ': 'WHERE '}
+                     AHD=1 and AgeLastVisit < 15 and ScreenedForMalnutrition=1) AS ScreenedForMalnutrition,
+                
+                    (SELECT 
+                      SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                      SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                      SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                    FROM REPORTING.dbo.linelist_FactART
+                        ${whereClause} ${filters.length ? ' AND ': 'WHERE '}
+                     AHD=1 and AgeLastVisit < 15 and SAM=1) AS NumberWithSAM,
+                
+                    (SELECT 
+                      SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
+                      SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
+                      SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
+                    FROM REPORTING.dbo.linelist_FactART
+                        ${whereClause} ${filters.length ? ' AND ': 'WHERE '}
+                     AHD=1 and AgeLastVisit < 15 and MAM=1) AS NumberWithMAM
+                `])
+
 
             const params = {
                 facilities: query.facility,
