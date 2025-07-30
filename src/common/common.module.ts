@@ -22,6 +22,7 @@ import { GetCountyCoverageHtsHandler } from './queries/handlers/get-county-cover
 import { CommonController } from './common.controller';
 import { AllEmrSites } from '../care-treatment/common/entities/all-emr-sites.model';
 import { LinelistFACTART } from '../care-treatment/common/entities/linelist-fact-art.model';
+import { GetCtCountFacilitiesHandler } from './queries/handlers/get-ct-count-facilities.handler';
 
 @Module({
     imports: [
@@ -46,7 +47,8 @@ import { LinelistFACTART } from '../care-treatment/common/entities/linelist-fact
         GetFacilityStatusByCountyHandler,
         GetFacilityByInfrastructureCountyHandler,
         GetFacilityArtHtsMnchHandler,
-        GetCountyCoverageHtsHandler
+        GetCountyCoverageHtsHandler,
+        GetCtCountFacilitiesHandler
     ],
     controllers: [CommonController],
 })
