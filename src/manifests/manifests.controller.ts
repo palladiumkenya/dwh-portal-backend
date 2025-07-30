@@ -15,6 +15,7 @@ import { GetConsistencyByCountyPartnerQuery } from './queries/impl/get-consisten
 import { GetExpectedUploadsPartnerCountyQuery } from './queries/impl/get-expected-uploads-partner-county.query';
 import { GetEMRInfoQuery } from './queries/impl/get-emr-info.query';
 import { GetFacilityInfoQuery } from './queries/impl/get-facility-info.query';
+import { GetCtCountFacilitiesQuery } from '../common/queries/impl/get-ct-count-facilities.query';
 
 @Controller('manifests')
 export class ManifestsController {
@@ -124,6 +125,26 @@ export class ManifestsController {
         if (agency) {
             query.agency = agency;
         }
+        if (year) {
+            query.year = year;
+        }
+        if (month) {
+            query.month = month;
+        }
+        if (period) {
+            query.period = period;
+        }
+        return this.queryBus.execute(query);
+    }
+
+    @Get('facilitiesCount/:docket')
+    async getCountFacilities(
+        @Param('docket') docket,
+        @Query('year') year,
+        @Query('month') month,
+        @Query('period') period,
+    ): Promise<any> {
+        const query = new GetCtCountFacilitiesQuery(docket);
         if (year) {
             query.year = year;
         }
