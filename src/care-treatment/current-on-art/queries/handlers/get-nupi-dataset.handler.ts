@@ -24,7 +24,7 @@ export class GetNupiDatasetHandler
                     EMR,
                     SDP as SDIP,
                     SDP_Agency as Agency
-                from ODS.dbo.All_EMRSites
+                from ODS.CARE.All_EMRSites
                 union 
                 select 
                     MFL_code collate Latin1_General_CI_AS as MFLCode,
@@ -54,13 +54,13 @@ export class GetNupiDatasetHandler
                 select distinct
                     cast (SiteCode as nvarchar) SiteCode,
                     max(ReportMonth_Year) as reporting_month
-                from ODS.dbo.CT_DHIS2 as khis
+                from ODS.CARE.CT_DHIS2 as khis
                 where CurrentOnART_Total is not null
                     and datediff(
                         mm,
                         cast(concat(ReportMonth_Year, '01') as date),
                         (select max(cast(concat(ReportMonth_Year, '01') as date)
-                        ) from ODS.dbo.CT_DHIS2)    
+                        ) from ODS.CARE.CT_DHIS2)    
                     ) <= 6
                 group by SiteCode
             ),
@@ -70,7 +70,7 @@ export class GetNupiDatasetHandler
             cast (khis.SiteCode as nvarchar) As SiteCode,
                     latest_reporting_month.reporting_month,
                     sum(CurrentOnART_Total) as TXCurr_khis
-                from ODS.dbo.CT_DHIS2 as khis
+                from ODS.CARE.CT_DHIS2 as khis
                 inner join latest_reporting_month on latest_reporting_month.SiteCode = khis.SiteCode
                     and khis.ReportMonth_Year = latest_reporting_month.reporting_month
             where CurrentOnART_Total is not null
@@ -183,7 +183,7 @@ export class GetNupiDatasetHandler
                 from  [pSurvey].[dbo].[stg_questionnaire_responses] as surveys
                 left  join tmp_and_adhoc.dbo.nupi_dataset as nupi on surveys.ccc_no = nupi.ccc_no
                     and cast(surveys.mfl_code as varchar) = nupi.origin_facility_kmfl_code
-                inner join ODS.dbo.Intermediate_ARTOutcomes as art on art.PatientID = surveys.ccc_no
+                inner join ODS.CARE.Intermediate_ARTOutcomes as art on art.PatientID = surveys.ccc_no
                     and cast(surveys.mfl_code as varchar) = art.SiteCode
                 where  nupi.origin_facility_kmfl_code is null and ARTOutcome = 'V' -- return anyone not on the NUPI dataset and is TXCurr in DWH
                 group by cast(surveys.mfl_code as varchar)

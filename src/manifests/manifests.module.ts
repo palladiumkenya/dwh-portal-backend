@@ -21,6 +21,7 @@ import { GetEMRInfoHandler } from './queries/handlers/get-emr-info.handler';
 import { GetFacilityInfoHandler } from './queries/handlers/get-facility-info.handler';
 import { EMRInfo } from './entities/emr-info.entity';
 import { FacilityInfo } from './entities/facility-info.entity';
+import { GetCtCountFacilitiesHandler } from '../common/queries/handlers/get-ct-count-facilities.handler';
 
 @Module({
     imports: [
@@ -45,6 +46,7 @@ import { FacilityInfo } from './entities/facility-info.entity';
         GetExpectedUploadsPartnerCountyHandler,
         GetEMRInfoHandler,
         GetFacilityInfoHandler,
+        GetCtCountFacilitiesHandler
     ],
     controllers: [ManifestsController],
 })
