@@ -73,7 +73,7 @@ export class GetAhdScreeningHandler implements IQueryHandler<GetAhdScreeningQuer
                   SUM(CASE WHEN NewPatient = 1 THEN 1 ELSE 0 END) AS TotalCount
                 FROM REPORTING.dbo.linelist_FactART
                     ${whereClause} ${filters.length ? ' AND ': 'WHERE '}
-                 LatestCD4WithinLastOneYear is not null OR LastCD4PercentageWithinLastOneYear is not null) AS DoneCD4Test,
+                 (LatestCD4WithinLastOneYear is not null OR LastCD4PercentageWithinLastOneYear is not null)) AS DoneCD4Test,
                 (SELECT 
                   SUM(CASE WHEN IsRTTLast12MonthsAfter3monthsIIT = 1 THEN 1 ELSE 0 END) +
                   SUM(CASE WHEN ConfirmedTreatmentFailure = 1 THEN 1 ELSE 0 END) +
